@@ -1,47 +1,58 @@
-<script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
-import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { dashboard } from '@/routes';
-import type { BreadcrumbItem } from '@/types';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-    },
-];
-</script>
-
 <template>
-    <Head title="Dashboard" />
+  <v-row>
+    <v-col cols="12" md="4" v-for="(stat, i) in statistics" :key="i">
+      <v-card class="mb-4">
+        <v-card-text>
+          <div class="d-flex align-center justify-space-between">
+            <div>
+              <p class="text-subtitle-1 text-grey">{{ stat.title }}</p>
+              <h3 class="text-h4 font-weight-bold">{{ stat.value }}</h3>
+            </div>
+            <v-avatar :color="stat.color + '-lighten-4'" size="48">
+              <v-icon :color="stat.color">{{ stat.icon }}</v-icon>
+            </v-avatar>
+          </div>
+        </v-card-text>
+      </v-card>
+    </v-col>
 
-    <AppLayout :breadcrumbs="breadcrumbs">
-        <div
-            class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
-        >
-            <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-                >
-                    <PlaceholderPattern />
-                </div>
-                <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-                >
-                    <PlaceholderPattern />
-                </div>
-                <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-                >
-                    <PlaceholderPattern />
-                </div>
-            </div>
-            <div
-                class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border"
-            >
-                <PlaceholderPattern />
-            </div>
-        </div>
-    </AppLayout>
+    <v-col cols="12">
+      <v-card>
+        <v-card-title>Performa Latihan Mingguan</v-card-title>
+        <v-card-text>
+          <apexchart type="area" height="350" :options="chartOptions" :series="series" />
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+// Dummy Data untuk Dashboard
+const statistics = ref([
+  { title: 'Total Jarak', value: '1,245 km', icon: 'mdi-map-marker-distance', color: 'primary' },
+  { title: 'Rata-rata Kecepatan', value: '32 km/h', icon: 'mdi-speedometer', color: 'success' },
+  { title: 'Kalori Terbakar', value: '12,400 kcal', icon: 'mdi-fire', color: 'warning' },
+]);
+
+const series = ref([{
+  name: 'Jarak (km)',
+  data: [31, 40, 28, 51, 42, 109, 100]
+}]);
+
+const chartOptions = ref({
+  chart: {
+    height: 350,
+    type: 'area',
+    toolbar: { show: false }
+  },
+  colors: ['#696cff'],
+  dataLabels: { enabled: false },
+  stroke: { curve: 'smooth' },
+  xaxis: {
+    categories: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+  },
+});
+</script>

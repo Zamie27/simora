@@ -2,11 +2,11 @@
 trigger: always_on
 ---
 
-# Skill: Laravel 12 – Backend Architecture for Athlete Monitoring System
+# Skill: Laravel 13 – Backend Architecture for Athlete Monitoring System
 
 ## Overview
 
-Laravel 12 digunakan untuk membangun REST API backend yang melayani aplikasi frontend Vue.js SPA.
+Laravel 13 digunakan untuk membangun REST API backend yang melayani aplikasi frontend Vue.js SPA.
 
 Backend bertanggung jawab untuk:
 

@@ -6,7 +6,7 @@ trigger: always_on
 
 ## Overview
 
-Vue.js 3 digunakan sebagai frontend SPA untuk Sistem Informasi Monitoring Atlet Sepeda. Frontend berkomunikasi dengan backend Laravel 12 melalui REST API yang diamankan menggunakan Laravel Sanctum.
+Vue.js 3 digunakan sebagai frontend SPA untuk Sistem Informasi Monitoring Atlet Sepeda. Frontend berkomunikasi dengan backend Laravel 13 melalui REST API yang diamankan menggunakan Laravel Sanctum.
 
 Sistem memiliki tiga role utama:
 

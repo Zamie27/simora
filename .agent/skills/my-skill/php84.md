@@ -6,7 +6,7 @@ trigger: always_on
 
 ## Overview
 
-PHP 8.4 digunakan sebagai bahasa utama backend untuk Sistem Informasi Monitoring Atlet Sepeda yang dibangun menggunakan Laravel 12.
+PHP 8.4 digunakan sebagai bahasa utama backend untuk Sistem Informasi Monitoring Atlet Sepeda yang dibangun menggunakan Laravel 13.
 
 Kode harus mengikuti prinsip:
 

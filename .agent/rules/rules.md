@@ -27,7 +27,7 @@ Sneat Admin Template
 
 Backend:
 PHP 8.4
-Laravel 12
+Laravel 13
 Laravel Sanctum
 Laravel Breeze
 Laravel Excel
@@ -282,6 +282,7 @@ Gunakan prefix `docker exec -it simora-app` untuk mengeksekusi command:
 - **NPM**: `docker exec -it simora-app npm <perintah>`
 
 Contoh:
+
 - `docker exec -it simora-app php artisan migrate`
 - `docker exec -it simora-app php artisan make:controller`
 - `docker exec -it simora-app composer install`

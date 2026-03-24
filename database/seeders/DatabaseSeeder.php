@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +14,49 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Define roles
+        $roles = [
+            'Manajemen' => 'Administrator with full access',
+            'Pelatih' => 'Coach managing athletes',
+            'Atlet' => 'Athlete user',
+        ];
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ($roles as $name => $description) {
+            Role::firstOrCreate(['name' => $name], ['description' => $description]);
+        }
+
+        $atletRole = Role::where('name', 'Atlet')->first();
+        $pelatihRole = Role::where('name', 'Pelatih')->first();
+        $manajemenRole = Role::where('name', 'Manajemen')->first();
+
+        // Admin User
+        User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Admin Manajemen',
+                'password' => Hash::make('password'),
+                'role_id' => $manajemenRole->id,
+            ]
+        );
+
+        // Coach User
+        User::firstOrCreate(
+            ['email' => 'pelatih@example.com'],
+            [
+                'name' => 'Coach Budi',
+                'password' => Hash::make('password'),
+                'role_id' => $pelatihRole->id,
+            ]
+        );
+
+        // Athlete User
+        User::firstOrCreate(
+            ['email' => 'atlet@example.com'],
+            [
+                'name' => 'Atlet Andi',
+                'password' => Hash::make('password'),
+                'role_id' => $atletRole->id,
+            ]
+        );
     }
 }

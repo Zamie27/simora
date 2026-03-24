@@ -268,3 +268,24 @@ Tujuan utama sistem ini adalah menghasilkan dashboard monitoring atlet yang dapa
 menampilkan performa latihan secara visual  
 membantu pelatih menganalisis performa atlet  
 membantu atlet mengevaluasi latihan mereka
+
+---
+
+# Docker Execution Rules
+
+Karena proyek ini berjalan di dalam environment Docker, semua eksekusi command line (CLI) yang berkaitan dengan backend atau node HARUS dijalankan di dalam container `simora-app` (sesuai konfigurasi `docker-compose.yml`).
+
+Gunakan prefix `docker exec -it simora-app` untuk mengeksekusi command:
+
+- **Artisan**: `docker exec -it simora-app php artisan <perintah>`
+- **Composer**: `docker exec -it simora-app composer <perintah>`
+- **NPM**: `docker exec -it simora-app npm <perintah>`
+
+Contoh:
+- `docker exec -it simora-app php artisan migrate`
+- `docker exec -it simora-app php artisan make:controller`
+- `docker exec -it simora-app composer install`
+- `docker exec -it simora-app npm install`
+- `docker exec -it simora-app npm run dev`
+
+Jangan menjalankan perintah `php`, `artisan`, `composer`, atau `npm` secara langsung di sistem host.

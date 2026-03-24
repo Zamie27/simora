@@ -20,7 +20,7 @@ services:
     container_name: simora-nginx
     restart: unless-stopped
     ports:
-      - "8000:80"
+      - "8080:80"
     volumes:
       - ./:/var/www/html:Z
       - ./docker/nginx/conf.d:/etc/nginx/conf.d:Z
@@ -41,7 +41,7 @@ services:
       MYSQL_PASSWORD: simora_password
       MYSQL_ROOT_PASSWORD: root_password_simora
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - simora-db-data:/var/lib/mysql:Z
     networks:
@@ -54,7 +54,7 @@ services:
     container_name: simora-pma
     restart: always
     ports:
-      - "8081:80"
+      - "8082:80"
     environment:
       - PMA_ARBITRARY=1
     depends_on:

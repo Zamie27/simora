@@ -56,7 +56,11 @@ const submit = () => {
 };
 
 const deleteCategory = (category: Category) => {
-    if (confirm(`Apakah Anda yakin ingin menghapus kategori "${category.name}"?`)) {
+    if (
+        confirm(
+            `Apakah Anda yakin ingin menghapus kategori "${category.name}"?`,
+        )
+    ) {
         form.delete(`/management/categories/${category.id}`);
     }
 };
@@ -72,85 +76,196 @@ const closeModal = () => {
     <Head title="Managemen Kategori" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex flex-col gap-10 p-6 md:p-10 max-w-7xl mx-auto w-full min-h-screen bg-background text-foreground">
-            
-            <div class="flex flex-col md:flex-row items-baseline justify-between gap-4 border-b border-border pb-6">
+        <div
+            class="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-10 bg-background p-6 text-foreground md:p-10"
+        >
+            <div
+                class="flex flex-col items-baseline justify-between gap-4 border-b border-border pb-6 md:flex-row"
+            >
                 <div>
-                    <h1 class="text-3xl font-black tracking-tight text-foreground uppercase">Managemen Kategori</h1>
-                    <p class="mt-2 text-muted-foreground font-medium italic opacity-80 uppercase tracking-widest text-[10px]">Atur kategori atlet agar seragam dan mudah dianalisis.</p>
+                    <h1
+                        class="text-3xl font-black tracking-tight text-foreground uppercase"
+                    >
+                        Managemen Kategori
+                    </h1>
+                    <p
+                        class="mt-2 text-[10px] font-medium tracking-widest text-muted-foreground uppercase italic opacity-80"
+                    >
+                        Atur kategori atlet agar seragam dan mudah dianalisis.
+                    </p>
                 </div>
-                <button 
+                <button
                     @click="openCreate"
-                    class="bg-accent hover:bg-accent/90 text-white font-black uppercase tracking-widest text-xs px-8 py-4 rounded-xl shadow-xl shadow-accent/20 transition-all flex items-center gap-2"
+                    class="flex items-center gap-2 rounded-xl bg-accent px-8 py-4 text-xs font-black tracking-widest text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90"
                 >
-                    <Plus class="w-4 h-4" /> Tambah Kategori
+                    <Plus class="h-4 w-4" /> Tambah Kategori
                 </button>
             </div>
 
-            <div v-if="categories.length === 0" class="flex flex-col items-center justify-center p-20 bg-muted/10 border border-dashed border-border rounded-3xl">
-                 <BookOpen class="w-12 h-12 text-muted-foreground opacity-20 mb-4" />
-                <p class="text-muted-foreground font-black uppercase tracking-widest text-xs italic">Belum ada kategori yang ditambahkan.</p>
+            <div
+                v-if="categories.length === 0"
+                class="flex flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-muted/10 p-20"
+            >
+                <BookOpen
+                    class="mb-4 h-12 w-12 text-muted-foreground opacity-20"
+                />
+                <p
+                    class="text-xs font-black tracking-widest text-muted-foreground uppercase italic"
+                >
+                    Belum ada kategori yang ditambahkan.
+                </p>
             </div>
 
-            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div v-for="category in categories" :key="category.id" class="bg-card border border-border p-8 rounded-3xl flex flex-col justify-between hover:border-accent group transition-all shadow-xl shadow-black/5">
+            <div
+                v-else
+                class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+            >
+                <div
+                    v-for="category in categories"
+                    :key="category.id"
+                    class="group flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-xl shadow-black/5 transition-all hover:border-accent"
+                >
                     <div>
-                        <div class="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-accent mb-6">
-                            <BookOpen class="w-6 h-6" />
+                        <div
+                            class="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary text-accent"
+                        >
+                            <BookOpen class="h-6 w-6" />
                         </div>
-                        <h3 class="text-lg font-black text-foreground uppercase tracking-tight mb-2">{{ category.name }}</h3>
-                        <p class="text-xs text-muted-foreground font-medium leading-relaxed opacity-70">{{ category.description || 'Tidak ada deskripsi.' }}</p>
+                        <h3
+                            class="mb-2 text-lg font-black tracking-tight text-foreground uppercase"
+                        >
+                            {{ category.name }}
+                        </h3>
+                        <p
+                            class="text-xs leading-relaxed font-medium text-muted-foreground opacity-70"
+                        >
+                            {{ category.description || 'Tidak ada deskripsi.' }}
+                        </p>
                     </div>
 
-                    <div class="flex gap-2 mt-8 pt-6 border-t border-border">
-                        <button @click="openEdit(category)" class="flex-1 flex items-center justify-center gap-2 py-3 bg-muted hover:bg-muted/80 text-foreground rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">
-                            <Pencil class="w-3 h-3" /> Edit
+                    <div class="mt-8 flex gap-2 border-t border-border pt-6">
+                        <button
+                            @click="openEdit(category)"
+                            class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-muted py-3 text-[10px] font-black tracking-widest text-foreground uppercase transition-all hover:bg-muted/80"
+                        >
+                            <Pencil class="h-3 w-3" /> Edit
                         </button>
-                        <button @click="deleteCategory(category)" class="px-4 flex items-center justify-center bg-destructive/10 hover:bg-destructive text-destructive hover:text-white rounded-xl transition-all">
-                            <Trash2 class="w-4 h-4" />
+                        <button
+                            @click="deleteCategory(category)"
+                            class="flex items-center justify-center rounded-xl bg-destructive/10 px-4 text-destructive transition-all hover:bg-destructive hover:text-white"
+                        >
+                            <Trash2 class="h-4 w-4" />
                         </button>
                     </div>
                 </div>
             </div>
 
             <!-- Modal -->
-            <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/90 backdrop-blur-xl">
-                 <div class="bg-card w-full max-w-lg rounded-[2.5rem] border border-border shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
-                    <div class="p-10 border-b border-border flex justify-between items-center bg-muted/20">
-                         <div>
-                            <h2 class="text-2xl font-black text-foreground uppercase tracking-tight">{{ editingCategory ? 'Edit Kategori' : 'Tambah Kategori Baru' }}</h2>
-                            <p class="text-xs text-muted-foreground font-bold mt-1 uppercase tracking-widest opacity-60">System Configuration</p>
-                         </div>
-                        <button @click="closeModal" class="p-3 rounded-full hover:bg-muted/50 text-muted-foreground hover:text-foreground transition-all">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <div
+                v-if="showModal"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-xl"
+            >
+                <div
+                    class="w-full max-w-lg animate-in overflow-hidden rounded-[2.5rem] border border-border bg-card shadow-2xl duration-300 fade-in zoom-in"
+                >
+                    <div
+                        class="flex items-center justify-between border-b border-border bg-muted/20 p-10"
+                    >
+                        <div>
+                            <h2
+                                class="text-2xl font-black tracking-tight text-foreground uppercase"
+                            >
+                                {{
+                                    editingCategory
+                                        ? 'Edit Kategori'
+                                        : 'Tambah Kategori Baru'
+                                }}
+                            </h2>
+                            <p
+                                class="mt-1 text-xs font-bold tracking-widest text-muted-foreground uppercase opacity-60"
+                            >
+                                System Configuration
+                            </p>
+                        </div>
+                        <button
+                            @click="closeModal"
+                            class="rounded-full p-3 text-muted-foreground transition-all hover:bg-muted/50 hover:text-foreground"
+                        >
+                            <svg
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"
+                                ></path>
+                            </svg>
                         </button>
                     </div>
-                    
+
                     <div class="p-10">
-                        <form @submit.prevent="submit" class="flex flex-col gap-8">
+                        <form
+                            @submit.prevent="submit"
+                            class="flex flex-col gap-8"
+                        >
                             <div class="flex flex-col gap-2">
-                                <Label for="name" class="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Nama Kategori</Label>
-                                <Input id="name" v-model="form.name" class="h-14 bg-muted/30 border-none rounded-2xl px-6 text-lg font-black focus:ring-2 focus:ring-accent" placeholder="Contoh: ELITE / MTB / ROAD" />
-                                <p v-if="form.errors.name" class="text-destructive text-[10px] font-bold">{{ form.errors.name }}</p>
+                                <Label
+                                    for="name"
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
+                                    >Nama Kategori</Label
+                                >
+                                <Input
+                                    id="name"
+                                    v-model="form.name"
+                                    class="h-14 rounded-2xl border-none bg-muted/30 px-6 text-lg font-black focus:ring-2 focus:ring-accent"
+                                    placeholder="Contoh: ELITE / MTB / ROAD"
+                                />
+                                <p
+                                    v-if="form.errors.name"
+                                    class="text-[10px] font-bold text-destructive"
+                                >
+                                    {{ form.errors.name }}
+                                </p>
                             </div>
                             <div class="flex flex-col gap-2">
-                                <Label for="description" class="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Deskripsi (Opsional)</Label>
-                                <textarea id="description" v-model="form.description" class="w-full bg-muted/30 border-none rounded-2xl p-6 text-sm font-medium focus:ring-2 focus:ring-accent min-h-[120px]" placeholder="Penjelasan singkat tentang kategori ini..."></textarea>
-                                <p v-if="form.errors.description" class="text-destructive text-[10px] font-bold">{{ form.errors.description }}</p>
+                                <Label
+                                    for="description"
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
+                                    >Deskripsi (Opsional)</Label
+                                >
+                                <textarea
+                                    id="description"
+                                    v-model="form.description"
+                                    class="min-h-[120px] w-full rounded-2xl border-none bg-muted/30 p-6 text-sm font-medium focus:ring-2 focus:ring-accent"
+                                    placeholder="Penjelasan singkat tentang kategori ini..."
+                                ></textarea>
+                                <p
+                                    v-if="form.errors.description"
+                                    class="text-[10px] font-bold text-destructive"
+                                >
+                                    {{ form.errors.description }}
+                                </p>
                             </div>
 
-                            <button 
+                            <button
                                 type="submit"
                                 :disabled="form.processing"
-                                class="py-5 bg-accent text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-accent/20 hover:bg-accent/90 transition-all active:scale-[0.98] disabled:opacity-50"
+                                class="rounded-2xl bg-accent py-5 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
                             >
-                                {{ editingCategory ? 'Perbarui Kategori' : 'Simpan Kategori' }}
+                                {{
+                                    editingCategory
+                                        ? 'Perbarui Kategori'
+                                        : 'Simpan Kategori'
+                                }}
                             </button>
                         </form>
                     </div>
                 </div>
             </div>
-
         </div>
     </AppLayout>
 </template>

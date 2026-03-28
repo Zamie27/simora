@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Head, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
 import type { BreadcrumbItem, SharedData } from '@/types';
-import { computed } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

@@ -28,7 +28,7 @@ Proyek ini dibangun menggunakan arsitektur modern (*Vue SPA + Laravel API*) dan 
 
 Sebelum memulai integrasi, pastikan sistem operasi/laptop Anda sudah terinstal perangkat lunak berikut:
 1. **Git**
-2. **Docker** dan **Docker Compose** *(Sangat disarankan memakai Docker Desktop)*
+2. **Docker** dan **Docker Compose** 
    > _Pastikan service atau daemon Docker sudah berstatus "Running" di komputer Anda terlebih dahulu._
 
 > 💡 **PENTING: Memulai Dengan File `.env` (Environment Variables)**
@@ -54,8 +54,8 @@ cd simora
 2. _Copy/paste_ file tersebut ke dalam folder *root* proyek (alias direktori `simora/`).
 *(Ingat, jangan sampai nama file terubah. Harus persis `.env`).*
 
-### 3. Build & Jalankan Wadah Container Docker
-Proyek ini mengandalkan _Docker Compose_ untuk membentuk ekosistem *web server*, database *MySQL*, dan OS wadah aplikasi Laravel (*PHP-FPM + Node.js*).
+### 3. Build & Jalankan Container Docker
+Proyek ini mengandalkan _Docker Compose_ untuk membentuk ekosistem *web server*, database *MySQL*, dan OS aplikasi Laravel (*PHP-FPM + Node.js*).
 ```bash
 docker-compose up -d --build
 ```
@@ -139,8 +139,8 @@ Jika Anda sudah berhasil melewati instruksi bernomor 1-5 di atas, silakan akses 
 ## 👥 Profil Evaluator & Peran Anggota Tim
 
 Modul aplikasi dibentuk berdasarkan tugas manajemen sistem informasi terpisah dengan 3 cakupan _Role/Aktor_ penting:
-1. **Pihak Manajemen Klub (Admin Utama)** - Dapat mengubah parameter struktur user manajemen dan klub pelatih.  
-2. **Pelatih Berlisensi Profesional** - Menganalisa statistik grafik metrik siswa dan berwawan rekomendasi.  
-3. **Atlet Pesepeda** - Mengkoleksi serta mempublikasikan performa kalori & kecepatan setelah pasca latihan.  
+1. **Pihak Manajemen Klub** - Dapat mengubah parameter struktur user manajemen dan klub pelatih.  
+2. **Pelatih** - Menganalisa statistik grafik metrik siswa dan berwawan rekomendasi.  
+3. **Atlet Pesepeda** - Mengkoleksi serta mempublikasikan performa kalori, kecepatan, dll  setelah pasca latihan.  
 
 *Dibuat & didedikasi komprehensif bagi proses penilaian Dosen Pembimbing untuk mata kuliah Pengembangan Sistem Informasi.* 🚴‍♂️🎉  

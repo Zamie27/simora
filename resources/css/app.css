@@ -45,12 +45,6 @@
     --color-input: var(--input);
     --color-ring: var(--ring);
 
-    --color-chart-1: var(--chart-1);
-    --color-chart-2: var(--chart-2);
-    --color-chart-3: var(--chart-3);
-    --color-chart-4: var(--chart-4);
-    --color-chart-5: var(--chart-5);
-
     --color-sidebar: var(--sidebar-background);
     --color-sidebar-foreground: var(--sidebar-foreground);
     --color-sidebar-primary: var(--sidebar-primary);
@@ -61,21 +55,13 @@
     --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
     *,
     ::after,
     ::before,
     ::backdrop,
     ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
+        border-color: var(--color-border, currentColor);
     }
 }
 
@@ -90,76 +76,89 @@
 }
 
 :root {
-    --background: hsl(0 0% 100%);
-    --foreground: hsl(210 56% 14%); /* Dark Blue for text */
-    --card: hsl(0 0% 100%);
-    --card-foreground: hsl(210 56% 14%);
-    --popover: hsl(0 0% 100%);
-    --popover-foreground: hsl(210 56% 14%);
-    --primary: hsl(210 56% 14%); /* Dark Blue (#0f2236 roughly) */
-    --primary-foreground: hsl(0 0% 100%);
-    --secondary: hsl(210 20% 96%); /* Very light shade of dark blue */
-    --secondary-foreground: hsl(210 56% 14%);
-    --muted: hsl(210 20% 96%);
-    --muted-foreground: hsl(210 10% 40%);
-    --accent: hsl(15 86% 53%); /* Orange (#ee5522 roughly) */
-    --accent-foreground: hsl(0 0% 100%);
-    --destructive: hsl(0 84.2% 60.2%);
-    --destructive-foreground: hsl(0 0% 98%);
-    --border: hsl(210 20% 90%);
-    --input: hsl(210 20% 90%);
-    --ring: hsl(210 56% 14%);
-    --chart-1: hsl(210 56% 14%); /* Dark Blue */
-    --chart-2: hsl(15 86% 53%); /* Orange */
-    --chart-3: hsl(197 37% 24%);
-    --chart-4: hsl(43 74% 66%);
-    --chart-5: hsl(27 87% 67%);
-    --radius: 0.5rem;
-    --sidebar-background: hsl(210 20% 98%);
-    --sidebar-foreground: hsl(210 56% 14%);
-    --sidebar-primary: hsl(210 56% 14%);
-    --sidebar-primary-foreground: hsl(0 0% 100%);
-    --sidebar-accent: hsl(210 20% 94%);
-    --sidebar-accent-foreground: hsl(210 56% 14%);
-    --sidebar-border: hsl(210 20% 91%);
-    --sidebar-ring: hsl(210 56% 14%);
-    --sidebar: hsl(210 20% 98%);
+    /* Primary White: #F4F7F7 */
+    --background: #F4F7F7;
+    --foreground: #0F1414;
+    
+    --card: #ffffff;
+    --card-foreground: #0F1414;
+    
+    --popover: #ffffff;
+    --popover-foreground: #0F1414;
+    
+    --primary: #0F1414;
+    --primary-foreground: #F4F7F7;
+    
+    /* Secondary: #102844 */
+    --secondary: #102844;
+    --secondary-foreground: #F4F7F7;
+    
+    --muted: #e2e8f0;
+    --muted-foreground: #64748b;
+    
+    /* Accent: #FF6120 */
+    --accent: #FF6120;
+    --accent-foreground: #ffffff;
+    
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --ring: #102844;
+    
+    --radius: 0.75rem;
+
+    --sidebar-background: #ffffff;
+    --sidebar-foreground: #0F1414;
+    --sidebar-primary: #102844;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #f1f5f9;
+    --sidebar-accent-foreground: #102844;
+    --sidebar-border: #e2e8f0;
+    --sidebar-ring: #102844;
 }
 
 .dark {
-    --background: hsl(210 56% 14%); /* Dark Blue as background */
-    --foreground: hsl(0 0% 98%);
-    --card: hsl(210 40% 18%);
-    --card-foreground: hsl(0 0% 98%);
-    --popover: hsl(210 40% 18%);
-    --popover-foreground: hsl(0 0% 98%);
-    --primary: hsl(0 0% 100%); /* White */
-    --primary-foreground: hsl(210 56% 14%);
-    --secondary: hsl(210 40% 22%);
-    --secondary-foreground: hsl(0 0% 98%);
-    --muted: hsl(210 40% 22%);
-    --muted-foreground: hsl(210 20% 70%);
-    --accent: hsl(15 86% 53%); /* Orange */
-    --accent-foreground: hsl(0 0% 100%);
-    --destructive: hsl(0 84% 60%);
-    --destructive-foreground: hsl(0 0% 98%);
-    --border: hsl(210 40% 22%);
-    --input: hsl(210 40% 22%);
-    --ring: hsl(0 0% 100%);
-    --chart-1: hsl(0 0% 100%); /* White */
-    --chart-2: hsl(15 86% 53%); /* Orange */
-    --chart-3: hsl(30 80% 55%);
-    --chart-4: hsl(280 65% 60%);
-    --chart-5: hsl(340 75% 55%);
-    --sidebar-background: hsl(210 56% 16%);
-    --sidebar-foreground: hsl(0 0% 95.9%);
-    --sidebar-primary: hsl(0, 0%, 100%);
-    --sidebar-primary-foreground: hsl(210 56% 14%);
-    --sidebar-accent: hsl(210 40% 22%);
-    --sidebar-accent-foreground: hsl(0 0% 95.9%);
-    --sidebar-border: hsl(210 40% 22%);
-    --sidebar-ring: hsl(0 0% 100%);
-    --sidebar: hsl(210 56% 16%);
+    /* Dark Primary: #0F1414 */
+    --background: #0F1414;
+    --foreground: #F4F7F7;
+    
+    /* Slightly lighter card background for depth */
+    --card: #171c1c; 
+    --card-foreground: #F4F7F7;
+    
+    --popover: #171c1c;
+    --popover-foreground: #F4F7F7;
+    
+    --primary: #F4F7F7;
+    --primary-foreground: #0F1414;
+    
+    --secondary: #102844;
+    --secondary-foreground: #F4F7F7;
+    
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
+    
+    --accent: #FF6120;
+    --accent-foreground: #ffffff;
+    
+    --destructive: #7f1d1d;
+    --destructive-foreground: #fca5a5;
+    
+    /* Subtle borders for dark mode */
+    --border: #262c2c; 
+    --input: #262c2c;
+    --ring: #FF6120;
+    
+    --sidebar-background: #0F1414;
+    --sidebar-foreground: #F4F7F7;
+    --sidebar-primary: #FF6120;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #171c1c;
+    --sidebar-accent-foreground: #F4F7F7;
+    --sidebar-border: #262c2c;
+    --sidebar-ring: #FF6120;
 }
 
 @layer base {
@@ -167,6 +166,6 @@
         @apply border-border outline-ring/50;
     }
     body {
-        @apply bg-background text-foreground;
+        @apply bg-background text-foreground antialiased transition-colors duration-300;
     }
 }

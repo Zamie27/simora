@@ -103,64 +103,134 @@ const route = (name: string, params?: any) => {
     <Head title="Managemen User" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex flex-col gap-10 p-6 md:p-10 max-w-7xl mx-auto w-full min-h-screen bg-background text-foreground">
-            
-            <div class="flex flex-col md:flex-row items-baseline justify-between gap-4 border-b border-border pb-6">
+        <div
+            class="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-10 bg-background p-6 text-foreground md:p-10"
+        >
+            <div
+                class="flex flex-col items-baseline justify-between gap-4 border-b border-border pb-6 md:flex-row"
+            >
                 <div>
-                    <h1 class="text-3xl font-black tracking-tight text-foreground uppercase">Managemen User</h1>
-                    <p class="mt-2 text-muted-foreground font-medium">Kelola akses atlet, pelatih, dan tim manajemen.</p>
+                    <h1
+                        class="text-3xl font-black tracking-tight text-foreground uppercase"
+                    >
+                        Managemen User
+                    </h1>
+                    <p class="mt-2 font-medium text-muted-foreground">
+                        Kelola akses atlet, pelatih, dan tim manajemen.
+                    </p>
                 </div>
-                <button 
+                <button
                     @click="openCreateModal"
-                    class="bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-3 rounded-xl shadow-lg shadow-accent/20 font-black uppercase tracking-widest text-xs transition-transform active:scale-95 flex items-center gap-2"
+                    class="flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-xs font-black tracking-widest text-accent-foreground uppercase shadow-lg shadow-accent/20 transition-transform hover:bg-accent/90 active:scale-95"
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    <svg
+                        class="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 4v16m8-8H4"
+                        ></path>
+                    </svg>
                     Tambah User Baru
                 </button>
             </div>
 
             <!-- Users Table Section -->
-            <div class="bg-card border border-border rounded-xl overflow-hidden shadow-xl">
+            <div
+                class="overflow-hidden rounded-xl border border-border bg-card shadow-xl"
+            >
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
-                        <thead class="bg-muted/50 border-b border-border">
-                            <tr class="text-[10px] uppercase font-black tracking-widest text-muted-foreground">
+                        <thead class="border-b border-border bg-muted/50">
+                            <tr
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase"
+                            >
                                 <th class="px-6 py-4">Nama & Email</th>
                                 <th class="px-6 py-4">Peran</th>
                                 <th class="px-6 py-4 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-border">
-                            <tr v-for="user in users" :key="user.id" class="hover:bg-muted/20 transition-colors group">
+                            <tr
+                                v-for="user in users"
+                                :key="user.id"
+                                class="group transition-colors hover:bg-muted/20"
+                            >
                                 <td class="px-6 py-5">
                                     <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-secondary-foreground font-black text-xs border border-secondary-foreground/10 shadow-inner">
-                                            {{ user.name.split(' ').map(n => n[0]).join('') }}
+                                        <div
+                                            class="flex h-10 w-10 items-center justify-center rounded-full border border-secondary-foreground/10 bg-secondary text-xs font-black text-secondary-foreground shadow-inner"
+                                        >
+                                            {{
+                                                user.name
+                                                    .split(' ')
+                                                    .map((n) => n[0])
+                                                    .join('')
+                                            }}
                                         </div>
                                         <div>
-                                            <p class="font-bold text-sm text-foreground">{{ user.name }}</p>
-                                            <p class="text-[11px] text-muted-foreground font-semibold">{{ user.email }}</p>
+                                            <p
+                                                class="text-sm font-bold text-foreground"
+                                            >
+                                                {{ user.name }}
+                                            </p>
+                                            <p
+                                                class="text-[11px] font-semibold text-muted-foreground"
+                                            >
+                                                {{ user.email }}
+                                            </p>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-5 text-xs">
-                                    <span class="px-2.5 py-1 rounded-md bg-accent/10 text-accent font-black uppercase tracking-tighter border border-accent/20">
+                                    <span
+                                        class="rounded-md border border-accent/20 bg-accent/10 px-2.5 py-1 font-black tracking-tighter text-accent uppercase"
+                                    >
                                         {{ user.role.name }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-5 text-right">
                                     <div class="flex justify-end gap-2">
-                                        <button 
+                                        <button
                                             @click="openEditModal(user)"
-                                            class="p-2 rounded-lg bg-muted text-muted-foreground hover:bg-accent hover:text-white transition-all border border-border"
+                                            class="rounded-lg border border-border bg-muted p-2 text-muted-foreground transition-all hover:bg-accent hover:text-white"
                                         >
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                            <svg
+                                                class="h-4 w-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                                                ></path>
+                                            </svg>
                                         </button>
-                                        <button 
+                                        <button
                                             @click="deleteUser(user.id)"
-                                            class="p-2 rounded-lg bg-muted text-muted-foreground hover:bg-destructive hover:text-white transition-all border border-border"
+                                            class="rounded-lg border border-border bg-muted p-2 text-muted-foreground transition-all hover:bg-destructive hover:text-white"
                                         >
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            <svg
+                                                class="h-4 w-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                ></path>
+                                            </svg>
                                         </button>
                                     </div>
                                 </td>
@@ -171,63 +241,164 @@ const route = (name: string, params?: any) => {
             </div>
 
             <!-- Simple Modal (Custom Implementation) -->
-            <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
-                <div class="bg-card w-full max-w-md rounded-2xl border border-border shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-                    <div class="p-6 border-b border-border flex justify-between items-center bg-muted/30">
-                        <h2 class="text-xl font-black text-foreground uppercase">{{ isEditing ? 'Edit User' : 'Tambah User' }}</h2>
-                        <button @click="showModal = false" class="text-muted-foreground hover:text-foreground">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <div
+                v-if="showModal"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4 backdrop-blur-sm"
+            >
+                <div
+                    class="w-full max-w-md animate-in overflow-hidden rounded-2xl border border-border bg-card shadow-2xl duration-200 fade-in zoom-in"
+                >
+                    <div
+                        class="flex items-center justify-between border-b border-border bg-muted/30 p-6"
+                    >
+                        <h2
+                            class="text-xl font-black text-foreground uppercase"
+                        >
+                            {{ isEditing ? 'Edit User' : 'Tambah User' }}
+                        </h2>
+                        <button
+                            @click="showModal = false"
+                            class="text-muted-foreground hover:text-foreground"
+                        >
+                            <svg
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"
+                                ></path>
+                            </svg>
                         </button>
                     </div>
-                    <form @submit.prevent="submit" class="p-6 flex flex-col gap-5">
+                    <form
+                        @submit.prevent="submit"
+                        class="flex flex-col gap-5 p-6"
+                    >
                         <div class="flex flex-col gap-2">
-                            <Label for="name" class="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Nama Lengkap</Label>
-                            <Input id="name" v-model="form.name" placeholder="Indra Wijaya" required class="rounded-xl border-muted bg-background focus:ring-accent" />
-                            <p v-if="form.errors.name" class="text-destructive text-[10px] font-bold">{{ form.errors.name }}</p>
-                        </div>
-                        
-                        <div class="flex flex-col gap-2">
-                            <Label for="email" class="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Email</Label>
-                            <Input id="email" type="email" v-model="form.email" placeholder="indra@simora.fit" required class="rounded-xl border-muted bg-background focus:ring-accent" />
-                            <p v-if="form.errors.email" class="text-destructive text-[10px] font-bold">{{ form.errors.email }}</p>
+                            <Label
+                                for="name"
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase"
+                                >Nama Lengkap</Label
+                            >
+                            <Input
+                                id="name"
+                                v-model="form.name"
+                                placeholder="Indra Wijaya"
+                                required
+                                class="rounded-xl border-muted bg-background focus:ring-accent"
+                            />
+                            <p
+                                v-if="form.errors.name"
+                                class="text-[10px] font-bold text-destructive"
+                            >
+                                {{ form.errors.name }}
+                            </p>
                         </div>
 
                         <div class="flex flex-col gap-2">
-                            <Label for="role" class="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Peran</Label>
-                            <select id="role" v-model="form.role_id" class="w-full rounded-xl border border-muted bg-background px-3 py-2 text-sm focus:ring-accent focus:outline-none text-foreground font-medium">
-                                <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
+                            <Label
+                                for="email"
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase"
+                                >Email</Label
+                            >
+                            <Input
+                                id="email"
+                                type="email"
+                                v-model="form.email"
+                                placeholder="indra@simora.fit"
+                                required
+                                class="rounded-xl border-muted bg-background focus:ring-accent"
+                            />
+                            <p
+                                v-if="form.errors.email"
+                                class="text-[10px] font-bold text-destructive"
+                            >
+                                {{ form.errors.email }}
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col gap-2">
+                            <Label
+                                for="role"
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase"
+                                >Peran</Label
+                            >
+                            <select
+                                id="role"
+                                v-model="form.role_id"
+                                class="w-full rounded-xl border border-muted bg-background px-3 py-2 text-sm font-medium text-foreground focus:ring-accent focus:outline-none"
+                            >
+                                <option
+                                    v-for="role in roles"
+                                    :key="role.id"
+                                    :value="role.id"
+                                >
+                                    {{ role.name }}
+                                </option>
                             </select>
-                            <p v-if="form.errors.role_id" class="text-destructive text-[10px] font-bold">{{ form.errors.role_id }}</p>
+                            <p
+                                v-if="form.errors.role_id"
+                                class="text-[10px] font-bold text-destructive"
+                            >
+                                {{ form.errors.role_id }}
+                            </p>
                         </div>
 
                         <div class="flex flex-col gap-2">
-                            <Label for="password" class="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                                {{ isEditing ? 'Password Baru (Kosongkan jika tidak ubah)' : 'Password' }}
+                            <Label
+                                for="password"
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase"
+                            >
+                                {{
+                                    isEditing
+                                        ? 'Password Baru (Kosongkan jika tidak ubah)'
+                                        : 'Password'
+                                }}
                             </Label>
-                            <Input id="password" type="password" v-model="form.password" :required="!isEditing" placeholder="••••••••" class="rounded-xl border-muted bg-background focus:ring-accent" />
-                            <p v-if="form.errors.password" class="text-destructive text-[10px] font-bold">{{ form.errors.password }}</p>
+                            <Input
+                                id="password"
+                                type="password"
+                                v-model="form.password"
+                                :required="!isEditing"
+                                placeholder="••••••••"
+                                class="rounded-xl border-muted bg-background focus:ring-accent"
+                            />
+                            <p
+                                v-if="form.errors.password"
+                                class="text-[10px] font-bold text-destructive"
+                            >
+                                {{ form.errors.password }}
+                            </p>
                         </div>
 
-                        <div class="flex justify-end gap-3 mt-4">
-                            <button 
+                        <div class="mt-4 flex justify-end gap-3">
+                            <button
                                 type="button"
                                 @click="showModal = false"
-                                class="px-5 py-2.5 rounded-xl border border-border text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:bg-muted/50 transition-all"
+                                class="rounded-xl border border-border px-5 py-2.5 text-[10px] font-black tracking-widest text-muted-foreground uppercase transition-all hover:bg-muted/50"
                             >
                                 Batal
                             </button>
-                            <button 
+                            <button
                                 type="submit"
                                 :disabled="form.processing"
-                                class="px-5 py-2.5 rounded-xl bg-accent text-accent-foreground text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-all"
+                                class="rounded-xl bg-accent px-5 py-2.5 text-[10px] font-black tracking-widest text-accent-foreground uppercase transition-all hover:bg-accent/90"
                             >
-                                {{ isEditing ? 'Simpan Perubahan' : 'Proses Simpan' }}
+                                {{
+                                    isEditing
+                                        ? 'Simpan Perubahan'
+                                        : 'Proses Simpan'
+                                }}
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
-
         </div>
     </AppLayout>
 </template>

@@ -57,7 +57,9 @@ withDefaults(
 
         <!-- Hero Section -->
         <main class="flex-grow">
-            <section class="relative overflow-hidden bg-primary dark:bg-background py-24 sm:py-32 transition-colors duration-300">
+            <section
+                class="relative overflow-hidden bg-primary py-24 transition-colors duration-300 sm:py-32 dark:bg-background"
+            >
                 <div class="absolute inset-0 z-0">
                     <img
                         src="/images/cycling-bg.png"
@@ -65,7 +67,7 @@ withDefaults(
                         class="h-full w-full object-cover opacity-70 mix-blend-multiply"
                     />
                     <div
-                        class="absolute inset-0 bg-gradient-to-t from-primary/20 dark:from-background/80 to-transparent"
+                        class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent dark:from-background/80"
                     ></div>
                 </div>
 

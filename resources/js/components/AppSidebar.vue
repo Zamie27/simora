@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid, ShieldCheck, UserCheck, Users } from 'lucide-vue-next';
+import {
+    BookOpen,
+    FolderGit2,
+    LayoutGrid,
+    ShieldCheck,
+    UserCheck,
+    Users,
+} from 'lucide-vue-next';
 import { computed } from 'vue';
 
 import AppLogo from '@/components/AppLogo.vue';
@@ -16,8 +23,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import type { NavItem, SharedData } from '@/types';
+import { dashboard } from '@/routes';
 
 const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user);
@@ -48,7 +55,7 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Monitoring Atlet',
                 href: '/management/athletes',
                 icon: UserCheck,
-            }
+            },
         );
     }
 

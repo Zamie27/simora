@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
 import {
+    Activity,
     BookOpen,
     FolderGit2,
     LayoutGrid,
@@ -23,8 +24,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import type { NavItem, SharedData } from '@/types';
 import { dashboard } from '@/routes';
+import type { NavItem, SharedData } from '@/types';
 
 const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user);
@@ -56,7 +57,28 @@ const mainNavItems = computed<NavItem[]>(() => {
                 href: '/management/athletes',
                 icon: UserCheck,
             },
+            {
+                title: 'Managemen Kategori',
+                href: '/management/categories',
+                icon: BookOpen,
+            }
         );
+    }
+
+    if (roleName.value === 'Pelatih') {
+        items.push({
+            title: 'Atlet Saya',
+            href: '/coach/athletes',
+            icon: Users,
+        });
+    }
+
+    if (roleName.value === 'Atlet') {
+        items.push({
+            title: 'Update Fisik',
+            href: '/athlete/physical',
+            icon: Activity,
+        });
     }
 
     return items;

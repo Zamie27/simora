@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/DeleteUser.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
+import DatePicker from '@/components/ui/DatePicker.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import type { BreadcrumbItem } from '@/types';
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
+import type { BreadcrumbItem } from '@/types';
 
 type Props = {
     mustVerifyEmail: boolean;
@@ -29,7 +30,8 @@ const breadcrumbItems: BreadcrumbItem[] = [
 ];
 
 const page = usePage();
-const user = computed(() => page.props.auth.user);
+const user = computed(() => page.props.auth.user as any);
+const birthDate = ref<string>(user.value.date_of_birth || '');
 </script>
 
 <template>
@@ -43,7 +45,7 @@ const user = computed(() => page.props.auth.user);
                 <Heading
                     variant="small"
                     title="Profile information"
-                    description="Update your name and email address"
+                    description="Update your name, email and birth date"
                 />
 
                 <Form
@@ -60,7 +62,6 @@ const user = computed(() => page.props.auth.user);
                             :default-value="user.name"
                             required
                             autocomplete="name"
-                            placeholder="Full name"
                         />
                         <InputError class="mt-2" :message="errors.name" />
                     </div>
@@ -75,9 +76,16 @@ const user = computed(() => page.props.auth.user);
                             :default-value="user.email"
                             required
                             autocomplete="username"
-                            placeholder="Email address"
                         />
                         <InputError class="mt-2" :message="errors.email" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="date_of_birth">Tanggal Lahir</Label>
+                        <DatePicker v-model="birthDate" />
+                        <input type="hidden" name="date_of_birth" :value="birthDate" />
+                        
+                        <InputError class="mt-2" :message="errors.date_of_birth" />
                     </div>
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">
@@ -96,17 +104,12 @@ const user = computed(() => page.props.auth.user);
                             v-if="status === 'verification-link-sent'"
                             class="mt-2 text-sm font-medium text-green-600"
                         >
-                            A new verification link has been sent to your email
-                            address.
+                            A new verification link has been sent to your email address.
                         </div>
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button
-                            :disabled="processing"
-                            data-test="update-profile-button"
-                            >Save</Button
-                        >
+                        <Button :disabled="processing" data-test="update-profile-button">Save</Button>
 
                         <Transition
                             enter-active-class="transition ease-in-out"
@@ -114,12 +117,7 @@ const user = computed(() => page.props.auth.user);
                             leave-active-class="transition ease-in-out"
                             leave-to-class="opacity-0"
                         >
-                            <p
-                                v-show="recentlySuccessful"
-                                class="text-sm text-neutral-600"
-                            >
-                                Saved.
-                            </p>
+                            <p v-show="recentlySuccessful" class="text-sm text-neutral-600">Saved.</p>
                         </Transition>
                     </div>
                 </Form>

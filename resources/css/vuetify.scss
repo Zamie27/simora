@@ -1,0 +1,15 @@
+// Vuetify custom SCSS overrides
+// This file controls which Vuetify global styles are applied.
+// We override the body/html-level settings to prevent conflicts with Tailwind.
+
+// Reset Vuetify's font override
+$body-font-family: inherit;
+$font-size-root: inherit;
+
+// Disable Vuetify's global scrollbar, border-box and font-face loading
+$vuetify-google-fonts: false;
+
+// Use our custom color palette
+$primary: #FF6120;
+$background: #0F1414;
+$surface: #171c1c;

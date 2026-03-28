@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-#[Fillable(['name', 'email', 'password', 'role_id', 'is_verified', 'coach_id'])]
+#[Fillable(['name', 'email', 'date_of_birth', 'password', 'role_id', 'is_verified', 'coach_id'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -32,7 +33,16 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
             'is_verified' => 'boolean',
+            'date_of_birth' => 'date',
         ];
+    }
+
+    /**
+     * Get the user's age.
+     */
+    public function getAgeAttribute(): ?int
+    {
+        return $this->date_of_birth?->age;
     }
 
     /**
@@ -59,5 +69,22 @@ class User extends Authenticatable
     public function athletes(): HasMany
     {
         return $this->hasMany(User::class, 'coach_id');
+    }
+
+    public function physicalMetrics(): HasMany
+    {
+        return $this->hasMany(PhysicalMetric::class, 'user_id');
+    }
+
+    public function latestPhysicalMetric(): HasOne
+    {
+        return $this->hasOne(PhysicalMetric::class, 'user_id')->latestOfMany('recorded_at');
+    }
+
+    public function scopeWhereRole($query, string $role)
+    {
+        return $query->whereHas('role', function ($q) use ($role) {
+            $q->where('name', $role);
+        });
     }
 }

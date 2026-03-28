@@ -165,6 +165,13 @@
     * {
         @apply border-border outline-ring/50;
     }
+
+    @media (max-width: 640px) {
+        .container {
+            @apply px-4;
+        }
+    }
+
     body {
         @apply bg-background text-foreground antialiased transition-colors duration-300;
     }

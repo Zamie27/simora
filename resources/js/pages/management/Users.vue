@@ -86,12 +86,15 @@ const route = (name: string, params?: any) => {
     if (name === 'management.users.store') {
         return '/management/users';
     }
+
     if (name === 'management.users.update') {
         return `/management/users/${params}`;
     }
+
     if (name === 'management.users.destroy') {
         return `/management/users/${params}`;
     }
+
     return '';
 };
 </script>

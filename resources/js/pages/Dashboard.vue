@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { Head, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { Head } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
-import type { BreadcrumbItem, SharedData } from '@/types';
+import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -11,10 +10,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: dashboard(),
     },
 ];
-
-const page = usePage<SharedData>();
-const user = computed(() => page.props.auth.user);
-const roleName = computed(() => user.value?.role?.name || 'Unknown');
 
 // Mock data for the UI
 const users = [

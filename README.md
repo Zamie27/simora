@@ -4,6 +4,10 @@ SIMORA adalah sistem informasi berbasis web yang dirancang untuk membantu pemant
 
 Proyek ini dibangun menggunakan arsitektur modern (*Vue SPA + Laravel API*) dan berjalan secara penuh di dalam kontainer **Docker**. Hal ini membuat *environment web* benar-benar terisolasi dan menjamin semua anggota tim maupun evaluator/dosen memiliki standar platform yang identik (tanpa konflik dependensi antar _OS_ atau versi PHP/Node di laptop lokal).
 
+<div align="center">
+  <img src="public/images/simora_logo.png" alt="Logo SIMORA" width="250">
+</div>
+
 ---
 
 ## 🛠 Teknologi yang Digunakan

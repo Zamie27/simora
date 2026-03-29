@@ -115,7 +115,6 @@ const chartSeries = computed(() => [
         data: [...props.metrics].reverse().map((m) => Number(m.height)),
     },
 ]);
-
 </script>
 
 <template>
@@ -168,8 +167,11 @@ const chartSeries = computed(() => [
                         <p
                             class="text-sm font-bold text-muted-foreground italic opacity-70"
                         >
-                            <template v-if="!user.date_of_birth && !user.gender">
-                                Anda belum menyetel tanggal lahir dan jenis kelamin di profil.
+                            <template
+                                v-if="!user.date_of_birth && !user.gender"
+                            >
+                                Anda belum menyetel tanggal lahir dan jenis
+                                kelamin di profil.
                             </template>
                             <template v-else-if="!user.date_of_birth">
                                 Anda belum menyetel tanggal lahir di profil.
@@ -177,7 +179,8 @@ const chartSeries = computed(() => [
                             <template v-else>
                                 Anda belum menyetel jenis kelamin di profil.
                             </template>
-                            Hal ini diperlukan untuk menghitung usia dan BMI otomatis setiap kali menginput data fisik.
+                            Hal ini diperlukan untuk menghitung usia dan BMI
+                            otomatis setiap kali menginput data fisik.
                         </p>
                     </div>
                 </div>
@@ -277,7 +280,9 @@ const chartSeries = computed(() => [
                                 <p
                                     class="mt-1 text-[10px] font-black tracking-widest text-accent uppercase opacity-70"
                                 >
-                                    BMI Index ({{ metrics[0]?.bmi_status || 'N/A' }})
+                                    BMI Index ({{
+                                        metrics[0]?.bmi_status || 'N/A'
+                                    }})
                                 </p>
                             </div>
                         </div>
@@ -322,15 +327,20 @@ const chartSeries = computed(() => [
                                     >{{ metrics[0]?.age || '-' }} Years</span
                                 >
                             </div>
-                            <div
-                                class="flex items-center justify-between"
-                            >
+                            <div class="flex items-center justify-between">
                                 <span
                                     class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
                                     >Jenis Kelamin</span
                                 >
-                                <span class="text-xs font-black text-foreground uppercase"
-                                    >{{ user.gender === 'male' ? 'Laki-laki' : (user.gender === 'female' ? 'Perempuan' : '-') }}</span
+                                <span
+                                    class="text-xs font-black text-foreground uppercase"
+                                    >{{
+                                        user.gender === 'male'
+                                            ? 'Laki-laki'
+                                            : user.gender === 'female'
+                                              ? 'Perempuan'
+                                              : '-'
+                                    }}</span
                                 >
                             </div>
                         </div>
@@ -387,7 +397,13 @@ const chartSeries = computed(() => [
                                 </td>
                                 <td
                                     class="px-8 py-6 text-xs font-bold"
-                                    :class="m.bmi_status.toLowerCase().includes('normal') ? 'text-green-400' : 'text-accent'"
+                                    :class="
+                                        m.bmi_status
+                                            .toLowerCase()
+                                            .includes('normal')
+                                            ? 'text-green-400'
+                                            : 'text-accent'
+                                    "
                                 >
                                     {{ m.bmi_status }}
                                 </td>
@@ -464,8 +480,11 @@ const chartSeries = computed(() => [
                             <p
                                 class="mb-4 text-xs font-medium text-foreground/80 italic"
                             >
-                                <template v-if="!user.date_of_birth && !user.gender">
-                                    Anda belum menyetel tanggal lahir dan jenis kelamin di profil.
+                                <template
+                                    v-if="!user.date_of_birth && !user.gender"
+                                >
+                                    Anda belum menyetel tanggal lahir dan jenis
+                                    kelamin di profil.
                                 </template>
                                 <template v-else-if="!user.date_of_birth">
                                     Anda belum menyetel tanggal lahir di profil.
@@ -573,13 +592,15 @@ const chartSeries = computed(() => [
                                 </p>
                             </div>
 
-                                <button
-                                    type="submit"
-                                    :disabled="
-                                        form.processing || !user.date_of_birth || !user.gender
-                                    "
-                                    class="col-span-2 rounded-2xl bg-accent py-5 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
-                                >
+                            <button
+                                type="submit"
+                                :disabled="
+                                    form.processing ||
+                                    !user.date_of_birth ||
+                                    !user.gender
+                                "
+                                class="col-span-2 rounded-2xl bg-accent py-5 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
+                            >
                                 {{
                                     form.processing
                                         ? 'Menyimpan...'

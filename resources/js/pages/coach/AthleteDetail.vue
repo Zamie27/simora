@@ -124,7 +124,6 @@ const chartSeries = computed(() => [
             .map((m) => Number(m.height)),
     },
 ]);
-
 </script>
 
 <template>
@@ -190,8 +189,11 @@ const chartSeries = computed(() => [
                         <p
                             class="text-xs font-medium text-muted-foreground italic opacity-70"
                         >
-                            <template v-if="!athlete.date_of_birth && !athlete.gender">
-                                Atlet ini belum mengisi tanggal lahir dan jenis kelamin.
+                            <template
+                                v-if="!athlete.date_of_birth && !athlete.gender"
+                            >
+                                Atlet ini belum mengisi tanggal lahir dan jenis
+                                kelamin.
                             </template>
                             <template v-else-if="!athlete.date_of_birth">
                                 Atlet ini belum mengisi tanggal lahir.
@@ -199,7 +201,8 @@ const chartSeries = computed(() => [
                             <template v-else>
                                 Atlet ini belum mengisi jenis kelamin.
                             </template>
-                            Beritahu atlet untuk melengkapinya di pengaturan profil agar usia dan BMI dapat dihitung otomatis.
+                            Beritahu atlet untuk melengkapinya di pengaturan
+                            profil agar usia dan BMI dapat dihitung otomatis.
                         </p>
                     </div>
                 </div>
@@ -293,12 +296,17 @@ const chartSeries = computed(() => [
                             <div>
                                 <span
                                     class="text-5xl leading-none font-black text-white"
-                                    >{{ athlete.physical_metrics[0]?.bmi || '--' }}</span
+                                    >{{
+                                        athlete.physical_metrics[0]?.bmi || '--'
+                                    }}</span
                                 >
                                 <p
                                     class="mt-1 text-[10px] font-black tracking-widest text-accent uppercase opacity-70"
                                 >
-                                    BMI Index ({{ athlete.physical_metrics[0]?.bmi_status || 'N/A' }})
+                                    BMI Index ({{
+                                        athlete.physical_metrics[0]
+                                            ?.bmi_status || 'N/A'
+                                    }})
                                 </p>
                             </div>
                         </div>
@@ -349,7 +357,9 @@ const chartSeries = computed(() => [
                                     Years</span
                                 >
                             </div>
-                            <div class="flex items-center justify-between border-b border-border/50 pb-2">
+                            <div
+                                class="flex items-center justify-between border-b border-border/50 pb-2"
+                            >
                                 <span
                                     class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
                                     >Jenis Kelamin</span
@@ -357,7 +367,11 @@ const chartSeries = computed(() => [
                                 <span
                                     class="text-xs font-black text-foreground uppercase"
                                     >{{
-                                        athlete.gender === 'male' ? 'Laki-laki' : (athlete.gender === 'female' ? 'Perempuan' : '-')
+                                        athlete.gender === 'male'
+                                            ? 'Laki-laki'
+                                            : athlete.gender === 'female'
+                                              ? 'Perempuan'
+                                              : '-'
                                     }}</span
                                 >
                             </div>
@@ -433,7 +447,13 @@ const chartSeries = computed(() => [
                                 </td>
                                 <td
                                     class="px-8 py-6 text-xs font-bold"
-                                    :class="m.bmi_status.toLowerCase().includes('normal') ? 'text-green-400' : 'text-accent'"
+                                    :class="
+                                        m.bmi_status
+                                            .toLowerCase()
+                                            .includes('normal')
+                                            ? 'text-green-400'
+                                            : 'text-accent'
+                                    "
                                 >
                                     {{ m.bmi_status }}
                                 </td>
@@ -515,8 +535,14 @@ const chartSeries = computed(() => [
                             <p
                                 class="text-xs font-medium text-foreground/80 italic"
                             >
-                                <template v-if="!athlete.date_of_birth && !athlete.gender">
-                                    Atlet belum mengisi tanggal lahir dan jenis kelamin.
+                                <template
+                                    v-if="
+                                        !athlete.date_of_birth &&
+                                        !athlete.gender
+                                    "
+                                >
+                                    Atlet belum mengisi tanggal lahir dan jenis
+                                    kelamin.
                                 </template>
                                 <template v-else-if="!athlete.date_of_birth">
                                     Atlet belum mengisi tanggal lahir.
@@ -524,7 +550,8 @@ const chartSeries = computed(() => [
                                 <template v-else>
                                     Atlet belum mengisi jenis kelamin.
                                 </template>
-                                Penginputan data fisik ditangguhkan sampai atlet melengkapi profilnya.
+                                Penginputan data fisik ditangguhkan sampai atlet
+                                melengkapi profilnya.
                             </p>
                         </div>
 
@@ -620,13 +647,15 @@ const chartSeries = computed(() => [
                                 </p>
                             </div>
 
-                                <button
-                                    type="submit"
-                                    :disabled="
-                                        form.processing || !athlete.date_of_birth || !athlete.gender
-                                    "
-                                    class="col-span-2 rounded-2xl bg-accent py-5 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
-                                >
+                            <button
+                                type="submit"
+                                :disabled="
+                                    form.processing ||
+                                    !athlete.date_of_birth ||
+                                    !athlete.gender
+                                "
+                                class="col-span-2 rounded-2xl bg-accent py-5 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
+                            >
                                 {{
                                     form.processing
                                         ? 'Menyimpan...'

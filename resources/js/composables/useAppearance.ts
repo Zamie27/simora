@@ -18,7 +18,7 @@ export function updateTheme(value: Appearance): void {
     }
 
     let isDark = false;
-    
+
     if (value === 'system') {
         isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     } else {

@@ -6,14 +6,27 @@ import { createVuetify } from 'vuetify';
 
 export default createVuetify({
     theme: {
-        defaultTheme: 'simoraTheme',
+        defaultTheme: 'simoraDark',
         themes: {
-            simoraTheme: {
+            simoraLight: {
+                dark: false,
+                colors: {
+                    background: '#F4F7F7',
+                    surface: '#FFFFFF',
+                    primary: '#0F1414',
+                    secondary: '#102844',
+                    accent: '#FF6120',
+                    error: '#ef4444',
+                    success: '#4ade80',
+                    warning: '#fb8c00',
+                },
+            },
+            simoraDark: {
                 dark: true,
                 colors: {
                     background: '#0F1414',
                     surface: '#171c1c',
-                    primary: '#FF6120',
+                    primary: '#F4F7F7',
                     secondary: '#102844',
                     accent: '#FF6120',
                     error: '#7f1d1d',

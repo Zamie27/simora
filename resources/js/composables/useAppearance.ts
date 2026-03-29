@@ -1,5 +1,7 @@
-import type { ComputedRef, Ref } from 'vue';
 import { computed, onMounted, ref } from 'vue';
+import type { ComputedRef, Ref } from 'vue';
+
+import vuetify from '@/plugins/vuetify';
 import type { Appearance, ResolvedAppearance } from '@/types';
 
 export type { Appearance, ResolvedAppearance };
@@ -15,19 +17,19 @@ export function updateTheme(value: Appearance): void {
         return;
     }
 
+    let isDark = false;
+    
     if (value === 'system') {
-        const mediaQueryList = window.matchMedia(
-            '(prefers-color-scheme: dark)',
-        );
-        const systemTheme = mediaQueryList.matches ? 'dark' : 'light';
-
-        document.documentElement.classList.toggle(
-            'dark',
-            systemTheme === 'dark',
-        );
+        isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     } else {
-        document.documentElement.classList.toggle('dark', value === 'dark');
+        isDark = value === 'dark';
     }
+
+    // Update Tailwind (.dark class)
+    document.documentElement.classList.toggle('dark', isDark);
+
+    // Update Vuetify Global Theme
+    vuetify.theme.global.name.value = isDark ? 'simoraDark' : 'simoraLight';
 }
 
 const setCookie = (name: string, value: string, days = 365) => {

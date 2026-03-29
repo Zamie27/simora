@@ -290,22 +290,6 @@ const chartSeries = computed(() => [
                                     Current Height
                                 </p>
                             </div>
-<<<<<<< HEAD
-                            <div>
-                                <span
-                                    class="text-5xl leading-none font-black text-white"
-                                    >{{
-                                        athlete.physical_metrics[0]?.bmi || '--'
-                                    }}</span
-                                >
-                                <p
-                                    class="mt-1 text-[10px] font-black tracking-widest text-accent uppercase opacity-70"
-                                >
-                                    BMI Index ({{
-                                        athlete.physical_metrics[0]
-                                            ?.bmi_status || 'N/A'
-                                    }})
-=======
                             <div class="rounded-2xl bg-white/5 p-6 border border-accent/20 bg-accent/5 transition-colors hover:bg-accent/10">
                                 <div class="flex items-baseline gap-2">
                                     <span class="text-5xl font-black text-white">
@@ -314,7 +298,6 @@ const chartSeries = computed(() => [
                                 </div>
                                 <p class="mt-2 text-[10px] font-black tracking-widest text-[#FF6120] uppercase">
                                     BMI Status: {{ athlete.physical_metrics[0]?.bmi_status || 'N/A' }}
->>>>>>> b6bdbb6 (feat: implement user category assignment and link physical metrics to category model (SRS-NEW-3 Manajer&Pelatih SRS-NEW-4 Atlet))
                                 </p>
                             </div>
                         </div>
@@ -425,13 +408,7 @@ const chartSeries = computed(() => [
                                     Thn</span
                                 >
                             </div>
-<<<<<<< HEAD
-                            <div
-                                class="flex items-center justify-between border-b border-border/50 pb-2"
-                            >
-=======
                             <div class="flex items-center justify-between border-b border-white/[0.03] pb-4">
->>>>>>> b6bdbb6 (feat: implement user category assignment and link physical metrics to category model (SRS-NEW-3 Manajer&Pelatih SRS-NEW-4 Atlet))
                                 <span
                                     class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
                                     >Jenis Kelamin</span

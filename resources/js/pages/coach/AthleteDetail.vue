@@ -7,6 +7,7 @@ import {
     Layers,
     Plus,
     Ruler,
+    Save,
     User as UserIcon,
     Weight,
 } from 'lucide-vue-next';
@@ -41,6 +42,8 @@ interface Athlete {
     email: string;
     gender: string | null;
     date_of_birth: string | null;
+    category_id: number | null;
+    category: Category | null;
     physical_metrics: PhysicalMetric[];
 }
 
@@ -60,13 +63,12 @@ const showAddModal = ref(false);
 const form = useForm({
     height: props.athlete.physical_metrics[0]?.height || '',
     weight: props.athlete.physical_metrics[0]?.weight || '',
-    category: props.athlete.physical_metrics[0]?.category || '',
     recorded_at: new Date().toISOString().split('T')[0],
 });
 
-const categoryOptions = computed(() =>
-    props.categories.map((c) => ({ value: c.name, label: c.name })),
-);
+const categoryForm = useForm({
+    category_id: props.athlete.category_id?.toString() || '',
+});
 
 const submit = () => {
     form.post(`/coach/athletes/${props.athlete.id}/metrics`, {
@@ -74,6 +76,12 @@ const submit = () => {
             showAddModal.value = false;
             form.reset('recorded_at');
         },
+    });
+};
+
+const updateCategory = () => {
+    categoryForm.patch(`/coach/athletes/${props.athlete.id}/category`, {
+        preserveScroll: true,
     });
 };
 
@@ -210,89 +218,79 @@ const chartSeries = computed(() => [
 
             <!-- Dashboard Grid -->
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-12">
-                <!-- Chart Area -->
-                <div
-                    class="relative overflow-hidden rounded-3xl border border-border bg-card p-8 shadow-2xl lg:col-span-8"
-                >
+                <!-- Left Column -->
+                <div class="flex flex-col gap-8 lg:col-span-8">
+                    <!-- Chart Area -->
                     <div
-                        class="absolute top-0 right-0 -mt-32 -mr-32 h-64 w-64 rounded-full bg-accent/5 blur-[100px]"
-                    ></div>
-                    <div class="mb-8 flex items-center gap-4">
-                        <div class="rounded-xl bg-secondary p-3 text-accent">
-                            <Layers class="h-5 w-5" />
+                        class="relative overflow-hidden rounded-3xl border border-border bg-card p-8 shadow-2xl"
+                    >
+                        <div
+                            class="absolute top-0 right-0 -mt-32 -mr-32 h-64 w-64 rounded-full bg-accent/5 blur-[100px]"
+                        ></div>
+                        <div class="mb-8 flex items-center gap-4">
+                            <div class="rounded-xl bg-secondary p-3 text-accent">
+                                <Layers class="h-5 w-5" />
+                            </div>
+                            <h3 class="text-xl font-black tracking-tight uppercase">
+                                Progress Grafik Fisik
+                            </h3>
                         </div>
-                        <h3 class="text-xl font-black tracking-tight uppercase">
-                            Progress Grafik Fisik
-                        </h3>
+                        <div id="chart">
+                            <VueApexCharts
+                                width="100%"
+                                height="350"
+                                type="line"
+                                :options="chartOptions"
+                                :series="chartSeries"
+                            ></VueApexCharts>
+                        </div>
                     </div>
-                    <div id="chart">
-                        <VueApexCharts
-                            width="100%"
-                            height="350"
-                            type="line"
-                            :options="chartOptions"
-                            :series="chartSeries"
-                        ></VueApexCharts>
-                    </div>
-                </div>
 
-                <!-- Latest & History Stats -->
-                <div class="flex flex-col gap-8 lg:col-span-4">
+                    <!-- Latest Metric Area (Moved from sidebar) -->
                     <div
                         class="group relative overflow-hidden rounded-3xl border border-white/5 bg-secondary p-8 shadow-2xl"
                     >
                         <div
                             class="absolute -top-4 -right-4 h-32 w-32 scale-150 rotate-12 rounded-full bg-white/5 transition-transform group-hover:scale-110"
                         ></div>
-                        <div class="relative z-10 mb-6 flex items-center gap-3">
-                            <div
-                                class="rounded-lg bg-white/5 p-2 text-[#a4badd]"
-                            >
-                                <Weight class="h-3 w-3" />
+                        <div class="relative z-10 mb-8 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="rounded-lg bg-white/5 p-2 text-[#a4badd]"
+                                >
+                                    <Weight class="h-4 w-4" />
+                                </div>
+                                <h3
+                                    class="text-sm font-black tracking-widest text-[#a4badd] uppercase opacity-60"
+                                >
+                                    Latest Metric Summary
+                                </h3>
                             </div>
-                            <h3
-                                class="text-xs font-black tracking-widest text-[#a4badd] uppercase opacity-60"
-                            >
-                                Latest Metric (Current)
-                            </h3>
                         </div>
-                        <div class="relative z-10 flex flex-col gap-6">
-                            <div>
-                                <span
-                                    class="text-5xl leading-none font-black text-white"
-                                    >{{
-                                        athlete.physical_metrics[0]?.weight ||
-                                        '--'
-                                    }}</span
-                                >
-                                <span
-                                    class="ml-2 text-xs font-black text-[#a4badd] opacity-60"
-                                    >KG</span
-                                >
-                                <p
-                                    class="mt-1 text-[10px] font-black tracking-widest text-[#a4badd] uppercase opacity-40"
-                                >
-                                    Weight
+                        <div class="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-3">
+                            <div class="rounded-2xl bg-white/5 p-6 transition-colors hover:bg-white/10">
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-5xl font-black text-white">
+                                        {{ athlete.physical_metrics[0]?.weight || '--' }}
+                                    </span>
+                                    <span class="text-xs font-black text-[#a4badd] opacity-60">KG</span>
+                                </div>
+                                <p class="mt-2 text-[10px] font-black tracking-widest text-[#a4badd] uppercase opacity-40">
+                                    Current Weight
                                 </p>
                             </div>
-                            <div>
-                                <span
-                                    class="text-5xl leading-none font-black text-white"
-                                    >{{
-                                        athlete.physical_metrics[0]?.height ||
-                                        '--'
-                                    }}</span
-                                >
-                                <span
-                                    class="ml-2 text-xs font-black text-[#a4badd] opacity-60"
-                                    >CM</span
-                                >
-                                <p
-                                    class="mt-1 text-[10px] font-black tracking-widest text-[#a4badd] uppercase opacity-40"
-                                >
-                                    Height
+                            <div class="rounded-2xl bg-white/5 p-6 transition-colors hover:bg-white/10">
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-5xl font-black text-white">
+                                        {{ athlete.physical_metrics[0]?.height || '--' }}
+                                    </span>
+                                    <span class="text-xs font-black text-[#a4badd] opacity-60">CM</span>
+                                </div>
+                                <p class="mt-2 text-[10px] font-black tracking-widest text-[#a4badd] uppercase opacity-40">
+                                    Current Height
                                 </p>
                             </div>
+<<<<<<< HEAD
                             <div>
                                 <span
                                     class="text-5xl leading-none font-black text-white"
@@ -307,61 +305,135 @@ const chartSeries = computed(() => [
                                         athlete.physical_metrics[0]
                                             ?.bmi_status || 'N/A'
                                     }})
+=======
+                            <div class="rounded-2xl bg-white/5 p-6 border border-accent/20 bg-accent/5 transition-colors hover:bg-accent/10">
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-5xl font-black text-white">
+                                        {{ athlete.physical_metrics[0]?.bmi || '--' }}
+                                    </span>
+                                </div>
+                                <p class="mt-2 text-[10px] font-black tracking-widest text-[#FF6120] uppercase">
+                                    BMI Status: {{ athlete.physical_metrics[0]?.bmi_status || 'N/A' }}
+>>>>>>> b6bdbb6 (feat: implement user category assignment and link physical metrics to category model (SRS-NEW-3 Manajer&Pelatih SRS-NEW-4 Atlet))
                                 </p>
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <!-- Right Sidebar -->
+                <div class="flex flex-col gap-8 lg:col-span-4">
+                    <!-- Category Management -->
                     <div
-                        class="flex flex-col gap-4 rounded-3xl border border-border bg-card p-8 shadow-xl"
+                        class="flex flex-col gap-6 rounded-3xl border border-border bg-card p-10 shadow-xl transition-all hover:shadow-2xl"
                     >
-                        <div class="mb-2 flex items-center gap-3">
-                            <div
-                                class="rounded-lg bg-secondary p-2 text-accent"
-                            >
-                                <UserIcon class="h-3 w-3" />
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="rounded-xl bg-orange-500/10 p-3 text-orange-500">
+                                    <Layers class="h-5 w-5" />
+                                </div>
+                                <div>
+                                    <h3 class="text-xs font-black tracking-[0.2em] text-muted-foreground uppercase opacity-80">
+                                        Manajemen Kategori
+                                    </h3>
+                                    <p class="text-[10px] font-bold text-muted-foreground/40 uppercase">Assign Sport Division</p>
+                                </div>
                             </div>
-                            <h3
-                                class="text-xs font-black tracking-widest text-muted-foreground uppercase opacity-60"
-                            >
-                                Summary Info
-                            </h3>
                         </div>
                         <div class="flex flex-col gap-4">
+                            <form @submit.prevent="updateCategory" class="flex flex-col gap-4">
+                                <div class="space-y-2">
+                                    <CustomSelect
+                                        v-model="categoryForm.category_id"
+                                        :options="props.categories.map(c => ({ value: c.id.toString(), label: c.name }))"
+                                        placeholder="Pilih Kategori"
+                                    />
+                                    <p v-if="categoryForm.errors.category_id" class="text-[10px] font-bold text-destructive">
+                                        {{ categoryForm.errors.category_id }}
+                                    </p>
+                                </div>
+                                <button
+                                    type="submit"
+                                    :disabled="categoryForm.processing"
+                                    class="group flex w-full items-center justify-center gap-3 rounded-2xl bg-accent px-6 py-5 text-[10px] font-black tracking-[0.2em] text-white uppercase transition-all hover:bg-accent/90 disabled:opacity-50"
+                                >
+                                    <Save v-if="!categoryForm.processing" class="h-3.5 w-3.5 transition-transform group-hover:scale-110" />
+                                    <span>{{ categoryForm.processing ? 'Menyimpan...' : 'Simpan Kategori' }}</span>
+                                </button>
+                                <Transition
+                                    enter-active-class="transition duration-300 ease-out"
+                                    enter-from-class="opacity-0 -translate-y-2"
+                                    enter-to-class="opacity-100 translate-y-0"
+                                    leave-active-class="transition duration-200 ease-in"
+                                    leave-from-class="opacity-100"
+                                    leave-to-class="opacity-0"
+                                >
+                                    <p v-if="categoryForm.recentlySuccessful" class="text-center text-[10px] font-black text-green-500 uppercase tracking-widest">
+                                        Perubahan Disimpan!
+                                    </p>
+                                </Transition>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Summary Info -->
+                    <div
+                        class="flex flex-col gap-8 rounded-3xl border border-border bg-card p-10 shadow-xl"
+                    >
+                        <div class="flex items-center gap-4">
                             <div
-                                class="flex items-center justify-between border-b border-border/50 pb-2"
+                                class="rounded-xl bg-secondary p-3 text-accent"
+                            >
+                                <UserIcon class="h-5 w-5" />
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-xs font-black tracking-[0.2em] text-muted-foreground uppercase opacity-80"
+                                >
+                                    Summary Info
+                                </h3>
+                                <p class="text-[10px] font-bold text-muted-foreground/40 uppercase">Identity Details</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-5">
+                            <div
+                                class="flex items-center justify-between border-b border-white/[0.03] pb-4"
                             >
                                 <span
-                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
                                     >Kategori</span
                                 >
                                 <span
-                                    class="text-xs font-black text-accent uppercase"
+                                    class="rounded-lg bg-orange-500/10 px-3 py-1.5 text-[10px] font-black text-orange-500 uppercase tracking-wider"
                                     >{{
-                                        athlete.physical_metrics[0]?.category ||
+                                        athlete.category?.name ||
                                         '-'
                                     }}</span
                                 >
                             </div>
                             <div
-                                class="flex items-center justify-between border-b border-border/50 pb-2"
+                                class="flex items-center justify-between border-b border-white/[0.03] pb-4"
                             >
                                 <span
-                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
-                                    >Usia Saat Terakhir</span
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                    >Usia Saat Ini</span
                                 >
                                 <span class="text-xs font-black text-foreground"
                                     >{{
                                         athlete.physical_metrics[0]?.age || '-'
                                     }}
-                                    Years</span
+                                    Thn</span
                                 >
                             </div>
+<<<<<<< HEAD
                             <div
                                 class="flex items-center justify-between border-b border-border/50 pb-2"
                             >
+=======
+                            <div class="flex items-center justify-between border-b border-white/[0.03] pb-4">
+>>>>>>> b6bdbb6 (feat: implement user category assignment and link physical metrics to category model (SRS-NEW-3 Manajer&Pelatih SRS-NEW-4 Atlet))
                                 <span
-                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
                                     >Jenis Kelamin</span
                                 >
                                 <span
@@ -377,11 +449,11 @@ const chartSeries = computed(() => [
                             </div>
                             <div class="flex items-center justify-between">
                                 <span
-                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
-                                    >Last Record</span
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                    >Last Update</span
                                 >
                                 <span
-                                    class="text-xs font-black text-foreground"
+                                    class="text-xs font-black text-muted-foreground"
                                     >{{
                                         athlete.physical_metrics[0]
                                             ? formatDate(
@@ -605,26 +677,7 @@ const chartSeries = computed(() => [
                                     {{ form.errors.weight }}
                                 </p>
                             </div>
-                            <div class="col-span-2 flex flex-col gap-2">
-                                <Label
-                                    for="category"
-                                    class="flex items-center gap-2 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
-                                >
-                                    <Layers class="h-2.5 w-2.5" /> Kategori
-                                </Label>
-                                <CustomSelect
-                                    v-model="form.category"
-                                    :options="categoryOptions"
-                                    placeholder="Pilih Kategori"
-                                />
-                                <p
-                                    v-if="form.errors.category"
-                                    class="text-[10px] font-bold text-destructive"
-                                >
-                                    {{ form.errors.category }}
-                                </p>
-                            </div>
-                            <div class="col-span-2 flex flex-col gap-2">
+                             <div class="col-span-2 flex flex-col gap-2">
                                 <Label
                                     for="recorded_at"
                                     class="flex items-center gap-2 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
@@ -638,6 +691,12 @@ const chartSeries = computed(() => [
                                     class="text-[10px] font-bold text-destructive"
                                 >
                                     {{ form.errors.recorded_at }}
+                                </p>
+                                <p
+                                    v-if="$page.props.errors.category"
+                                    class="text-[10px] font-bold text-destructive"
+                                >
+                                    {{ $page.props.errors.category }}
                                 </p>
                                 <p
                                     v-if="$page.props.errors.date_of_birth"

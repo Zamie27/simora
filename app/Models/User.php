@@ -14,7 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-#[Fillable(['name', 'email', 'date_of_birth', 'gender', 'password', 'role_id', 'is_verified', 'coach_id'])]
+#[Fillable(['name', 'email', 'date_of_birth', 'gender', 'password', 'role_id', 'is_verified', 'coach_id', 'category_id'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -79,6 +79,11 @@ class User extends Authenticatable
     public function latestPhysicalMetric(): HasOne
     {
         return $this->hasOne(PhysicalMetric::class, 'user_id')->latestOfMany('recorded_at');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function scopeWhereRole($query, string $role)

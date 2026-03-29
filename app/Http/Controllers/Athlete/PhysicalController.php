@@ -19,6 +19,8 @@ class PhysicalController extends Controller
             ->orderBy('recorded_at', 'desc')
             ->get();
 
+        $user->load('category');
+
         return Inertia::render('athlete/PhysicalProfile', [
             'metrics' => $metrics,
             'categories' => Category::orderBy('name')->get(),
@@ -43,10 +45,13 @@ class PhysicalController extends Controller
             return back()->withErrors(['profile_incomplete' => $message]);
         }
 
+        if (! $user->category_id) {
+            return back()->withErrors(['category' => 'Harap beritahu pelatih untuk menentukan kategori Anda terlebih dahulu.']);
+        }
+
         $validated = $request->validate([
             'height' => 'required|numeric|min:50|max:250',
             'weight' => 'required|numeric|min:20|max:200',
-            'category' => 'required|string|max:255',
             'recorded_at' => 'required|date',
         ]);
 
@@ -60,6 +65,7 @@ class PhysicalController extends Controller
             $age--;
         }
         $validated['age'] = max(0, $age);
+        $validated['category'] = $user->category->name;
 
         $user->physicalMetrics()->create($validated);
 

@@ -6,7 +6,6 @@ import {
     AlertCircle,
     Calendar,
     ChevronRight,
-    Layers,
     Plus,
     Ruler,
     User as UserIcon,
@@ -15,7 +14,6 @@ import {
 import { computed, ref } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
 
-import CustomSelect from '@/components/ui/CustomSelect.vue';
 import DatePicker from '@/components/ui/DatePicker.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -50,18 +48,13 @@ const breadcrumbs = [
     { title: 'Update Profil Fisik', href: '/athlete/physical' },
 ];
 
-const showAddModal = ref(false);
-
 const form = useForm({
     height: props.metrics[0]?.height || '',
     weight: props.metrics[0]?.weight || '',
-    category: props.metrics[0]?.category || '',
     recorded_at: new Date().toISOString().split('T')[0],
 });
 
-const categoryOptions = computed(() =>
-    props.categories.map((c) => ({ value: c.name, label: c.name })),
-);
+const showAddModal = ref(false);
 
 const submit = () => {
     form.post('/athlete/physical', {
@@ -313,7 +306,7 @@ const chartSeries = computed(() => [
                                 >
                                 <span
                                     class="text-xs font-black text-accent uppercase"
-                                    >{{ metrics[0]?.category || '-' }}</span
+                                    >{{ user.category?.name || '-' }}</span
                                 >
                             </div>
                             <div
@@ -550,26 +543,7 @@ const chartSeries = computed(() => [
                                     {{ form.errors.weight }}
                                 </p>
                             </div>
-                            <div class="col-span-2 flex flex-col gap-2">
-                                <Label
-                                    for="category"
-                                    class="flex items-center gap-2 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
-                                >
-                                    <Layers class="h-2.5 w-2.5" /> Kategori
-                                </Label>
-                                <CustomSelect
-                                    v-model="form.category"
-                                    :options="categoryOptions"
-                                    placeholder="Pilih Kategori"
-                                />
-                                <p
-                                    v-if="form.errors.category"
-                                    class="text-[10px] font-bold text-destructive"
-                                >
-                                    {{ form.errors.category }}
-                                </p>
-                            </div>
-                            <div class="col-span-2 flex flex-col gap-2">
+                             <div class="col-span-2 flex flex-col gap-2">
                                 <Label
                                     for="recorded_at"
                                     class="flex items-center gap-2 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
@@ -583,6 +557,12 @@ const chartSeries = computed(() => [
                                     class="text-[10px] font-bold text-destructive"
                                 >
                                     {{ form.errors.recorded_at }}
+                                </p>
+                                <p
+                                    v-if="$page.props.errors.category"
+                                    class="text-[10px] font-bold text-destructive"
+                                >
+                                    {{ $page.props.errors.category }}
                                 </p>
                                 <p
                                     v-if="$page.props.errors.date_of_birth"

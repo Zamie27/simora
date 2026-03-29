@@ -2,6 +2,7 @@
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
+import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/DeleteUser.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
@@ -12,10 +13,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import type { BreadcrumbItem } from '@/types';
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
+import type { BreadcrumbItem } from '@/types';
 
 type Props = {
     mustVerifyEmail: boolean;
@@ -113,6 +113,19 @@ const genderOptions = [
                         <input type="hidden" name="gender" :value="gender" />
 
                         <InputError class="mt-2" :message="errors.gender" />
+                    </div>
+
+                    <div v-if="user.role?.name === 'Atlet'" class="grid gap-2">
+                        <Label for="category">Kategori (Ditentukan Pelatih)</Label>
+                        <Input
+                            id="category"
+                            class="mt-1 block w-full bg-muted/50"
+                            :default-value="user.category?.name || '- Belum Ditentukan -'"
+                            disabled
+                        />
+                        <p class="text-[10px] font-medium text-muted-foreground italic">
+                            Kategori Anda dikelola oleh pelatih melalui manajemen kategori.
+                        </p>
                     </div>
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">

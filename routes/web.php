@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
     Route::middleware(['role:Pelatih'])->prefix('coach')->name('coach.')->group(function () {
         Route::get('athletes', [AthleteController::class, 'index'])->name('athletes.index');
         Route::get('athletes/{athlete}', [AthleteController::class, 'show'])->name('athletes.show');
+        Route::patch('athletes/{athlete}/category', [AthleteController::class, 'updateCategory'])->name('athletes.category.update');
         Route::post('athletes/{athlete}/metrics', [AthleteController::class, 'storeMetric'])->name('athletes.metrics.store');
     });
 

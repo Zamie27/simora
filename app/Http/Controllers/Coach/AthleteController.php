@@ -31,7 +31,7 @@ class AthleteController extends Controller
     {
         $this->authorizeAccess($athlete);
 
-        $athlete->load(['physicalMetrics' => function ($query) {
+        $athlete->load(['category', 'physicalMetrics' => function ($query) {
             $query->orderBy('recorded_at', 'desc');
         }]);
 
@@ -59,10 +59,13 @@ class AthleteController extends Controller
             return back()->withErrors(['profile_incomplete' => $message]);
         }
 
+        if (! $athlete->category_id) {
+            return back()->withErrors(['category' => 'Harap tentukan kategori atlet terlebih dahulu.']);
+        }
+
         $validated = $request->validate([
             'height' => 'required|numeric|min:50|max:250',
             'weight' => 'required|numeric|min:20|max:200',
-            'category' => 'required|string|max:255',
             'recorded_at' => 'required|date',
         ]);
 
@@ -76,10 +79,24 @@ class AthleteController extends Controller
             $age--;
         }
         $validated['age'] = max(0, $age);
+        $validated['category'] = $athlete->category->name;
 
         $athlete->physicalMetrics()->create($validated);
 
         return back()->with('success', 'Data fisik atlet berhasil diperbarui.');
+    }
+
+    public function updateCategory(Request $request, User $athlete)
+    {
+        $this->authorizeAccess($athlete);
+
+        $validated = $request->validate([
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $athlete->update($validated);
+
+        return back()->with('success', 'Kategori atlet berhasil diperbarui.');
     }
 
     private function authorizeAccess(User $athlete)

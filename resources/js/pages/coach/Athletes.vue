@@ -39,7 +39,7 @@ const breadcrumbs = [
             >
                 <div>
                     <h1
-                        class="text-3xl font-black tracking-tight tracking-tighter text-foreground uppercase"
+                        class="text-3xl font-black tracking-tighter text-foreground uppercase"
                     >
                         Monitoring Atlet Saya
                     </h1>
@@ -149,7 +149,7 @@ const breadcrumbs = [
 
                     <Link
                         :href="`/coach/athletes/${athlete.id}`"
-                        class="w-full rounded-xl bg-accent py-3 text-center text-[10px] font-black tracking-widest text-white uppercase shadow-lg shadow-accent/20 transition-all hover:bg-accent/90"
+                        class="w-full rounded-xl bg-accent py-3 text-center text-[10px] font-black tracking-widest text-white uppercase shadow-lg shadow-accent/20 transition-all hover:bg-accent/90 focus:outline-none"
                     >
                         Detail & Update Fisik
                     </Link>

@@ -123,7 +123,7 @@ const closeModal = () => {
                 <div
                     v-for="category in categories"
                     :key="category.id"
-                    class="group flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-xl shadow-black/5 transition-all hover:border-accent"
+                    class="group flex flex-col justify-between rounded-3xl border border-border bg-card p-10 shadow-xl shadow-black/5 transition-all hover:border-accent"
                 >
                     <div>
                         <div

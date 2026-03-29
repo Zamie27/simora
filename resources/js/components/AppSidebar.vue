@@ -24,8 +24,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import type { NavItem, SharedData } from '@/types';
+import { dashboard } from '@/routes';
 
 const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user);

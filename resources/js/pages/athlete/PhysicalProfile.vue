@@ -543,7 +543,7 @@ const chartSeries = computed(() => [
                                     {{ form.errors.weight }}
                                 </p>
                             </div>
-                             <div class="col-span-2 flex flex-col gap-2">
+                            <div class="col-span-2 flex flex-col gap-2">
                                 <Label
                                     for="recorded_at"
                                     class="flex items-center gap-2 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"

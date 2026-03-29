@@ -228,10 +228,14 @@ const chartSeries = computed(() => [
                             class="absolute top-0 right-0 -mt-32 -mr-32 h-64 w-64 rounded-full bg-accent/5 blur-[100px]"
                         ></div>
                         <div class="mb-8 flex items-center gap-4">
-                            <div class="rounded-xl bg-secondary p-3 text-accent">
+                            <div
+                                class="rounded-xl bg-secondary p-3 text-accent"
+                            >
                                 <Layers class="h-5 w-5" />
                             </div>
-                            <h3 class="text-xl font-black tracking-tight uppercase">
+                            <h3
+                                class="text-xl font-black tracking-tight uppercase"
+                            >
                                 Progress Grafik Fisik
                             </h3>
                         </div>
@@ -253,7 +257,9 @@ const chartSeries = computed(() => [
                         <div
                             class="absolute -top-4 -right-4 h-32 w-32 scale-150 rotate-12 rounded-full bg-white/5 transition-transform group-hover:scale-110"
                         ></div>
-                        <div class="relative z-10 mb-8 flex items-center justify-between">
+                        <div
+                            class="relative z-10 mb-8 flex items-center justify-between"
+                        >
                             <div class="flex items-center gap-3">
                                 <div
                                     class="rounded-lg bg-white/5 p-2 text-[#a4badd]"
@@ -267,37 +273,76 @@ const chartSeries = computed(() => [
                                 </h3>
                             </div>
                         </div>
-                        <div class="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-3">
-                            <div class="rounded-2xl bg-white/5 p-6 transition-colors hover:bg-white/10">
+                        <div
+                            class="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-3"
+                        >
+                            <div
+                                class="rounded-2xl bg-white/5 p-6 transition-colors hover:bg-white/10"
+                            >
                                 <div class="flex items-baseline gap-2">
-                                    <span class="text-5xl font-black text-white">
-                                        {{ athlete.physical_metrics[0]?.weight || '--' }}
+                                    <span
+                                        class="text-5xl font-black text-white"
+                                    >
+                                        {{
+                                            athlete.physical_metrics[0]
+                                                ?.weight || '--'
+                                        }}
                                     </span>
-                                    <span class="text-xs font-black text-[#a4badd] opacity-60">KG</span>
+                                    <span
+                                        class="text-xs font-black text-[#a4badd] opacity-60"
+                                        >KG</span
+                                    >
                                 </div>
-                                <p class="mt-2 text-[10px] font-black tracking-widest text-[#a4badd] uppercase opacity-40">
+                                <p
+                                    class="mt-2 text-[10px] font-black tracking-widest text-[#a4badd] uppercase opacity-40"
+                                >
                                     Current Weight
                                 </p>
                             </div>
-                            <div class="rounded-2xl bg-white/5 p-6 transition-colors hover:bg-white/10">
+                            <div
+                                class="rounded-2xl bg-white/5 p-6 transition-colors hover:bg-white/10"
+                            >
                                 <div class="flex items-baseline gap-2">
-                                    <span class="text-5xl font-black text-white">
-                                        {{ athlete.physical_metrics[0]?.height || '--' }}
+                                    <span
+                                        class="text-5xl font-black text-white"
+                                    >
+                                        {{
+                                            athlete.physical_metrics[0]
+                                                ?.height || '--'
+                                        }}
                                     </span>
-                                    <span class="text-xs font-black text-[#a4badd] opacity-60">CM</span>
+                                    <span
+                                        class="text-xs font-black text-[#a4badd] opacity-60"
+                                        >CM</span
+                                    >
                                 </div>
-                                <p class="mt-2 text-[10px] font-black tracking-widest text-[#a4badd] uppercase opacity-40">
+                                <p
+                                    class="mt-2 text-[10px] font-black tracking-widest text-[#a4badd] uppercase opacity-40"
+                                >
                                     Current Height
                                 </p>
                             </div>
-                            <div class="rounded-2xl bg-white/5 p-6 border border-accent/20 bg-accent/5 transition-colors hover:bg-accent/10">
+                            <div
+                                class="rounded-2xl border border-accent/20 bg-accent/5 bg-white/5 p-6 transition-colors hover:bg-accent/10"
+                            >
                                 <div class="flex items-baseline gap-2">
-                                    <span class="text-5xl font-black text-white">
-                                        {{ athlete.physical_metrics[0]?.bmi || '--' }}
+                                    <span
+                                        class="text-5xl font-black text-white"
+                                    >
+                                        {{
+                                            athlete.physical_metrics[0]?.bmi ||
+                                            '--'
+                                        }}
                                     </span>
                                 </div>
-                                <p class="mt-2 text-[10px] font-black tracking-widest text-[#FF6120] uppercase">
-                                    BMI Status: {{ athlete.physical_metrics[0]?.bmi_status || 'N/A' }}
+                                <p
+                                    class="mt-2 text-[10px] font-black tracking-widest text-[#FF6120] uppercase"
+                                >
+                                    BMI Status:
+                                    {{
+                                        athlete.physical_metrics[0]
+                                            ?.bmi_status || 'N/A'
+                                    }}
                                 </p>
                             </div>
                         </div>
@@ -312,26 +357,45 @@ const chartSeries = computed(() => [
                     >
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-4">
-                                <div class="rounded-xl bg-orange-500/10 p-3 text-orange-500">
+                                <div
+                                    class="rounded-xl bg-orange-500/10 p-3 text-orange-500"
+                                >
                                     <Layers class="h-5 w-5" />
                                 </div>
                                 <div>
-                                    <h3 class="text-xs font-black tracking-[0.2em] text-muted-foreground uppercase opacity-80">
+                                    <h3
+                                        class="text-xs font-black tracking-[0.2em] text-muted-foreground uppercase opacity-80"
+                                    >
                                         Manajemen Kategori
                                     </h3>
-                                    <p class="text-[10px] font-bold text-muted-foreground/40 uppercase">Assign Sport Division</p>
+                                    <p
+                                        class="text-[10px] font-bold text-muted-foreground/40 uppercase"
+                                    >
+                                        Assign Sport Division
+                                    </p>
                                 </div>
                             </div>
                         </div>
                         <div class="flex flex-col gap-4">
-                            <form @submit.prevent="updateCategory" class="flex flex-col gap-4">
+                            <form
+                                @submit.prevent="updateCategory"
+                                class="flex flex-col gap-4"
+                            >
                                 <div class="space-y-2">
                                     <CustomSelect
                                         v-model="categoryForm.category_id"
-                                        :options="props.categories.map(c => ({ value: c.id.toString(), label: c.name }))"
+                                        :options="
+                                            props.categories.map((c) => ({
+                                                value: c.id.toString(),
+                                                label: c.name,
+                                            }))
+                                        "
                                         placeholder="Pilih Kategori"
                                     />
-                                    <p v-if="categoryForm.errors.category_id" class="text-[10px] font-bold text-destructive">
+                                    <p
+                                        v-if="categoryForm.errors.category_id"
+                                        class="text-[10px] font-bold text-destructive"
+                                    >
                                         {{ categoryForm.errors.category_id }}
                                     </p>
                                 </div>
@@ -340,8 +404,15 @@ const chartSeries = computed(() => [
                                     :disabled="categoryForm.processing"
                                     class="group flex w-full items-center justify-center gap-3 rounded-2xl bg-accent px-6 py-5 text-[10px] font-black tracking-[0.2em] text-white uppercase transition-all hover:bg-accent/90 disabled:opacity-50"
                                 >
-                                    <Save v-if="!categoryForm.processing" class="h-3.5 w-3.5 transition-transform group-hover:scale-110" />
-                                    <span>{{ categoryForm.processing ? 'Menyimpan...' : 'Simpan Kategori' }}</span>
+                                    <Save
+                                        v-if="!categoryForm.processing"
+                                        class="h-3.5 w-3.5 transition-transform group-hover:scale-110"
+                                    />
+                                    <span>{{
+                                        categoryForm.processing
+                                            ? 'Menyimpan...'
+                                            : 'Simpan Kategori'
+                                    }}</span>
                                 </button>
                                 <Transition
                                     enter-active-class="transition duration-300 ease-out"
@@ -351,7 +422,10 @@ const chartSeries = computed(() => [
                                     leave-from-class="opacity-100"
                                     leave-to-class="opacity-0"
                                 >
-                                    <p v-if="categoryForm.recentlySuccessful" class="text-center text-[10px] font-black text-green-500 uppercase tracking-widest">
+                                    <p
+                                        v-if="categoryForm.recentlySuccessful"
+                                        class="text-center text-[10px] font-black tracking-widest text-green-500 uppercase"
+                                    >
                                         Perubahan Disimpan!
                                     </p>
                                 </Transition>
@@ -375,7 +449,11 @@ const chartSeries = computed(() => [
                                 >
                                     Summary Info
                                 </h3>
-                                <p class="text-[10px] font-bold text-muted-foreground/40 uppercase">Identity Details</p>
+                                <p
+                                    class="text-[10px] font-bold text-muted-foreground/40 uppercase"
+                                >
+                                    Identity Details
+                                </p>
                             </div>
                         </div>
                         <div class="flex flex-col gap-5">
@@ -387,11 +465,8 @@ const chartSeries = computed(() => [
                                     >Kategori</span
                                 >
                                 <span
-                                    class="rounded-lg bg-orange-500/10 px-3 py-1.5 text-[10px] font-black text-orange-500 uppercase tracking-wider"
-                                    >{{
-                                        athlete.category?.name ||
-                                        '-'
-                                    }}</span
+                                    class="rounded-lg bg-orange-500/10 px-3 py-1.5 text-[10px] font-black tracking-wider text-orange-500 uppercase"
+                                    >{{ athlete.category?.name || '-' }}</span
                                 >
                             </div>
                             <div
@@ -408,7 +483,9 @@ const chartSeries = computed(() => [
                                     Thn</span
                                 >
                             </div>
-                            <div class="flex items-center justify-between border-b border-white/[0.03] pb-4">
+                            <div
+                                class="flex items-center justify-between border-b border-white/[0.03] pb-4"
+                            >
                                 <span
                                     class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
                                     >Jenis Kelamin</span
@@ -654,7 +731,7 @@ const chartSeries = computed(() => [
                                     {{ form.errors.weight }}
                                 </p>
                             </div>
-                             <div class="col-span-2 flex flex-col gap-2">
+                            <div class="col-span-2 flex flex-col gap-2">
                                 <Label
                                     for="recorded_at"
                                     class="flex items-center gap-2 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"

@@ -6,6 +6,7 @@ import DeleteUser from '@/components/DeleteUser.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
+import CustomSelect from '@/components/ui/CustomSelect.vue';
 import DatePicker from '@/components/ui/DatePicker.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -33,6 +34,12 @@ const breadcrumbItems: BreadcrumbItem[] = [
 const page = usePage();
 const user = computed(() => page.props.auth.user as any);
 const birthDate = ref<string>(user.value.date_of_birth || '');
+const gender = ref<string>(user.value.gender || '');
+
+const genderOptions = [
+    { value: 'male', label: 'Laki-laki' },
+    { value: 'female', label: 'Perempuan' },
+];
 </script>
 
 <template>
@@ -94,6 +101,18 @@ const birthDate = ref<string>(user.value.date_of_birth || '');
                             class="mt-2"
                             :message="errors.date_of_birth"
                         />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="gender">Jenis Kelamin</Label>
+                        <CustomSelect
+                            v-model="gender"
+                            :options="genderOptions"
+                            placeholder="Pilih Jenis Kelamin"
+                        />
+                        <input type="hidden" name="gender" :value="gender" />
+
+                        <InputError class="mt-2" :message="errors.gender" />
                     </div>
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">

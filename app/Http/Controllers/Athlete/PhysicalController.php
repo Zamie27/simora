@@ -29,8 +29,18 @@ class PhysicalController extends Controller
     {
         $user = $request->user();
 
-        if (! $user->date_of_birth) {
-            return back()->withErrors(['date_of_birth' => 'Harap lengkapi tanggal lahir di halaman Profil terlebih dahulu sebelum menginput data fisik.']);
+        if (! $user->date_of_birth || ! $user->gender) {
+            $missing = [];
+            if (! $user->date_of_birth) {
+                $missing[] = 'tanggal lahir';
+            }
+            if (! $user->gender) {
+                $missing[] = 'jenis kelamin';
+            }
+
+            $message = 'Harap lengkapi '.implode(' dan ', $missing).' di halaman Profil terlebih dahulu sebelum menginput data fisik.';
+
+            return back()->withErrors(['profile_incomplete' => $message]);
         }
 
         $validated = $request->validate([

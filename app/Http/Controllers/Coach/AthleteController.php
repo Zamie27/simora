@@ -45,8 +45,18 @@ class AthleteController extends Controller
     {
         $this->authorizeAccess($athlete);
 
-        if (! $athlete->date_of_birth) {
-            return back()->withErrors(['date_of_birth' => 'Atlet belum mengisi tanggal lahir di profil mereka. Harap beritahu atlet untuk melengkapi profil.']);
+        if (! $athlete->date_of_birth || ! $athlete->gender) {
+            $missing = [];
+            if (! $athlete->date_of_birth) {
+                $missing[] = 'tanggal lahir';
+            }
+            if (! $athlete->gender) {
+                $missing[] = 'jenis kelamin';
+            }
+
+            $message = 'Atlet belum mengisi '.implode(' dan ', $missing).' di profil mereka. Harap beritahu atlet untuk melengkapi profil.';
+
+            return back()->withErrors(['profile_incomplete' => $message]);
         }
 
         $validated = $request->validate([

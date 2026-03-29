@@ -23,6 +23,8 @@ interface PhysicalMetric {
     id: number;
     height: number;
     weight: number;
+    bmi: number;
+    bmi_status: string;
     age: number;
     category: string;
     recorded_at: string;
@@ -37,6 +39,7 @@ interface Athlete {
     id: number;
     name: string;
     email: string;
+    gender: string | null;
     date_of_birth: string | null;
     physical_metrics: PhysicalMetric[];
 }
@@ -122,37 +125,6 @@ const chartSeries = computed(() => [
     },
 ]);
 
-const getChange = (
-    current: number,
-    index: number,
-    field: 'weight' | 'height',
-) => {
-    const next = props.athlete.physical_metrics[index + 1];
-
-    if (!next) {
-        return { value: 0, text: '-', class: 'text-muted-foreground' };
-    }
-
-    const diff = Number(current) - Number(next[field]);
-
-    if (diff > 0) {
-        return {
-            value: diff,
-            text: `+${diff.toFixed(1)}`,
-            class: 'text-accent font-bold',
-        };
-    }
-
-    if (diff < 0) {
-        return {
-            value: diff,
-            text: `${diff.toFixed(1)}`,
-            class: 'text-blue-400 font-bold',
-        };
-    }
-
-    return { value: 0, text: '0', class: 'text-muted-foreground' };
-};
 </script>
 
 <template>
@@ -200,7 +172,7 @@ const getChange = (
 
             <!-- Danger Zone/Warning for Coach -->
             <div
-                v-if="!athlete.date_of_birth"
+                v-if="!athlete.date_of_birth || !athlete.gender"
                 class="group flex items-center justify-between gap-6 rounded-3xl border border-destructive/20 bg-destructive/10 p-6"
             >
                 <div class="flex items-center gap-6">
@@ -213,14 +185,21 @@ const getChange = (
                         <h3
                             class="text-lg font-black tracking-tight text-foreground uppercase"
                         >
-                            Data Profil Tidak Lengkap
+                            Data Profil Atlet Tidak Lengkap
                         </h3>
                         <p
                             class="text-xs font-medium text-muted-foreground italic opacity-70"
                         >
-                            Atlet ini belum mengisi tanggal lahir. Beritahu
-                            atlet untuk mengisinya di pengaturan akun agar usia
-                            dapat dihitung otomatis.
+                            <template v-if="!athlete.date_of_birth && !athlete.gender">
+                                Atlet ini belum mengisi tanggal lahir dan jenis kelamin.
+                            </template>
+                            <template v-else-if="!athlete.date_of_birth">
+                                Atlet ini belum mengisi tanggal lahir.
+                            </template>
+                            <template v-else>
+                                Atlet ini belum mengisi jenis kelamin.
+                            </template>
+                            Beritahu atlet untuk melengkapinya di pengaturan profil agar usia dan BMI dapat dihitung otomatis.
                         </p>
                     </div>
                 </div>
@@ -311,6 +290,17 @@ const getChange = (
                                     Height
                                 </p>
                             </div>
+                            <div>
+                                <span
+                                    class="text-5xl leading-none font-black text-white"
+                                    >{{ athlete.physical_metrics[0]?.bmi || '--' }}</span
+                                >
+                                <p
+                                    class="mt-1 text-[10px] font-black tracking-widest text-accent uppercase opacity-70"
+                                >
+                                    BMI Index ({{ athlete.physical_metrics[0]?.bmi_status || 'N/A' }})
+                                </p>
+                            </div>
                         </div>
                     </div>
 
@@ -359,6 +349,18 @@ const getChange = (
                                     Years</span
                                 >
                             </div>
+                            <div class="flex items-center justify-between border-b border-border/50 pb-2">
+                                <span
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                                    >Jenis Kelamin</span
+                                >
+                                <span
+                                    class="text-xs font-black text-foreground uppercase"
+                                    >{{
+                                        athlete.gender === 'male' ? 'Laki-laki' : (athlete.gender === 'female' ? 'Perempuan' : '-')
+                                    }}</span
+                                >
+                            </div>
                             <div class="flex items-center justify-between">
                                 <span
                                     class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
@@ -403,16 +405,16 @@ const getChange = (
                             >
                                 <th class="px-8 py-5">Tanggal</th>
                                 <th class="px-8 py-5">Berat (KG)</th>
-                                <th class="px-8 py-5">± Berat</th>
+                                <th class="px-8 py-5">BMI</th>
+                                <th class="px-8 py-5">Status BMI</th>
                                 <th class="px-8 py-5">Tinggi (CM)</th>
-                                <th class="px-8 py-5">± Tinggi</th>
                                 <th class="px-8 py-5">Usia</th>
                                 <th class="px-8 py-5">Kategori</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-border">
                             <tr
-                                v-for="(m, index) in athlete.physical_metrics"
+                                v-for="m in athlete.physical_metrics"
                                 :key="m.id"
                                 class="transition-colors hover:bg-muted/10"
                             >
@@ -425,33 +427,20 @@ const getChange = (
                                     {{ m.weight }}
                                 </td>
                                 <td
-                                    class="px-8 py-6 text-xs"
-                                    :class="
-                                        getChange(m.weight, index, 'weight')
-                                            .class
-                                    "
+                                    class="px-8 py-6 font-black text-foreground"
                                 >
-                                    {{
-                                        getChange(m.weight, index, 'weight')
-                                            .text
-                                    }}
+                                    {{ m.bmi }}
+                                </td>
+                                <td
+                                    class="px-8 py-6 text-xs font-bold"
+                                    :class="m.bmi_status.toLowerCase().includes('normal') ? 'text-green-400' : 'text-accent'"
+                                >
+                                    {{ m.bmi_status }}
                                 </td>
                                 <td
                                     class="px-8 py-6 font-black text-foreground"
                                 >
                                     {{ m.height }}
-                                </td>
-                                <td
-                                    class="px-8 py-6 text-xs"
-                                    :class="
-                                        getChange(m.height, index, 'height')
-                                            .class
-                                    "
-                                >
-                                    {{
-                                        getChange(m.height, index, 'height')
-                                            .text
-                                    }}
                                 </td>
                                 <td
                                     class="px-8 py-6 text-xs font-bold text-muted-foreground"
@@ -515,7 +504,7 @@ const getChange = (
 
                     <div class="p-10">
                         <div
-                            v-if="!athlete.date_of_birth"
+                            v-if="!athlete.date_of_birth || !athlete.gender"
                             class="mb-8 rounded-2xl border border-destructive/20 bg-destructive/10 p-6"
                         >
                             <h4
@@ -526,9 +515,16 @@ const getChange = (
                             <p
                                 class="text-xs font-medium text-foreground/80 italic"
                             >
-                                Atlet belum mengisi tanggal lahir. Penginputan
-                                data fisik ditangguhkan sampai atlet melengkapi
-                                profilnya.
+                                <template v-if="!athlete.date_of_birth && !athlete.gender">
+                                    Atlet belum mengisi tanggal lahir dan jenis kelamin.
+                                </template>
+                                <template v-else-if="!athlete.date_of_birth">
+                                    Atlet belum mengisi tanggal lahir.
+                                </template>
+                                <template v-else>
+                                    Atlet belum mengisi jenis kelamin.
+                                </template>
+                                Penginputan data fisik ditangguhkan sampai atlet melengkapi profilnya.
                             </p>
                         </div>
 
@@ -624,13 +620,13 @@ const getChange = (
                                 </p>
                             </div>
 
-                            <button
-                                type="submit"
-                                :disabled="
-                                    form.processing || !athlete.date_of_birth
-                                "
-                                class="col-span-2 rounded-2xl bg-accent py-5 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
-                            >
+                                <button
+                                    type="submit"
+                                    :disabled="
+                                        form.processing || !athlete.date_of_birth || !athlete.gender
+                                    "
+                                    class="col-span-2 rounded-2xl bg-accent py-5 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
+                                >
                                 {{
                                     form.processing
                                         ? 'Menyimpan...'

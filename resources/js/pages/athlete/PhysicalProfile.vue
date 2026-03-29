@@ -25,6 +25,8 @@ interface PhysicalMetric {
     id: number;
     height: number;
     weight: number;
+    bmi: number;
+    bmi_status: string;
     age: number;
     category: string;
     recorded_at: string;
@@ -114,37 +116,6 @@ const chartSeries = computed(() => [
     },
 ]);
 
-const getChange = (
-    current: number,
-    index: number,
-    field: 'weight' | 'height',
-) => {
-    const next = props.metrics[index + 1];
-
-    if (!next) {
-        return { value: 0, text: '-', class: 'text-muted-foreground' };
-    }
-
-    const diff = Number(current) - Number(next[field]);
-
-    if (diff > 0) {
-        return {
-            value: diff,
-            text: `+${diff.toFixed(1)}`,
-            class: 'text-accent font-bold',
-        };
-    }
-
-    if (diff < 0) {
-        return {
-            value: diff,
-            text: `${diff.toFixed(1)}`,
-            class: 'text-blue-400 font-bold',
-        };
-    }
-
-    return { value: 0, text: '0', class: 'text-muted-foreground' };
-};
 </script>
 
 <template>
@@ -177,9 +148,9 @@ const getChange = (
                 </button>
             </div>
 
-            <!-- Warning if DOB is missing -->
+            <!-- Warning if DOB or Gender is missing -->
             <div
-                v-if="!user.date_of_birth"
+                v-if="!user.date_of_birth || !user.gender"
                 class="group flex flex-col items-center justify-between gap-6 rounded-3xl border border-destructive/20 bg-destructive/10 p-8 shadow-2xl shadow-destructive/5 transition-all hover:border-destructive/40 md:flex-row"
             >
                 <div class="flex items-center gap-6">
@@ -197,9 +168,16 @@ const getChange = (
                         <p
                             class="text-sm font-bold text-muted-foreground italic opacity-70"
                         >
-                            Anda belum menyetel tanggal lahir di profil. Hal ini
-                            diperlukan untuk menghitung usia otomatis setiap
-                            kali menginput data fisik.
+                            <template v-if="!user.date_of_birth && !user.gender">
+                                Anda belum menyetel tanggal lahir dan jenis kelamin di profil.
+                            </template>
+                            <template v-else-if="!user.date_of_birth">
+                                Anda belum menyetel tanggal lahir di profil.
+                            </template>
+                            <template v-else>
+                                Anda belum menyetel jenis kelamin di profil.
+                            </template>
+                            Hal ini diperlukan untuk menghitung usia dan BMI otomatis setiap kali menginput data fisik.
                         </p>
                     </div>
                 </div>
@@ -207,7 +185,7 @@ const getChange = (
                     href="/settings/profile"
                     class="flex items-center gap-3 rounded-2xl bg-foreground px-8 py-4 text-[10px] font-black tracking-[0.2em] text-background uppercase transition-all hover:bg-foreground/80 active:scale-95"
                 >
-                    Setel Tanggal Lahir <ChevronRight class="h-4 w-4" />
+                    Lengkapi Profil <ChevronRight class="h-4 w-4" />
                 </Link>
             </div>
 
@@ -291,6 +269,17 @@ const getChange = (
                                     Height
                                 </p>
                             </div>
+                            <div>
+                                <span
+                                    class="text-6xl leading-none font-black text-white"
+                                    >{{ metrics[0]?.bmi || '--' }}</span
+                                >
+                                <p
+                                    class="mt-1 text-[10px] font-black tracking-widest text-accent uppercase opacity-70"
+                                >
+                                    BMI Index ({{ metrics[0]?.bmi_status || 'N/A' }})
+                                </p>
+                            </div>
                         </div>
                     </div>
 
@@ -333,6 +322,17 @@ const getChange = (
                                     >{{ metrics[0]?.age || '-' }} Years</span
                                 >
                             </div>
+                            <div
+                                class="flex items-center justify-between"
+                            >
+                                <span
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                                    >Jenis Kelamin</span
+                                >
+                                <span class="text-xs font-black text-foreground uppercase"
+                                    >{{ user.gender === 'male' ? 'Laki-laki' : (user.gender === 'female' ? 'Perempuan' : '-') }}</span
+                                >
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -360,15 +360,15 @@ const getChange = (
                             >
                                 <th class="px-8 py-5">Tanggal</th>
                                 <th class="px-8 py-5">Berat (KG)</th>
-                                <th class="px-8 py-5">Status</th>
+                                <th class="px-8 py-5">BMI</th>
+                                <th class="px-8 py-5">Status BMI</th>
                                 <th class="px-8 py-5">Tinggi (CM)</th>
-                                <th class="px-8 py-5">Pertumbuhan</th>
                                 <th class="px-8 py-5">Kategori</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-border">
                             <tr
-                                v-for="(m, index) in metrics"
+                                v-for="m in metrics"
                                 :key="m.id"
                                 class="transition-colors hover:bg-muted/10"
                             >
@@ -381,33 +381,20 @@ const getChange = (
                                     {{ m.weight }}
                                 </td>
                                 <td
-                                    class="px-8 py-6 text-xs"
-                                    :class="
-                                        getChange(m.weight, index, 'weight')
-                                            .class
-                                    "
+                                    class="px-8 py-6 font-black text-foreground"
                                 >
-                                    {{
-                                        getChange(m.weight, index, 'weight')
-                                            .text
-                                    }}
+                                    {{ m.bmi }}
+                                </td>
+                                <td
+                                    class="px-8 py-6 text-xs font-bold"
+                                    :class="m.bmi_status.toLowerCase().includes('normal') ? 'text-green-400' : 'text-accent'"
+                                >
+                                    {{ m.bmi_status }}
                                 </td>
                                 <td
                                     class="px-8 py-6 font-black text-foreground"
                                 >
                                     {{ m.height }}
-                                </td>
-                                <td
-                                    class="px-8 py-6 text-xs"
-                                    :class="
-                                        getChange(m.height, index, 'height')
-                                            .class
-                                    "
-                                >
-                                    {{
-                                        getChange(m.height, index, 'height')
-                                            .text
-                                    }}
                                 </td>
                                 <td class="px-8 py-6">
                                     <span
@@ -466,7 +453,7 @@ const getChange = (
 
                     <div class="p-10">
                         <div
-                            v-if="!user.date_of_birth"
+                            v-if="!user.date_of_birth || !user.gender"
                             class="mb-8 rounded-2xl border border-destructive/20 bg-destructive/10 p-6"
                         >
                             <h4
@@ -477,13 +464,20 @@ const getChange = (
                             <p
                                 class="mb-4 text-xs font-medium text-foreground/80 italic"
                             >
-                                Anda belum menyetel tanggal lahir di profil
-                                Anda. Data usia tidak dapat dihitung otomatis.
+                                <template v-if="!user.date_of_birth && !user.gender">
+                                    Anda belum menyetel tanggal lahir dan jenis kelamin di profil.
+                                </template>
+                                <template v-else-if="!user.date_of_birth">
+                                    Anda belum menyetel tanggal lahir di profil.
+                                </template>
+                                <template v-else>
+                                    Anda belum menyetel jenis kelamin di profil.
+                                </template>
                             </p>
                             <Link
                                 href="/settings/profile"
                                 class="text-[10px] font-black tracking-widest text-destructive uppercase underline decoration-2 underline-offset-4"
-                                >Setel Tanggal Lahir Sekarang</Link
+                                >Lengkapi Profil Sekarang</Link
                             >
                         </div>
 
@@ -579,13 +573,13 @@ const getChange = (
                                 </p>
                             </div>
 
-                            <button
-                                type="submit"
-                                :disabled="
-                                    form.processing || !user.date_of_birth
-                                "
-                                class="col-span-2 rounded-2xl bg-accent py-5 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
-                            >
+                                <button
+                                    type="submit"
+                                    :disabled="
+                                        form.processing || !user.date_of_birth || !user.gender
+                                    "
+                                    class="col-span-2 rounded-2xl bg-accent py-5 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
+                                >
                                 {{
                                     form.processing
                                         ? 'Menyimpan...'

@@ -13,6 +13,7 @@ import {
     ShieldCheck,
     UserCheck,
     Users,
+    Trophy,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 
@@ -29,8 +30,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import type { NavItem, SharedData } from '@/types';
 import { dashboard } from '@/routes';
+import type { NavItem, SharedData } from '@/types';
 
 const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user);
@@ -107,6 +108,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 href: '/coach/reports',
                 icon: FileText,
             },
+            {
+                title: 'Target & Event',
+                href: '/coach/events',
+                icon: Trophy,
+            },
         );
     }
 
@@ -126,6 +132,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Kalkulator Gear',
                 href: '/tools/gear-calculator',
                 icon: Calculator,
+            },
+            {
+                title: 'Agenda Event',
+                href: '/athlete/events',
+                icon: Trophy,
             },
         );
     }

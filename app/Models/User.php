@@ -117,4 +117,31 @@ class User extends Authenticatable
             $q->where('name', $role);
         });
     }
+
+    /**
+     * Get the events created by this coach.
+     */
+    public function coachedEvents(): HasMany
+    {
+        return $this->hasMany(Event::class, 'coach_id');
+    }
+
+    /**
+     * Get the events assigned to this athlete.
+     */
+    public function athleteEvents(): BelongsToMany
+    {
+        return $this->belongsToMany(Event::class, 'event_user')
+            ->using(EventUser::class)
+            ->withPivot(['status', 'result', 'notes', 'event_point_id'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the event participations for this user.
+     */
+    public function eventParticipations(): HasMany
+    {
+        return $this->hasMany(EventUser::class, 'user_id');
+    }
 }

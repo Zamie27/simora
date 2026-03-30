@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Athlete\EventController as AthleteEventController;
 use App\Http\Controllers\Athlete\PhysicalController;
 use App\Http\Controllers\Athlete\TrainingController;
 use App\Http\Controllers\Coach\AthleteController;
+use App\Http\Controllers\Coach\EventController as CoachEventController;
+use App\Http\Controllers\Coach\EventSettingController;
 use App\Http\Controllers\Coach\PerformanceController;
 use App\Http\Controllers\Coach\ReportController as CoachReportController;
 use App\Http\Controllers\Coach\TrainingSessionController;
@@ -77,6 +80,21 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         // Reports
         Route::get('reports', [CoachReportController::class, 'index'])->name('reports.index');
         Route::post('reports/export', [CoachReportController::class, 'export'])->name('reports.export');
+
+        // Events
+        Route::get('events', [CoachEventController::class, 'index'])->name('events.index');
+        Route::post('events', [CoachEventController::class, 'store'])->name('events.store');
+        Route::patch('events/{event}', [CoachEventController::class, 'update'])->name('events.update');
+        Route::delete('events/{event}', [CoachEventController::class, 'destroy'])->name('events.destroy');
+        Route::patch('events/{event}/athletes/{athlete}', [CoachEventController::class, 'updateParticipation'])->name('events.participation.update');
+
+        // Event Settings
+        Route::post('event-types', [EventSettingController::class, 'storeType'])->name('event-types.store');
+        Route::patch('event-types/{type}', [EventSettingController::class, 'updateType'])->name('event-types.update');
+        Route::delete('event-types/{type}', [EventSettingController::class, 'destroyType'])->name('event-types.destroy');
+        Route::post('event-points', [EventSettingController::class, 'storePoint'])->name('event-points.store');
+        Route::patch('event-points/{point}', [EventSettingController::class, 'updatePoint'])->name('event-points.update');
+        Route::delete('event-points/{point}', [EventSettingController::class, 'destroyPoint'])->name('event-points.destroy');
     });
 
     // Athlete specific routes
@@ -88,6 +106,9 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::get('training', [TrainingController::class, 'index'])->name('training.index');
         Route::post('training/log', [TrainingController::class, 'storeLog'])->name('training.log.store');
         Route::delete('training/log/{log}', [TrainingController::class, 'destroy'])->name('training.log.destroy');
+
+        // Events
+        Route::get('events', [AthleteEventController::class, 'index'])->name('events.index');
     });
 
     // Verification Pending Route (for athletes)

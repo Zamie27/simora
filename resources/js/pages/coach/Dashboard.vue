@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import type { ApexOptions } from 'apexcharts';
 import {
     Users,
@@ -11,6 +11,8 @@ import {
     Zap,
     MapPin,
     Trophy,
+    MessageSquare,
+    Send,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
@@ -28,10 +30,24 @@ interface Props {
     upcomingSessions: any[];
     recentLogs: any[];
     performanceTrend: any[];
-    categoryDistribution: Record<string, number>;
+    categoryDistribution: any;
+    athletesList: { id: number, name: string }[];
+    recentMessages: any[];
 }
 
 const props = defineProps<Props>();
+
+const messageForm = useForm({
+    receiver_id: '',
+    content: ''
+});
+
+const sendMessage = () => {
+    messageForm.post(coach.messages.store().url, {
+        preserveScroll: true,
+        onSuccess: () => messageForm.reset()
+    });
+};
 
 // Chart Options: Squad Performance Trend
 const chartOptions = computed<ApexOptions>(() => ({
@@ -158,6 +174,7 @@ const formatTime = (minutes: number) => {
                         Overview performa tim dan aktivitas atlet hari ini.
                     </p>
                 </div>
+
                 <div class="flex gap-2">
                     <Link
                         :href="coach.trainingSessions.index().url"
@@ -445,6 +462,54 @@ const formatTime = (minutes: number) => {
                                 Atur Jadwal Baru
                                 <Plus class="h-4 w-4" />
                             </Link>
+                        </div>
+                    </div>
+
+                    <!-- Messages Widget -->
+                    <div class="rounded-3xl bg-surface p-6 border border-white/5">
+                        <div class="mb-4 flex items-center justify-between">
+                            <h3 class="text-lg font-black uppercase tracking-tighter text-foreground">Kirim Pesan</h3>
+                            <MessageSquare class="h-5 w-5 text-accent" />
+                        </div>
+                        
+                        <!-- Form -->
+                        <form @submit.prevent="sendMessage" class="mb-6 space-y-4">
+                            <div>
+                                <select v-model="messageForm.receiver_id" class="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-foreground focus:border-accent focus:ring-accent" required>
+                                    <option value="" disabled>Pilih Atlet</option>
+                                    <option v-for="ath in athletesList" :key="ath.id" :value="ath.id">
+                                        {{ ath.name }}
+                                    </option>
+                                </select>
+                                <span v-if="messageForm.errors.receiver_id" class="text-xs text-red-500">{{ messageForm.errors.receiver_id }}</span>
+                            </div>
+                            <div>
+                                <textarea v-model="messageForm.content" rows="3" placeholder="Tulis pesan atau instruksi..." class="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-foreground focus:border-accent focus:ring-accent" required></textarea>
+                                <span v-if="messageForm.errors.content" class="text-xs text-red-500">{{ messageForm.errors.content }}</span>
+                            </div>
+                            <button type="submit" :disabled="messageForm.processing" class="flex w-full items-center justify-center gap-2 rounded-xl bg-accent p-3 text-sm font-bold text-white transition-all hover:opacity-90 active:scale-95 disabled:opacity-50">
+                                Kirim
+                                <Send class="h-4 w-4" />
+                            </button>
+                        </form>
+
+                        <!-- Recent Messages -->
+                        <h4 class="mb-3 text-xs font-black uppercase tracking-widest text-muted-foreground">Pesan Terkirim</h4>
+                        <div class="space-y-3">
+                            <div v-for="msg in recentMessages" :key="msg.id" class="rounded-2xl border border-white/5 bg-white/5 p-3 relative group">
+                                <div class="mb-1 flex items-center justify-between">
+                                    <span class="text-xs font-black text-foreground">Ke: {{ msg.receiver?.name }}</span>
+                                    <span class="text-[9px] font-bold text-muted-foreground uppercase">{{ formatDate(msg.created_at) }}</span>
+                                </div>
+                                <p class="text-xs text-muted-foreground line-clamp-2">{{ msg.content }}</p>
+                                <div class="mt-2 text-right">
+                                    <span v-if="msg.is_read" class="text-[9px] font-bold text-accent uppercase">Dibaca</span>
+                                    <span v-else class="text-[9px] font-bold text-muted-foreground uppercase">Terkirim</span>
+                                </div>
+                            </div>
+                            <div v-if="recentMessages.length === 0" class="text-center p-4">
+                                <p class="text-xs font-bold text-muted-foreground uppercase">Belum ada pesan terkirim</p>
+                            </div>
                         </div>
                     </div>
 

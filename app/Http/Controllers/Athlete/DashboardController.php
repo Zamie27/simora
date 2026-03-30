@@ -60,6 +60,11 @@ class DashboardController extends Controller
             'upcomingEvents' => $upcomingEvents,
             'performanceTrend' => $performanceTrend,
             'exerciseTypes' => ExerciseType::all(),
+            'recentMessages' => \App\Models\Message::where('receiver_id', $user->id)
+                ->with('sender:id,name')
+                ->latest()
+                ->take(5)
+                ->get(),
         ]);
     }
 

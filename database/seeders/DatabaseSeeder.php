@@ -31,35 +31,35 @@ class DatabaseSeeder extends Seeder
 
         // Admin User
         User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Admin Manajemen',
-                'password' => Hash::make('password'),
-                'role_id' => $manajemenRole->id,
-            ]
+        ['email' => 'admin@example.com'],
+        [
+            'name' => 'Admin Manajemen',
+            'password' => Hash::make('password'),
+            'role_id' => $manajemenRole->id,
+        ]
         );
 
         // Coach Users
         for ($i = 0; $i < 2; $i++) {
             User::firstOrCreate(
-                ['email' => 'pelatih'.$i.'@example.com'],
-                [
-                    'name' => 'Coach Budi '.$i,
-                    'password' => Hash::make('password'),
-                    'role_id' => $pelatihRole->id,
-                ]
+            ['email' => 'pelatih' . $i . '@example.com'],
+            [
+                'name' => 'Coach Budi ' . $i,
+                'password' => Hash::make('password'),
+                'role_id' => $pelatihRole->id,
+            ]
             );
         }
 
         // Athlete Users
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             User::firstOrCreate(
-                ['email' => 'atlet'.$i.'@example.com'],
-                [
-                    'name' => 'Atlet Andi '.$i,
-                    'password' => Hash::make('password'),
-                    'role_id' => $atletRole->id,
-                ]
+            ['email' => 'atlet' . $i . '@example.com'],
+            [
+                'name' => 'Atlet Andi ' . $i,
+                'password' => Hash::make('password'),
+                'role_id' => $atletRole->id,
+            ]
             );
         }
     }

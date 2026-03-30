@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, router } from '@inertiajs/vue3';
 import type { ApexOptions } from 'apexcharts';
 import {
     Activity,
@@ -13,6 +13,8 @@ import {
     Navigation,
     Info,
     X,
+    MessageSquare,
+    CheckCircle2
 } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
@@ -30,6 +32,7 @@ interface Props {
     upcomingEvents: any[];
     performanceTrend: any[];
     exerciseTypes: any[];
+    recentMessages: any[];
 }
 
 const props = defineProps<Props>();
@@ -64,6 +67,12 @@ const submitQuickUpdate = () => {
                 'notes',
             );
         },
+    });
+};
+
+const markMessageRead = (id: number) => {
+    router.patch(athlete.messages.read({ message: id }).url, {}, {
+        preserveScroll: true,
     });
 };
 
@@ -306,71 +315,99 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                     </div>
                 </div>
 
-                <!-- Upcoming Missions -->
-                <div
-                    class="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-xl lg:col-span-4"
-                >
-                    <div class="mb-6 flex items-center gap-2">
-                        <Trophy class="h-5 w-5 text-accent" />
-                        <h2
-                            class="text-lg font-black tracking-tight text-foreground uppercase"
-                        >
-                            Misi Mendatang
-                        </h2>
-                    </div>
-                    <div class="flex flex-col gap-4">
-                        <div
-                            v-if="upcomingEvents.length === 0"
-                            class="flex flex-col items-center justify-center py-10 opacity-50"
-                        >
-                            <Info class="mb-2 h-8 w-8" />
-                            <p
-                                class="text-xs font-bold tracking-widest uppercase"
+                <!-- Right Column: Missions & Messages -->
+                <div class="flex flex-col gap-6 lg:col-span-4">
+                    <!-- Upcoming Missions -->
+                    <div
+                        class="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-xl"
+                    >
+                        <div class="mb-6 flex items-center gap-2">
+                            <Trophy class="h-5 w-5 text-accent" />
+                            <h2
+                                class="text-lg font-black tracking-tight text-foreground uppercase"
                             >
-                                Belum ada event
-                            </p>
+                                Misi Mendatang
+                            </h2>
                         </div>
-                        <div
-                            v-for="event in upcomingEvents"
-                            :key="event.id"
-                            class="group flex items-center gap-4 rounded-xl border border-border bg-muted/30 p-4 transition-all hover:border-accent/40"
-                        >
+                        <div class="flex flex-col gap-4">
                             <div
-                                class="flex h-12 w-12 flex-col items-center justify-center rounded-lg bg-accent text-[10px] leading-tight font-black text-accent-foreground uppercase"
+                                v-if="upcomingEvents.length === 0"
+                                class="flex flex-col items-center justify-center py-10 opacity-50"
                             >
-                                <span>{{
-                                    new Date(
-                                        event.event_date,
-                                    ).toLocaleDateString('id-ID', {
-                                        month: 'short',
-                                    })
-                                }}</span>
-                                <span class="text-lg">{{
-                                    new Date(event.event_date).getDate()
-                                }}</span>
+                                <Info class="mb-2 h-8 w-8" />
+                                <p
+                                    class="text-xs font-bold tracking-widest uppercase"
+                                >
+                                    Belum ada event
+                                </p>
                             </div>
-                            <div class="flex-1 overflow-hidden">
-                                <h4
-                                    class="truncate text-xs font-black text-foreground uppercase transition-colors group-hover:text-accent"
-                                >
-                                    {{ event.title }}
-                                </h4>
+                            <div
+                                v-for="event in upcomingEvents"
+                                :key="event.id"
+                                class="group flex items-center gap-4 rounded-xl border border-border bg-muted/30 p-4 transition-all hover:border-accent/40"
+                            >
                                 <div
-                                    class="mt-1 flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase opacity-70"
+                                    class="flex h-12 w-12 flex-col items-center justify-center rounded-lg bg-accent text-[10px] leading-tight font-black text-accent-foreground uppercase"
                                 >
-                                    <MapPin class="h-3 w-3" />
                                     <span>{{
-                                        event.location || 'Lokasi TBA'
+                                        new Date(
+                                            event.event_date,
+                                        ).toLocaleDateString('id-ID', {
+                                            month: 'short',
+                                        })
                                     }}</span>
+                                    <span class="text-lg">{{
+                                        new Date(event.event_date).getDate()
+                                    }}</span>
+                                </div>
+                                <div class="flex-1 overflow-hidden">
+                                    <h4
+                                        class="truncate text-xs font-black text-foreground uppercase transition-colors group-hover:text-accent"
+                                    >
+                                        {{ event.title }}
+                                    </h4>
+                                    <div
+                                        class="mt-1 flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase opacity-70"
+                                    >
+                                        <MapPin class="h-3 w-3" />
+                                        <span>{{
+                                            event.location || 'Lokasi TBA'
+                                        }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button
-                        class="mt-4 w-full rounded-xl border border-border bg-muted/20 py-3 text-[10px] font-black tracking-widest text-muted-foreground uppercase transition-all hover:text-accent"
-                    >
-                        Lihat Semua Event
-                    </button>
+
+                    <!-- Coach Messages -->
+                    <div class="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-xl">
+                        <div class="mb-6 flex items-center gap-2">
+                            <MessageSquare class="h-5 w-5 text-accent" />
+                            <h2 class="text-lg font-black tracking-tight text-foreground uppercase">
+                                Catatan Pelatih
+                            </h2>
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <div v-if="recentMessages.length === 0" class="flex flex-col items-center justify-center py-8 opacity-50">
+                                <MessageSquare class="mb-2 h-6 w-6 text-muted-foreground" />
+                                <p class="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">Belum ada pesan</p>
+                            </div>
+                            <div v-for="msg in recentMessages" :key="msg.id" 
+                                :class="['relative rounded-xl border p-4 transition-all', msg.is_read ? 'border-border bg-muted/20' : 'border-accent/30 bg-accent/5 shadow-[0_0_15px_rgba(255,97,32,0.1)]']">
+                                <div class="mb-2 flex items-center justify-between">
+                                    <span class="text-xs font-black text-foreground uppercase tracking-widest">{{ msg.sender?.name }}</span>
+                                    <span class="text-[9px] font-bold text-muted-foreground uppercase">{{ new Date(msg.created_at).toLocaleDateString('id-ID') }}</span>
+                                </div>
+                                <p class="text-xs text-muted-foreground">{{ msg.content }}</p>
+                                <div class="mt-3 flex justify-end">
+                                    <button v-if="!msg.is_read" @click="markMessageRead(msg.id)" class="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent hover:opacity-80 transition-opacity">
+                                        <CheckCircle2 class="h-3 w-3" /> Tandai Dibaca
+                                    </button>
+                                    <span v-else class="text-[9px] font-bold uppercase tracking-widest text-muted-foreground opacity-50"><CheckCircle2 class="inline h-3 w-3 mr-0.5" /> Terbaca</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

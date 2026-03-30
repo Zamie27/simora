@@ -58,6 +58,15 @@ class DashboardController extends Controller
             return $group->count();
         });
 
+        // 7. Recent Messages Sent
+        $recentMessages = \App\Models\Message::where('sender_id', $coach->id)
+            ->with(['receiver' => function ($q) {
+                $q->select('id', 'name');
+            }])
+            ->latest()
+            ->take(5)
+            ->get();
+
         return Inertia::render('coach/Dashboard', [
             'stats' => [
                 'total_athletes' => $athletes->count(),
@@ -71,6 +80,8 @@ class DashboardController extends Controller
             'recentLogs' => $recentLogs,
             'performanceTrend' => $performanceTrend,
             'categoryDistribution' => $categoryDistribution,
+            'athletesList' => $athletes->map(fn($a) => ['id' => $a->id, 'name' => $a->name]),
+            'recentMessages' => $recentMessages,
         ]);
     }
 }

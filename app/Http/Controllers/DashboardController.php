@@ -23,7 +23,7 @@ class DashboardController extends Controller
         ]);
 
         if ($role === 'Manajemen') {
-            return Inertia::render('Dashboard');
+            return redirect()->route('management.dashboard');
         }
 
         if ($role === 'Pelatih') {

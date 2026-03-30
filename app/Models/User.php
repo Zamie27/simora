@@ -144,4 +144,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(EventUser::class, 'user_id');
     }
+
+    /**
+     * Get the messages sent by this user.
+     */
+    public function sentMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    /**
+     * Get the messages received by this user.
+     */
+    public function receivedMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
 }

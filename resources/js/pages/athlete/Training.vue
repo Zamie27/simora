@@ -131,14 +131,16 @@ const openLogModal = (session: any = null, log: Log | null = null) => {
         form.avg_speed = log.avg_speed || '';
         form.rpm = log.rpm || '';
         form.intensity = log.intensity || 'medium';
-        form.type = log.type || (log.session ? log.session.exercise_type.name : '');
+        form.type =
+            log.type || (log.session ? log.session.exercise_type.name : '');
         form.athlete_notes = log.athlete_notes || '';
         form.completion_status = log.completion_status;
     } else if (session) {
         form.training_session_id = session.id;
         form.type = session.exercise_type.name;
-        
-        const existingLog = session.logs && session.logs.length > 0 ? session.logs[0] : null;
+
+        const existingLog =
+            session.logs && session.logs.length > 0 ? session.logs[0] : null;
 
         if (existingLog) {
             form.id = existingLog.id;
@@ -174,15 +176,17 @@ const handleFileChange = (e: Event) => {
 
     if (files) {
         form.attachments = Array.from(files);
-        
+
         // Generate previews
         attachmentPreviews.value = [];
-        Array.from(files).forEach(file => {
+        Array.from(files).forEach((file) => {
             if (file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     if (e.target?.result) {
-                        attachmentPreviews.value.push(e.target.result as string);
+                        attachmentPreviews.value.push(
+                            e.target.result as string,
+                        );
                     }
                 };
                 reader.readAsDataURL(file);
@@ -208,10 +212,14 @@ const deleteLog = (logId: number) => {
 };
 
 const applyFilters = () => {
-    router.get('/athlete/training', {
-        start_date: startDate.value,
-        end_date: endDate.value,
-    }, { preserveState: true });
+    router.get(
+        '/athlete/training',
+        {
+            start_date: startDate.value,
+            end_date: endDate.value,
+        },
+        { preserveState: true },
+    );
 };
 
 const formatDate = (date: string) => {
@@ -248,7 +256,6 @@ const intensityColor = (i: string) => {
 
 const isImage = (type: string) => type.startsWith('image/');
 
-
 // Chart Options
 const chartOptions = computed<ApexOptions>(() => ({
     chart: {
@@ -260,27 +267,27 @@ const chartOptions = computed<ApexOptions>(() => ({
     colors: ['#FF6120', '#10B981'],
     stroke: { curve: 'smooth', width: 2 },
     xaxis: {
-        categories: props.performanceTrend.map(t => formatDate(t.date)),
+        categories: props.performanceTrend.map((t) => formatDate(t.date)),
         labels: { style: { colors: '#94a3b8' }, rotate: -45 },
     },
     yaxis: [
-        { 
-            title: { text: "Speed (kph)", style: { color: "#FF6120" } },
-            labels: { style: { colors: '#FF6120' } } 
+        {
+            title: { text: 'Speed (kph)', style: { color: '#FF6120' } },
+            labels: { style: { colors: '#FF6120' } },
         },
-        { 
-            opposite: true, 
-            title: { text: "Cadence (RPM)", style: { color: "#10B981" } },
-            labels: { style: { colors: '#10B981' } } 
-        }
+        {
+            opposite: true,
+            title: { text: 'Cadence (RPM)', style: { color: '#10B981' } },
+            labels: { style: { colors: '#10B981' } },
+        },
     ],
     grid: { borderColor: '#1e293b' },
     tooltip: { theme: 'dark' },
 }));
 
 const chartSeries = computed(() => [
-    { name: 'Speed', data: props.performanceTrend.map(t => t.avg_speed) },
-    { name: 'RPM', data: props.performanceTrend.map(t => t.rpm) },
+    { name: 'Speed', data: props.performanceTrend.map((t) => t.avg_speed) },
+    { name: 'RPM', data: props.performanceTrend.map((t) => t.rpm) },
 ]);
 </script>
 
@@ -288,18 +295,36 @@ const chartSeries = computed(() => [
     <Head title="Latihan Saya" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-10 bg-background p-6 text-foreground md:p-10">
-            
+        <div
+            class="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-10 bg-background p-6 text-foreground md:p-10"
+        >
             <!-- Hero Header -->
-            <div class="flex flex-col items-baseline justify-between gap-4 border-b border-border pb-6 md:flex-row">
+            <div
+                class="flex flex-col items-baseline justify-between gap-4 border-b border-border pb-6 md:flex-row"
+            >
                 <div class="flex items-center gap-4">
-                    <div class="rounded-xl bg-orange-500/10 p-3 text-orange-500"><Bike class="h-6 w-6" /></div>
+                    <div
+                        class="rounded-xl bg-orange-500/10 p-3 text-orange-500"
+                    >
+                        <Bike class="h-6 w-6" />
+                    </div>
                     <div>
-                        <h1 class="text-3xl font-black tracking-tighter text-foreground uppercase md:text-4xl">Latihan Saya</h1>
-                        <p class="mt-1 text-[10px] font-bold tracking-widest text-muted-foreground uppercase opacity-60">Performance Tracking & History</p>
+                        <h1
+                            class="text-3xl font-black tracking-tighter text-foreground uppercase md:text-4xl"
+                        >
+                            Latihan Saya
+                        </h1>
+                        <p
+                            class="mt-1 text-[10px] font-bold tracking-widest text-muted-foreground uppercase opacity-60"
+                        >
+                            Performance Tracking & History
+                        </p>
                     </div>
                 </div>
-                <button @click="openLogModal()" class="flex items-center gap-2 rounded-xl bg-accent px-8 py-4 text-xs font-black tracking-widest text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 active:scale-95">
+                <button
+                    @click="openLogModal()"
+                    class="flex items-center gap-2 rounded-xl bg-accent px-8 py-4 text-xs font-black tracking-widest text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 active:scale-95"
+                >
                     <Plus class="h-4 w-4" /> Log Manual Activity
                 </button>
             </div>
@@ -307,268 +332,665 @@ const chartSeries = computed(() => [
             <!-- Dashboard Stats & Trend -->
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-12">
                 <!-- Stats Grid (Left) -->
-                <div class="lg:col-span-4 grid grid-cols-1 gap-4">
-                    <div class="flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-xl">
+                <div class="grid grid-cols-1 gap-4 lg:col-span-4">
+                    <div
+                        class="flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-xl"
+                    >
                         <div class="flex items-center justify-between">
-                            <div class="rounded-2xl bg-accent p-3 text-white"><Milestone class="h-5 w-5" /></div>
-                            <span class="text-[8px] font-black uppercase opacity-40">Total Distance</span>
+                            <div class="rounded-2xl bg-accent p-3 text-white">
+                                <Milestone class="h-5 w-5" />
+                            </div>
+                            <span
+                                class="text-[8px] font-black uppercase opacity-40"
+                                >Total Distance</span
+                            >
                         </div>
                         <div class="mt-6 flex items-baseline gap-2">
-                            <span class="text-4xl font-black italic text-foreground tracking-tighter">{{ statistics.total_distance_km }}</span>
-                            <span class="text-[10px] font-black italic text-accent uppercase">KM</span>
+                            <span
+                                class="text-4xl font-black tracking-tighter text-foreground italic"
+                                >{{ statistics.total_distance_km }}</span
+                            >
+                            <span
+                                class="text-[10px] font-black text-accent uppercase italic"
+                                >KM</span
+                            >
                         </div>
                     </div>
 
-                    <div class="flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-xl">
+                    <div
+                        class="flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-xl"
+                    >
                         <div class="flex items-center justify-between">
-                            <div class="rounded-2xl bg-secondary p-3 text-accent"><Gauge class="h-5 w-5" /></div>
-                            <span class="text-[8px] font-black uppercase opacity-40">Avg Speed</span>
+                            <div
+                                class="rounded-2xl bg-secondary p-3 text-accent"
+                            >
+                                <Gauge class="h-5 w-5" />
+                            </div>
+                            <span
+                                class="text-[8px] font-black uppercase opacity-40"
+                                >Avg Speed</span
+                            >
                         </div>
                         <div class="mt-6 flex items-baseline gap-2">
-                            <span class="text-4xl font-black italic text-foreground tracking-tighter text-white">{{ statistics.avg_speed }}</span>
-                            <span class="text-[10px] font-black italic text-accent uppercase">KM/H</span>
+                            <span
+                                class="text-4xl font-black tracking-tighter text-foreground text-white italic"
+                                >{{ statistics.avg_speed }}</span
+                            >
+                            <span
+                                class="text-[10px] font-black text-accent uppercase italic"
+                                >KM/H</span
+                            >
                         </div>
                     </div>
 
-                    <div class="flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-xl">
+                    <div
+                        class="flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-xl"
+                    >
                         <div class="flex items-center justify-between">
-                            <div class="rounded-2xl bg-emerald-500/10 p-3 text-emerald-500"><RotateCcw class="h-5 w-5" /></div>
-                            <span class="text-[8px] font-black uppercase opacity-40">Avg Cadence</span>
+                            <div
+                                class="rounded-2xl bg-emerald-500/10 p-3 text-emerald-500"
+                            >
+                                <RotateCcw class="h-5 w-5" />
+                            </div>
+                            <span
+                                class="text-[8px] font-black uppercase opacity-40"
+                                >Avg Cadence</span
+                            >
                         </div>
                         <div class="mt-6 flex items-baseline gap-2">
-                            <span class="text-4xl font-black italic text-foreground tracking-tighter text-white">{{ statistics.avg_rpm }}</span>
-                            <span class="text-[10px] font-black italic text-accent uppercase">RPM</span>
+                            <span
+                                class="text-4xl font-black tracking-tighter text-foreground text-white italic"
+                                >{{ statistics.avg_rpm }}</span
+                            >
+                            <span
+                                class="text-[10px] font-black text-accent uppercase italic"
+                                >RPM</span
+                            >
                         </div>
                     </div>
                 </div>
 
                 <!-- Trend Chart (Right) -->
-                <div class="lg:col-span-8 rounded-[2.5rem] border border-border bg-card p-8 shadow-2xl">
+                <div
+                    class="rounded-[2.5rem] border border-border bg-card p-8 shadow-2xl lg:col-span-8"
+                >
                     <div class="mb-8 flex items-center gap-4">
-                        <div class="rounded-xl bg-orange-500/10 p-3 text-orange-500"><TrendingUp class="h-5 w-5" /></div>
-                        <h3 class="text-xl font-black tracking-tight uppercase">Tren Performa</h3>
+                        <div
+                            class="rounded-xl bg-orange-500/10 p-3 text-orange-500"
+                        >
+                            <TrendingUp class="h-5 w-5" />
+                        </div>
+                        <h3 class="text-xl font-black tracking-tight uppercase">
+                            Tren Performa
+                        </h3>
                     </div>
                     <div id="performance-chart">
-                        <VueApexCharts width="100%" height="320" type="line" :options="chartOptions" :series="chartSeries"></VueApexCharts>
+                        <VueApexCharts
+                            width="100%"
+                            height="320"
+                            type="line"
+                            :options="chartOptions"
+                            :series="chartSeries"
+                        ></VueApexCharts>
                     </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 gap-10 lg:grid-cols-12">
                 <!-- Sidebar: Upcoming Missions -->
-                <div class="lg:col-span-4 flex flex-col gap-6">
+                <div class="flex flex-col gap-6 lg:col-span-4">
                     <div class="flex items-center gap-4">
-                         <div class="rounded-xl bg-secondary p-3 text-accent"><Calendar class="h-5 w-5" /></div>
-                        <h2 class="text-xl font-black uppercase">Upcoming Missions</h2>
+                        <div class="rounded-xl bg-secondary p-3 text-accent">
+                            <Calendar class="h-5 w-5" />
+                        </div>
+                        <h2 class="text-xl font-black uppercase">
+                            Upcoming Missions
+                        </h2>
                     </div>
-                    
-                    <div v-if="upcomingSessions.length === 0" class="rounded-3xl border border-dashed border-border p-8 text-center bg-muted/5 opacity-40">
-                        <p class="text-[10px] font-bold text-muted-foreground uppercase">No scheduled sessions</p>
+
+                    <div
+                        v-if="upcomingSessions.length === 0"
+                        class="rounded-3xl border border-dashed border-border bg-muted/5 p-8 text-center opacity-40"
+                    >
+                        <p
+                            class="text-[10px] font-bold text-muted-foreground uppercase"
+                        >
+                            No scheduled sessions
+                        </p>
                     </div>
 
                     <div v-else class="flex flex-col gap-4">
-                        <div v-for="session in upcomingSessions" :key="session.id" 
+                        <div
+                            v-for="session in upcomingSessions"
+                            :key="session.id"
                             @click="openLogModal(session)"
-                            class="group cursor-pointer rounded-2xl border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-lg">
-                            <div class="flex items-center justify-between mb-4">
+                            class="group cursor-pointer rounded-2xl border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-lg"
+                        >
+                            <div class="mb-4 flex items-center justify-between">
                                 <div class="flex items-center gap-2">
-                                    <span class="rounded bg-accent/10 px-2 py-0.5 text-[8px] font-black text-accent uppercase">{{ session.exercise_type.name }}</span>
-                                    <span v-if="session.logs && session.logs.length > 0" class="rounded bg-emerald-500/10 px-2 py-0.5 text-[8px] font-black text-emerald-500 uppercase">Sudah Dicatat</span>
+                                    <span
+                                        class="rounded bg-accent/10 px-2 py-0.5 text-[8px] font-black text-accent uppercase"
+                                        >{{ session.exercise_type.name }}</span
+                                    >
+                                    <span
+                                        v-if="
+                                            session.logs &&
+                                            session.logs.length > 0
+                                        "
+                                        class="rounded bg-emerald-500/10 px-2 py-0.5 text-[8px] font-black text-emerald-500 uppercase"
+                                        >Sudah Dicatat</span
+                                    >
                                 </div>
-                                <span class="text-[10px] font-bold text-muted-foreground">{{ formatDate(session.scheduled_date) }}</span>
+                                <span
+                                    class="text-[10px] font-bold text-muted-foreground"
+                                    >{{
+                                        formatDate(session.scheduled_date)
+                                    }}</span
+                                >
                             </div>
-                            <h4 class="text-xs font-black uppercase text-foreground group-hover:text-accent">{{ session.title }}</h4>
+                            <h4
+                                class="text-xs font-black text-foreground uppercase group-hover:text-accent"
+                            >
+                                {{ session.title }}
+                            </h4>
                             <div class="mt-4 flex items-center justify-between">
-                                <div class="flex items-center gap-2 text-[9px] font-black text-muted-foreground">
-                                    <Clock class="h-3.5 w-3.5" /> {{ session.scheduled_time || '00:00' }}
+                                <div
+                                    class="flex items-center gap-2 text-[9px] font-black text-muted-foreground"
+                                >
+                                    <Clock class="h-3.5 w-3.5" />
+                                    {{ session.scheduled_time || '00:00' }}
                                 </div>
-                                <ChevronRight class="h-4 w-4 text-muted-foreground group-hover:translate-x-1 group-hover:text-accent" />
+                                <ChevronRight
+                                    class="h-4 w-4 text-muted-foreground group-hover:translate-x-1 group-hover:text-accent"
+                                />
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Main: Performance Archive -->
-                <div class="lg:col-span-8 flex flex-col gap-8">
-                     <div class="flex items-center justify-between">
+                <div class="flex flex-col gap-8 lg:col-span-8">
+                    <div class="flex items-center justify-between">
                         <div class="flex items-center gap-4">
-                            <div class="rounded-xl bg-secondary p-3 text-accent"><History class="h-5 w-5" /></div>
-                            <h2 class="text-2xl font-black uppercase">Riwayat Latihan</h2>
+                            <div
+                                class="rounded-xl bg-secondary p-3 text-accent"
+                            >
+                                <History class="h-5 w-5" />
+                            </div>
+                            <h2 class="text-2xl font-black uppercase">
+                                Riwayat Latihan
+                            </h2>
                         </div>
-                        
+
                         <!-- History Filter -->
                         <div class="flex gap-2">
-                            <DatePicker v-model="startDate" placeholder="Mulai" class="w-32" />
-                            <DatePicker v-model="endDate" placeholder="Sampai" class="w-32" />
-                            <button @click="applyFilters" class="rounded-lg bg-accent p-2 text-white"><Search class="h-4 w-4" /></button>
+                            <DatePicker
+                                v-model="startDate"
+                                placeholder="Mulai"
+                                class="w-32"
+                            />
+                            <DatePicker
+                                v-model="endDate"
+                                placeholder="Sampai"
+                                class="w-32"
+                            />
+                            <button
+                                @click="applyFilters"
+                                class="rounded-lg bg-accent p-2 text-white"
+                            >
+                                <Search class="h-4 w-4" />
+                            </button>
                         </div>
                     </div>
 
-                    <div v-if="logs.length === 0" class="rounded-3xl border border-border bg-card p-20 text-center shadow-xl">
-                        <Bike class="mx-auto mb-4 h-12 w-12 text-muted-foreground opacity-10 font-thin" />
-                        <p class="text-xs font-black tracking-widest text-muted-foreground uppercase opacity-40">Your journey begins here.</p>
+                    <div
+                        v-if="logs.length === 0"
+                        class="rounded-3xl border border-border bg-card p-20 text-center shadow-xl"
+                    >
+                        <Bike
+                            class="mx-auto mb-4 h-12 w-12 font-thin text-muted-foreground opacity-10"
+                        />
+                        <p
+                            class="text-xs font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                        >
+                            Your journey begins here.
+                        </p>
                     </div>
 
                     <div v-else class="flex flex-col gap-6">
-                        <div v-for="log in logs" :key="log.id" class="group relative overflow-hidden rounded-3xl border border-border bg-card shadow-lg transition-all hover:shadow-2xl">
+                        <div
+                            v-for="log in logs"
+                            :key="log.id"
+                            class="group relative overflow-hidden rounded-3xl border border-border bg-card shadow-lg transition-all hover:shadow-2xl"
+                        >
                             <!-- Action Trigger -->
-                             <div @click="openDetailModal(log)" class="cursor-pointer">
+                            <div
+                                @click="openDetailModal(log)"
+                                class="cursor-pointer"
+                            >
                                 <div class="p-8">
                                     <div class="flex flex-col gap-6">
                                         <!-- Header -->
-                                        <div class="flex items-start justify-between border-b border-border pb-6">
+                                        <div
+                                            class="flex items-start justify-between border-b border-border pb-6"
+                                        >
                                             <div>
-                                                <h3 class="text-xl font-black italic text-foreground uppercase tracking-tight group-hover:text-accent transition-colors">
-                                                    {{ log.title || log.session?.title || log.type + ' Session' }}
+                                                <h3
+                                                    class="text-xl font-black tracking-tight text-foreground uppercase italic transition-colors group-hover:text-accent"
+                                                >
+                                                    {{
+                                                        log.title ||
+                                                        log.session?.title ||
+                                                        log.type + ' Session'
+                                                    }}
                                                 </h3>
-                                                <p class="mt-1 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60">
-                                                    {{ formatDate(log.date) }} • {{ log.session ? 'Scheduled' : 'Manual' }}
+                                                <p
+                                                    class="mt-1 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
+                                                >
+                                                    {{ formatDate(log.date) }} •
+                                                    {{
+                                                        log.session
+                                                            ? 'Scheduled'
+                                                            : 'Manual'
+                                                    }}
                                                 </p>
                                             </div>
-                                            <div class="flex items-center gap-3">
+                                            <div
+                                                class="flex items-center gap-3"
+                                            >
                                                 <!-- Action Buttons -->
-                                                <div class="flex items-center gap-2 mr-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    <button v-if="log.is_editable" @click.stop="openLogModal(null, log)" class="p-2 rounded-lg bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 transition-colors">
-                                                        <FileText class="h-4 w-4" />
+                                                <div
+                                                    class="mr-2 flex items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100"
+                                                >
+                                                    <button
+                                                        v-if="log.is_editable"
+                                                        @click.stop="
+                                                            openLogModal(
+                                                                null,
+                                                                log,
+                                                            )
+                                                        "
+                                                        class="rounded-lg bg-blue-500/10 p-2 text-blue-500 transition-colors hover:bg-blue-500/20"
+                                                    >
+                                                        <FileText
+                                                            class="h-4 w-4"
+                                                        />
                                                     </button>
-                                                    <button @click.stop="deleteLog(log.id)" class="p-2 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors">
+                                                    <button
+                                                        @click.stop="
+                                                            deleteLog(log.id)
+                                                        "
+                                                        class="rounded-lg bg-destructive/10 p-2 text-destructive transition-colors hover:bg-destructive/20"
+                                                    >
                                                         <X class="h-4 w-4" />
                                                     </button>
                                                 </div>
-                                                <div v-if="log.coach_rating" class="flex items-center gap-1 rounded-lg bg-accent/10 px-3 py-1.5 text-[10px] font-black text-accent">
-                                                    <Star class="h-3 w-3 fill-accent" /> {{ log.coach_rating }}
+                                                <div
+                                                    v-if="log.coach_rating"
+                                                    class="flex items-center gap-1 rounded-lg bg-accent/10 px-3 py-1.5 text-[10px] font-black text-accent"
+                                                >
+                                                    <Star
+                                                        class="h-3 w-3 fill-accent"
+                                                    />
+                                                    {{ log.coach_rating }}
                                                 </div>
-                                                <div :class="intensityColor(log.intensity || 'medium')" class="rounded-lg border px-3 py-1.5 text-[10px] font-black uppercase">
-                                                    {{ intensityLabel(log.intensity || 'medium') }}
+                                                <div
+                                                    :class="
+                                                        intensityColor(
+                                                            log.intensity ||
+                                                                'medium',
+                                                        )
+                                                    "
+                                                    class="rounded-lg border px-3 py-1.5 text-[10px] font-black uppercase"
+                                                >
+                                                    {{
+                                                        intensityLabel(
+                                                            log.intensity ||
+                                                                'medium',
+                                                        )
+                                                    }}
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Preview Metrics -->
-                                        <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
-                                            <div class="flex flex-col gap-1 rounded-2xl bg-muted/20 p-4 text-center">
-                                                <span class="text-[8px] font-black text-muted-foreground uppercase opacity-40 tracking-widest">Distance</span>
-                                                <span class="text-lg font-black">{{ log.distance_km || 0 }} <small class="text-[8px] opacity-40">km</small></span>
+                                        <div
+                                            class="grid grid-cols-2 gap-4 md:grid-cols-4"
+                                        >
+                                            <div
+                                                class="flex flex-col gap-1 rounded-2xl bg-muted/20 p-4 text-center"
+                                            >
+                                                <span
+                                                    class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                                    >Distance</span
+                                                >
+                                                <span class="text-lg font-black"
+                                                    >{{ log.distance_km || 0 }}
+                                                    <small
+                                                        class="text-[8px] opacity-40"
+                                                        >km</small
+                                                    ></span
+                                                >
                                             </div>
-                                            <div class="flex flex-col gap-1 rounded-2xl bg-muted/20 p-4 text-center">
-                                                <span class="text-[8px] font-black text-muted-foreground uppercase opacity-40 tracking-widest">Duration</span>
-                                                <span class="text-lg font-black">{{ log.duration_minutes || 0 }} <small class="text-[8px] opacity-40">min</small></span>
+                                            <div
+                                                class="flex flex-col gap-1 rounded-2xl bg-muted/20 p-4 text-center"
+                                            >
+                                                <span
+                                                    class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                                    >Duration</span
+                                                >
+                                                <span class="text-lg font-black"
+                                                    >{{
+                                                        log.duration_minutes ||
+                                                        0
+                                                    }}
+                                                    <small
+                                                        class="text-[8px] opacity-40"
+                                                        >min</small
+                                                    ></span
+                                                >
                                             </div>
-                                            <div class="flex flex-col gap-1 rounded-2xl bg-muted/20 p-4 text-center">
-                                                <span class="text-[8px] font-black text-muted-foreground uppercase opacity-40 tracking-widest">Speed</span>
-                                                <span class="text-lg font-black text-accent italic">{{ log.avg_speed || 0 }} <small class="text-[8px] opacity-70">kph</small></span>
+                                            <div
+                                                class="flex flex-col gap-1 rounded-2xl bg-muted/20 p-4 text-center"
+                                            >
+                                                <span
+                                                    class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                                    >Speed</span
+                                                >
+                                                <span
+                                                    class="text-lg font-black text-accent italic"
+                                                    >{{ log.avg_speed || 0 }}
+                                                    <small
+                                                        class="text-[8px] opacity-70"
+                                                        >kph</small
+                                                    ></span
+                                                >
                                             </div>
-                                            <div class="flex flex-col gap-1 rounded-2xl bg-muted/20 p-4 text-center">
-                                                <span class="text-[8px] font-black text-muted-foreground uppercase opacity-40 tracking-widest">RPM</span>
-                                                <span class="text-lg font-black">{{ log.rpm || 0 }} <small class="text-[8px] opacity-40">rpm</small></span>
+                                            <div
+                                                class="flex flex-col gap-1 rounded-2xl bg-muted/20 p-4 text-center"
+                                            >
+                                                <span
+                                                    class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                                    >RPM</span
+                                                >
+                                                <span class="text-lg font-black"
+                                                    >{{ log.rpm || 0 }}
+                                                    <small
+                                                        class="text-[8px] opacity-40"
+                                                        >rpm</small
+                                                    ></span
+                                                >
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Modal: View Training Detail (Everything combined) -->
-            <div v-if="showDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-background/95 p-4 backdrop-blur-2xl">
-                <div class="w-full max-w-4xl animate-in fade-in zoom-in duration-300 rounded-[3rem] border border-white/10 bg-card shadow-2xl overflow-hidden">
-                    <div class="flex items-center justify-between border-b border-white/5 bg-accent/5 p-8">
+            <div
+                v-if="showDetailModal"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-background/95 p-4 backdrop-blur-2xl"
+            >
+                <div
+                    class="w-full max-w-4xl animate-in overflow-hidden rounded-[3rem] border border-white/10 bg-card shadow-2xl duration-300 fade-in zoom-in"
+                >
+                    <div
+                        class="flex items-center justify-between border-b border-white/5 bg-accent/5 p-8"
+                    >
                         <div>
-                            <p class="text-[10px] font-black tracking-widest text-accent uppercase">Training Results Detail</p>
-                            <h2 class="text-2xl font-black tracking-tighter text-foreground uppercase italic">{{ selectedLog?.title || selectedLog?.session?.title || selectedLog?.type + ' Session' }}</h2>
+                            <p
+                                class="text-[10px] font-black tracking-widest text-accent uppercase"
+                            >
+                                Training Results Detail
+                            </p>
+                            <h2
+                                class="text-2xl font-black tracking-tighter text-foreground uppercase italic"
+                            >
+                                {{
+                                    selectedLog?.title ||
+                                    selectedLog?.session?.title ||
+                                    selectedLog?.type + ' Session'
+                                }}
+                            </h2>
                         </div>
                         <div class="flex items-center gap-3">
-                            <button v-if="selectedLog?.is_editable" @click="showDetailModal = false; openLogModal(null, selectedLog)" class="flex items-center gap-2 rounded-xl bg-blue-500 px-4 py-2 text-[10px] font-black text-white uppercase hover:bg-blue-600 transition-all">
+                            <button
+                                v-if="selectedLog?.is_editable"
+                                @click="
+                                    showDetailModal = false;
+                                    openLogModal(null, selectedLog);
+                                "
+                                class="flex items-center gap-2 rounded-xl bg-blue-500 px-4 py-2 text-[10px] font-black text-white uppercase transition-all hover:bg-blue-600"
+                            >
                                 Edit Log
                             </button>
-                            <button @click="showDetailModal = false" class="rounded-full bg-white/5 p-3 text-muted-foreground hover:bg-white/10 hover:text-white transition-all">
+                            <button
+                                @click="showDetailModal = false"
+                                class="rounded-full bg-white/5 p-3 text-muted-foreground transition-all hover:bg-white/10 hover:text-white"
+                            >
                                 <X class="h-6 w-6" />
                             </button>
                         </div>
                     </div>
-                    
-                    <div class="max-h-[80vh] overflow-y-auto p-10 custom-scrollbar">
+
+                    <div
+                        class="custom-scrollbar max-h-[80vh] overflow-y-auto p-10"
+                    >
                         <div class="grid grid-cols-1 gap-10 lg:grid-cols-2">
                             <!-- Left Detail: Core Data -->
                             <div class="flex flex-col gap-8">
                                 <div class="grid grid-cols-2 gap-4">
-                                     <div class="flex flex-col gap-2 rounded-2xl border border-border bg-muted/10 p-6">
-                                        <div class="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase opacity-60">
+                                    <div
+                                        class="flex flex-col gap-2 rounded-2xl border border-border bg-muted/10 p-6"
+                                    >
+                                        <div
+                                            class="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase opacity-60"
+                                        >
                                             <Calendar class="h-3 w-3" /> Tanggal
                                         </div>
-                                        <p class="text-lg font-black">{{ selectedLog ? formatDate(selectedLog.date) : '' }}</p>
+                                        <p class="text-lg font-black">
+                                            {{
+                                                selectedLog
+                                                    ? formatDate(
+                                                          selectedLog.date,
+                                                      )
+                                                    : ''
+                                            }}
+                                        </p>
                                     </div>
-                                    <div class="flex flex-col gap-2 rounded-2xl border border-border bg-muted/10 p-6">
-                                        <div class="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase opacity-60">
-                                            <Activity class="h-3 w-3" /> Intensitas
+                                    <div
+                                        class="flex flex-col gap-2 rounded-2xl border border-border bg-muted/10 p-6"
+                                    >
+                                        <div
+                                            class="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase opacity-60"
+                                        >
+                                            <Activity class="h-3 w-3" />
+                                            Intensitas
                                         </div>
-                                        <p class="text-lg font-black uppercase text-accent">{{ intensityLabel(selectedLog?.intensity || 'medium') }}</p>
+                                        <p
+                                            class="text-lg font-black text-accent uppercase"
+                                        >
+                                            {{
+                                                intensityLabel(
+                                                    selectedLog?.intensity ||
+                                                        'medium',
+                                                )
+                                            }}
+                                        </p>
                                     </div>
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div class="flex flex-col gap-2 rounded-3xl bg-secondary p-8 text-center border border-border">
-                                        <span class="text-[9px] font-black text-accent uppercase tracking-widest">Average Speed</span>
-                                        <h4 class="text-4xl font-black italic tracking-tighter text-white">{{ selectedLog?.avg_speed || 0 }} <small class="text-xs">KPH</small></h4>
+                                    <div
+                                        class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-8 text-center"
+                                    >
+                                        <span
+                                            class="text-[9px] font-black tracking-widest text-accent uppercase"
+                                            >Average Speed</span
+                                        >
+                                        <h4
+                                            class="text-4xl font-black tracking-tighter text-white italic"
+                                        >
+                                            {{ selectedLog?.avg_speed || 0 }}
+                                            <small class="text-xs">KPH</small>
+                                        </h4>
                                     </div>
-                                    <div class="flex flex-col gap-2 rounded-3xl bg-secondary p-8 text-center border border-border">
-                                        <span class="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Average Cadence</span>
-                                        <h4 class="text-4xl font-black italic tracking-tighter text-white">{{ selectedLog?.rpm || 0 }} <small class="text-xs">RPM</small></h4>
+                                    <div
+                                        class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-8 text-center"
+                                    >
+                                        <span
+                                            class="text-[9px] font-black tracking-widest text-emerald-500 uppercase"
+                                            >Average Cadence</span
+                                        >
+                                        <h4
+                                            class="text-4xl font-black tracking-tighter text-white italic"
+                                        >
+                                            {{ selectedLog?.rpm || 0 }}
+                                            <small class="text-xs">RPM</small>
+                                        </h4>
                                     </div>
                                 </div>
 
-                                <div class="flex flex-col gap-4 rounded-3xl border border-border bg-card p-8">
-                                    <h5 class="text-[10px] font-black uppercase opacity-60 flex items-center gap-2 italic">
-                                        <FileText class="h-3 w-3" /> Personalisasi Catatan Atlet
+                                <div
+                                    class="flex flex-col gap-4 rounded-3xl border border-border bg-card p-8"
+                                >
+                                    <h5
+                                        class="flex items-center gap-2 text-[10px] font-black uppercase italic opacity-60"
+                                    >
+                                        <FileText class="h-3 w-3" />
+                                        Personalisasi Catatan Atlet
                                     </h5>
-                                    <p class="text-sm font-medium italic text-muted-foreground leading-relaxed">
-                                        "{{ selectedLog?.athlete_notes || 'Tidak ada catatan personal untuk sesi ini.' }}"
+                                    <p
+                                        class="text-sm leading-relaxed font-medium text-muted-foreground italic"
+                                    >
+                                        "{{
+                                            selectedLog?.athlete_notes ||
+                                            'Tidak ada catatan personal untuk sesi ini.'
+                                        }}"
                                     </p>
                                 </div>
                             </div>
 
                             <!-- Right Detail: Coach Feedback & Attachments -->
                             <div class="flex flex-col gap-8">
-                                <div class="flex flex-col gap-6 rounded-3xl bg-accent/5 border border-accent/20 p-8 shadow-[0_20px_40px_-5px_rgba(255,97,32,0.1)]">
-                                     <div class="flex items-center justify-between">
-                                        <h5 class="text-[10px] font-black uppercase text-accent flex items-center gap-2 italic">
-                                            <Star class="h-3 w-3 fill-accent" /> Evaluasi & Rating Pelatih
+                                <div
+                                    class="flex flex-col gap-6 rounded-3xl border border-accent/20 bg-accent/5 p-8 shadow-[0_20px_40px_-5px_rgba(255,97,32,0.1)]"
+                                >
+                                    <div
+                                        class="flex items-center justify-between"
+                                    >
+                                        <h5
+                                            class="flex items-center gap-2 text-[10px] font-black text-accent uppercase italic"
+                                        >
+                                            <Star class="h-3 w-3 fill-accent" />
+                                            Evaluasi & Rating Pelatih
                                         </h5>
-                                        <div v-if="selectedLog?.coach_rating" class="flex gap-1">
-                                            <Star v-for="i in 5" :key="i" class="h-4 w-4" :class="i <= selectedLog.coach_rating ? 'fill-accent text-accent' : 'text-accent/20'" />
+                                        <div
+                                            v-if="selectedLog?.coach_rating"
+                                            class="flex gap-1"
+                                        >
+                                            <Star
+                                                v-for="i in 5"
+                                                :key="i"
+                                                class="h-4 w-4"
+                                                :class="
+                                                    i <=
+                                                    selectedLog.coach_rating
+                                                        ? 'fill-accent text-accent'
+                                                        : 'text-accent/20'
+                                                "
+                                            />
                                         </div>
                                     </div>
                                     <div class="space-y-4">
                                         <div class="space-y-1">
-                                            <p class="text-[10px] font-black text-muted-foreground uppercase opacity-40">Pelatih Mengevaluasi:</p>
-                                            <p class="text-sm font-bold italic leading-relaxed">{{ selectedLog?.coach_evaluation || 'Belum ada evaluasi dari pelatih.' }}</p>
+                                            <p
+                                                class="text-[10px] font-black text-muted-foreground uppercase opacity-40"
+                                            >
+                                                Pelatih Mengevaluasi:
+                                            </p>
+                                            <p
+                                                class="text-sm leading-relaxed font-bold italic"
+                                            >
+                                                {{
+                                                    selectedLog?.coach_evaluation ||
+                                                    'Belum ada evaluasi dari pelatih.'
+                                                }}
+                                            </p>
                                         </div>
-                                        <div v-if="selectedLog?.coach_comments" class="rounded-2xl bg-white/5 p-4 border border-white/5 mt-4">
-                                            <p class="text-[9px] font-black text-accent uppercase opacity-60 mb-1">Komentar Tambahan:</p>
-                                            <p class="text-xs font-semibold text-muted-foreground italic">{{ selectedLog.coach_comments }}</p>
+                                        <div
+                                            v-if="selectedLog?.coach_comments"
+                                            class="mt-4 rounded-2xl border border-white/5 bg-white/5 p-4"
+                                        >
+                                            <p
+                                                class="mb-1 text-[9px] font-black text-accent uppercase opacity-60"
+                                            >
+                                                Komentar Tambahan:
+                                            </p>
+                                            <p
+                                                class="text-xs font-semibold text-muted-foreground italic"
+                                            >
+                                                {{ selectedLog.coach_comments }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="flex flex-col gap-6">
-                                    <h5 class="text-[10px] font-black uppercase opacity-60 flex items-center gap-2">
-                                        <Search class="h-3 w-3" /> Bukti & Lampiran Unit
+                                    <h5
+                                        class="flex items-center gap-2 text-[10px] font-black uppercase opacity-60"
+                                    >
+                                        <Search class="h-3 w-3" /> Bukti &
+                                        Lampiran Unit
                                     </h5>
                                     <div class="grid grid-cols-2 gap-4">
-                                        <div v-for="att in selectedLog?.attachments" :key="att.id" class="group relative aspect-video rounded-2xl bg-muted/30 overflow-hidden border border-border">
-                                            <img v-if="isImage(att.file_type)" :src="`/storage/${att.file_path}`" class="h-full w-full object-cover" />
-                                            <div v-else class="flex h-full w-full items-center justify-center flex-col gap-2">
-                                                <FileText class="h-8 w-8 text-muted-foreground opacity-20" />
-                                                <span class="text-[8px] text-muted-foreground font-black uppercase opacity-40">{{ att.file_name }}</span>
+                                        <div
+                                            v-for="att in selectedLog?.attachments"
+                                            :key="att.id"
+                                            class="group relative aspect-video overflow-hidden rounded-2xl border border-border bg-muted/30"
+                                        >
+                                            <img
+                                                v-if="isImage(att.file_type)"
+                                                :src="`/storage/${att.file_path}`"
+                                                class="h-full w-full object-cover"
+                                            />
+                                            <div
+                                                v-else
+                                                class="flex h-full w-full flex-col items-center justify-center gap-2"
+                                            >
+                                                <FileText
+                                                    class="h-8 w-8 text-muted-foreground opacity-20"
+                                                />
+                                                <span
+                                                    class="text-[8px] font-black text-muted-foreground uppercase opacity-40"
+                                                    >{{ att.file_name }}</span
+                                                >
                                             </div>
-                                            <a :href="`/storage/${att.file_path}`" target="_blank" class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
-                                                <Download class="h-6 w-6 text-white" />
+                                            <a
+                                                :href="`/storage/${att.file_path}`"
+                                                target="_blank"
+                                                class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-all group-hover:opacity-100"
+                                            >
+                                                <Download
+                                                    class="h-6 w-6 text-white"
+                                                />
                                             </a>
                                         </div>
-                                        <div v-if="!selectedLog?.attachments.length" class="col-span-2 rounded-2xl border border-dashed border-border p-8 text-center opacity-30">
-                                            <p class="text-[8px] font-black uppercase tracking-widest">No Attachments Provided</p>
+                                        <div
+                                            v-if="
+                                                !selectedLog?.attachments.length
+                                            "
+                                            class="col-span-2 rounded-2xl border border-dashed border-border p-8 text-center opacity-30"
+                                        >
+                                            <p
+                                                class="text-[8px] font-black tracking-widest uppercase"
+                                            >
+                                                No Attachments Provided
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -579,93 +1001,243 @@ const chartSeries = computed(() => [
             </div>
 
             <!-- Modal: Log Modal (Create/Update) -->
-            <div v-if="showLogModal" class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-3xl">
-                <div class="w-full max-w-2xl animate-in overflow-hidden rounded-[3rem] border border-border bg-card shadow-2xl duration-500 fade-in zoom-in slide-in-from-bottom-10">
-                    <div class="flex items-center justify-between border-b border-border bg-muted/20 p-8 md:p-10">
+            <div
+                v-if="showLogModal"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-3xl"
+            >
+                <div
+                    class="w-full max-w-2xl animate-in overflow-hidden rounded-[3rem] border border-border bg-card shadow-2xl duration-500 slide-in-from-bottom-10 fade-in zoom-in"
+                >
+                    <div
+                        class="flex items-center justify-between border-b border-border bg-muted/20 p-8 md:p-10"
+                    >
                         <div>
-                            <h2 class="text-2xl font-black tracking-tighter text-foreground uppercase italic">
-                                {{ form.id ? 'Update Record' : (selectedSession ? 'Finish Session' : 'Manual Entry') }}
+                            <h2
+                                class="text-2xl font-black tracking-tighter text-foreground uppercase italic"
+                            >
+                                {{
+                                    form.id
+                                        ? 'Update Record'
+                                        : selectedSession
+                                          ? 'Finish Session'
+                                          : 'Manual Entry'
+                                }}
                             </h2>
-                            <p class="mt-1 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50">
-                                {{ form.id ? 'Refine your performance data' : (selectedSession ? 'Complete your scheduled mission' : 'Document your independent ride') }}
+                            <p
+                                class="mt-1 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                            >
+                                {{
+                                    form.id
+                                        ? 'Refine your performance data'
+                                        : selectedSession
+                                          ? 'Complete your scheduled mission'
+                                          : 'Document your independent ride'
+                                }}
                             </p>
                         </div>
-                        <button @click="showLogModal = false" class="rounded-full p-3 text-muted-foreground transition-all hover:bg-muted/50">
+                        <button
+                            @click="showLogModal = false"
+                            class="rounded-full p-3 text-muted-foreground transition-all hover:bg-muted/50"
+                        >
                             <X class="h-6 w-6" />
                         </button>
                     </div>
 
-                    <div class="max-h-[70vh] overflow-y-auto p-11 custom-scrollbar">
-                        <form @submit.prevent="submitLog" class="flex flex-col gap-10">
-                            
+                    <div
+                        class="custom-scrollbar max-h-[70vh] overflow-y-auto p-11"
+                    >
+                        <form
+                            @submit.prevent="submitLog"
+                            class="flex flex-col gap-10"
+                        >
                             <div class="flex flex-col gap-6">
-                                <p class="text-[10px] font-black tracking-[0.3em] text-accent uppercase opacity-80">General Infomation</p>
-                                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                <p
+                                    class="text-[10px] font-black tracking-[0.3em] text-accent uppercase opacity-80"
+                                >
+                                    General Infomation
+                                </p>
+                                <div
+                                    class="grid grid-cols-1 gap-6 md:grid-cols-2"
+                                >
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Judul Latihan</Label>
-                                        <Input v-model="form.title" class="h-14 rounded-2xl bg-muted/30 border-none px-6 font-black" placeholder="E.g. Morning Sprint" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Judul Latihan</Label
+                                        >
+                                        <Input
+                                            v-model="form.title"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="E.g. Morning Sprint"
+                                        />
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Tanggal</Label>
-                                        <DatePicker v-model="form.date" :disabled="!!form.id" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Tanggal</Label
+                                        >
+                                        <DatePicker
+                                            v-model="form.date"
+                                            :disabled="!!form.id"
+                                        />
                                     </div>
                                 </div>
                             </div>
 
                             <div class="flex flex-col gap-6">
-                                <p class="text-[10px] font-black tracking-[0.3em] text-emerald-500 uppercase opacity-80">Performance Metrics</p>
-                                <div class="grid grid-cols-2 gap-6 md:grid-cols-4">
+                                <p
+                                    class="text-[10px] font-black tracking-[0.3em] text-emerald-500 uppercase opacity-80"
+                                >
+                                    Performance Metrics
+                                </p>
+                                <div
+                                    class="grid grid-cols-2 gap-6 md:grid-cols-4"
+                                >
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Distance (KM)</Label>
-                                        <Input v-model="form.distance_km" type="number" step="0.1" class="h-14 rounded-2xl bg-muted/30 border-none px-6 font-black" placeholder="30.5" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Distance (KM)</Label
+                                        >
+                                        <Input
+                                            v-model="form.distance_km"
+                                            type="number"
+                                            step="0.1"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="30.5"
+                                        />
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Duration (Min)</Label>
-                                        <Input v-model="form.duration_minutes" type="number" class="h-14 rounded-2xl bg-muted/30 border-none px-6 font-black" placeholder="60" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Duration (Min)</Label
+                                        >
+                                        <Input
+                                            v-model="form.duration_minutes"
+                                            type="number"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="60"
+                                        />
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Avg RPM</Label>
-                                        <Input v-model="form.rpm" type="number" step="0.1" class="h-14 rounded-2xl bg-muted/30 border-none px-6 font-black" placeholder="90" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Avg RPM</Label
+                                        >
+                                        <Input
+                                            v-model="form.rpm"
+                                            type="number"
+                                            step="0.1"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="90"
+                                        />
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Intensitas</Label>
-                                        <CustomSelect v-model="form.intensity" :options="[
-                                            { value: 'low', label: 'Rendah' },
-                                            { value: 'medium', label: 'Sedang' },
-                                            { value: 'high', label: 'Tinggi' },
-                                            { value: 'very_high', label: 'Sangat Tinggi' }
-                                        ]" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Intensitas</Label
+                                        >
+                                        <CustomSelect
+                                            v-model="form.intensity"
+                                            :options="[
+                                                {
+                                                    value: 'low',
+                                                    label: 'Rendah',
+                                                },
+                                                {
+                                                    value: 'medium',
+                                                    label: 'Sedang',
+                                                },
+                                                {
+                                                    value: 'high',
+                                                    label: 'Tinggi',
+                                                },
+                                                {
+                                                    value: 'very_high',
+                                                    label: 'Sangat Tinggi',
+                                                },
+                                            ]"
+                                        />
                                     </div>
                                 </div>
                             </div>
 
                             <div class="flex flex-col gap-6">
-                                <p class="text-[10px] font-black tracking-[0.3em] text-muted-foreground uppercase opacity-80">Personal Notes & Attachments</p>
+                                <p
+                                    class="text-[10px] font-black tracking-[0.3em] text-muted-foreground uppercase opacity-80"
+                                >
+                                    Personal Notes & Attachments
+                                </p>
                                 <div class="flex flex-col gap-6">
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Athlete Notes</Label>
-                                        <textarea v-model="form.athlete_notes" rows="4" class="w-full rounded-2xl bg-muted/30 border-none p-6 text-sm font-medium focus:ring-2 focus:ring-accent outline-none" placeholder="How did you feel today? Any mechanical issues?"></textarea>
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Athlete Notes</Label
+                                        >
+                                        <textarea
+                                            v-model="form.athlete_notes"
+                                            rows="4"
+                                            class="w-full rounded-2xl border-none bg-muted/30 p-6 text-sm font-medium outline-none focus:ring-2 focus:ring-accent"
+                                            placeholder="How did you feel today? Any mechanical issues?"
+                                        ></textarea>
                                     </div>
-                                    
+
                                     <div class="flex flex-col gap-4">
-                                        <Label class="text-[10px] font-black uppercase opacity-60 italic">Bukti Latihan (Foto Speedometer/Rute)</Label>
-                                        <div class="relative flex min-h-[160px] cursor-pointer flex-col items-center justify-center gap-3 rounded-[2rem] border-2 border-dashed border-border bg-muted/5 transition-all hover:bg-muted/10">
-                                            <input type="file" multiple @change="handleFileChange" class="absolute inset-0 z-10 cursor-pointer opacity-0" />
-                                            <Upload class="h-8 w-8 text-muted-foreground opacity-20" />
-                                            <p class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40">Tap to upload files</p>
+                                        <Label
+                                            class="text-[10px] font-black uppercase italic opacity-60"
+                                            >Bukti Latihan (Foto
+                                            Speedometer/Rute)</Label
+                                        >
+                                        <div
+                                            class="relative flex min-h-[160px] cursor-pointer flex-col items-center justify-center gap-3 rounded-[2rem] border-2 border-dashed border-border bg-muted/5 transition-all hover:bg-muted/10"
+                                        >
+                                            <input
+                                                type="file"
+                                                multiple
+                                                @change="handleFileChange"
+                                                class="absolute inset-0 z-10 cursor-pointer opacity-0"
+                                            />
+                                            <Upload
+                                                class="h-8 w-8 text-muted-foreground opacity-20"
+                                            />
+                                            <p
+                                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                            >
+                                                Tap to upload files
+                                            </p>
                                         </div>
 
-                                        <div v-if="attachmentPreviews.length > 0" class="mt-4 grid grid-cols-4 gap-4">
-                                            <div v-for="(preview, idx) in attachmentPreviews" :key="idx" class="relative aspect-square overflow-hidden rounded-2xl border border-border shadow-md">
-                                                <img :src="preview" class="h-full w-full object-cover" />
+                                        <div
+                                            v-if="attachmentPreviews.length > 0"
+                                            class="mt-4 grid grid-cols-4 gap-4"
+                                        >
+                                            <div
+                                                v-for="(
+                                                    preview, idx
+                                                ) in attachmentPreviews"
+                                                :key="idx"
+                                                class="relative aspect-square overflow-hidden rounded-2xl border border-border shadow-md"
+                                            >
+                                                <img
+                                                    :src="preview"
+                                                    class="h-full w-full object-cover"
+                                                />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <button type="submit" :disabled="form.processing" class="rounded-[2rem] bg-accent py-6 text-xs font-black tracking-[0.3em] text-white uppercase shadow-2xl shadow-accent/40 hover:bg-accent/90 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50">
-                                {{ form.processing ? 'Syncing...' : (form.id ? 'Update Performance Metrics' : 'Log Activity Performance') }}
+                            <button
+                                type="submit"
+                                :disabled="form.processing"
+                                class="rounded-[2rem] bg-accent py-6 text-xs font-black tracking-[0.3em] text-white uppercase shadow-2xl shadow-accent/40 transition-all hover:scale-[1.02] hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
+                            >
+                                {{
+                                    form.processing
+                                        ? 'Syncing...'
+                                        : form.id
+                                          ? 'Update Performance Metrics'
+                                          : 'Log Activity Performance'
+                                }}
                             </button>
                         </form>
                     </div>

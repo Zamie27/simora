@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { Head, router, Link } from '@inertiajs/vue3';
-import { Download, FileText, Calendar, RotateCcw, TrendingUp, Milestone } from 'lucide-vue-next';
+import {
+    Download,
+    FileText,
+    Calendar,
+    RotateCcw,
+    TrendingUp,
+    Milestone,
+} from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 
 import CustomSelect from '@/components/ui/CustomSelect.vue';
@@ -257,10 +264,21 @@ const exportCsv = (athleteId?: number) => {
                                                 }}
                                             </div>
                                             <div>
-                                            <Link :href="`/coach/athletes/${item.athlete.id}`" class="group/link">
-                                                <h4 class="font-black text-foreground uppercase group-hover/link:text-accent transition-colors">{{ item.athlete.name }}</h4>
-                                                <p class="text-[10px] font-bold text-muted-foreground opacity-50">{{ item.athlete.email }}</p>
-                                            </Link>
+                                                <Link
+                                                    :href="`/coach/athletes/${item.athlete.id}`"
+                                                    class="group/link"
+                                                >
+                                                    <h4
+                                                        class="font-black text-foreground uppercase transition-colors group-hover/link:text-accent"
+                                                    >
+                                                        {{ item.athlete.name }}
+                                                    </h4>
+                                                    <p
+                                                        class="text-[10px] font-bold text-muted-foreground opacity-50"
+                                                    >
+                                                        {{ item.athlete.email }}
+                                                    </p>
+                                                </Link>
                                             </div>
                                         </div>
                                     </td>

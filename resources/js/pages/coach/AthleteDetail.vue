@@ -195,10 +195,14 @@ const submitLogUpdate = () => {
 };
 
 const applyFilters = () => {
-    router.get(`/coach/athletes/${props.athlete.id}`, {
-        start_date: startDate.value,
-        end_date: endDate.value,
-    }, { preserveState: true });
+    router.get(
+        `/coach/athletes/${props.athlete.id}`,
+        {
+            start_date: startDate.value,
+            end_date: endDate.value,
+        },
+        { preserveState: true },
+    );
 };
 
 const formatDate = (date: string) => {
@@ -260,27 +264,30 @@ const trainingChartOptions = computed<ApexOptions>(() => ({
     colors: ['#FF6120', '#10B981'],
     stroke: { curve: 'smooth', width: 2 },
     xaxis: {
-        categories: props.performanceTrend.map(t => formatDate(t.date)),
+        categories: props.performanceTrend.map((t) => formatDate(t.date)),
         labels: { style: { colors: '#94a3b8' }, rotate: -45 },
     },
     yaxis: [
-        { 
-            title: { text: "Average Speed (kph)", style: { color: "#FF6120" } },
-            labels: { style: { colors: '#FF6120' } } 
+        {
+            title: { text: 'Average Speed (kph)', style: { color: '#FF6120' } },
+            labels: { style: { colors: '#FF6120' } },
         },
-        { 
-            opposite: true, 
-            title: { text: "Average Cadence (RPM)", style: { color: "#10B981" } },
-            labels: { style: { colors: '#10B981' } } 
-        }
+        {
+            opposite: true,
+            title: {
+                text: 'Average Cadence (RPM)',
+                style: { color: '#10B981' },
+            },
+            labels: { style: { colors: '#10B981' } },
+        },
     ],
     grid: { borderColor: '#1e293b' },
     tooltip: { theme: 'dark' },
 }));
 
 const trainingChartSeries = computed(() => [
-    { name: 'Avg Speed', data: props.performanceTrend.map(t => t.avg_speed) },
-    { name: 'Avg RPM', data: props.performanceTrend.map(t => t.rpm) },
+    { name: 'Avg Speed', data: props.performanceTrend.map((t) => t.avg_speed) },
+    { name: 'Avg RPM', data: props.performanceTrend.map((t) => t.rpm) },
 ]);
 
 const intensityOptions = [
@@ -309,35 +316,71 @@ const completionOptions = [
     <Head :title="`Detail Atlet | ${athlete.name}`" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-10 bg-background p-6 text-foreground md:p-10">
+        <div
+            class="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-10 bg-background p-6 text-foreground md:p-10"
+        >
             <!-- Header -->
-            <div class="flex flex-col items-baseline justify-between gap-4 border-b border-border pb-6 md:flex-row">
+            <div
+                class="flex flex-col items-baseline justify-between gap-4 border-b border-border pb-6 md:flex-row"
+            >
                 <div class="flex items-center gap-6">
-                    <div class="flex h-20 w-20 items-center justify-center rounded-full border-2 border-accent/20 bg-accent/20 text-2xl font-black text-accent shadow-2xl shadow-accent/10">
-                        {{ athlete.name.split(' ').map((n) => n[0]).slice(0, 2).join('') }}
+                    <div
+                        class="flex h-20 w-20 items-center justify-center rounded-full border-2 border-accent/20 bg-accent/20 text-2xl font-black text-accent shadow-2xl shadow-accent/10"
+                    >
+                        {{
+                            athlete.name
+                                .split(' ')
+                                .map((n) => n[0])
+                                .slice(0, 2)
+                                .join('')
+                        }}
                     </div>
                     <div>
-                        <h1 class="text-4xl font-black tracking-tighter text-foreground uppercase">{{ athlete.name }}</h1>
-                        <p class="mt-1 text-xs font-bold tracking-widest text-muted-foreground uppercase opacity-60">{{ athlete.email }}</p>
+                        <h1
+                            class="text-4xl font-black tracking-tighter text-foreground uppercase"
+                        >
+                            {{ athlete.name }}
+                        </h1>
+                        <p
+                            class="mt-1 text-xs font-bold tracking-widest text-muted-foreground uppercase opacity-60"
+                        >
+                            {{ athlete.email }}
+                        </p>
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-4">
-                    <button @click="showAddModal = true" class="flex items-center gap-2 rounded-xl bg-secondary border border-border px-8 py-4 text-xs font-black tracking-widest text-accent uppercase shadow-xl transition-all hover:bg-secondary/90 active:scale-95">
+                    <button
+                        @click="showAddModal = true"
+                        class="flex items-center gap-2 rounded-xl border border-border bg-secondary px-8 py-4 text-xs font-black tracking-widest text-accent uppercase shadow-xl transition-all hover:bg-secondary/90 active:scale-95"
+                    >
                         <Plus class="h-4 w-4" /> Update Data Fisik
                     </button>
                 </div>
             </div>
 
             <!-- Profile Completion Warning -->
-            <div v-if="!athlete.date_of_birth || !athlete.gender" class="group flex items-center justify-between gap-6 rounded-3xl border border-destructive/20 bg-destructive/10 p-6">
+            <div
+                v-if="!athlete.date_of_birth || !athlete.gender"
+                class="group flex items-center justify-between gap-6 rounded-3xl border border-destructive/20 bg-destructive/10 p-6"
+            >
                 <div class="flex items-center gap-6">
-                    <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-destructive text-white shadow-xl shadow-destructive/20 transition-transform group-hover:scale-110">
+                    <div
+                        class="flex h-14 w-14 items-center justify-center rounded-2xl bg-destructive text-white shadow-xl shadow-destructive/20 transition-transform group-hover:scale-110"
+                    >
                         <AlertCircle class="h-6 w-6" />
                     </div>
                     <div>
-                        <h3 class="text-lg font-black tracking-tight text-foreground uppercase">Data Profil Atlet Tidak Lengkap</h3>
-                        <p class="text-xs font-medium text-muted-foreground italic opacity-70">
-                            Atlet belum melengkapi data profil dasar (Tanggal Lahir/Gender). Usia dan BMI tidak dapat dikalkulasi secara akurat.
+                        <h3
+                            class="text-lg font-black tracking-tight text-foreground uppercase"
+                        >
+                            Data Profil Atlet Tidak Lengkap
+                        </h3>
+                        <p
+                            class="text-xs font-medium text-muted-foreground italic opacity-70"
+                        >
+                            Atlet belum melengkapi data profil dasar (Tanggal
+                            Lahir/Gender). Usia dan BMI tidak dapat dikalkulasi
+                            secara akurat.
                         </p>
                     </div>
                 </div>
@@ -345,50 +388,94 @@ const completionOptions = [
 
             <!-- Training Stats Section -->
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <div class="group relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 shadow-xl transition-all hover:shadow-2xl">
+                <div
+                    class="group relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 shadow-xl transition-all hover:shadow-2xl"
+                >
                     <div class="flex items-center gap-4">
-                        <div class="rounded-2xl bg-orange-500/10 p-4 text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-500">
+                        <div
+                            class="rounded-2xl bg-orange-500/10 p-4 text-orange-500 transition-colors duration-500 group-hover:bg-orange-500 group-hover:text-white"
+                        >
                             <Milestone class="h-6 w-6" />
                         </div>
                         <div>
-                            <p class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60">Total Jarak</p>
-                            <h4 class="text-3xl font-black italic">{{ statistics.total_distance_km }} <small class="text-xs">KM</small></h4>
+                            <p
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
+                            >
+                                Total Jarak
+                            </p>
+                            <h4 class="text-3xl font-black italic">
+                                {{ statistics.total_distance_km }}
+                                <small class="text-xs">KM</small>
+                            </h4>
                         </div>
                     </div>
                 </div>
 
-                <div class="group relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 shadow-xl transition-all hover:shadow-2xl">
+                <div
+                    class="group relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 shadow-xl transition-all hover:shadow-2xl"
+                >
                     <div class="flex items-center gap-4">
-                        <div class="rounded-2xl bg-blue-500/10 p-4 text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-500">
+                        <div
+                            class="rounded-2xl bg-blue-500/10 p-4 text-blue-500 transition-colors duration-500 group-hover:bg-blue-500 group-hover:text-white"
+                        >
                             <Clock class="h-6 w-6" />
                         </div>
                         <div>
-                            <p class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60">Durasi</p>
-                            <h4 class="text-3xl font-black italic">{{ statistics.total_duration_minutes }} <small class="text-xs">MIN</small></h4>
+                            <p
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
+                            >
+                                Durasi
+                            </p>
+                            <h4 class="text-3xl font-black italic">
+                                {{ statistics.total_duration_minutes }}
+                                <small class="text-xs">MIN</small>
+                            </h4>
                         </div>
                     </div>
                 </div>
 
-                <div class="group relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 shadow-xl transition-all hover:shadow-2xl">
+                <div
+                    class="group relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 shadow-xl transition-all hover:shadow-2xl"
+                >
                     <div class="flex items-center gap-4">
-                        <div class="rounded-2xl bg-accent/10 p-4 text-accent group-hover:bg-accent group-hover:text-white transition-colors duration-500">
+                        <div
+                            class="rounded-2xl bg-accent/10 p-4 text-accent transition-colors duration-500 group-hover:bg-accent group-hover:text-white"
+                        >
                             <Gauge class="h-6 w-6" />
                         </div>
                         <div>
-                            <p class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60">Avg Speed</p>
-                            <h4 class="text-3xl font-black italic">{{ statistics.avg_speed }} <small class="text-xs">KPH</small></h4>
+                            <p
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
+                            >
+                                Avg Speed
+                            </p>
+                            <h4 class="text-3xl font-black italic">
+                                {{ statistics.avg_speed }}
+                                <small class="text-xs">KPH</small>
+                            </h4>
                         </div>
                     </div>
                 </div>
 
-                <div class="group relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 shadow-xl transition-all hover:shadow-2xl">
+                <div
+                    class="group relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 shadow-xl transition-all hover:shadow-2xl"
+                >
                     <div class="flex items-center gap-4">
-                        <div class="rounded-2xl bg-emerald-500/10 p-4 text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-500">
+                        <div
+                            class="rounded-2xl bg-emerald-500/10 p-4 text-emerald-500 transition-colors duration-500 group-hover:bg-emerald-500 group-hover:text-white"
+                        >
                             <RotateCcw class="h-6 w-6" />
                         </div>
                         <div>
-                            <p class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60">Avg RPM</p>
-                            <h4 class="text-3xl font-black italic">{{ statistics.avg_rpm }} <small class="text-xs">RPM</small></h4>
+                            <p
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
+                            >
+                                Avg RPM
+                            </p>
+                            <h4 class="text-3xl font-black italic">
+                                {{ statistics.avg_rpm }}
+                                <small class="text-xs">RPM</small>
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -397,28 +484,60 @@ const completionOptions = [
             <!-- Charts Section -->
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
                 <!-- Training Trend Chart -->
-                <div class="rounded-[2.5rem] border border-border bg-card p-8 shadow-2xl">
+                <div
+                    class="rounded-[2.5rem] border border-border bg-card p-8 shadow-2xl"
+                >
                     <div class="mb-8 flex items-center justify-between">
-                         <div class="flex items-center gap-4">
-                            <div class="rounded-xl bg-orange-500/10 p-3 text-orange-500"><TrendingUp class="h-5 w-5" /></div>
-                            <h3 class="text-xl font-black tracking-tight uppercase">Tren Performa Latihan</h3>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="rounded-xl bg-orange-500/10 p-3 text-orange-500"
+                            >
+                                <TrendingUp class="h-5 w-5" />
+                            </div>
+                            <h3
+                                class="text-xl font-black tracking-tight uppercase"
+                            >
+                                Tren Performa Latihan
+                            </h3>
                         </div>
                     </div>
                     <div id="training-chart">
-                        <VueApexCharts width="100%" height="350" type="line" :options="trainingChartOptions" :series="trainingChartSeries"></VueApexCharts>
+                        <VueApexCharts
+                            width="100%"
+                            height="350"
+                            type="line"
+                            :options="trainingChartOptions"
+                            :series="trainingChartSeries"
+                        ></VueApexCharts>
                     </div>
                 </div>
 
                 <!-- Physical Trend Chart -->
-                <div class="rounded-[2.5rem] border border-border bg-card p-8 shadow-2xl">
+                <div
+                    class="rounded-[2.5rem] border border-border bg-card p-8 shadow-2xl"
+                >
                     <div class="mb-8 flex items-center justify-between">
-                         <div class="flex items-center gap-4">
-                            <div class="rounded-xl bg-secondary p-3 text-accent"><Activity class="h-5 w-5" /></div>
-                            <h3 class="text-xl font-black tracking-tight uppercase">Progress Fisik (BB/TB)</h3>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="rounded-xl bg-secondary p-3 text-accent"
+                            >
+                                <Activity class="h-5 w-5" />
+                            </div>
+                            <h3
+                                class="text-xl font-black tracking-tight uppercase"
+                            >
+                                Progress Fisik (BB/TB)
+                            </h3>
                         </div>
                     </div>
                     <div id="physical-chart">
-                        <VueApexCharts width="100%" height="350" type="line" :options="physicalChartOptions" :series="physicalChartSeries"></VueApexCharts>
+                        <VueApexCharts
+                            width="100%"
+                            height="350"
+                            type="line"
+                            :options="physicalChartOptions"
+                            :series="physicalChartSeries"
+                        ></VueApexCharts>
                     </div>
                 </div>
             </div>
@@ -426,243 +545,582 @@ const completionOptions = [
             <!-- Main Content & Sidebar -->
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-12">
                 <!-- Training History (Left) -->
-                <div class="lg:col-span-8 flex flex-col gap-6">
+                <div class="flex flex-col gap-6 lg:col-span-8">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-4">
-                            <div class="rounded-xl bg-secondary p-3 text-accent"><Calendar class="h-5 w-5" /></div>
-                            <h2 class="text-2xl font-black tracking-tight uppercase">Riwayat Latihan</h2>
+                            <div
+                                class="rounded-xl bg-secondary p-3 text-accent"
+                            >
+                                <Calendar class="h-5 w-5" />
+                            </div>
+                            <h2
+                                class="text-2xl font-black tracking-tight uppercase"
+                            >
+                                Riwayat Latihan
+                            </h2>
                         </div>
                     </div>
-                    
+
                     <!-- Filters for Log -->
-                     <div class="flex flex-wrap items-end gap-4 rounded-3xl border border-border bg-card p-6 shadow-xl">
-                        <div class="flex flex-col gap-2 min-w-[200px]">
-                            <Label class="text-[10px] font-black uppercase opacity-60">Mulai Dari</Label>
+                    <div
+                        class="flex flex-wrap items-end gap-4 rounded-3xl border border-border bg-card p-6 shadow-xl"
+                    >
+                        <div class="flex min-w-[200px] flex-col gap-2">
+                            <Label
+                                class="text-[10px] font-black uppercase opacity-60"
+                                >Mulai Dari</Label
+                            >
                             <DatePicker v-model="startDate" />
                         </div>
-                        <div class="flex flex-col gap-2 min-w-[200px]">
-                            <Label class="text-[10px] font-black uppercase opacity-60">Sampai Ke</Label>
+                        <div class="flex min-w-[200px] flex-col gap-2">
+                            <Label
+                                class="text-[10px] font-black uppercase opacity-60"
+                                >Sampai Ke</Label
+                            >
                             <DatePicker v-model="endDate" />
                         </div>
-                        <button @click="applyFilters" class="rounded-xl bg-accent px-6 py-3.5 text-[10px] font-black tracking-widest text-white uppercase hover:bg-accent/90">
+                        <button
+                            @click="applyFilters"
+                            class="rounded-xl bg-accent px-6 py-3.5 text-[10px] font-black tracking-widest text-white uppercase hover:bg-accent/90"
+                        >
                             Filter
                         </button>
                     </div>
 
                     <!-- Logs Table -->
-                    <div class="overflow-hidden rounded-3xl border border-border bg-card shadow-2xl">
-                         <div class="overflow-x-auto">
+                    <div
+                        class="overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
+                    >
+                        <div class="overflow-x-auto">
                             <table class="w-full text-left">
-                                <thead class="border-b border-border bg-muted/40">
-                                    <tr class="text-[10px] font-black tracking-widest text-muted-foreground uppercase">
+                                <thead
+                                    class="border-b border-border bg-muted/40"
+                                >
+                                    <tr
+                                        class="text-[10px] font-black tracking-widest text-muted-foreground uppercase"
+                                    >
                                         <th class="px-8 py-5">Tanggal</th>
                                         <th class="px-6 py-5">Jenis</th>
                                         <th class="px-6 py-5">Km / Speed</th>
                                         <th class="px-6 py-5">RPM</th>
                                         <th class="px-6 py-5">Status</th>
-                                        <th class="px-8 py-5 text-right">Action</th>
+                                        <th class="px-8 py-5 text-right">
+                                            Action
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-border/50">
-                                    <tr v-for="log in trainingLogs" :key="log.id" class="group transition-colors hover:bg-muted/10">
+                                    <tr
+                                        v-for="log in trainingLogs"
+                                        :key="log.id"
+                                        class="group transition-colors hover:bg-muted/10"
+                                    >
                                         <td class="px-8 py-6">
-                                            <p class="text-xs font-black text-foreground">{{ formatDate(log.date) }}</p>
-                                            <span v-if="log.session" class="text-[8px] font-bold text-accent uppercase tracking-tighter">Scheduled Sesi</span>
+                                            <p
+                                                class="text-xs font-black text-foreground"
+                                            >
+                                                {{ formatDate(log.date) }}
+                                            </p>
+                                            <span
+                                                v-if="log.session"
+                                                class="text-[8px] font-bold tracking-tighter text-accent uppercase"
+                                                >Scheduled Sesi</span
+                                            >
                                         </td>
                                         <td class="px-6 py-6">
-                                            <p class="text-xs font-black text-foreground mb-1">{{ log.title || (log.session ? log.session.exercise_type.name : log.type) || 'General Session' }}</p>
-                                            <span class="rounded-lg bg-secondary px-2 py-1 text-[8px] font-black text-muted-foreground uppercase border border-border">{{ log.type || 'General' }}</span>
+                                            <p
+                                                class="mb-1 text-xs font-black text-foreground"
+                                            >
+                                                {{
+                                                    log.title ||
+                                                    (log.session
+                                                        ? log.session
+                                                              .exercise_type
+                                                              .name
+                                                        : log.type) ||
+                                                    'General Session'
+                                                }}
+                                            </p>
+                                            <span
+                                                class="rounded-lg border border-border bg-secondary px-2 py-1 text-[8px] font-black text-muted-foreground uppercase"
+                                                >{{
+                                                    log.type || 'General'
+                                                }}</span
+                                            >
                                         </td>
                                         <td class="px-6 py-6">
-                                            <p class="text-xs font-black">{{ log.distance_km || 0 }} <small class="opacity-40 uppercase">km</small></p>
-                                            <p class="text-[10px] font-bold text-accent italic">{{ log.avg_speed || 0 }} kph</p>
+                                            <p class="text-xs font-black">
+                                                {{ log.distance_km || 0 }}
+                                                <small
+                                                    class="uppercase opacity-40"
+                                                    >km</small
+                                                >
+                                            </p>
+                                            <p
+                                                class="text-[10px] font-bold text-accent italic"
+                                            >
+                                                {{ log.avg_speed || 0 }} kph
+                                            </p>
                                         </td>
                                         <td class="px-6 py-6">
-                                            <span class="text-sm font-black italic">{{ log.rpm || 0 }} <small class="text-[10px] opacity-40">rpm</small></span>
+                                            <span
+                                                class="text-sm font-black italic"
+                                                >{{ log.rpm || 0 }}
+                                                <small
+                                                    class="text-[10px] opacity-40"
+                                                    >rpm</small
+                                                ></span
+                                            >
                                         </td>
                                         <td class="px-6 py-6">
-                                            <span :class="[
-                                                'rounded-lg px-3 py-1.5 text-[9px] font-black uppercase tracking-wider',
-                                                log.completion_status === 'completed' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-orange-500/10 text-orange-500'
-                                            ]">
+                                            <span
+                                                :class="[
+                                                    'rounded-lg px-3 py-1.5 text-[9px] font-black tracking-wider uppercase',
+                                                    log.completion_status ===
+                                                    'completed'
+                                                        ? 'bg-emerald-500/10 text-emerald-500'
+                                                        : 'bg-orange-500/10 text-orange-500',
+                                                ]"
+                                            >
                                                 {{ log.completion_status }}
                                             </span>
                                         </td>
                                         <td class="px-8 py-6 text-right">
-                                            <div class="flex items-center justify-end gap-2">
-                                                <button v-if="log.is_editable" @click="openEditLog(log)" class="rounded-xl border border-border bg-card p-2 text-muted-foreground transition-all hover:border-accent hover:text-accent" title="Edit Log">
+                                            <div
+                                                class="flex items-center justify-end gap-2"
+                                            >
+                                                <button
+                                                    v-if="log.is_editable"
+                                                    @click="openEditLog(log)"
+                                                    class="rounded-xl border border-border bg-card p-2 text-muted-foreground transition-all hover:border-accent hover:text-accent"
+                                                    title="Edit Log"
+                                                >
                                                     <Edit3 class="h-4 w-4" />
                                                 </button>
-                                                <button @click="deleteLog(log.id)" class="rounded-xl border border-border bg-card p-2 text-muted-foreground transition-all hover:border-destructive hover:text-destructive" title="Delete Log">
+                                                <button
+                                                    @click="deleteLog(log.id)"
+                                                    class="rounded-xl border border-border bg-card p-2 text-muted-foreground transition-all hover:border-destructive hover:text-destructive"
+                                                    title="Delete Log"
+                                                >
                                                     <X class="h-4 w-4" />
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr v-if="trainingLogs.length === 0">
-                                        <td colspan="6" class="px-8 py-20 text-center">
-                                            <p class="text-xs font-black tracking-widest text-muted-foreground uppercase opacity-40">Belum ada riwayat latihan.</p>
+                                        <td
+                                            colspan="6"
+                                            class="px-8 py-20 text-center"
+                                        >
+                                            <p
+                                                class="text-xs font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                            >
+                                                Belum ada riwayat latihan.
+                                            </p>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                         </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Sidebar (Right) -->
-                <div class="lg:col-span-4 flex flex-col gap-8">
+                <div class="flex flex-col gap-8 lg:col-span-4">
                     <!-- Physical Overview Card -->
-                    <div class="group relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-secondary p-8 shadow-2xl">
-                        <div class="absolute -top-4 -right-4 h-32 w-32 scale-150 rotate-12 rounded-full bg-white/5 transition-transform group-hover:scale-110"></div>
-                        <h3 class="relative z-10 mb-8 text-[10px] font-black tracking-[0.2em] text-[#a4badd] uppercase opacity-60">Status Fisik Terkini</h3>
+                    <div
+                        class="group relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-secondary p-8 shadow-2xl"
+                    >
+                        <div
+                            class="absolute -top-4 -right-4 h-32 w-32 scale-150 rotate-12 rounded-full bg-white/5 transition-transform group-hover:scale-110"
+                        ></div>
+                        <h3
+                            class="relative z-10 mb-8 text-[10px] font-black tracking-[0.2em] text-[#a4badd] uppercase opacity-60"
+                        >
+                            Status Fisik Terkini
+                        </h3>
                         <div class="relative z-10 space-y-6">
                             <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-black uppercase opacity-40">BB / TB</span>
-                                <p class="text-xl font-black italic">{{ athlete.physical_metrics[0]?.weight || '?' }}kg / {{ athlete.physical_metrics[0]?.height || '?' }}cm</p>
+                                <span
+                                    class="text-[10px] font-black uppercase opacity-40"
+                                    >BB / TB</span
+                                >
+                                <p class="text-xl font-black italic">
+                                    {{
+                                        athlete.physical_metrics[0]?.weight ||
+                                        '?'
+                                    }}kg /
+                                    {{
+                                        athlete.physical_metrics[0]?.height ||
+                                        '?'
+                                    }}cm
+                                </p>
                             </div>
                             <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-black uppercase opacity-40">BMI Score</span>
-                                <p class="text-xl font-black italic text-accent">{{ athlete.physical_metrics[0]?.bmi || '?' }}</p>
+                                <span
+                                    class="text-[10px] font-black uppercase opacity-40"
+                                    >BMI Score</span
+                                >
+                                <p
+                                    class="text-xl font-black text-accent italic"
+                                >
+                                    {{
+                                        athlete.physical_metrics[0]?.bmi || '?'
+                                    }}
+                                </p>
                             </div>
                             <div class="rounded-2xl bg-white/5 p-4 text-center">
-                                <span class="text-[9px] font-bold text-accent uppercase tracking-[0.2em]">{{ athlete.physical_metrics[0]?.bmi_status || 'Waiting Data' }}</span>
+                                <span
+                                    class="text-[9px] font-bold tracking-[0.2em] text-accent uppercase"
+                                    >{{
+                                        athlete.physical_metrics[0]
+                                            ?.bmi_status || 'Waiting Data'
+                                    }}</span
+                                >
                             </div>
                         </div>
                     </div>
 
                     <!-- Category Management Tool -->
-                    <div class="rounded-[2.5rem] border border-border bg-card p-10 shadow-xl">
-                        <h3 class="mb-6 text-xs font-black tracking-[0.2em] text-muted-foreground uppercase opacity-60">Kategori Atlet</h3>
-                        <form @submit.prevent="updateCategory" class="flex flex-col gap-4">
-                            <CustomSelect v-model="categoryForm.category_id" :options="props.categories.map(c => ({ value: c.id.toString(), label: c.name }))" />
-                            <button type="submit" :disabled="categoryForm.processing" class="flex w-full items-center justify-center gap-3 rounded-2xl bg-accent px-6 py-5 text-[10px] font-black tracking-widest text-white uppercase shadow-xl shadow-accent/10 transition-all hover:bg-accent/90">
-                                <Save class="h-4 w-4" /> {{ categoryForm.processing ? 'Saving...' : 'Update Kategori' }}
+                    <div
+                        class="rounded-[2.5rem] border border-border bg-card p-10 shadow-xl"
+                    >
+                        <h3
+                            class="mb-6 text-xs font-black tracking-[0.2em] text-muted-foreground uppercase opacity-60"
+                        >
+                            Kategori Atlet
+                        </h3>
+                        <form
+                            @submit.prevent="updateCategory"
+                            class="flex flex-col gap-4"
+                        >
+                            <CustomSelect
+                                v-model="categoryForm.category_id"
+                                :options="
+                                    props.categories.map((c) => ({
+                                        value: c.id.toString(),
+                                        label: c.name,
+                                    }))
+                                "
+                            />
+                            <button
+                                type="submit"
+                                :disabled="categoryForm.processing"
+                                class="flex w-full items-center justify-center gap-3 rounded-2xl bg-accent px-6 py-5 text-[10px] font-black tracking-widest text-white uppercase shadow-xl shadow-accent/10 transition-all hover:bg-accent/90"
+                            >
+                                <Save class="h-4 w-4" />
+                                {{
+                                    categoryForm.processing
+                                        ? 'Saving...'
+                                        : 'Update Kategori'
+                                }}
                             </button>
                         </form>
                     </div>
 
                     <!-- Athlete Profile Info -->
-                    <div class="rounded-[2.5rem] border border-border bg-card p-10 shadow-xl space-y-6">
-                        <div class="flex items-center justify-between border-b border-border pb-4">
-                            <span class="text-[10px] font-black uppercase opacity-40">Age</span>
-                            <span class="text-xs font-black text-foreground">{{ athlete.physical_metrics[0]?.age || '-' }} Thn</span>
+                    <div
+                        class="space-y-6 rounded-[2.5rem] border border-border bg-card p-10 shadow-xl"
+                    >
+                        <div
+                            class="flex items-center justify-between border-b border-border pb-4"
+                        >
+                            <span
+                                class="text-[10px] font-black uppercase opacity-40"
+                                >Age</span
+                            >
+                            <span class="text-xs font-black text-foreground"
+                                >{{
+                                    athlete.physical_metrics[0]?.age || '-'
+                                }}
+                                Thn</span
+                            >
                         </div>
-                        <div class="flex items-center justify-between border-b border-border pb-4">
-                            <span class="text-[10px] font-black uppercase opacity-40">Gender</span>
-                            <span class="text-xs font-black text-foreground uppercase">{{ athlete.gender || '-' }}</span>
+                        <div
+                            class="flex items-center justify-between border-b border-border pb-4"
+                        >
+                            <span
+                                class="text-[10px] font-black uppercase opacity-40"
+                                >Gender</span
+                            >
+                            <span
+                                class="text-xs font-black text-foreground uppercase"
+                                >{{ athlete.gender || '-' }}</span
+                            >
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-black uppercase opacity-40">Verified Date</span>
-                            <span class="text-xs font-black text-muted-foreground italic">20/03/2026</span>
+                            <span
+                                class="text-[10px] font-black uppercase opacity-40"
+                                >Verified Date</span
+                            >
+                            <span
+                                class="text-xs font-black text-muted-foreground italic"
+                                >20/03/2026</span
+                            >
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Modal: Update Physical Metric -->
-            <div v-if="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-xl">
-                <div class="w-full max-w-xl animate-in overflow-hidden rounded-[2.5rem] border border-border bg-card shadow-2xl duration-300 fade-in zoom-in">
-                    <div class="flex items-center justify-between border-b border-border bg-muted/20 p-10">
-                        <h2 class="text-2xl font-black tracking-tight uppercase">Update Data Fisik</h2>
-                        <button @click="showAddModal = false" class="rounded-full p-2 hover:bg-muted"><AlertCircle class="h-6 w-6 rotate-45" /></button>
+            <div
+                v-if="showAddModal"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-xl"
+            >
+                <div
+                    class="w-full max-w-xl animate-in overflow-hidden rounded-[2.5rem] border border-border bg-card shadow-2xl duration-300 fade-in zoom-in"
+                >
+                    <div
+                        class="flex items-center justify-between border-b border-border bg-muted/20 p-10"
+                    >
+                        <h2
+                            class="text-2xl font-black tracking-tight uppercase"
+                        >
+                            Update Data Fisik
+                        </h2>
+                        <button
+                            @click="showAddModal = false"
+                            class="rounded-full p-2 hover:bg-muted"
+                        >
+                            <AlertCircle class="h-6 w-6 rotate-45" />
+                        </button>
                     </div>
-                    <form @submit.prevent="submit" class="p-10 grid grid-cols-2 gap-8">
+                    <form
+                        @submit.prevent="submit"
+                        class="grid grid-cols-2 gap-8 p-10"
+                    >
                         <div class="flex flex-col gap-2">
-                            <Label class="text-[10px] font-black uppercase opacity-60">Tinggi (CM)</Label>
-                            <Input type="number" v-model="form.height" class="h-14 rounded-2xl bg-muted/30 border-none px-6 font-black" />
+                            <Label
+                                class="text-[10px] font-black uppercase opacity-60"
+                                >Tinggi (CM)</Label
+                            >
+                            <Input
+                                type="number"
+                                v-model="form.height"
+                                class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                            />
                         </div>
                         <div class="flex flex-col gap-2">
-                            <Label class="text-[10px] font-black uppercase opacity-60">Berat (KG)</Label>
-                            <Input type="number" v-model="form.weight" class="h-14 rounded-2xl bg-muted/30 border-none px-6 font-black" />
+                            <Label
+                                class="text-[10px] font-black uppercase opacity-60"
+                                >Berat (KG)</Label
+                            >
+                            <Input
+                                type="number"
+                                v-model="form.weight"
+                                class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                            />
                         </div>
                         <div class="col-span-2 flex flex-col gap-2">
-                            <Label class="text-[10px] font-black uppercase opacity-60">Tanggal</Label>
+                            <Label
+                                class="text-[10px] font-black uppercase opacity-60"
+                                >Tanggal</Label
+                            >
                             <DatePicker v-model="form.recorded_at" />
                         </div>
-                        <button type="submit" class="col-span-2 rounded-2xl bg-accent py-5 text-[10px] font-black tracking-widest text-white uppercase shadow-xl hover:bg-accent/90">Simpan Perubahan</button>
+                        <button
+                            type="submit"
+                            class="col-span-2 rounded-2xl bg-accent py-5 text-[10px] font-black tracking-widest text-white uppercase shadow-xl hover:bg-accent/90"
+                        >
+                            Simpan Perubahan
+                        </button>
                     </form>
                 </div>
             </div>
 
             <!-- Modal: Edit Training Log (Coach) -->
-            <div v-if="showEditLogModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-background/95 p-4 backdrop-blur-2xl">
-                <div class="w-full max-w-2xl animate-in fade-in zoom-in duration-300 rounded-[3rem] border border-white/10 bg-card shadow-[0_100px_150px_-50px_rgba(0,0,0,0.5)] overflow-hidden">
-                    <div class="flex items-center justify-between border-b border-white/5 bg-muted/20 p-8">
+            <div
+                v-if="showEditLogModal"
+                class="fixed inset-0 z-[60] flex items-center justify-center bg-background/95 p-4 backdrop-blur-2xl"
+            >
+                <div
+                    class="w-full max-w-2xl animate-in overflow-hidden rounded-[3rem] border border-white/10 bg-card shadow-[0_100px_150px_-50px_rgba(0,0,0,0.5)] duration-300 fade-in zoom-in"
+                >
+                    <div
+                        class="flex items-center justify-between border-b border-white/5 bg-muted/20 p-8"
+                    >
                         <div>
-                            <p class="text-[10px] font-black tracking-widest text-accent uppercase">Pelatih Monitoring</p>
-                            <h2 class="text-2xl font-black tracking-tight text-foreground uppercase">Edit Log Latihan</h2>
+                            <p
+                                class="text-[10px] font-black tracking-widest text-accent uppercase"
+                            >
+                                Pelatih Monitoring
+                            </p>
+                            <h2
+                                class="text-2xl font-black tracking-tight text-foreground uppercase"
+                            >
+                                Edit Log Latihan
+                            </h2>
                         </div>
-                        <button @click="showEditLogModal = false" class="rounded-full bg-white/5 p-3 text-muted-foreground hover:bg-white/10 hover:text-white transition-all">
+                        <button
+                            @click="showEditLogModal = false"
+                            class="rounded-full bg-white/5 p-3 text-muted-foreground transition-all hover:bg-white/10 hover:text-white"
+                        >
                             <Activity class="h-6 w-6 rotate-45" />
                         </button>
                     </div>
-                    
-                    <form @submit.prevent="submitLogUpdate" class="p-10 h-[70vh] overflow-y-auto custom-scrollbar">
-                        <div class="space-y-2 mb-8">
-                            <Label class="text-[10px] font-black uppercase opacity-60">Judul Latihan</Label>
-                            <Input v-model="logForm.title" class="h-14 rounded-2xl bg-white/5 border-white/10 px-6 font-black" placeholder="Nama sesi latihan..." />
+
+                    <form
+                        @submit.prevent="submitLogUpdate"
+                        class="custom-scrollbar h-[70vh] overflow-y-auto p-10"
+                    >
+                        <div class="mb-8 space-y-2">
+                            <Label
+                                class="text-[10px] font-black uppercase opacity-60"
+                                >Judul Latihan</Label
+                            >
+                            <Input
+                                v-model="logForm.title"
+                                class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black"
+                                placeholder="Nama sesi latihan..."
+                            />
                         </div>
 
-                        <div class="grid grid-cols-2 gap-8 mb-10">
+                        <div class="mb-10 grid grid-cols-2 gap-8">
                             <!-- Basic Metrics -->
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Jarak (KM)</Label>
-                                <Input type="number" step="0.01" v-model="logForm.distance_km" class="h-14 rounded-2xl bg-white/5 border-white/10 px-6 font-black" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Jarak (KM)</Label
+                                >
+                                <Input
+                                    type="number"
+                                    step="0.01"
+                                    v-model="logForm.distance_km"
+                                    class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black"
+                                />
                             </div>
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Durasi (Menit)</Label>
-                                <Input type="number" v-model="logForm.duration_minutes" class="h-14 rounded-2xl bg-white/5 border-white/10 px-6 font-black" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Durasi (Menit)</Label
+                                >
+                                <Input
+                                    type="number"
+                                    v-model="logForm.duration_minutes"
+                                    class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black"
+                                />
                             </div>
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Avg RPM</Label>
-                                <Input type="number" step="0.1" v-model="logForm.rpm" class="h-14 rounded-2xl bg-white/5 border-white/10 px-6 font-black" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Avg RPM</Label
+                                >
+                                <Input
+                                    type="number"
+                                    step="0.1"
+                                    v-model="logForm.rpm"
+                                    class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black"
+                                />
                             </div>
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Intensitas</Label>
-                                <CustomSelect v-model="logForm.intensity" :options="intensityOptions" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Intensitas</Label
+                                >
+                                <CustomSelect
+                                    v-model="logForm.intensity"
+                                    :options="intensityOptions"
+                                />
                             </div>
                         </div>
 
                         <!-- Status & Rating -->
-                        <div class="grid grid-cols-2 gap-8 mb-10">
-                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Kehadiran</Label>
-                                <CustomSelect v-model="logForm.attendance_status" :options="attendanceOptions" />
+                        <div class="mb-10 grid grid-cols-2 gap-8">
+                            <div class="space-y-2">
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Kehadiran</Label
+                                >
+                                <CustomSelect
+                                    v-model="logForm.attendance_status"
+                                    :options="attendanceOptions"
+                                />
                             </div>
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Penyelesaian</Label>
-                                <CustomSelect v-model="logForm.completion_status" :options="completionOptions" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Penyelesaian</Label
+                                >
+                                <CustomSelect
+                                    v-model="logForm.completion_status"
+                                    :options="completionOptions"
+                                />
                             </div>
                         </div>
 
                         <!-- Athlete Notes (Read Only) -->
-                         <div class="space-y-2 mb-10">
-                            <Label class="text-[10px] font-black uppercase opacity-60 italic">Catatan Atlet (View Only)</Label>
-                            <div class="rounded-2xl bg-muted/40 p-4 text-xs font-medium italic text-muted-foreground border border-border">
-                                {{ selectedLog?.athlete_notes || 'Tidak ada catatan dari atlet.' }}
+                        <div class="mb-10 space-y-2">
+                            <Label
+                                class="text-[10px] font-black uppercase italic opacity-60"
+                                >Catatan Atlet (View Only)</Label
+                            >
+                            <div
+                                class="rounded-2xl border border-border bg-muted/40 p-4 text-xs font-medium text-muted-foreground italic"
+                            >
+                                {{
+                                    selectedLog?.athlete_notes ||
+                                    'Tidak ada catatan dari atlet.'
+                                }}
                             </div>
                         </div>
 
                         <!-- Coach Feedback Section -->
-                         <div class="flex flex-col gap-8 p-8 rounded-3xl bg-accent/5 border border-accent/20">
+                        <div
+                            class="flex flex-col gap-8 rounded-3xl border border-accent/20 bg-accent/5 p-8"
+                        >
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase text-accent">Rating Performa Pelatih (1-5)</Label>
-                                <Input type="number" min="1" max="5" v-model="logForm.coach_rating" class="h-14 rounded-2xl bg-white/5 border-accent/20 px-6 font-black text-accent" />
+                                <Label
+                                    class="text-[10px] font-black text-accent uppercase"
+                                    >Rating Performa Pelatih (1-5)</Label
+                                >
+                                <Input
+                                    type="number"
+                                    min="1"
+                                    max="5"
+                                    v-model="logForm.coach_rating"
+                                    class="h-14 rounded-2xl border-accent/20 bg-white/5 px-6 font-black text-accent"
+                                />
                             </div>
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Evaluasi Pelatih</Label>
-                                <textarea v-model="logForm.coach_evaluation" rows="4" class="w-full rounded-2xl bg-white/5 border-white/10 p-4 text-sm font-medium focus:ring-2 focus:ring-accent outline-none" placeholder="Masukkan evaluasi detail performa..."></textarea>
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Evaluasi Pelatih</Label
+                                >
+                                <textarea
+                                    v-model="logForm.coach_evaluation"
+                                    rows="4"
+                                    class="w-full rounded-2xl border-white/10 bg-white/5 p-4 text-sm font-medium outline-none focus:ring-2 focus:ring-accent"
+                                    placeholder="Masukkan evaluasi detail performa..."
+                                ></textarea>
                             </div>
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Komentar Tambahan</Label>
-                                <textarea v-model="logForm.coach_comments" rows="2" class="w-full rounded-2xl bg-white/5 border-white/10 p-4 text-sm font-medium focus:ring-2 focus:ring-accent outline-none" placeholder="Instruksi tambahan untuk sesi selanjutnya..."></textarea>
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Komentar Tambahan</Label
+                                >
+                                <textarea
+                                    v-model="logForm.coach_comments"
+                                    rows="2"
+                                    class="w-full rounded-2xl border-white/10 bg-white/5 p-4 text-sm font-medium outline-none focus:ring-2 focus:ring-accent"
+                                    placeholder="Instruksi tambahan untuk sesi selanjutnya..."
+                                ></textarea>
                             </div>
                         </div>
 
-                        <div class="flex gap-4 mt-10">
-                             <button type="button" @click="showEditLogModal = false" class="flex-1 rounded-2xl border border-white/10 bg-white/5 py-5 text-[10px] font-black tracking-widest uppercase hover:bg-white/10">Batal</button>
-                             <button type="submit" class="flex-[2] rounded-2xl bg-accent py-5 text-[10px] font-black tracking-widest text-white uppercase shadow-2xl shadow-accent/30 hover:bg-accent/90">Simpan Log Latihan</button>
+                        <div class="mt-10 flex gap-4">
+                            <button
+                                type="button"
+                                @click="showEditLogModal = false"
+                                class="flex-1 rounded-2xl border border-white/10 bg-white/5 py-5 text-[10px] font-black tracking-widest uppercase hover:bg-white/10"
+                            >
+                                Batal
+                            </button>
+                            <button
+                                type="submit"
+                                class="flex-[2] rounded-2xl bg-accent py-5 text-[10px] font-black tracking-widest text-white uppercase shadow-2xl shadow-accent/30 hover:bg-accent/90"
+                            >
+                                Simpan Log Latihan
+                            </button>
                         </div>
                     </form>
                 </div>

@@ -60,8 +60,11 @@ class UserController extends Controller
     public function pending(): Response
     {
         return Inertia::render('management/PendingVerifications', [
-            'pendingUsers' => User::where('is_verified', false)->with('role')->get(),
-            'coaches' => User::whereHas('role', fn ($q) => $q->where('name', 'Pelatih'))->get(),
+            'pendingUsers' => User::where('is_verified', false)
+                ->whereRole('Atlet')
+                ->with('role')
+                ->get(),
+            'coaches' => User::whereRole('Pelatih')->get(),
         ]);
     }
 

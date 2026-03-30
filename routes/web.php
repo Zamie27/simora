@@ -1,8 +1,14 @@
 <?php
 
 use App\Http\Controllers\Athlete\PhysicalController;
+use App\Http\Controllers\Athlete\TrainingController;
 use App\Http\Controllers\Coach\AthleteController;
+use App\Http\Controllers\Coach\PerformanceController;
+use App\Http\Controllers\Coach\ReportController as CoachReportController;
+use App\Http\Controllers\Coach\TrainingSessionController;
 use App\Http\Controllers\Management\CategoryController;
+use App\Http\Controllers\Management\ExerciseTypeController;
+use App\Http\Controllers\Management\ReportController as ManagementReportController;
 use App\Http\Controllers\Management\UserController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -13,6 +19,9 @@ Route::inertia('/', 'Welcome', [
 
 Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+
+    // Tools
+    Route::inertia('tools/gear-calculator', 'tools/GearCalculator')->name('tools.gear-calculator');
 
     // Management Routes (still filtered by role + verified-user)
     Route::middleware(['role:Manajemen'])->prefix('management')->name('management.')->group(function () {
@@ -31,6 +40,16 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
         Route::put('categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
         Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+        // Exercise Type Management
+        Route::get('exercise-types', [ExerciseTypeController::class, 'index'])->name('exercise-types.index');
+        Route::post('exercise-types', [ExerciseTypeController::class, 'store'])->name('exercise-types.store');
+        Route::put('exercise-types/{exerciseType}', [ExerciseTypeController::class, 'update'])->name('exercise-types.update');
+        Route::delete('exercise-types/{exerciseType}', [ExerciseTypeController::class, 'destroy'])->name('exercise-types.destroy');
+
+        // Reports
+        Route::get('reports', [ManagementReportController::class, 'index'])->name('reports.index');
+        Route::post('reports/export', [ManagementReportController::class, 'export'])->name('reports.export');
     });
 
     // Coach specific routes
@@ -39,12 +58,33 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::get('athletes/{athlete}', [AthleteController::class, 'show'])->name('athletes.show');
         Route::patch('athletes/{athlete}/category', [AthleteController::class, 'updateCategory'])->name('athletes.category.update');
         Route::post('athletes/{athlete}/metrics', [AthleteController::class, 'storeMetric'])->name('athletes.metrics.store');
+
+        // Training Sessions (Standalone, multi-athlete)
+        Route::get('training-sessions', [TrainingSessionController::class, 'index'])->name('training-sessions.index');
+        Route::post('training-sessions', [TrainingSessionController::class, 'store'])->name('training-sessions.store');
+        Route::get('training-sessions/{session}', [TrainingSessionController::class, 'show'])->name('training-sessions.show');
+        Route::patch('training-sessions/{session}', [TrainingSessionController::class, 'update'])->name('training-sessions.update');
+        Route::delete('training-sessions/{session}', [TrainingSessionController::class, 'destroy'])->name('training-sessions.destroy');
+
+        Route::patch('training-logs/{log}/evaluation', [TrainingSessionController::class, 'updateEvaluation'])->name('training-logs.evaluation');
+
+        // Performance Comparison
+        Route::get('performance-comparison', [PerformanceController::class, 'comparison'])->name('performance.comparison');
+        Route::get('performance-comparison/data', [PerformanceController::class, 'getComparisonData'])->name('performance.comparison.data');
+
+        // Reports
+        Route::get('reports', [CoachReportController::class, 'index'])->name('reports.index');
+        Route::post('reports/export', [CoachReportController::class, 'export'])->name('reports.export');
     });
 
     // Athlete specific routes
     Route::middleware(['role:Atlet'])->prefix('athlete')->name('athlete.')->group(function () {
         Route::get('physical', [PhysicalController::class, 'index'])->name('physical.index');
         Route::post('physical', [PhysicalController::class, 'store'])->name('physical.store');
+
+        // Training
+        Route::get('training', [TrainingController::class, 'index'])->name('training.index');
+        Route::post('training/log', [TrainingController::class, 'storeLog'])->name('training.log.store');
     });
 
     // Verification Pending Route (for athletes)

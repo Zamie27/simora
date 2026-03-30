@@ -2,7 +2,12 @@
 import { Link, usePage } from '@inertiajs/vue3';
 import {
     Activity,
+    BarChart3,
+    Bike,
     BookOpen,
+    Calculator,
+    ClipboardList,
+    FileText,
     FolderGit2,
     LayoutGrid,
     ShieldCheck,
@@ -24,8 +29,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import type { NavItem, SharedData } from '@/types';
 import { dashboard } from '@/routes';
+import type { NavItem, SharedData } from '@/types';
 
 const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user);
@@ -62,23 +67,67 @@ const mainNavItems = computed<NavItem[]>(() => {
                 href: '/management/categories',
                 icon: BookOpen,
             },
+            {
+                title: 'Jenis Latihan',
+                href: '/management/exercise-types',
+                icon: Activity,
+            },
+            {
+                title: 'Laporan Performa',
+                href: '/management/reports',
+                icon: FileText,
+            },
         );
     }
 
     if (roleName.value === 'Pelatih') {
-        items.push({
-            title: 'Atlet Saya',
-            href: '/coach/athletes',
-            icon: Users,
-        });
+        items.push(
+            {
+                title: 'Atlet Saya',
+                href: '/coach/athletes',
+                icon: Users,
+            },
+            {
+                title: 'Jadwal Latihan',
+                href: '/coach/training-sessions',
+                icon: ClipboardList,
+            },
+            {
+                title: 'Kalkulator Gear',
+                href: '/tools/gear-calculator',
+                icon: Calculator,
+            },
+            {
+                title: 'Perbandingan Performa',
+                href: '/coach/performance-comparison',
+                icon: BarChart3,
+            },
+            {
+                title: 'Laporan',
+                href: '/coach/reports',
+                icon: FileText,
+            },
+        );
     }
 
     if (roleName.value === 'Atlet') {
-        items.push({
-            title: 'Update Fisik',
-            href: '/athlete/physical',
-            icon: Activity,
-        });
+        items.push(
+            {
+                title: 'Update Fisik',
+                href: '/athlete/physical',
+                icon: Activity,
+            },
+            {
+                title: 'Latihan Saya',
+                href: '/athlete/training',
+                icon: Bike,
+            },
+            {
+                title: 'Kalkulator Gear',
+                href: '/tools/gear-calculator',
+                icon: Calculator,
+            },
+        );
     }
 
     return items;

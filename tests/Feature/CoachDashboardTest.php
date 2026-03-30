@@ -17,7 +17,7 @@ class CoachDashboardTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Seed roles
         Role::create(['name' => 'Manajemen']);
         Role::create(['name' => 'Pelatih']);
@@ -41,7 +41,7 @@ class CoachDashboardTest extends TestCase
     {
         $coachRole = Role::where('name', 'Pelatih')->first();
         $atletRole = Role::where('name', 'Atlet')->first();
-        
+
         $coach = User::factory()->create([
             'role_id' => $coachRole->id,
             'status' => 'verified',

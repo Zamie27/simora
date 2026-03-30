@@ -9,6 +9,7 @@ use App\Http\Controllers\Coach\EventSettingController;
 use App\Http\Controllers\Coach\PerformanceController;
 use App\Http\Controllers\Coach\ReportController as CoachReportController;
 use App\Http\Controllers\Coach\TrainingSessionController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Management\CategoryController;
 use App\Http\Controllers\Management\ExerciseTypeController;
 use App\Http\Controllers\Management\ReportController as ManagementReportController;
@@ -21,7 +22,7 @@ Route::inertia('/', 'Welcome', [
 ])->name('home');
 
 Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
-    Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+    Route::get('dashboard', DashboardController::class)->name('dashboard');
 
     // Tools
     Route::inertia('tools/gear-calculator', 'tools/GearCalculator')->name('tools.gear-calculator');
@@ -99,6 +100,9 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
 
     // Athlete specific routes
     Route::middleware(['role:Atlet'])->prefix('athlete')->name('athlete.')->group(function () {
+        Route::get('dashboard', [App\Http\Controllers\Athlete\DashboardController::class, 'index'])->name('dashboard');
+        Route::post('dashboard/quick-update', [App\Http\Controllers\Athlete\DashboardController::class, 'quickUpdate'])->name('dashboard.quick-update');
+
         Route::get('physical', [PhysicalController::class, 'index'])->name('physical.index');
         Route::post('physical', [PhysicalController::class, 'store'])->name('physical.store');
 

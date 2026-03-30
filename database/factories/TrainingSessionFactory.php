@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\TrainingPlan;
 use App\Models\TrainingSession;
+use App\Models\User;
+use App\Models\ExerciseType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,8 @@ class TrainingSessionFactory extends Factory
     public function definition(): array
     {
         return [
-            'training_plan_id' => TrainingPlan::factory(),
+            'coach_id' => User::factory(),
+            'exercise_type_id' => ExerciseType::factory(),
             'scheduled_date' => fake()->dateTimeBetween('-1 week', '+2 weeks'),
             'scheduled_time' => fake()->time('H:i'),
             'type' => fake()->randomElement(['endurance', 'interval', 'recovery', 'time_trial']),

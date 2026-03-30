@@ -58,6 +58,7 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
 
     // Coach specific routes
     Route::middleware(['role:Pelatih'])->prefix('coach')->name('coach.')->group(function () {
+        Route::get('dashboard', [\App\Http\Controllers\Coach\DashboardController::class, 'index'])->name('dashboard');
         Route::get('athletes', [AthleteController::class, 'index'])->name('athletes.index');
         Route::get('athletes/{athlete}', [AthleteController::class, 'show'])->name('athletes.show');
         Route::patch('athletes/{athlete}/category', [AthleteController::class, 'updateCategory'])->name('athletes.category.update');

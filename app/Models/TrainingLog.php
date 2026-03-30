@@ -59,6 +59,11 @@ class TrainingLog extends Model
         return $this->belongsTo(User::class, 'athlete_id');
     }
 
+    public function exerciseType(): BelongsTo
+    {
+        return $this->belongsTo(ExerciseType::class, 'exercise_type_id');
+    }
+
     public function attachments(): HasMany
     {
         return $this->hasMany(TrainingAttachment::class);

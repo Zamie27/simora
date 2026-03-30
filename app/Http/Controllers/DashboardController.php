@@ -27,7 +27,7 @@ class DashboardController extends Controller
         }
 
         if ($role === 'Pelatih') {
-            return redirect()->route('coach.athletes.index');
+            return redirect()->route('coach.dashboard');
         }
 
         if ($role === 'Atlet') {

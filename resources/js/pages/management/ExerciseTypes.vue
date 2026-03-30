@@ -91,7 +91,8 @@ const closeModal = () => {
                     <p
                         class="mt-2 text-[10px] font-medium tracking-widest text-muted-foreground uppercase italic opacity-80"
                     >
-                        Kelola jenis aktivitas latihan seperti Endurance, Interval, Hill Climb, dll.
+                        Kelola jenis aktivitas latihan seperti Endurance,
+                        Interval, Hill Climb, dll.
                     </p>
                 </div>
                 <button
@@ -256,11 +257,7 @@ const closeModal = () => {
                                 :disabled="form.processing"
                                 class="rounded-2xl bg-accent py-5 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
                             >
-                                {{
-                                    editingType
-                                        ? 'Perbarui'
-                                        : 'Simpan'
-                                }}
+                                {{ editingType ? 'Perbarui' : 'Simpan' }}
                             </button>
                         </form>
                     </div>

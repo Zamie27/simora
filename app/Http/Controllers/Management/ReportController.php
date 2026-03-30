@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\TrainingLogRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Carbon;
 
 class ReportController extends Controller
 {
@@ -91,6 +91,7 @@ class ReportController extends Controller
         if ($athleteId) {
             $athlete = User::findOrFail($athleteId);
             $logs = $this->logRepository->getForAthlete($athleteId, $startStr, $endStr);
+
             return $this->exportCsv($logs, $athlete->name);
         }
 
@@ -135,26 +136,26 @@ class ReportController extends Controller
         $callback = function () use ($logs) {
             $file = fopen('php://output', 'w');
             fputcsv($file, [
-                'Tanggal', 
-                'Atlet', 
+                'Tanggal',
+                'Atlet',
                 'Judul Latihan',
                 'Jenis Latihan',
-                'Jarak (km)', 
-                'Durasi (menit)', 
-                'Kecepatan Rata-rata (km/h)', 
+                'Jarak (km)',
+                'Durasi (menit)',
+                'Kecepatan Rata-rata (km/h)',
                 'Cadence (RPM)',
-                'Intensitas', 
-                'Status Kehadiran', 
-                'Status Penyelesaian', 
-                'Rating', 
-                'Evaluasi Pelatih'
+                'Intensitas',
+                'Status Kehadiran',
+                'Status Penyelesaian',
+                'Rating',
+                'Evaluasi Pelatih',
             ]);
 
             foreach ($logs as $log) {
                 fputcsv($file, [
                     $log->date->format('Y-m-d'),
                     $log->athlete->name ?? '-',
-                    $log->session->title ?? $log->type . ' Session',
+                    $log->session->title ?? $log->type.' Session',
                     $log->session->exerciseType->name ?? $log->type,
                     $log->distance_km,
                     $log->duration_minutes,

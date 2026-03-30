@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ExerciseType extends Model
 {
     use HasFactory;
+
     protected $fillable = ['name', 'description'];
 
     public function sessions(): HasMany

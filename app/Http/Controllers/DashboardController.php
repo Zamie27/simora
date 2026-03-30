@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -15,8 +16,8 @@ class DashboardController extends Controller
         $user = $request->user();
 
         $role = $user->role->name ?? 'NO_ROLE';
-        
-        \Illuminate\Support\Facades\Log::info('Dashboard Dispatcher Trace', [
+
+        Log::info('Dashboard Dispatcher Trace', [
             'user_id' => $user->id,
             'role' => $role,
         ]);

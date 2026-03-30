@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class TrainingLog extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'training_session_id',
         'athlete_id',

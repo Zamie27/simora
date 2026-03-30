@@ -8,6 +8,7 @@ use App\Services\TrainingLogService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -68,7 +69,7 @@ class DashboardController extends Controller
     public function quickUpdate(Request $request)
     {
         $user = $request->user();
-        \Illuminate\Support\Facades\Log::info('QuickUpdate Started', ['user_id' => $user->id]);
+        Log::info('QuickUpdate Started', ['user_id' => $user->id]);
 
         $validated = $request->validate([
             // Physical data

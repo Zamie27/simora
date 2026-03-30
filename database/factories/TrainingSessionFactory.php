@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\ExerciseType;
 use App\Models\TrainingSession;
 use App\Models\User;
-use App\Models\ExerciseType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

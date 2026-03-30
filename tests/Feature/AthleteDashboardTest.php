@@ -2,11 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\Role;
-use App\Models\User;
+use App\Models\Category;
 use App\Models\ExerciseType;
-use App\Models\PhysicalMetric;
+use App\Models\Role;
 use App\Models\TrainingLog;
+use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,9 +18,9 @@ class AthleteDashboardTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
-        $this->seed([\Database\Seeders\DatabaseSeeder::class]);
-        \App\Models\Category::create(['name' => 'Junior', 'description' => 'Junior category']);
+
+        $this->seed([DatabaseSeeder::class]);
+        Category::create(['name' => 'Junior', 'description' => 'Junior category']);
         ExerciseType::create(['name' => 'Cycling', 'description' => 'Cycling exercise']);
     }
 
@@ -28,7 +29,7 @@ class AthleteDashboardTest extends TestCase
         $athleteRole = Role::where('name', 'Atlet')->first();
         $user = User::factory()->create([
             'role_id' => $athleteRole->id,
-            'category_id' => \App\Models\Category::first()->id,
+            'category_id' => Category::first()->id,
             'email_verified_at' => now(),
         ]);
 
@@ -44,7 +45,7 @@ class AthleteDashboardTest extends TestCase
 
         // If it returns 200, check what it renders
         if ($response->status() === 200) {
-            dump('Rendered component: ' . ($response->original->getData()['page']['component'] ?? 'Unknown'));
+            dump('Rendered component: '.($response->original->getData()['page']['component'] ?? 'Unknown'));
         }
 
         $response->assertRedirect(route('athlete.dashboard'));
@@ -71,24 +72,24 @@ class AthleteDashboardTest extends TestCase
         $response = $this->actingAs($user)
             ->withoutMiddleware()
             ->post(route('athlete.dashboard.quick-update'), [
-            'weight' => 75.5,
-            'height' => 180,
-            'title' => 'Quick endurance ride',
-            'exercise_type_id' => $exerciseType->id,
-            'distance_km' => 25.5,
-            'duration_minutes' => 60,
-            'avg_heart_rate' => 145,
-            'rpm' => 90,
-            'calories' => 600,
-            'notes' => 'Feeling good',
-        ]);
+                'weight' => 75.5,
+                'height' => 180,
+                'title' => 'Quick endurance ride',
+                'exercise_type_id' => $exerciseType->id,
+                'distance_km' => 25.5,
+                'duration_minutes' => 60,
+                'avg_heart_rate' => 145,
+                'rpm' => 90,
+                'calories' => 600,
+                'notes' => 'Feeling good',
+            ]);
 
         if ($response->status() !== 302) {
             $response->assertSessionHasNoErrors();
         }
 
         $response->assertRedirect(route('athlete.dashboard'));
-        
+
         // Verify Physical Metric
         $this->assertDatabaseHas('physical_metrics', [
             'user_id' => $user->id,

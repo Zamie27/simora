@@ -24,6 +24,7 @@ class StoreTrainingLogRequest extends FormRequest
     {
         return [
             'training_session_id' => ['nullable', 'exists:training_sessions,id'],
+            'title' => ['nullable', 'string', 'max:255'],
             'date' => ['required', 'date'],
             'distance_km' => ['nullable', 'numeric', 'min:0'],
             'duration_minutes' => ['nullable', 'integer', 'min:0'],

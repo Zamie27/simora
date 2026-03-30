@@ -67,6 +67,8 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::delete('training-sessions/{session}', [TrainingSessionController::class, 'destroy'])->name('training-sessions.destroy');
 
         Route::patch('training-logs/{log}/evaluation', [TrainingSessionController::class, 'updateEvaluation'])->name('training-logs.evaluation');
+        Route::patch('training-logs/{log}', [AthleteController::class, 'updateLog'])->name('training-logs.update');
+        Route::delete('training-logs/{log}', [AthleteController::class, 'destroyLog'])->name('training-logs.destroy');
 
         // Performance Comparison
         Route::get('performance-comparison', [PerformanceController::class, 'comparison'])->name('performance.comparison');
@@ -85,6 +87,7 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         // Training
         Route::get('training', [TrainingController::class, 'index'])->name('training.index');
         Route::post('training/log', [TrainingController::class, 'storeLog'])->name('training.log.store');
+        Route::delete('training/log/{log}', [TrainingController::class, 'destroy'])->name('training.log.destroy');
     });
 
     // Verification Pending Route (for athletes)

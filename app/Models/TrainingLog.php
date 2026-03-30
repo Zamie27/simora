@@ -12,6 +12,7 @@ class TrainingLog extends Model
     protected $fillable = [
         'training_session_id',
         'athlete_id',
+        'title',
         'date',
         'distance_km',
         'duration_minutes',
@@ -32,6 +33,10 @@ class TrainingLog extends Model
         'distance_km' => 'decimal:2',
         'avg_speed' => 'decimal:2',
         'rpm' => 'decimal:2',
+    ];
+
+    protected $appends = [
+        'is_editable',
     ];
 
     /**
@@ -64,12 +69,17 @@ class TrainingLog extends Model
         return $this->avg_speed ?? 0;
     }
 
+    public function getIsEditableAttribute(): bool
+    {
+        return $this->date->isToday();
+    }
+
     /**
      * Local Scopes
      */
     public function scopeForAthlete(Builder $query, int $athleteId): void
     {
-        $query->where('athlete_id', $athleteId);
+        $query->where(fn ($q) => $q->where('athlete_id', $athleteId));
     }
 
     public function scopeForPeriod(Builder $query, string $startDate, string $endDate): void

@@ -22,6 +22,9 @@ class TrainingLogService
     {
         $data['athlete_id'] = $athleteId;
 
+        // Ensure date is current date for athlete logs to avoid cheating
+        $data['date'] = now()->toDateString();
+
         // Auto-calculate avg_speed if not provided
         if (empty($data['avg_speed']) && ! empty($data['distance_km']) && ! empty($data['duration_minutes']) && $data['duration_minutes'] > 0) {
             $data['avg_speed'] = round(($data['distance_km'] / $data['duration_minutes']) * 60, 2);
@@ -34,6 +37,33 @@ class TrainingLogService
         }
 
         return $log->load(['attachments', 'session.exerciseType']);
+    }
+
+    /**
+     * Update a training log.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<int, UploadedFile>|null  $attachments
+     */
+    public function update(TrainingLog $log, array $data, ?array $attachments = null): TrainingLog
+    {
+        // Restriction: Only same day edit allowed
+        if (! $log->date->isToday()) {
+            abort(403, 'Sesi latihan hanya dapat diedit pada hari yang sama.');
+        }
+
+        // Auto-calculate avg_speed if distance and duration are provided
+        if ((! isset($data['avg_speed']) || empty($data['avg_speed'])) && ! empty($data['distance_km']) && ! empty($data['duration_minutes']) && $data['duration_minutes'] > 0) {
+            $data['avg_speed'] = round(($data['distance_km'] / $data['duration_minutes']) * 60, 2);
+        }
+
+        $log->update($data);
+
+        if ($attachments) {
+            $this->storeAttachments($log, $attachments);
+        }
+
+        return $log->fresh(['attachments', 'session.exerciseType']);
     }
 
     /**

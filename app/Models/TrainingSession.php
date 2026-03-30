@@ -57,13 +57,13 @@ class TrainingSession extends Model
      */
     public function scopeUpcoming(Builder $query): void
     {
-        $query->where('scheduled_date', '>=', now()->toDateString())
+        $query->where(fn ($q) => $q->whereDate('scheduled_date', '>=', now()->toDateString()))
             ->orderBy('scheduled_date', 'asc');
     }
 
     public function scopePast(Builder $query): void
     {
-        $query->where('scheduled_date', '<', now()->toDateString())
+        $query->where(fn ($q) => $q->whereDate('scheduled_date', '<', now()->toDateString()))
             ->orderBy('scheduled_date', 'desc');
     }
 }

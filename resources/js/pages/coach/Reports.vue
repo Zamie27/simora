@@ -1,4 +1,5 @@
 <script setup lang="ts">
+<<<<<<< HEAD
 import { Head, router } from '@inertiajs/vue3';
 import {
     Download,
@@ -8,6 +9,10 @@ import {
     TrendingUp,
     Milestone,
 } from 'lucide-vue-next';
+=======
+import { Head, router, Link } from '@inertiajs/vue3';
+import { Download, FileText, Calendar, RotateCcw, TrendingUp, Milestone } from 'lucide-vue-next';
+>>>>>>> 023a5e4 (feat: implement training log management, performance trend visualization, and date filtering in athlete detail view (Update besar SRS-F dari tujuan utama sistem))
 import { ref, watch } from 'vue';
 
 import CustomSelect from '@/components/ui/CustomSelect.vue';
@@ -264,6 +269,7 @@ const exportCsv = (athleteId?: number) => {
                                                 }}
                                             </div>
                                             <div>
+<<<<<<< HEAD
                                                 <h4
                                                     class="font-black text-foreground uppercase transition-colors group-hover:text-accent"
                                                 >
@@ -274,6 +280,12 @@ const exportCsv = (athleteId?: number) => {
                                                 >
                                                     {{ item.athlete.email }}
                                                 </p>
+=======
+                                            <Link :href="`/coach/athletes/${item.athlete.id}`" class="group/link">
+                                                <h4 class="font-black text-foreground uppercase group-hover/link:text-accent transition-colors">{{ item.athlete.name }}</h4>
+                                                <p class="text-[10px] font-bold text-muted-foreground opacity-50">{{ item.athlete.email }}</p>
+                                            </Link>
+>>>>>>> 023a5e4 (feat: implement training log management, performance trend visualization, and date filtering in athlete detail view (Update besar SRS-F dari tujuan utama sistem))
                                             </div>
                                         </div>
                                     </td>

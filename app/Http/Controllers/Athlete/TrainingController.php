@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Athlete;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTrainingLogRequest;
 use App\Models\ExerciseType;
+use App\Models\TrainingLog;
+use App\Models\TrainingSession;
 use App\Repositories\TrainingLogRepository;
 use App\Services\TrainingLogService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -47,16 +50,74 @@ class TrainingController extends Controller
     }
 
     /**
-     * Store a new training log entry.
+     * Store or update a training log entry.
      */
-    public function storeLog(StoreTrainingLogRequest $request)
+    public function storeLog(StoreTrainingLogRequest $request): RedirectResponse
     {
-        $athlete = $request->user();
+        $athleteId = $request->user()->id;
         $validated = $request->validated();
         $attachments = $request->file('attachments');
 
-        $this->logService->create($athlete->id, $validated, $attachments);
+        // Check if updating an existing log (manual or session)
+        $logId = $request->input('id');
+        if ($logId) {
+            $log = TrainingLog::where('id', $logId)
+                ->where('athlete_id', $athleteId)
+                ->first();
 
-        return back()->with('success', 'Data latihan berhasil dicatat.');
+            if ($log) {
+                $this->logService->update($log, $validated, $attachments);
+
+                return back()->with('success', 'Log latihan berhasil diperbarui.');
+            }
+        }
+
+        // Athlete specifies a session
+        if (! empty($validated['training_session_id'])) {
+            $log = TrainingLog::where('training_session_id', $validated['training_session_id'])
+                ->where('athlete_id', $athleteId)
+                ->first();
+
+            if ($log) {
+                // Update the system-generated log for that session
+                $this->logService->update($log, $validated, $attachments);
+
+                return back()->with('success', 'Data latihan sesi berhasil diperbarui.');
+            }
+
+            // Verify if the athlete is actually assigned to this session
+            $session = TrainingSession::where('id', $validated['training_session_id'])
+                ->whereHas('athletes', fn ($q) => $q->where('users.id', $athleteId))
+                ->first();
+
+            if (! $session) {
+                abort(403, 'Anda tidak terdaftar dalam sesi latihan ini.');
+            }
+
+            // If it's a valid session but somehow no log exists yet, create it
+            $this->logService->create($athleteId, $validated, $attachments);
+
+            return back()->with('success', 'Data latihan sesi berhasil dicatat.');
+        }
+
+        // Independent/Manual log (no session_id)
+        $this->logService->create($athleteId, $validated, $attachments);
+
+        return back()->with('success', 'Data latihan manual berhasil dicatat.');
+    }
+
+    /**
+     * Remove the specified training log from storage.
+     */
+    public function destroy(TrainingLog $log): RedirectResponse
+    {
+        // Ensure the log belongs to the authenticated athlete
+        if ($log->athlete_id !== auth()->id()) {
+            abort(403, 'Anda tidak memiliki akses untuk menghapus log ini.');
+        }
+
+        $log->delete();
+
+        return back()->with('success', 'Log latihan berhasil dihapus.');
     }
 }

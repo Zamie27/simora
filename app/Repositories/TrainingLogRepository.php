@@ -116,7 +116,11 @@ class TrainingLogRepository
     {
         return TrainingSession::whereHas('athletes', fn ($q) => $q->where('users.id', $athleteId))
             ->upcoming()
-            ->with(['coach:id,name', 'exerciseType'])
+            ->with([
+                'coach:id,name',
+                'exerciseType',
+                'logs' => fn ($q) => $q->where('athlete_id', $athleteId),
+            ])
             ->limit(10)
             ->get();
     }

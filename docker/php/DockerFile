@@ -9,4 +9,8 @@ RUN apt-get update && apt-get install -y \
 # Ambil Composer terbaru untuk instalasi Laravel 12
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+#  Install Node.js (via NodeSource)
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
 WORKDIR /var/www/html

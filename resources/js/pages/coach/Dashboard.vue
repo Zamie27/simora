@@ -13,6 +13,7 @@ import {
     Trophy,
     MessageSquare,
     Send,
+    Plus,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';

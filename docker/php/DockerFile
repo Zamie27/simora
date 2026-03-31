@@ -6,6 +6,10 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql gd zip
 
+# Install Node.js dan NPM (menggunakan NodeSource versi 20.x LTS)
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
 # Ambil Composer terbaru untuk instalasi Laravel 12
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

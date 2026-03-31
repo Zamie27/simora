@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
+import { computed, ref } from 'vue';
+
 import DeleteUser from '@/components/DeleteUser.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
+import CustomSelect from '@/components/ui/CustomSelect.vue';
+import DatePicker from '@/components/ui/DatePicker.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
+import type { BreadcrumbItem } from '@/types';
+import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
-import type { BreadcrumbItem } from '@/types';
 
 type Props = {
     mustVerifyEmail: boolean;
@@ -29,7 +32,14 @@ const breadcrumbItems: BreadcrumbItem[] = [
 ];
 
 const page = usePage();
-const user = computed(() => page.props.auth.user);
+const user = computed(() => page.props.auth.user as any);
+const birthDate = ref<string>(user.value.date_of_birth || '');
+const gender = ref<string>(user.value.gender || '');
+
+const genderOptions = [
+    { value: 'male', label: 'Laki-laki' },
+    { value: 'female', label: 'Perempuan' },
+];
 </script>
 
 <template>
@@ -43,7 +53,7 @@ const user = computed(() => page.props.auth.user);
                 <Heading
                     variant="small"
                     title="Profile information"
-                    description="Update your name and email address"
+                    description="Update your name, email and birth date"
                 />
 
                 <Form
@@ -60,7 +70,6 @@ const user = computed(() => page.props.auth.user);
                             :default-value="user.name"
                             required
                             autocomplete="name"
-                            placeholder="Full name"
                         />
                         <InputError class="mt-2" :message="errors.name" />
                     </div>
@@ -75,9 +84,55 @@ const user = computed(() => page.props.auth.user);
                             :default-value="user.email"
                             required
                             autocomplete="username"
-                            placeholder="Email address"
                         />
                         <InputError class="mt-2" :message="errors.email" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="date_of_birth">Tanggal Lahir</Label>
+                        <DatePicker v-model="birthDate" />
+                        <input
+                            type="hidden"
+                            name="date_of_birth"
+                            :value="birthDate"
+                        />
+
+                        <InputError
+                            class="mt-2"
+                            :message="errors.date_of_birth"
+                        />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="gender">Jenis Kelamin</Label>
+                        <CustomSelect
+                            v-model="gender"
+                            :options="genderOptions"
+                            placeholder="Pilih Jenis Kelamin"
+                        />
+                        <input type="hidden" name="gender" :value="gender" />
+
+                        <InputError class="mt-2" :message="errors.gender" />
+                    </div>
+
+                    <div v-if="user.role?.name === 'Atlet'" class="grid gap-2">
+                        <Label for="category"
+                            >Kategori (Ditentukan Pelatih)</Label
+                        >
+                        <Input
+                            id="category"
+                            class="mt-1 block w-full bg-muted/50"
+                            :default-value="
+                                user.category?.name || '- Belum Ditentukan -'
+                            "
+                            disabled
+                        />
+                        <p
+                            class="text-[10px] font-medium text-muted-foreground italic"
+                        >
+                            Kategori Anda dikelola oleh pelatih melalui
+                            manajemen kategori.
+                        </p>
                     </div>
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">

@@ -32,9 +32,16 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <!-- SEO & Icons -->
+        <meta name="description" content="Sistem Informasi Monitoring Atlet Sepeda - SIMORA. Precision Performance Redefined.">
+        <link rel="icon" type="image/png" href="/images/simora_icon.png">
+        <link rel="apple-touch-icon" href="/images/simora_icon.png">
+        
+        <!-- Open Graph -->
+        <meta property="og:title" content="SIMORA | Performance Management Systems">
+        <meta property="og:description" content="Monitoring atlet sepeda dengan akurasi laboratorium.">
+        <meta property="og:image" content="/images/simora_icon.png">
+        <meta property="og:type" content="website">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />

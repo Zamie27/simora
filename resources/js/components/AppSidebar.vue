@@ -1,6 +1,22 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-vue-next';
+import { Link, usePage } from '@inertiajs/vue3';
+import {
+    Activity,
+    BarChart3,
+    Bike,
+    BookOpen,
+    Calculator,
+    ClipboardList,
+    FileText,
+    FolderGit2,
+    LayoutGrid,
+    ShieldCheck,
+    UserCheck,
+    Users,
+    Trophy,
+} from 'lucide-vue-next';
+import { computed } from 'vue';
+
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -14,16 +30,119 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import type { NavItem, SharedData } from '@/types';
 import { dashboard } from '@/routes';
-import type { NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
+const page = usePage<SharedData>();
+const user = computed(() => page.props.auth.user);
+const roleName = computed(() => user.value?.role?.name);
+
+const mainNavItems = computed<NavItem[]>(() => {
+    const items: NavItem[] = [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+    ];
+
+    if (roleName.value === 'Manajemen') {
+        items.push(
+            {
+                title: 'Managemen User',
+                href: '/management/users',
+                icon: Users,
+            },
+            {
+                title: 'Aktivasi User',
+                href: '/management/pending',
+                icon: ShieldCheck,
+            },
+            {
+                title: 'Monitoring Atlet',
+                href: '/management/athletes',
+                icon: UserCheck,
+            },
+            {
+                title: 'Managemen Kategori',
+                href: '/management/categories',
+                icon: BookOpen,
+            },
+            {
+                title: 'Jenis Latihan',
+                href: '/management/exercise-types',
+                icon: Activity,
+            },
+            {
+                title: 'Laporan Performa',
+                href: '/management/reports',
+                icon: FileText,
+            },
+        );
+    }
+
+    if (roleName.value === 'Pelatih') {
+        items.push(
+            {
+                title: 'Atlet Saya',
+                href: '/coach/athletes',
+                icon: Users,
+            },
+            {
+                title: 'Jadwal Latihan',
+                href: '/coach/training-sessions',
+                icon: ClipboardList,
+            },
+            {
+                title: 'Kalkulator Gear',
+                href: '/tools/gear-calculator',
+                icon: Calculator,
+            },
+            {
+                title: 'Perbandingan Performa',
+                href: '/coach/performance-comparison',
+                icon: BarChart3,
+            },
+            {
+                title: 'Laporan',
+                href: '/coach/reports',
+                icon: FileText,
+            },
+            {
+                title: 'Target & Event',
+                href: '/coach/events',
+                icon: Trophy,
+            },
+        );
+    }
+
+    if (roleName.value === 'Atlet') {
+        items.push(
+            {
+                title: 'Update Fisik',
+                href: '/athlete/physical',
+                icon: Activity,
+            },
+            {
+                title: 'Latihan Saya',
+                href: '/athlete/training',
+                icon: Bike,
+            },
+            {
+                title: 'Kalkulator Gear',
+                href: '/tools/gear-calculator',
+                icon: Calculator,
+            },
+            {
+                title: 'Agenda Event',
+                href: '/athlete/events',
+                icon: Trophy,
+            },
+        );
+    }
+
+    return items;
+});
 
 const footerNavItems: NavItem[] = [
     {

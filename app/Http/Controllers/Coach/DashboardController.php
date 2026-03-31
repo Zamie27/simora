@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Coach;
 
 use App\Http\Controllers\Controller;
+use App\Models\Message;
 use App\Models\TrainingLog;
 use App\Models\TrainingSession;
 use App\Models\User;
@@ -59,7 +60,7 @@ class DashboardController extends Controller
         });
 
         // 7. Recent Messages Sent
-        $recentMessages = \App\Models\Message::where('sender_id', $coach->id)
+        $recentMessages = Message::where('sender_id', $coach->id)
             ->with(['receiver' => function ($q) {
                 $q->select('id', 'name');
             }])
@@ -80,7 +81,7 @@ class DashboardController extends Controller
             'recentLogs' => $recentLogs,
             'performanceTrend' => $performanceTrend,
             'categoryDistribution' => $categoryDistribution,
-            'athletesList' => $athletes->map(fn($a) => ['id' => $a->id, 'name' => $a->name]),
+            'athletesList' => $athletes->map(fn ($a) => ['id' => $a->id, 'name' => $a->name]),
             'recentMessages' => $recentMessages,
         ]);
     }

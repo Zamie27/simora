@@ -14,7 +14,7 @@ import {
     Info,
     X,
     MessageSquare,
-    CheckCircle2
+    CheckCircle2,
 } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
@@ -71,9 +71,13 @@ const submitQuickUpdate = () => {
 };
 
 const markMessageRead = (id: number) => {
-    router.patch(athlete.messages.read({ message: id }).url, {}, {
-        preserveScroll: true,
-    });
+    router.patch(
+        athlete.messages.read({ message: id }).url,
+        {},
+        {
+            preserveScroll: true,
+        },
+    );
 };
 
 const formatDuration = (minutes: number) => {
@@ -380,30 +384,77 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                     </div>
 
                     <!-- Coach Messages -->
-                    <div class="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-xl">
+                    <div
+                        class="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-xl"
+                    >
                         <div class="mb-6 flex items-center gap-2">
                             <MessageSquare class="h-5 w-5 text-accent" />
-                            <h2 class="text-lg font-black tracking-tight text-foreground uppercase">
+                            <h2
+                                class="text-lg font-black tracking-tight text-foreground uppercase"
+                            >
                                 Catatan Pelatih
                             </h2>
                         </div>
                         <div class="flex flex-col gap-3">
-                            <div v-if="recentMessages.length === 0" class="flex flex-col items-center justify-center py-8 opacity-50">
-                                <MessageSquare class="mb-2 h-6 w-6 text-muted-foreground" />
-                                <p class="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">Belum ada pesan</p>
+                            <div
+                                v-if="recentMessages.length === 0"
+                                class="flex flex-col items-center justify-center py-8 opacity-50"
+                            >
+                                <MessageSquare
+                                    class="mb-2 h-6 w-6 text-muted-foreground"
+                                />
+                                <p
+                                    class="text-[10px] font-bold tracking-widest text-muted-foreground uppercase"
+                                >
+                                    Belum ada pesan
+                                </p>
                             </div>
-                            <div v-for="msg in recentMessages" :key="msg.id" 
-                                :class="['relative rounded-xl border p-4 transition-all', msg.is_read ? 'border-border bg-muted/20' : 'border-accent/30 bg-accent/5 shadow-[0_0_15px_rgba(255,97,32,0.1)]']">
-                                <div class="mb-2 flex items-center justify-between">
-                                    <span class="text-xs font-black text-foreground uppercase tracking-widest">{{ msg.sender?.name }}</span>
-                                    <span class="text-[9px] font-bold text-muted-foreground uppercase">{{ new Date(msg.created_at).toLocaleDateString('id-ID') }}</span>
+                            <div
+                                v-for="msg in recentMessages"
+                                :key="msg.id"
+                                :class="[
+                                    'relative rounded-xl border p-4 transition-all',
+                                    msg.is_read
+                                        ? 'border-border bg-muted/20'
+                                        : 'border-accent/30 bg-accent/5 shadow-[0_0_15px_rgba(255,97,32,0.1)]',
+                                ]"
+                            >
+                                <div
+                                    class="mb-2 flex items-center justify-between"
+                                >
+                                    <span
+                                        class="text-xs font-black tracking-widest text-foreground uppercase"
+                                        >{{ msg.sender?.name }}</span
+                                    >
+                                    <span
+                                        class="text-[9px] font-bold text-muted-foreground uppercase"
+                                        >{{
+                                            new Date(
+                                                msg.created_at,
+                                            ).toLocaleDateString('id-ID')
+                                        }}</span
+                                    >
                                 </div>
-                                <p class="text-xs text-muted-foreground">{{ msg.content }}</p>
+                                <p class="text-xs text-muted-foreground">
+                                    {{ msg.content }}
+                                </p>
                                 <div class="mt-3 flex justify-end">
-                                    <button v-if="!msg.is_read" @click="markMessageRead(msg.id)" class="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent hover:opacity-80 transition-opacity">
-                                        <CheckCircle2 class="h-3 w-3" /> Tandai Dibaca
+                                    <button
+                                        v-if="!msg.is_read"
+                                        @click="markMessageRead(msg.id)"
+                                        class="flex items-center gap-1 text-[10px] font-black tracking-widest text-accent uppercase transition-opacity hover:opacity-80"
+                                    >
+                                        <CheckCircle2 class="h-3 w-3" /> Tandai
+                                        Dibaca
                                     </button>
-                                    <span v-else class="text-[9px] font-bold uppercase tracking-widest text-muted-foreground opacity-50"><CheckCircle2 class="inline h-3 w-3 mr-0.5" /> Terbaca</span>
+                                    <span
+                                        v-else
+                                        class="text-[9px] font-bold tracking-widest text-muted-foreground uppercase opacity-50"
+                                        ><CheckCircle2
+                                            class="mr-0.5 inline h-3 w-3"
+                                        />
+                                        Terbaca</span
+                                    >
                                 </div>
                             </div>
                         </div>

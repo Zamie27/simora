@@ -2,21 +2,19 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\User;
-use App\Models\Role;
 use App\Models\Category;
-use App\Models\ExerciseType;
-use App\Models\PhysicalMetric;
-use App\Models\TrainingSession;
-use App\Models\TrainingLog;
 use App\Models\Event;
-use App\Models\EventType;
 use App\Models\EventPoint;
+use App\Models\EventType;
+use App\Models\ExerciseType;
 use App\Models\Message;
+use App\Models\PhysicalMetric;
+use App\Models\TrainingLog;
+use App\Models\TrainingSession;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class DummyDataSeeder extends Seeder
 {
@@ -35,8 +33,8 @@ class DummyDataSeeder extends Seeder
         }
 
         // Get coaches first so we can assign EventType and EventPoint to them
-        $coaches = User::whereHas('role', fn($q) => $q->where('name', 'Pelatih'))->get();
-        $athletes = User::whereHas('role', fn($q) => $q->where('name', 'Atlet'))->get();
+        $coaches = User::whereHas('role', fn ($q) => $q->where('name', 'Pelatih'))->get();
+        $athletes = User::whereHas('role', fn ($q) => $q->where('name', 'Atlet'))->get();
 
         if ($coaches->isEmpty() || $athletes->isEmpty()) {
             return; // Needs the base DatabaseSeeder to run first
@@ -49,7 +47,7 @@ class DummyDataSeeder extends Seeder
         foreach ($eventTypes as $type) {
             EventType::firstOrCreate(['name' => $type, 'coach_id' => $baseCoach->id]);
         }
-        
+
         $eventPoints = [
             '1st Place',
             '2nd Place',
@@ -108,19 +106,21 @@ class DummyDataSeeder extends Seeder
         // 6. Training Sessions & Logs
         foreach ($coaches as $coach) {
             $coachAthletes = User::where('coach_id', $coach->id)->get();
-            if ($coachAthletes->isEmpty()) continue;
+            if ($coachAthletes->isEmpty()) {
+                continue;
+            }
 
             // Past sessions
             for ($i = 0; $i < 20; $i++) {
                 $sessionDate = Carbon::now()->subDays(rand(1, 90));
                 $intensity = ['low', 'medium', 'high', 'very_high'][rand(0, 3)];
                 $duration = rand(45, 180);
-                
+
                 $session = TrainingSession::create([
                     'coach_id' => $coach->id,
                     'exercise_type_id' => $allExerciseTypes->random()->id,
-                    'title' => 'Sesi Latihan ' . $sessionDate->format('M d'),
-                    'description' => 'Sesi latihan ' . $intensity . ' intensitas.',
+                    'title' => 'Sesi Latihan '.$sessionDate->format('M d'),
+                    'description' => 'Sesi latihan '.$intensity.' intensitas.',
                     'scheduled_date' => $sessionDate,
                     'scheduled_time' => sprintf('%02d:00:00', rand(6, 16)),
                     'target_duration_minutes' => $duration,
@@ -134,7 +134,7 @@ class DummyDataSeeder extends Seeder
                     if (rand(1, 10) > 2) { // 80% attendance rate
                         $actualDuration = $session->target_duration_minutes + rand(-15, 15);
                         $actualDistance = $session->target_distance_km + rand(-5, 5);
-                        
+
                         TrainingLog::create([
                             'athlete_id' => $athlete->id,
                             'training_session_id' => $session->id,
@@ -164,7 +164,7 @@ class DummyDataSeeder extends Seeder
                 TrainingSession::create([
                     'coach_id' => $coach->id,
                     'exercise_type_id' => $allExerciseTypes->random()->id,
-                    'title' => 'Sesi Mendatang ' . $sessionDate->format('M d'),
+                    'title' => 'Sesi Mendatang '.$sessionDate->format('M d'),
                     'description' => 'Persiapkan fisik dan perlengkapan.',
                     'scheduled_date' => $sessionDate,
                     'scheduled_time' => sprintf('%02d:00:00', rand(6, 16)),
@@ -182,11 +182,11 @@ class DummyDataSeeder extends Seeder
                 $logDate = Carbon::now()->subDays(rand(1, 90));
                 $duration = rand(30, 90);
                 $distance = round($duration * (rand(15, 25) / 60), 2);
-                
+
                 TrainingLog::create([
                     'athlete_id' => $athlete->id,
                     'date' => $logDate,
-                    'title' => 'Latihan Mandiri ' . $logDate->format('d/m'),
+                    'title' => 'Latihan Mandiri '.$logDate->format('d/m'),
                     'duration_minutes' => $duration,
                     'distance_km' => $distance,
                     'avg_speed' => round($distance / ($duration / 60), 2),
@@ -206,18 +206,18 @@ class DummyDataSeeder extends Seeder
             $isPast = $i < 2;
             $eventDate = $isPast ? Carbon::now()->subDays(rand(10, 60)) : Carbon::now()->addDays(rand(10, 30));
             $eventCoach = $coaches->random();
-            
+
             $event = Event::create([
                 'coach_id' => $eventCoach->id,
                 'event_type_id' => $allEventTypes->random()->id,
-                'title' => ($isPast ? 'Kejuaraan Balap Sepeda ' : 'Persiapan Lomba ') . fake()->city(),
+                'title' => ($isPast ? 'Kejuaraan Balap Sepeda ' : 'Persiapan Lomba ').fake()->city(),
                 'description' => 'Event lintasan regional.',
                 'location' => fake()->city(),
                 'event_date' => $eventDate,
             ]);
 
             // Assign athletes to event
-            $participants = User::whereHas('role', fn($q) => $q->where('name', 'Atlet'))->inRandomOrder()->take(rand(3, 7))->get();
+            $participants = User::whereHas('role', fn ($q) => $q->where('name', 'Atlet'))->inRandomOrder()->take(rand(3, 7))->get();
             foreach ($participants as $participant) {
                 DB::table('event_user')->insert([
                     'event_id' => $event->id,
@@ -237,7 +237,7 @@ class DummyDataSeeder extends Seeder
                     Message::create([
                         'sender_id' => $coach->id,
                         'receiver_id' => $athlete->id,
-                        'content' => 'Feedback sesi terakhir: ' . fake()->sentence(),
+                        'content' => 'Feedback sesi terakhir: '.fake()->sentence(),
                         'is_read' => rand(0, 1) == 1,
                         'created_at' => Carbon::now()->subHours(rand(1, 72)),
                         'updated_at' => Carbon::now()->subHours(rand(1, 72)),

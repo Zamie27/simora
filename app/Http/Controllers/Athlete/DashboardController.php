@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Athlete;
 
 use App\Http\Controllers\Controller;
 use App\Models\ExerciseType;
+use App\Models\Message;
 use App\Services\TrainingLogService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -60,7 +61,7 @@ class DashboardController extends Controller
             'upcomingEvents' => $upcomingEvents,
             'performanceTrend' => $performanceTrend,
             'exerciseTypes' => ExerciseType::all(),
-            'recentMessages' => \App\Models\Message::where('receiver_id', $user->id)
+            'recentMessages' => Message::where('receiver_id', $user->id)
                 ->with('sender:id,name')
                 ->latest()
                 ->take(5)

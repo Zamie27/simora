@@ -5,11 +5,8 @@ import {
     Users, 
     Calendar, 
     Activity, 
-    Clock, 
     TrendingUp, 
-    ArrowUpRight,
     Zap,
-    MapPin,
     Trophy,
     ShieldCheck
 } from 'lucide-vue-next';

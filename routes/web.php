@@ -14,6 +14,7 @@ use App\Http\Controllers\Management\CategoryController;
 use App\Http\Controllers\Management\ExerciseTypeController;
 use App\Http\Controllers\Management\ReportController as ManagementReportController;
 use App\Http\Controllers\Management\UserController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -29,7 +30,7 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
 
     // Management Routes (still filtered by role + verified-user)
     Route::middleware(['role:Manajemen'])->prefix('management')->name('management.')->group(function () {
-        Route::get('dashboard', [\App\Http\Controllers\Management\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('dashboard', [App\Http\Controllers\Management\DashboardController::class, 'index'])->name('dashboard');
         Route::get('users', [UserController::class, 'index'])->name('users.index');
         Route::post('users', [UserController::class, 'store'])->name('users.store');
         Route::patch('users/{user}', [UserController::class, 'update'])->name('users.update');
@@ -98,9 +99,9 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::post('event-points', [EventSettingController::class, 'storePoint'])->name('event-points.store');
         Route::patch('event-points/{point}', [EventSettingController::class, 'updatePoint'])->name('event-points.update');
         Route::delete('event-points/{point}', [EventSettingController::class, 'destroyPoint'])->name('event-points.destroy');
-        
+
         // Messages
-        Route::post('messages', [\App\Http\Controllers\MessageController::class, 'store'])->name('messages.store');
+        Route::post('messages', [MessageController::class, 'store'])->name('messages.store');
     });
 
     // Athlete specific routes
@@ -120,7 +121,7 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::get('events', [AthleteEventController::class, 'index'])->name('events.index');
 
         // Messages
-        Route::patch('messages/{message}/read', [\App\Http\Controllers\MessageController::class, 'markAsRead'])->name('messages.read');
+        Route::patch('messages/{message}/read', [MessageController::class, 'markAsRead'])->name('messages.read');
     });
 
     // Verification Pending Route (for athletes)

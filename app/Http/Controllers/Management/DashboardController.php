@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\TrainingLog;
 use App\Models\TrainingSession;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -17,7 +16,7 @@ class DashboardController extends Controller
         // 1. System-wide Users Stats
         $totalAthletes = User::whereHas('role', fn ($q) => $q->where('name', 'Atlet'))->count();
         $totalCoaches = User::whereHas('role', fn ($q) => $q->where('name', 'Pelatih'))->count();
-        
+
         $totalUsers = User::count();
         $verifiedUsers = User::where('is_verified', true)->count();
         $verifiedRatio = $totalUsers > 0 ? round(($verifiedUsers / $totalUsers) * 100) : 0;

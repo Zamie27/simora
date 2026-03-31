@@ -81,7 +81,7 @@ class DashboardController extends Controller
             'recentLogs' => $recentLogs,
             'performanceTrend' => $performanceTrend,
             'categoryDistribution' => $categoryDistribution,
-            'athletesList' => $athletes->map(fn($a) => ['id' => $a->id, 'name' => $a->name]),
+            'athletesList' => $athletes->map(fn ($a) => ['id' => $a->id, 'name' => $a->name]),
             'recentMessages' => $recentMessages,
         ]);
     }

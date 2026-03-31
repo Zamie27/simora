@@ -20,8 +20,8 @@ class AthleteDashboardTest extends TestCase
         parent::setUp();
 
         $this->seed([DatabaseSeeder::class]);
-        Category::create(['name' => 'Junior', 'description' => 'Junior category']);
-        ExerciseType::create(['name' => 'Cycling', 'description' => 'Cycling exercise']);
+        Category::firstOrCreate(['name' => 'Junior'], ['description' => 'Junior category']);
+        ExerciseType::firstOrCreate(['name' => 'Cycling'], ['description' => 'Cycling exercise']);
     }
 
     public function test_athlete_can_access_dashboard(): void

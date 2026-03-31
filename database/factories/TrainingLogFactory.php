@@ -30,6 +30,8 @@ class TrainingLogFactory extends Factory
             'distance_km' => $distanceKm,
             'duration_minutes' => $durationMinutes,
             'avg_speed' => $avgSpeed,
+            'rpm' => fake()->numberBetween(70, 110),
+            'calories' => fake()->numberBetween(300, 1500),
             'intensity' => fake()->randomElement(['low', 'medium', 'high', 'very_high']),
             'type' => fake()->randomElement(['endurance', 'interval', 'recovery', 'time_trial']),
             'athlete_notes' => fake()->optional(0.7)->sentence(),

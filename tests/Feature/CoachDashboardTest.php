@@ -29,7 +29,7 @@ class CoachDashboardTest extends TestCase
         $coachRole = Role::where('name', 'Pelatih')->first();
         $coach = User::factory()->create([
             'role_id' => $coachRole->id,
-            'status' => 'verified',
+            'is_verified' => true,
         ]);
 
         $response = $this->actingAs($coach)->get('/dashboard');
@@ -44,13 +44,13 @@ class CoachDashboardTest extends TestCase
 
         $coach = User::factory()->create([
             'role_id' => $coachRole->id,
-            'status' => 'verified',
+            'is_verified' => true,
         ]);
 
         $athlete = User::factory()->create([
             'role_id' => $atletRole->id,
             'coach_id' => $coach->id,
-            'status' => 'verified',
+            'is_verified' => true,
         ]);
 
         $exerciseType = ExerciseType::factory()->create();
@@ -65,7 +65,6 @@ class CoachDashboardTest extends TestCase
         // Create a log
         TrainingLog::factory()->create([
             'athlete_id' => $athlete->id,
-            'exercise_type_id' => $exerciseType->id,
             'date' => now(),
             'distance_km' => 15.5,
         ]);

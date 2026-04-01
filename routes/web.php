@@ -23,9 +23,11 @@ Route::inertia('/', 'Welcome', [
     'canRegister' => Features::enabled(Features::registration()),
 ])->name('home');
 
+// Bug Report - accessible from all pages (even without login)
+Route::post('bug-reports', [BugReportController::class, 'store'])->name('bug-reports.store');
+
 Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
-    Route::post('bug-reports', [BugReportController::class, 'store'])->name('bug-reports.store');
 
     // Tools
     Route::inertia('tools/gear-calculator', 'tools/GearCalculator')->name('tools.gear-calculator');
@@ -124,6 +126,12 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
 
         // Messages
         Route::patch('messages/{message}/read', [MessageController::class, 'markAsRead'])->name('messages.read');
+    });
+
+    // Report specific routes
+    Route::middleware(['role:Report'])->prefix('report')->name('report.')->group(function () {
+        Route::get('dashboard', [\App\Http\Controllers\Report\DashboardController::class, 'index'])->name('dashboard');
+        Route::patch('bug-reports/{bugReport}/status', [\App\Http\Controllers\Report\DashboardController::class, 'updateStatus'])->name('bug-reports.status');
     });
 
     // Verification Pending Route (for athletes)

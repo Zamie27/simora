@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             'Manajemen' => 'Administrator with full access',
             'Pelatih' => 'Coach managing athletes',
             'Atlet' => 'Athlete user',
+            'Report' => 'Administrator for bug reports',
         ];
 
         foreach ($roles as $name => $description) {
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
         $atletRole = Role::where('name', 'Atlet')->first();
         $pelatihRole = Role::where('name', 'Pelatih')->first();
         $manajemenRole = Role::where('name', 'Manajemen')->first();
+        $reportRole = Role::where('name', 'Report')->first();
 
         // Admin User
         User::firstOrCreate(
@@ -36,6 +38,16 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Admin Manajemen',
                 'password' => Hash::make('password'),
                 'role_id' => $manajemenRole->id,
+            ]
+        );
+
+        // Report User
+        User::firstOrCreate(
+            ['email' => 'report@example.com'],
+            [
+                'name' => 'Admin Report',
+                'password' => Hash::make('password'),
+                'role_id' => $reportRole->id,
             ]
         );
 

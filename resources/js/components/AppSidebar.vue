@@ -141,6 +141,16 @@ const mainNavItems = computed<NavItem[]>(() => {
         );
     }
 
+    if (roleName.value === 'Report') {
+        items.push(
+            {
+                title: 'Daftar Laporan Bug',
+                href: '/report/dashboard',
+                icon: ClipboardList,
+            }
+        );
+    }
+
     return items;
 });
 

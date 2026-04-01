@@ -24,6 +24,7 @@ Route::inertia('/', 'Welcome', [
 
 Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
+    Route::post('bug-reports', [\App\Http\Controllers\BugReportController::class, 'store'])->name('bug-reports.store');
 
     // Tools
     Route::inertia('tools/gear-calculator', 'tools/GearCalculator')->name('tools.gear-calculator');

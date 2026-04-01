@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\BugReport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Inertia\Inertia;
 
 class BugReportController extends Controller
 {
@@ -37,6 +35,6 @@ class BugReportController extends Controller
             'status' => 'pending',
         ]);
 
-        return back()->with('success', 'Bug report submitted successfully! If it is fatal, we will contact you via ' . $validated['reporter_contact']);
+        return back()->with('success', 'Bug report submitted successfully! If it is fatal, we will contact you via '.$validated['reporter_contact']);
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Athlete\EventController as AthleteEventController;
 use App\Http\Controllers\Athlete\PhysicalController;
 use App\Http\Controllers\Athlete\TrainingController;
+use App\Http\Controllers\BugReportController;
 use App\Http\Controllers\Coach\AthleteController;
 use App\Http\Controllers\Coach\EventController as CoachEventController;
 use App\Http\Controllers\Coach\EventSettingController;
@@ -24,7 +25,7 @@ Route::inertia('/', 'Welcome', [
 
 Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
-    Route::post('bug-reports', [\App\Http\Controllers\BugReportController::class, 'store'])->name('bug-reports.store');
+    Route::post('bug-reports', [BugReportController::class, 'store'])->name('bug-reports.store');
 
     // Tools
     Route::inertia('tools/gear-calculator', 'tools/GearCalculator')->name('tools.gear-calculator');

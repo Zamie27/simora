@@ -26,11 +26,18 @@ interface BugReport {
 }
 
 const getImages = (imagePath: string[] | string | null): string[] => {
-    if (!imagePath) return [];
-    if (Array.isArray(imagePath)) return imagePath;
+    if (!imagePath) {
+return [];
+}
+
+    if (Array.isArray(imagePath)) {
+return imagePath;
+}
+
     try {
         // Handle potential stringified JSON
         const parsed = JSON.parse(imagePath);
+
         return Array.isArray(parsed) ? parsed : [imagePath];
     } catch {
         return [imagePath];
@@ -419,19 +426,31 @@ const updateStatus = (reportId: number, newStatus: string) => {
 
                     <div v-if="getImages(selectedReport.image_path).length > 0">
                         <h4 class="mb-2 text-sm font-semibold">
-                            Screenshot Terlampir ({{ getImages(selectedReport.image_path).length }})
+                            Screenshot Terlampir ({{
+                                getImages(selectedReport.image_path).length
+                            }})
                         </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div v-for="(img, idx) in getImages(selectedReport.image_path)" :key="idx" 
-                                class="overflow-hidden rounded-lg border group relative">
+                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div
+                                v-for="(img, idx) in getImages(
+                                    selectedReport.image_path,
+                                )"
+                                :key="idx"
+                                class="group relative overflow-hidden rounded-lg border"
+                            >
                                 <img
                                     :src="'/storage/' + img"
                                     alt="Bug Screenshot"
                                     class="h-auto w-full cursor-zoom-in transition-transform duration-300 group-hover:scale-105"
                                 />
-                                <a :href="'/storage/' + img" target="_blank" 
-                                    class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <span class="text-white text-xs font-bold">Lihat Ukuran Penuh</span>
+                                <a
+                                    :href="'/storage/' + img"
+                                    target="_blank"
+                                    class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100"
+                                >
+                                    <span class="text-xs font-bold text-white"
+                                        >Lihat Ukuran Penuh</span
+                                    >
                                 </a>
                             </div>
                         </div>

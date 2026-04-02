@@ -93,10 +93,13 @@ const handleImage = (e: Event) => {
 
     if (target.files?.length) {
         const newFiles = Array.from(target.files);
+
         if (form.images.length + newFiles.length > 5) {
             errors.images = 'Maksimal 5 gambar diperbolehkan.';
+
             return;
         }
+
         form.images = [...form.images, ...newFiles];
         delete errors.images;
     }
@@ -263,17 +266,34 @@ const removeImage = (index: number) => {
                                     class="h-4 w-4"
                                     style="color: #ff6120"
                                 />
-                                <span>{{ form.images.length >= 5 ? 'Maksimal tercapai' : 'Klik untuk upload (bisa banyak)' }}</span>
+                                <span>{{
+                                    form.images.length >= 5
+                                        ? 'Maksimal tercapai'
+                                        : 'Klik untuk upload (bisa banyak)'
+                                }}</span>
                             </div>
                         </div>
 
                         <!-- Image List View -->
-                        <div v-if="form.images.length > 0" class="flex flex-wrap gap-2 mt-2">
-                            <div v-for="(img, idx) in form.images" :key="idx" 
-                                class="flex items-center gap-2 bg-white/5 rounded-lg px-2 py-1 text-[10px]">
-                                <span class="truncate max-w-[100px] text-white/70">{{ img.name }}</span>
-                                <button type="button" @click="removeImage(idx)" class="text-red-400">
-                                    <X class="w-3 h-3" />
+                        <div
+                            v-if="form.images.length > 0"
+                            class="mt-2 flex flex-wrap gap-2"
+                        >
+                            <div
+                                v-for="(img, idx) in form.images"
+                                :key="idx"
+                                class="flex items-center gap-2 rounded-lg bg-white/5 px-2 py-1 text-[10px]"
+                            >
+                                <span
+                                    class="max-w-[100px] truncate text-white/70"
+                                    >{{ img.name }}</span
+                                >
+                                <button
+                                    type="button"
+                                    @click="removeImage(idx)"
+                                    class="text-red-400"
+                                >
+                                    <X class="h-3 w-3" />
                                 </button>
                             </div>
                         </div>

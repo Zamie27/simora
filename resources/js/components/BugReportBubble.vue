@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Bug, Send, X, Camera, Loader2, AlertCircle, CheckCircle2 } from 'lucide-vue-next';
+import { Bug, Send, X, Camera, Loader2, CheckCircle2 } from 'lucide-vue-next';
 import { ref, reactive } from 'vue';
 
 const isOpen = ref(false);
@@ -33,6 +33,7 @@ const submit = async () => {
     formData.append('description', form.description);
     formData.append('reporter_name', form.reporter_name);
     formData.append('reporter_contact', form.reporter_contact);
+
     if (form.image) {
         formData.append('image', form.image);
     }
@@ -65,6 +66,7 @@ const submit = async () => {
             }, 3000);
         } else if (response.status === 422) {
             const data = await response.json();
+
             if (data.errors) {
                 Object.assign(errors, Object.fromEntries(
                     Object.entries(data.errors).map(([key, val]) => [key, (val as string[])[0]])

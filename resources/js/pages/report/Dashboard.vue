@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Head, useForm } from '@inertiajs/vue3';
+import { CheckCircle2, Clock, PlayCircle, Eye, X } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
     Card,
     CardContent,
@@ -8,10 +11,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
-import { CheckCircle2, Clock, PlayCircle, Eye, X } from 'lucide-vue-next';
 
 interface BugReport {
     id: number;
@@ -25,7 +25,7 @@ interface BugReport {
     created_at: string;
 }
 
-const props = defineProps<{
+defineProps<{
     bugReports: BugReport[];
     stats: {
         total: number;

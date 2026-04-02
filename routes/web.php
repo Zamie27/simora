@@ -16,6 +16,7 @@ use App\Http\Controllers\Management\ExerciseTypeController;
 use App\Http\Controllers\Management\ReportController as ManagementReportController;
 use App\Http\Controllers\Management\UserController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -24,7 +25,7 @@ Route::inertia('/', 'Welcome', [
 ])->name('home');
 
 // Custom Email Verification Notification Route (Manual)
-Route::post('email/verification-notification', [App\Http\Controllers\VerificationController::class, 'store'])
+Route::post('email/verification-notification', [VerificationController::class, 'store'])
     ->middleware(['auth', 'throttle:6,1'])
     ->name('verification.send');
 

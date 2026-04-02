@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Management;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\AccountActivated;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -83,7 +84,7 @@ class UserController extends Controller
         ]);
 
         // Send activation notification
-        $user->notify(new \App\Notifications\AccountActivated());
+        $user->notify(new AccountActivated);
 
         return redirect()->back()->with('success', 'Akun berhasil diverifikasi dan coach telah ditugaskan.');
     }

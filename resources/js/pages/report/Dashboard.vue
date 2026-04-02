@@ -27,12 +27,12 @@ interface BugReport {
 
 const getImages = (imagePath: string[] | string | null): string[] => {
     if (!imagePath) {
-return [];
-}
+        return [];
+    }
 
     if (Array.isArray(imagePath)) {
-return imagePath;
-}
+        return imagePath;
+    }
 
     try {
         // Handle potential stringified JSON

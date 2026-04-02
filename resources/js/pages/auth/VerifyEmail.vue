@@ -34,7 +34,11 @@ defineProps<{
         >
             <Button :disabled="processing" variant="secondary">
                 <Spinner v-if="processing" />
-                {{ status === 'verification-link-sent' ? 'Kirim Ulang Email Verifikasi' : 'Kirim Email Verifikasi' }}
+                {{
+                    status === 'verification-link-sent'
+                        ? 'Kirim Ulang Email Verifikasi'
+                        : 'Kirim Email Verifikasi'
+                }}
             </Button>
 
             <TextLink

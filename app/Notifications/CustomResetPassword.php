@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -21,7 +20,6 @@ class CustomResetPassword extends Notification
     /**
      * Create a new notification instance.
      *
-     * @param  string  $token
      * @return void
      */
     public function __construct(string $token)
@@ -51,7 +49,7 @@ class CustomResetPassword extends Notification
 
         return (new MailMessage)
             ->subject('Permintaan Reset Kata Sandi - SIMORA')
-            ->greeting('Halo, ' . $notifiable->name . '!')
+            ->greeting('Halo, '.$notifiable->name.'!')
             ->line('Kami menerima permintaan untuk mereset kata sandi akun Anda.')
             ->line('Silakan klik tombol di bawah ini untuk melanjutkan proses reset kata sandi.')
             ->action('Reset Kata Sandi', $url)

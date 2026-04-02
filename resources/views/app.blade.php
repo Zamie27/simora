@@ -1,56 +1,60 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"  @class(['dark' => ($appearance ?? 'system') == 'dark'])>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
 
-        {{-- Inline script to detect system dark mode preference and apply it immediately --}}
-        <script>
-            (function() {
-                const appearance = '{{ $appearance ?? "system" }}';
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                if (appearance === 'system') {
-                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    {{-- Inline script to detect system dark mode preference and apply it immediately --}}
+    <script>
+        (function () {
+            const appearance = '{{ $appearance ?? "system" }}';
 
-                    if (prefersDark) {
-                        document.documentElement.classList.add('dark');
-                    }
+            if (appearance === 'system') {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+                if (prefersDark) {
+                    document.documentElement.classList.add('dark');
                 }
-            })();
-        </script>
-
-        {{-- Inline style to set the HTML background color based on our theme in app.css --}}
-        <style>
-            html {
-                background-color: oklch(1 0 0);
             }
+        })();
+    </script>
 
-            html.dark {
-                background-color: oklch(0.145 0 0);
-            }
-        </style>
+    {{-- Inline style to set the HTML background color based on our theme in app.css --}}
+    <style>
+        html {
+            background-color: oklch(1 0 0);
+        }
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        html.dark {
+            background-color: oklch(0.145 0 0);
+        }
+    </style>
 
-        <!-- SEO & Icons -->
-        <meta name="description" content="Sistem Informasi Monitoring Atlet Sepeda - SIMORA. Precision Performance Redefined.">
-        <link rel="icon" type="image/png" href="/images/simora_icon.png">
-        <link rel="apple-touch-icon" href="/images/simora_icon.png">
-        
-        <!-- Open Graph -->
-        <meta property="og:title" content="SIMORA | Performance Management Systems">
-        <meta property="og:description" content="Monitoring atlet sepeda dengan akurasi laboratorium.">
-        <meta property="og:image" content="/images/simora_icon.png">
-        <meta property="og:type" content="website">
+    <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <!-- SEO & Icons -->
+    <meta name="description"
+        content="Sistem Informasi Monitoring Atlet Sepeda - SIMORA. Precision Performance Redefined.">
+    <link rel="icon" type="image/png" href="/images/simora_icon.png">
+    <link rel="apple-touch-icon" href="/images/simora_icon.png">
 
-        @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
-        @inertiaHead
-    </head>
-    <body class="font-sans antialiased">
-        @inertia
-    </body>
+    <!-- Open Graph -->
+    <meta property="og:title" content="SIMORA | Performance Management Systems">
+    <meta property="og:description" content="Monitoring atlet sepeda dengan akurasi laboratorium.">
+    <meta property="og:image" content="/images/simora_icon.png">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+
+    @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
+    @inertiaHead
+</head>
+
+<body class="font-sans antialiased">
+    @inertia
+</body>
+
 </html>

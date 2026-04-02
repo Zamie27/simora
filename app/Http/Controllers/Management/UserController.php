@@ -96,7 +96,7 @@ class UserController extends Controller
             'coach_id' => ['nullable', 'exists:users,id'],
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
@@ -104,6 +104,14 @@ class UserController extends Controller
             'is_verified' => $validated['is_verified'] ?? true, // Manual creation is verified by default
             'coach_id' => $validated['coach_id'] ?? null,
         ]);
+
+        $role = Role::find($validated['role_id']);
+        
+        if ($role && $role->name === 'Atlet') {
+            $user->sendEmailVerificationNotification();
+        } else {
+            $user->markEmailAsVerified();
+        }
 
         return redirect()->back()->with('success', 'User berhasil ditambahkan.');
     }

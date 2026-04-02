@@ -1,0 +1,1 @@
+import{A as e,T as t,Y as n,k as r}from"./index.esm-DVc95TD3.js";import{t as i}from"./AppLogoIcon-Cdw-7Xqs.js";var a={class:`flex items-center justify-start py-1`},o=e({__name:`AppLogo`,setup(e){return(e,o)=>(n(),t(`div`,a,[r(i,{class:`h-10 w-auto object-contain`})]))}});export{o as t};

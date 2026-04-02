@@ -23,6 +23,11 @@ Route::inertia('/', 'Welcome', [
     'canRegister' => Features::enabled(Features::registration()),
 ])->name('home');
 
+// Custom Email Verification Notification Route (Manual)
+Route::post('email/verification-notification', [App\Http\Controllers\VerificationController::class, 'store'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.send');
+
 // Bug Report - accessible from all pages (even without login)
 Route::post('bug-reports', [BugReportController::class, 'store'])->name('bug-reports.store');
 

@@ -146,18 +146,34 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the messages sent by this user.
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
      */
-    public function sentMessages(): HasMany
+    public function sendPasswordResetNotification($token): void
     {
-        return $this->hasMany(Message::class, 'sender_id');
+        $this->notify(new \App\Notifications\CustomResetPassword($token));
     }
 
     /**
-     * Get the messages received by this user.
+     * Send the email verification notification.
+     *
+     * @return void
      */
-    public function receivedMessages(): HasMany
+    public function sendEmailVerificationNotification(): void
     {
-        return $this->hasMany(Message::class, 'receiver_id');
+        // We override this to DO NOTHING by default during registration/store.
+        // User must click "Resend" manually from the verification page.
+    }
+
+    /**
+     * Send the email verification notification manually.
+     *
+     * @return void
+     */
+    public function sendManualEmailVerificationNotification(): void
+    {
+        $this->notify(new \App\Notifications\CustomVerifyEmail());
     }
 }

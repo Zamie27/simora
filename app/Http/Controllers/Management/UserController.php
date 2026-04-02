@@ -82,6 +82,9 @@ class UserController extends Controller
             'coach_id' => $request->coach_id,
         ]);
 
+        // Send activation notification
+        $user->notify(new \App\Notifications\AccountActivated());
+
         return redirect()->back()->with('success', 'Akun berhasil diverifikasi dan coach telah ditugaskan.');
     }
 

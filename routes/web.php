@@ -130,8 +130,8 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
 
     // Report specific routes
     Route::middleware(['role:Report'])->prefix('report')->name('report.')->group(function () {
-        Route::get('dashboard', [\App\Http\Controllers\Report\DashboardController::class, 'index'])->name('dashboard');
-        Route::patch('bug-reports/{bugReport}/status', [\App\Http\Controllers\Report\DashboardController::class, 'updateStatus'])->name('bug-reports.status');
+        Route::get('dashboard', [App\Http\Controllers\Report\DashboardController::class, 'index'])->name('dashboard');
+        Route::patch('bug-reports/{bugReport}/status', [App\Http\Controllers\Report\DashboardController::class, 'updateStatus'])->name('bug-reports.status');
     });
 
     // Verification Pending Route (for athletes)

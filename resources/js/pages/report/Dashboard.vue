@@ -51,19 +51,27 @@ const form = useForm({
 
 const getStatusBadgeVariant = (status: string) => {
     switch (status) {
-        case 'pending': return 'destructive';
-        case 'sedang dikerjakan': return 'default';
-        case 'tuntas diperbaiki': return 'outline';
-        default: return 'secondary';
+        case 'pending':
+            return 'destructive';
+        case 'sedang dikerjakan':
+            return 'default';
+        case 'tuntas diperbaiki':
+            return 'outline';
+        default:
+            return 'secondary';
     }
 };
 
 const getStatusIcon = (status: string) => {
     switch (status) {
-        case 'pending': return Clock;
-        case 'sedang dikerjakan': return PlayCircle;
-        case 'tuntas diperbaiki': return CheckCircle2;
-        default: return Clock;
+        case 'pending':
+            return Clock;
+        case 'sedang dikerjakan':
+            return PlayCircle;
+        case 'tuntas diperbaiki':
+            return CheckCircle2;
+        default:
+            return Clock;
     }
 };
 
@@ -75,7 +83,7 @@ const updateStatus = (reportId: number, newStatus: string) => {
             if (selectedReport.value?.id === reportId) {
                 selectedReport.value.status = newStatus;
             }
-        }
+        },
     });
 };
 </script>
@@ -88,38 +96,60 @@ const updateStatus = (reportId: number, newStatus: string) => {
             <!-- Stats Cards -->
             <div class="grid gap-4 md:grid-cols-4">
                 <Card>
-                    <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle class="text-sm font-medium">Total Laporan</CardTitle>
+                    <CardHeader
+                        class="flex flex-row items-center justify-between space-y-0 pb-2"
+                    >
+                        <CardTitle class="text-sm font-medium"
+                            >Total Laporan</CardTitle
+                        >
                     </CardHeader>
                     <CardContent>
                         <div class="text-2xl font-bold">{{ stats.total }}</div>
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle class="text-sm font-medium">Pending</CardTitle>
+                    <CardHeader
+                        class="flex flex-row items-center justify-between space-y-0 pb-2"
+                    >
+                        <CardTitle class="text-sm font-medium"
+                            >Pending</CardTitle
+                        >
                         <Clock class="h-4 w-4 text-red-500" />
                     </CardHeader>
                     <CardContent>
-                        <div class="text-2xl font-bold text-red-500">{{ stats.pending }}</div>
+                        <div class="text-2xl font-bold text-red-500">
+                            {{ stats.pending }}
+                        </div>
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle class="text-sm font-medium">Sedang Dikerjakan</CardTitle>
+                    <CardHeader
+                        class="flex flex-row items-center justify-between space-y-0 pb-2"
+                    >
+                        <CardTitle class="text-sm font-medium"
+                            >Sedang Dikerjakan</CardTitle
+                        >
                         <PlayCircle class="h-4 w-4 text-blue-500" />
                     </CardHeader>
                     <CardContent>
-                        <div class="text-2xl font-bold text-blue-500">{{ stats.in_progress }}</div>
+                        <div class="text-2xl font-bold text-blue-500">
+                            {{ stats.in_progress }}
+                        </div>
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle class="text-sm font-medium">Tuntas Diperbaiki</CardTitle>
+                    <CardHeader
+                        class="flex flex-row items-center justify-between space-y-0 pb-2"
+                    >
+                        <CardTitle class="text-sm font-medium"
+                            >Tuntas Diperbaiki</CardTitle
+                        >
                         <CheckCircle2 class="h-4 w-4 text-green-500" />
                     </CardHeader>
                     <CardContent>
-                        <div class="text-2xl font-bold text-green-500">{{ stats.resolved }}</div>
+                        <div class="text-2xl font-bold text-green-500">
+                            {{ stats.resolved }}
+                        </div>
                     </CardContent>
                 </Card>
             </div>
@@ -128,46 +158,102 @@ const updateStatus = (reportId: number, newStatus: string) => {
             <Card class="flex-1">
                 <CardHeader>
                     <CardTitle>Daftar Laporan Bug</CardTitle>
-                    <CardDescription>Monitor dan update status laporan yang masuk dari pengguna.</CardDescription>
+                    <CardDescription
+                        >Monitor dan update status laporan yang masuk dari
+                        pengguna.</CardDescription
+                    >
                 </CardHeader>
                 <CardContent>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left border-collapse">
-                            <thead class="text-xs text-muted-foreground uppercase bg-muted/50 border-b">
+                        <table class="w-full border-collapse text-left text-sm">
+                            <thead
+                                class="border-b bg-muted/50 text-xs text-muted-foreground uppercase"
+                            >
                                 <tr>
-                                    <th class="px-4 py-3 font-medium">Tanggal</th>
-                                    <th class="px-4 py-3 font-medium">Pelapor</th>
+                                    <th class="px-4 py-3 font-medium">
+                                        Tanggal
+                                    </th>
+                                    <th class="px-4 py-3 font-medium">
+                                        Pelapor
+                                    </th>
                                     <th class="px-4 py-3 font-medium">Judul</th>
-                                    <th class="px-4 py-3 font-medium">Status</th>
-                                    <th class="px-4 py-3 font-medium text-right">Aksi</th>
+                                    <th class="px-4 py-3 font-medium">
+                                        Status
+                                    </th>
+                                    <th
+                                        class="px-4 py-3 text-right font-medium"
+                                    >
+                                        Aksi
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y">
-                                <tr v-for="report in bugReports" :key="report.id" class="hover:bg-muted/50 transition-colors">
+                                <tr
+                                    v-for="report in bugReports"
+                                    :key="report.id"
+                                    class="transition-colors hover:bg-muted/50"
+                                >
                                     <td class="px-4 py-3 font-medium">
-                                        {{ new Date(report.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'}) }}
+                                        {{
+                                            new Date(
+                                                report.created_at,
+                                            ).toLocaleDateString('id-ID', {
+                                                day: 'numeric',
+                                                month: 'short',
+                                                year: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                            })
+                                        }}
                                     </td>
                                     <td class="px-4 py-3">
-                                        <div class="font-medium">{{ report.reporter_name }}</div>
-                                        <div class="text-xs text-muted-foreground">{{ report.reporter_contact }}</div>
+                                        <div class="font-medium">
+                                            {{ report.reporter_name }}
+                                        </div>
+                                        <div
+                                            class="text-xs text-muted-foreground"
+                                        >
+                                            {{ report.reporter_contact }}
+                                        </div>
                                     </td>
-                                    <td class="px-4 py-3 max-w-[300px] truncate">
+                                    <td
+                                        class="max-w-[300px] truncate px-4 py-3"
+                                    >
                                         {{ report.title }}
                                     </td>
                                     <td class="px-4 py-3">
-                                        <Badge :variant="getStatusBadgeVariant(report.status)" class="capitalize">
-                                            <component :is="getStatusIcon(report.status)" class="w-3 h-3 mr-1"/>
+                                        <Badge
+                                            :variant="
+                                                getStatusBadgeVariant(
+                                                    report.status,
+                                                )
+                                            "
+                                            class="capitalize"
+                                        >
+                                            <component
+                                                :is="
+                                                    getStatusIcon(report.status)
+                                                "
+                                                class="mr-1 h-3 w-3"
+                                            />
                                             {{ report.status }}
                                         </Badge>
                                     </td>
-                                    <td class="px-4 py-3 text-right space-x-2">
-                                        <Button variant="ghost" size="sm" @click="selectedReport = report">
-                                            <Eye class="w-4 h-4 mr-2" /> Detail
+                                    <td class="space-x-2 px-4 py-3 text-right">
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            @click="selectedReport = report"
+                                        >
+                                            <Eye class="mr-2 h-4 w-4" /> Detail
                                         </Button>
                                     </td>
                                 </tr>
                                 <tr v-if="bugReports.length === 0">
-                                    <td colspan="5" class="px-4 py-8 text-center text-muted-foreground">
+                                    <td
+                                        colspan="5"
+                                        class="px-4 py-8 text-center text-muted-foreground"
+                                    >
                                         Belum ada laporan bug.
                                     </td>
                                 </tr>
@@ -179,80 +265,156 @@ const updateStatus = (reportId: number, newStatus: string) => {
         </div>
 
         <!-- Detail Modal -->
-        <div v-if="selectedReport" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-            <Card class="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                <CardHeader class="flex flex-row justify-between items-start sticky top-0 bg-background z-10 border-b">
+        <div
+            v-if="selectedReport"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+        >
+            <Card class="max-h-[90vh] w-full max-w-2xl overflow-y-auto">
+                <CardHeader
+                    class="sticky top-0 z-10 flex flex-row items-start justify-between border-b bg-background"
+                >
                     <div>
-                        <CardTitle class="text-xl">{{ selectedReport.title }}</CardTitle>
-                        <CardDescription>Dilaporkan pada {{ new Date(selectedReport.created_at).toLocaleString('id-ID') }}</CardDescription>
+                        <CardTitle class="text-xl">{{
+                            selectedReport.title
+                        }}</CardTitle>
+                        <CardDescription
+                            >Dilaporkan pada
+                            {{
+                                new Date(
+                                    selectedReport.created_at,
+                                ).toLocaleString('id-ID')
+                            }}</CardDescription
+                        >
                     </div>
-                    <Button variant="ghost" size="icon" @click="selectedReport = null">
-                        <X class="w-4 h-4" />
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        @click="selectedReport = null"
+                    >
+                        <X class="h-4 w-4" />
                     </Button>
                 </CardHeader>
                 <CardContent class="grid gap-6 pt-6">
                     <div>
-                        <h4 class="text-sm font-semibold mb-2">Status Saat Ini</h4>
+                        <h4 class="mb-2 text-sm font-semibold">
+                            Status Saat Ini
+                        </h4>
                         <div class="flex items-center gap-2">
-                            <Badge :variant="getStatusBadgeVariant(selectedReport.status)" class="text-sm px-3 py-1 capitalize">
-                                <component :is="getStatusIcon(selectedReport.status)" class="w-4 h-4 mr-2"/>
+                            <Badge
+                                :variant="
+                                    getStatusBadgeVariant(selectedReport.status)
+                                "
+                                class="px-3 py-1 text-sm capitalize"
+                            >
+                                <component
+                                    :is="getStatusIcon(selectedReport.status)"
+                                    class="mr-2 h-4 w-4"
+                                />
                                 {{ selectedReport.status }}
                             </Badge>
                         </div>
                     </div>
 
                     <div>
-                        <h4 class="text-sm font-semibold mb-2">Update Status</h4>
-                        <div class="flex gap-2 flex-wrap">
-                            <Button 
+                        <h4 class="mb-2 text-sm font-semibold">
+                            Update Status
+                        </h4>
+                        <div class="flex flex-wrap gap-2">
+                            <Button
                                 :disabled="form.processing"
-                                :variant="selectedReport.status === 'pending' ? 'default' : 'outline'" 
-                                size="sm" 
-                                @click="updateStatus(selectedReport.id, 'pending')"
+                                :variant="
+                                    selectedReport.status === 'pending'
+                                        ? 'default'
+                                        : 'outline'
+                                "
+                                size="sm"
+                                @click="
+                                    updateStatus(selectedReport.id, 'pending')
+                                "
                             >
-                                <Clock class="w-4 h-4 mr-2" /> Pending
+                                <Clock class="mr-2 h-4 w-4" /> Pending
                             </Button>
-                            <Button 
+                            <Button
                                 :disabled="form.processing"
-                                :variant="selectedReport.status === 'sedang dikerjakan' ? 'default' : 'outline'" 
-                                size="sm" 
-                                @click="updateStatus(selectedReport.id, 'sedang dikerjakan')"
+                                :variant="
+                                    selectedReport.status ===
+                                    'sedang dikerjakan'
+                                        ? 'default'
+                                        : 'outline'
+                                "
+                                size="sm"
+                                @click="
+                                    updateStatus(
+                                        selectedReport.id,
+                                        'sedang dikerjakan',
+                                    )
+                                "
                             >
-                                <PlayCircle class="w-4 h-4 mr-2" /> Sedang Dikerjakan
+                                <PlayCircle class="mr-2 h-4 w-4" /> Sedang
+                                Dikerjakan
                             </Button>
-                            <Button 
+                            <Button
                                 :disabled="form.processing"
-                                :variant="selectedReport.status === 'tuntas diperbaiki' ? 'default' : 'outline'" 
-                                size="sm" 
-                                @click="updateStatus(selectedReport.id, 'tuntas diperbaiki')"
+                                :variant="
+                                    selectedReport.status ===
+                                    'tuntas diperbaiki'
+                                        ? 'default'
+                                        : 'outline'
+                                "
+                                size="sm"
+                                @click="
+                                    updateStatus(
+                                        selectedReport.id,
+                                        'tuntas diperbaiki',
+                                    )
+                                "
                             >
-                                <CheckCircle2 class="w-4 h-4 mr-2" /> Tuntas Diperbaiki
+                                <CheckCircle2 class="mr-2 h-4 w-4" /> Tuntas
+                                Diperbaiki
                             </Button>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-muted p-4 rounded-lg">
-                            <div class="text-xs font-semibold text-muted-foreground uppercase mb-1">Nama Pelapor</div>
+                        <div class="rounded-lg bg-muted p-4">
+                            <div
+                                class="mb-1 text-xs font-semibold text-muted-foreground uppercase"
+                            >
+                                Nama Pelapor
+                            </div>
                             <div>{{ selectedReport.reporter_name }}</div>
                         </div>
-                        <div class="bg-muted p-4 rounded-lg">
-                            <div class="text-xs font-semibold text-muted-foreground uppercase mb-1">Kontak</div>
+                        <div class="rounded-lg bg-muted p-4">
+                            <div
+                                class="mb-1 text-xs font-semibold text-muted-foreground uppercase"
+                            >
+                                Kontak
+                            </div>
                             <div>{{ selectedReport.reporter_contact }}</div>
                         </div>
                     </div>
 
                     <div>
-                        <h4 class="text-sm font-semibold mb-2">Keterangan Bug</h4>
-                        <div class="bg-muted p-4 rounded-lg text-sm whitespace-pre-wrap leading-relaxed">
+                        <h4 class="mb-2 text-sm font-semibold">
+                            Keterangan Bug
+                        </h4>
+                        <div
+                            class="rounded-lg bg-muted p-4 text-sm leading-relaxed whitespace-pre-wrap"
+                        >
                             {{ selectedReport.description }}
                         </div>
                     </div>
 
                     <div v-if="selectedReport.image_path">
-                        <h4 class="text-sm font-semibold mb-2">Screenshot Terlampir</h4>
-                        <div class="rounded-lg overflow-hidden border">
-                            <img :src="'/storage/' + selectedReport.image_path" alt="Bug Screenshot" class="w-full h-auto" />
+                        <h4 class="mb-2 text-sm font-semibold">
+                            Screenshot Terlampir
+                        </h4>
+                        <div class="overflow-hidden rounded-lg border">
+                            <img
+                                :src="'/storage/' + selectedReport.image_path"
+                                alt="Bug Screenshot"
+                                class="h-auto w-full"
+                            />
                         </div>
                     </div>
                 </CardContent>

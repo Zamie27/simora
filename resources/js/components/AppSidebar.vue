@@ -30,8 +30,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import type { NavItem, SharedData } from '@/types';
+import { dashboard } from '@/routes';
 
 const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user);
@@ -142,13 +142,11 @@ const mainNavItems = computed<NavItem[]>(() => {
     }
 
     if (roleName.value === 'Report') {
-        items.push(
-            {
-                title: 'Daftar Laporan Bug',
-                href: '/report/dashboard',
-                icon: ClipboardList,
-            }
-        );
+        items.push({
+            title: 'Daftar Laporan Bug',
+            href: '/report/dashboard',
+            icon: ClipboardList,
+        });
     }
 
     return items;

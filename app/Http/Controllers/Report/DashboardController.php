@@ -23,7 +23,7 @@ class DashboardController extends Controller
                 'pending' => $bugReports->where('status', 'pending')->count(),
                 'in_progress' => $bugReports->where('status', 'sedang dikerjakan')->count(),
                 'resolved' => $bugReports->where('status', 'tuntas diperbaiki')->count(),
-            ]
+            ],
         ]);
     }
 

@@ -106,7 +106,7 @@ class UserController extends Controller
         ]);
 
         $role = Role::find($validated['role_id']);
-        
+
         if ($role && $role->name === 'Atlet') {
             $user->sendEmailVerificationNotification();
         } else {

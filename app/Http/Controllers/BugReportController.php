@@ -17,18 +17,21 @@ class BugReportController extends Controller
             'description' => 'required|string',
             'reporter_name' => 'required|string|max:255',
             'reporter_contact' => 'required|string|max:255',
-            'image' => 'nullable|image|max:5120', // Max 5MB
+            'images.*' => 'nullable|image|max:5120', // Max 5MB per image
+            'images' => 'nullable|array|max:5', // Max 5 images
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('bug-reports', 'public');
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imagePaths[] = $image->store('bug-reports', 'public');
+            }
         }
 
         BugReport::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'image_path' => $imagePath,
+            'image_path' => $imagePaths,
             'reporter_name' => $validated['reporter_name'],
             'reporter_contact' => $validated['reporter_contact'],
             'user_id' => $request->user()?->id,

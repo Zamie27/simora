@@ -26,6 +26,18 @@ class BugReport extends Model
     ];
 
     /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'image_path' => 'array',
+        ];
+    }
+
+    /**
      * Get the user who reported the bug.
      */
     public function user(): BelongsTo

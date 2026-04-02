@@ -12,7 +12,7 @@ const form = reactive({
     description: '',
     reporter_name: '',
     reporter_contact: '',
-    image: null as File | null,
+    images: [] as File[],
 });
 
 const resetForm = () => {
@@ -20,7 +20,7 @@ const resetForm = () => {
     form.description = '';
     form.reporter_name = '';
     form.reporter_contact = '';
-    form.image = null;
+    form.images = [];
     Object.keys(errors).forEach((key) => delete errors[key]);
 };
 
@@ -34,9 +34,9 @@ const submit = async () => {
     formData.append('reporter_name', form.reporter_name);
     formData.append('reporter_contact', form.reporter_contact);
 
-    if (form.image) {
-        formData.append('image', form.image);
-    }
+    form.images.forEach((image, index) => {
+        formData.append(`images[${index}]`, image);
+    });
 
     try {
         // Get CSRF token from the meta tag or cookie
@@ -92,8 +92,18 @@ const handleImage = (e: Event) => {
     const target = e.target as HTMLInputElement;
 
     if (target.files?.length) {
-        form.image = target.files[0];
+        const newFiles = Array.from(target.files);
+        if (form.images.length + newFiles.length > 5) {
+            errors.images = 'Maksimal 5 gambar diperbolehkan.';
+            return;
+        }
+        form.images = [...form.images, ...newFiles];
+        delete errors.images;
     }
+};
+
+const removeImage = (index: number) => {
+    form.images.splice(index, 1);
 };
 </script>
 
@@ -230,14 +240,16 @@ const handleImage = (e: Event) => {
                         <label
                             style="color: #94a3b8"
                             class="text-[9px] font-black tracking-widest uppercase"
-                            >Screenshot Bug (Opsional)</label
+                            >Screenshot Bug (Opsional, Max 5)</label
                         >
                         <div class="relative">
                             <input
                                 type="file"
                                 @change="handleImage"
                                 accept="image/*"
+                                multiple
                                 class="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
+                                :disabled="form.images.length >= 5"
                             />
                             <div
                                 style="
@@ -251,20 +263,26 @@ const handleImage = (e: Event) => {
                                     class="h-4 w-4"
                                     style="color: #ff6120"
                                 />
-                                <span
-                                    v-if="form.image"
-                                    style="color: #ffffff"
-                                    class="truncate"
-                                    >{{ form.image.name }}</span
-                                >
-                                <span v-else>Klik untuk upload gambar</span>
+                                <span>{{ form.images.length >= 5 ? 'Maksimal tercapai' : 'Klik untuk upload (bisa banyak)' }}</span>
                             </div>
                         </div>
+
+                        <!-- Image List View -->
+                        <div v-if="form.images.length > 0" class="flex flex-wrap gap-2 mt-2">
+                            <div v-for="(img, idx) in form.images" :key="idx" 
+                                class="flex items-center gap-2 bg-white/5 rounded-lg px-2 py-1 text-[10px]">
+                                <span class="truncate max-w-[100px] text-white/70">{{ img.name }}</span>
+                                <button type="button" @click="removeImage(idx)" class="text-red-400">
+                                    <X class="w-3 h-3" />
+                                </button>
+                            </div>
+                        </div>
+
                         <p
-                            v-if="errors.image"
+                            v-if="errors.images"
                             class="text-[10px] font-bold text-red-500"
                         >
-                            {{ errors.image }}
+                            {{ errors.images }}
                         </p>
                     </div>
 

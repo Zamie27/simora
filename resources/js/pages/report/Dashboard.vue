@@ -17,13 +17,25 @@ interface BugReport {
     id: number;
     title: string;
     description: string;
-    image_path: string | null;
+    image_path: string[] | string | null;
     reporter_name: string;
     reporter_contact: string;
     user_id: number | null;
     status: string;
     created_at: string;
 }
+
+const getImages = (imagePath: string[] | string | null): string[] => {
+    if (!imagePath) return [];
+    if (Array.isArray(imagePath)) return imagePath;
+    try {
+        // Handle potential stringified JSON
+        const parsed = JSON.parse(imagePath);
+        return Array.isArray(parsed) ? parsed : [imagePath];
+    } catch {
+        return [imagePath];
+    }
+};
 
 defineProps<{
     bugReports: BugReport[];
@@ -405,16 +417,23 @@ const updateStatus = (reportId: number, newStatus: string) => {
                         </div>
                     </div>
 
-                    <div v-if="selectedReport.image_path">
+                    <div v-if="getImages(selectedReport.image_path).length > 0">
                         <h4 class="mb-2 text-sm font-semibold">
-                            Screenshot Terlampir
+                            Screenshot Terlampir ({{ getImages(selectedReport.image_path).length }})
                         </h4>
-                        <div class="overflow-hidden rounded-lg border">
-                            <img
-                                :src="'/storage/' + selectedReport.image_path"
-                                alt="Bug Screenshot"
-                                class="h-auto w-full"
-                            />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div v-for="(img, idx) in getImages(selectedReport.image_path)" :key="idx" 
+                                class="overflow-hidden rounded-lg border group relative">
+                                <img
+                                    :src="'/storage/' + img"
+                                    alt="Bug Screenshot"
+                                    class="h-auto w-full cursor-zoom-in transition-transform duration-300 group-hover:scale-105"
+                                />
+                                <a :href="'/storage/' + img" target="_blank" 
+                                    class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span class="text-white text-xs font-bold">Lihat Ukuran Penuh</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </CardContent>

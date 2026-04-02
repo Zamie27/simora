@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6VKT2XY0QR"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-6VKT2XY0QR');
+    </script>
+
     {{-- Inline script to detect system dark mode preference and apply it immediately --}}
     <script>
         (function () {
@@ -55,6 +65,10 @@
 
 <body class="font-sans antialiased">
     @inertia
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+        data-cf-beacon='{"token": "28b78634c2c142b1a2a3385d68332ea8"}'></script>
+    <!-- End Cloudflare Web Analytics -->
 </body>
 
 </html>

@@ -1,33 +1,40 @@
 <script setup lang="ts">
-import { Monitor, Moon, Sun } from 'lucide-vue-next';
+import { Moon, Sun } from 'lucide-vue-next';
 import { useAppearance } from '@/composables/useAppearance';
 
-const { appearance, updateAppearance } = useAppearance();
-
-const tabs = [
-    { value: 'light', Icon: Sun, label: 'Light' },
-    { value: 'dark', Icon: Moon, label: 'Dark' },
-    { value: 'system', Icon: Monitor, label: 'System' },
-] as const;
+const { resolvedAppearance, updateAppearance } = useAppearance();
 </script>
 
 <template>
     <div
-        class="inline-flex gap-1 rounded-lg bg-neutral-100 p-1 dark:bg-neutral-800"
+        class="inline-flex rounded-full bg-black/5 p-1 border border-black/10 dark:bg-white/5 dark:border-white/10"
     >
+        <!-- Light Button -->
         <button
-            v-for="{ value, Icon, label } in tabs"
-            :key="value"
-            @click="updateAppearance(value)"
+            @click="updateAppearance('light')"
             :class="[
-                'flex items-center rounded-md px-3.5 py-1.5 transition-colors',
-                appearance === value
-                    ? 'bg-white shadow-xs dark:bg-neutral-700 dark:text-neutral-100'
-                    : 'text-neutral-500 hover:bg-neutral-200/60 hover:text-black dark:text-neutral-400 dark:hover:bg-neutral-700/60',
+                'flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-bold transition-all duration-150',
+                resolvedAppearance === 'light'
+                    ? 'bg-accent text-white shadow-md scale-100'
+                    : 'text-foreground/60 scale-95 opacity-80 hover:bg-black/5 hover:text-foreground dark:hover:bg-white/5'
             ]"
         >
-            <component :is="Icon" class="-ml-1 h-4 w-4" />
-            <span class="ml-1.5 text-sm">{{ label }}</span>
+            <Sun class="h-4 w-4" />
+            Light
+        </button>
+
+        <!-- Dark Button -->
+        <button
+            @click="updateAppearance('dark')"
+            :class="[
+                'flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-bold transition-all duration-150',
+                resolvedAppearance === 'dark'
+                    ? 'bg-accent text-white shadow-md scale-100'
+                    : 'text-foreground/60 scale-95 opacity-80 hover:bg-black/5 hover:text-foreground dark:hover:bg-white/5'
+            ]"
+        >
+            <Moon class="h-4 w-4" />
+            Dark
         </button>
     </div>
 </template>

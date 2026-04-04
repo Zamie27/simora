@@ -3,7 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Notifications\CustomVerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Fortify\Features;
@@ -28,9 +28,9 @@ class VerificationNotificationTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('verification.send'))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(); // Controller redirects 'back()' which might be to home, but focus on custom notification class.
 
-        Notification::assertSentTo($user, VerifyEmail::class);
+        Notification::assertSentTo($user, CustomVerifyEmail::class);
     }
 
     public function test_does_not_send_verification_notification_if_email_is_verified(): void

@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
+import AppearanceTabs from '@/components/AppearanceTabs.vue';
 import { useAppearance } from '@/composables/useAppearance';
 import { dashboard, login, register } from '@/routes';
 
@@ -25,7 +26,7 @@ withDefaults(
 <template>
     <v-app
         :theme="currentTheme"
-        class="kinetic-archive scroll-smooth selection:bg-primary/30"
+        class="kinetic-archive scroll-smooth selection:bg-accent/30"
     >
         <Head title="SIMORA | Kinetic Road Archive" />
 
@@ -46,7 +47,7 @@ withDefaults(
                     class="text-decoration-none group flex items-center"
                 >
                     <AppLogoIcon
-                        class="h-10 text-primary transition-transform duration-700 group-hover:scale-110 md:h-12"
+                        class="h-10 text-accent transition-transform duration-700 group-hover:scale-110 md:h-12"
                     />
                 </Link>
 
@@ -56,25 +57,27 @@ withDefaults(
                     <a href="#identity" class="nav-link">IDENTITAS</a>
                 </div>
 
-                <div class="flex items-center gap-4 lg:gap-10">
+                <div class="flex items-center gap-4 lg:gap-8">
+                    <AppearanceTabs class="hidden md:flex" />
+
                     <Link
                         v-if="$page.props.auth.user"
                         :href="dashboard().url"
-                        class="nav-link font-black text-primary opacity-100"
+                        class="nav-link font-black text-accent opacity-100"
                     >
                         DASHBOARD
                     </Link>
                     <template v-else>
                         <Link
                             :href="login().url"
-                            class="nav-link px-4 text-[0.8rem] font-black tracking-[0.2em] text-foreground opacity-100 transition-colors hover:text-primary"
+                            class="nav-link px-4 text-[0.8rem] font-black tracking-[0.2em] text-foreground opacity-100 transition-colors hover:text-accent"
                         >
                             MASUK
                         </Link>
                         <v-btn
                             v-if="canRegister"
                             :href="register().url"
-                            color="primary"
+                            color="accent"
                             variant="flat"
                             rounded="sm"
                             class="cta-btn px-12 text-[0.75rem] font-black tracking-[0.3em]"
@@ -111,28 +114,25 @@ withDefaults(
                             >
                                 <v-progress-circular
                                     indeterminate
-                                    color="primary"
+                                    color="accent"
                                 ></v-progress-circular>
                             </div>
                         </template>
                     </v-img>
 
-                    <!-- Mode-Sensitive Overlays (ASKED BY USER) -->
-                    <template v-if="isDark">
-                        <div
-                            class="absolute inset-0 z-10 bg-slate-950/50"
-                        ></div>
-                        <div
-                            class="absolute inset-0 z-20 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent"
-                        ></div>
-                    </template>
-                    <template v-else>
-                        <!-- Light Mode: Clean White with subtle gradient for text contrast at 70% target -->
-                        <div class="absolute inset-0 z-10 bg-white/30"></div>
-                        <div
-                            class="absolute inset-0 z-20 bg-gradient-to-r from-white via-white/60 to-transparent"
-                        ></div>
-                    </template>
+                    <!-- Mode-Sensitive Overlays -->
+                    <div
+                        class="absolute inset-0 z-10"
+                        :class="isDark ? 'bg-slate-950/60' : 'bg-white/40'"
+                    ></div>
+                    <div
+                        class="absolute inset-0 z-20 bg-gradient-to-r"
+                        :class="
+                            isDark
+                                ? 'from-slate-950 via-slate-950/80 to-transparent'
+                                : 'from-white via-white/70 to-transparent'
+                        "
+                    ></div>
 
                     <div
                         class="carbon-texture absolute inset-0 z-30 opacity-[0.05]"
@@ -152,9 +152,9 @@ withDefaults(
                             <div
                                 class="mb-10 inline-flex items-center gap-4 overflow-hidden"
                             >
-                                <span class="h-px w-16 bg-primary"></span>
+                                <span class="h-px w-16 bg-accent"></span>
                                 <span
-                                    class="label-sm font-black tracking-[0.6em] text-primary uppercase"
+                                    class="label-sm font-black tracking-[0.6em] text-accent uppercase"
                                     >Telemetri Performans</span
                                 >
                             </div>
@@ -163,7 +163,7 @@ withDefaults(
                                 class="display-lg mb-10 leading-[0.85] text-foreground transition-colors duration-500"
                             >
                                 <span class="block">ARSIP</span>
-                                <span class="block text-primary italic"
+                                <span class="block text-accent italic"
                                     >KINETIK</span
                                 >
                                 <span class="block">PRESISI.</span>
@@ -180,7 +180,7 @@ withDefaults(
                                 <v-btn
                                     v-if="!$page.props.auth.user && canRegister"
                                     :href="register().url"
-                                    color="primary"
+                                    color="accent"
                                     flat
                                     rounded="sm"
                                     height="68"
@@ -214,7 +214,7 @@ withDefaults(
                                     >
                                         <div>
                                             <div
-                                                class="label-sm mb-2 font-black tracking-widest text-primary uppercase italic"
+                                                class="label-sm mb-2 font-black tracking-widest text-accent uppercase italic"
                                             >
                                                 Live Session
                                             </div>
@@ -226,7 +226,7 @@ withDefaults(
                                         </div>
                                         <div class="status-dot">
                                             <div
-                                                class="h-3 w-3 animate-pulse rounded-full bg-primary shadow-[0_0_20px_#FF6120]"
+                                                class="h-3 w-3 animate-pulse rounded-full bg-accent shadow-[0_0_20px_#FF6120]"
                                             ></div>
                                         </div>
                                     </div>
@@ -245,7 +245,7 @@ withDefaults(
                                         </div>
                                         <v-icon
                                             icon="mdi-trending-up"
-                                            color="primary"
+                                            color="accent"
                                             size="32"
                                             class="animate-bounce-subtle"
                                         ></v-icon>
@@ -300,7 +300,7 @@ withDefaults(
                                                 Power
                                             </div>
                                             <div
-                                                class="headline-sm font-black text-primary italic"
+                                                class="headline-sm font-black text-accent italic"
                                             >
                                                 Z4
                                             </div>
@@ -322,7 +322,7 @@ withDefaults(
                     <v-row class="mb-16">
                         <v-col cols="12" lg="7">
                             <div
-                                class="label-sm mb-4 font-black tracking-[0.6em] text-primary uppercase"
+                                class="label-sm mb-4 font-black tracking-[0.6em] text-accent uppercase"
                             >
                                 The Precision Protocol
                             </div>
@@ -330,14 +330,14 @@ withDefaults(
                                 class="display-md mb-4 leading-[0.9] tracking-tighter text-foreground uppercase"
                             >
                                 DOMINANSI DATA <br />
-                                <span class="text-primary italic"
+                                <span class="text-accent italic"
                                     >TANPA KOMPROMI.</span
                                 >
                             </h2>
                         </v-col>
                         <v-col cols="12" lg="5">
                             <p
-                                class="body-md border-l-2 border-primary/20 pl-8 text-[0.75rem] leading-relaxed font-black tracking-widest text-foreground/50 uppercase lg:mt-16"
+                                class="body-md border-l-2 border-accent/20 pl-8 text-[0.75rem] leading-relaxed font-black tracking-widest text-foreground/50 uppercase lg:mt-16"
                             >
                                 Sistem pemantauan yang mendobrak batasan fisik
                                 setiap atlet melalui analisis telemetri tingkat
@@ -374,12 +374,12 @@ withDefaults(
                                 class="performance-card group h-full cursor-default border-none bg-transparent"
                             >
                                 <div
-                                    class="bg-surface hover:bg-surface-bright flex h-full flex-col justify-between rounded-sm border-b-2 border-transparent p-12 shadow-sm transition-all duration-700 hover:border-primary hover:shadow-xl"
+                                    class="bg-surface hover:bg-surface-bright flex h-full flex-col justify-between rounded-sm border-b-2 border-transparent p-12 shadow-sm transition-all duration-700 hover:border-accent hover:shadow-xl"
                                 >
                                     <div>
                                         <v-icon
                                             :icon="item.icon"
-                                            color="primary"
+                                            color="accent"
                                             class="mb-12 transition-transform duration-700 group-hover:scale-110"
                                             size="44"
                                         ></v-icon>
@@ -414,7 +414,7 @@ withDefaults(
                             MODUL IDENTITAS.
                         </h2>
                         <span
-                            class="label-sm font-black tracking-[1em] text-primary uppercase"
+                            class="label-sm font-black tracking-[1em] text-accent uppercase"
                             >Role Based Access</span
                         >
                     </div>
@@ -434,13 +434,13 @@ withDefaults(
                                         class="from-surface absolute inset-0 bg-gradient-to-t via-transparent to-transparent opacity-90"
                                     ></div>
                                     <div
-                                        class="label-sm absolute top-6 left-6 bg-primary px-4 py-2 font-black tracking-widest text-white italic"
+                                        class="label-sm absolute top-6 left-6 bg-accent px-4 py-2 font-black tracking-widest text-white italic"
                                     >
                                         ACCESS: 01
                                     </div>
                                 </div>
                                 <h3
-                                    class="headline-sm mb-4 font-black tracking-tight text-foreground uppercase italic transition-colors group-hover:text-primary"
+                                    class="headline-sm mb-4 font-black tracking-tight text-foreground uppercase italic transition-colors group-hover:text-accent"
                                 >
                                     ATLET
                                 </h3>
@@ -467,13 +467,13 @@ withDefaults(
                                         class="from-surface absolute inset-0 bg-gradient-to-t via-transparent to-transparent opacity-90"
                                     ></div>
                                     <div
-                                        class="label-sm absolute top-6 left-6 bg-primary px-4 py-2 font-black tracking-widest text-white italic"
+                                        class="label-sm absolute top-6 left-6 bg-accent px-4 py-2 font-black tracking-widest text-white italic"
                                     >
                                         ACCESS: 02
                                     </div>
                                 </div>
                                 <h3
-                                    class="headline-sm mb-4 font-black tracking-tight text-foreground uppercase italic transition-colors group-hover:text-primary"
+                                    class="headline-sm mb-4 font-black tracking-tight text-foreground uppercase italic transition-colors group-hover:text-accent"
                                 >
                                     PELATIH
                                 </h3>
@@ -501,13 +501,13 @@ withDefaults(
                                         class="from-surface absolute inset-0 bg-gradient-to-t via-transparent to-transparent opacity-90"
                                     ></div>
                                     <div
-                                        class="label-sm absolute top-6 left-6 bg-primary px-4 py-2 font-black tracking-widest text-white italic"
+                                        class="label-sm absolute top-6 left-6 bg-accent px-4 py-2 font-black tracking-widest text-white italic"
                                     >
                                         ACCESS: 03
                                     </div>
                                 </div>
                                 <h3
-                                    class="headline-sm mb-4 font-black tracking-tight text-foreground uppercase italic transition-colors group-hover:text-primary"
+                                    class="headline-sm mb-4 font-black tracking-tight text-foreground uppercase italic transition-colors group-hover:text-accent"
                                 >
                                     MANAJEMEN
                                 </h3>
@@ -525,19 +525,19 @@ withDefaults(
             </section>
 
             <!-- CTA Section (Compact Padding) -->
-            <section class="relative overflow-hidden bg-primary py-20">
+            <section class="relative overflow-hidden bg-accent py-24">
                 <div
-                    class="carbon-texture pointer-events-none absolute inset-0 opacity-[0.1]"
+                    class="carbon-texture pointer-events-none absolute inset-0 opacity-[0.15]"
                 ></div>
-                <v-container class="relative z-10 py-10 text-center">
+                <v-container class="relative z-10 py-12 text-center">
                     <h2
-                        class="display-lg mb-10 leading-none font-black tracking-tighter text-white uppercase italic"
+                        class="display-lg mb-8 leading-none font-black tracking-tighter text-white uppercase italic"
                     >
                         UNLOCK THE <br />
                         ARCHIVE.
                     </h2>
                     <p
-                        class="body-md mx-auto mb-14 max-w-xl text-[0.8rem] font-black tracking-widest text-white uppercase italic opacity-80 drop-shadow-sm"
+                        class="body-md mx-auto mb-16 max-w-xl text-[0.85rem] font-black tracking-widest text-white uppercase italic opacity-90 drop-shadow-md"
                     >
                         Masuk ke dalam ekosistem monitoring paling presisi.
                         Mulai kumpulkan data, menangkan podium.
@@ -549,7 +549,7 @@ withDefaults(
                         flat
                         rounded="sm"
                         size="large"
-                        class="cta-btn-white h-[72px] px-20 text-[0.8rem] font-black tracking-[0.4em] uppercase shadow-2xl transition-all hover:scale-105 active:scale-95"
+                        class="cta-btn-white h-[72px] px-20 text-[0.9rem] font-black tracking-[0.4em] uppercase shadow-2xl transition-all hover:scale-105 active:scale-95"
                     >
                         DAFTAR SEKARANG
                     </v-btn>
@@ -562,7 +562,7 @@ withDefaults(
             <v-container fluid class="max-w-[1500px] px-6 md:px-12">
                 <v-row class="mb-20 items-start gap-y-16">
                     <v-col cols="12" lg="5">
-                        <AppLogoIcon class="mb-10 h-10 text-primary" />
+                        <AppLogoIcon class="mb-10 h-10 text-accent" />
                         <p
                             class="label-md max-w-[400px] leading-relaxed font-black tracking-[0.2em] text-foreground/40 uppercase italic"
                         >
@@ -574,7 +574,7 @@ withDefaults(
 
                     <v-col cols="6" sm="4" lg="2">
                         <h4
-                            class="label-sm mb-10 font-black tracking-[0.5em] text-primary uppercase italic"
+                            class="label-sm mb-10 font-black tracking-[0.5em] text-accent uppercase italic"
                         >
                             Sistem
                         </h4>
@@ -583,17 +583,17 @@ withDefaults(
                         >
                             <a
                                 href="#protocol"
-                                class="text-decoration-none text-foreground uppercase transition-all hover:text-primary hover:opacity-100"
+                                class="text-decoration-none text-foreground uppercase transition-all hover:text-accent hover:opacity-100"
                                 >PROTOKOL</a
                             >
                             <a
                                 href="#metric"
-                                class="text-decoration-none text-foreground uppercase transition-all hover:text-primary hover:opacity-100"
+                                class="text-decoration-none text-foreground uppercase transition-all hover:text-accent hover:opacity-100"
                                 >METRIK</a
                             >
                             <a
                                 href="#identity"
-                                class="text-decoration-none text-foreground uppercase transition-all hover:text-primary hover:opacity-100"
+                                class="text-decoration-none text-foreground uppercase transition-all hover:text-accent hover:opacity-100"
                                 >IDENTITAS</a
                             >
                         </div>
@@ -601,7 +601,7 @@ withDefaults(
 
                     <v-col cols="6" sm="4" lg="2">
                         <h4
-                            class="label-sm mb-10 font-black tracking-[0.5em] text-primary uppercase italic"
+                            class="label-sm mb-10 font-black tracking-[0.5em] text-accent uppercase italic"
                         >
                             Akses
                         </h4>
@@ -610,12 +610,12 @@ withDefaults(
                         >
                             <Link
                                 :href="login().url"
-                                class="text-decoration-none text-foreground uppercase transition-all hover:text-primary hover:opacity-100"
+                                class="text-decoration-none text-foreground uppercase transition-all hover:text-accent hover:opacity-100"
                                 >LOGIN</Link
                             >
                             <Link
                                 :href="register().url"
-                                class="text-decoration-none text-foreground uppercase transition-all hover:text-primary hover:opacity-100"
+                                class="text-decoration-none text-foreground uppercase transition-all hover:text-accent hover:opacity-100"
                                 >REGISTRASI</Link
                             >
                         </div>
@@ -623,7 +623,7 @@ withDefaults(
 
                     <v-col cols="12" sm="4" lg="3">
                         <h4
-                            class="label-sm mb-10 font-black tracking-[0.5em] text-primary uppercase italic"
+                            class="label-sm mb-10 font-black tracking-[0.5em] text-accent uppercase italic"
                         >
                             Regional
                         </h4>
@@ -651,7 +651,7 @@ withDefaults(
                             >Built for Performance</span
                         >
                         <span
-                            class="label-sm text-[0.6rem] font-black tracking-[0.3em] text-primary uppercase"
+                            class="label-sm text-[0.6rem] font-black tracking-[0.3em] text-accent uppercase"
                             >Precision Slipstream v2.0</span
                         >
                     </div>
@@ -680,7 +680,6 @@ html {
     --surface: #f4f7f7;
     --surface-bright: #ffffff;
     --surface-container-low: #ebf0f0;
-    --primary: #ff6120;
     --foreground: #0f1414;
 }
 
@@ -688,7 +687,6 @@ html {
     --surface: #0b1326;
     --surface-bright: #171c1c;
     --surface-container-low: #131b2e;
-    --primary: #ff6120;
     --foreground: #ffffff;
 }
 
@@ -704,8 +702,8 @@ html {
 .text-foreground {
     color: var(--foreground) !important;
 }
-.text-primary {
-    color: var(--primary) !important;
+.text-accent {
+    color: var(--accent) !important;
 }
 
 /* Typography Scale */
@@ -765,7 +763,7 @@ html {
 
 .nav-link:hover {
     opacity: 1;
-    color: var(--primary) !important;
+    color: var(--accent) !important;
     letter-spacing: 0.5em;
 }
 
@@ -774,7 +772,7 @@ html {
     background: linear-gradient(
         135deg,
         #ffb59c 0%,
-        var(--primary) 100%
+        var(--accent) 100%
     ) !important;
     color: #380c00 !important;
     font-weight: 900 !important;
@@ -834,7 +832,7 @@ html {
         font-size: 3.5rem;
     }
     .hero-text-block {
-        border-left: 4px solid var(--primary);
+        border-left: 4px solid var(--accent);
         padding-left: 2rem;
     }
 }

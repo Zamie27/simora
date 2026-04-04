@@ -38,7 +38,7 @@ const chartOptions = computed<ApexOptions>(() => ({
         zoom: { enabled: false },
         background: 'transparent',
     },
-    colors: ['#0F1414'], // Primary Dark
+    colors: ['#FF6120'], // Primary Orange
     dataLabels: { enabled: false },
     stroke: { curve: 'smooth', width: 3 },
     fill: {

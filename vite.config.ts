@@ -30,9 +30,10 @@ export default defineConfig({
     ],
     server: {
         host: '0.0.0.0', // Supaya bisa diakses dari luar container
-        port: 5173,      // Port standar Vite
+        port: 5174,      // Port Vite disamakan dengan host di docker-compose
         hmr: {
             host: 'localhost', // Browser kamu akan mencari HMR di localhost laptop
+            port: 5174,      // Port HMR juga disamakan
         },
         watch: {
             usePolling: true, // WAJIB untuk Docker agar perubahan file langsung terdeteksi

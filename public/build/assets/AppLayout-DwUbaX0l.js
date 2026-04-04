@@ -1,0 +1,1 @@
+import{A as e,C as t,Q as n,Y as r,ut as i}from"./index.esm-DVc95TD3.js";import{t as a}from"./AppSidebarLayout-EhRVRK_p.js";var o=e({__name:`AppLayout`,props:{breadcrumbs:{default:()=>[]}},setup(e){return(o,s)=>(r(),t(a,{breadcrumbs:e.breadcrumbs},{default:i(()=>[n(o.$slots,`default`)]),_:3},8,[`breadcrumbs`]))}});export{o as t};

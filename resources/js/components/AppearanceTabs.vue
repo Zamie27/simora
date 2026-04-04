@@ -7,7 +7,7 @@ const { resolvedAppearance, updateAppearance } = useAppearance();
 
 <template>
     <div
-        class="inline-flex rounded-full bg-black/5 p-1 border border-black/10 dark:bg-white/5 dark:border-white/10"
+        class="inline-flex rounded-full border border-black/10 bg-black/5 p-1 dark:border-white/10 dark:bg-white/5"
     >
         <!-- Light Button -->
         <button
@@ -15,8 +15,8 @@ const { resolvedAppearance, updateAppearance } = useAppearance();
             :class="[
                 'flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-bold transition-all duration-150',
                 resolvedAppearance === 'light'
-                    ? 'bg-accent text-white shadow-md scale-100'
-                    : 'text-foreground/60 scale-95 opacity-80 hover:bg-black/5 hover:text-foreground dark:hover:bg-white/5'
+                    ? 'scale-100 bg-accent text-white shadow-md'
+                    : 'scale-95 text-foreground/60 opacity-80 hover:bg-black/5 hover:text-foreground dark:hover:bg-white/5',
             ]"
         >
             <Sun class="h-4 w-4" />
@@ -29,8 +29,8 @@ const { resolvedAppearance, updateAppearance } = useAppearance();
             :class="[
                 'flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-bold transition-all duration-150',
                 resolvedAppearance === 'dark'
-                    ? 'bg-accent text-white shadow-md scale-100'
-                    : 'text-foreground/60 scale-95 opacity-80 hover:bg-black/5 hover:text-foreground dark:hover:bg-white/5'
+                    ? 'scale-100 bg-accent text-white shadow-md'
+                    : 'scale-95 text-foreground/60 opacity-80 hover:bg-black/5 hover:text-foreground dark:hover:bg-white/5',
             ]"
         >
             <Moon class="h-4 w-4" />

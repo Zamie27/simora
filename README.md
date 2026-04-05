@@ -45,7 +45,7 @@ File konfigurasi `.env` tidak disertakan dalam repositori ini demi alasan keaman
 
 Ikuti langkah-langkah berikut secara berurutan untuk menyiapkan lingkungan pengembangan setelah melakukan kloning repositori:
 
-### 1. Kloning Repositori
+### 1. Clone Repositori
 ```bash
 git clone https://github.com/Zamie27/simora.git
 cd simora
@@ -97,9 +97,9 @@ Setelah seluruh proses instalasi selesai, aplikasi dapat diakses melalui peramba
 
 | Layanan | Alamat (URL) | Port |
 | :--- | :--- | :--- |
-| **Aplikasi Utama** | [http://localhost:8080](http://localhost:8080) | `8080` |
-| **PHPMyAdmin** | [http://localhost:8082](http://localhost:8082) | `8082` |
-| **MySQL (Direct Access)** | `127.0.0.1` | `3307` |
+| **Aplikasi Utama** | [http://localhost:8081](http://localhost:8081) | `8081` |
+| **PHPMyAdmin** | [http://localhost:8083](http://localhost:8083) | `8083` |
+| **MySQL (Direct Access)** | `127.0.0.1` | `3308` |
 
 ---
 

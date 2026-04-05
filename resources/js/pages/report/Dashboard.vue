@@ -22,6 +22,7 @@ interface BugReport {
     reporter_contact: string;
     user_id: number | null;
     status: string;
+    url: string | null;
     created_at: string;
 }
 
@@ -410,6 +411,23 @@ const updateStatus = (reportId: number, newStatus: string) => {
                                 Kontak
                             </div>
                             <div>{{ selectedReport.reporter_contact }}</div>
+                        </div>
+                    </div>
+
+                    <div v-if="selectedReport.url">
+                        <div class="rounded-lg border border-accent/20 bg-accent/5 p-4">
+                            <div
+                                class="mb-1 text-xs font-semibold text-accent uppercase"
+                            >
+                                Halaman Saat Pelaporan (Capture)
+                            </div>
+                            <a 
+                                :href="selectedReport.url" 
+                                target="_blank" 
+                                class="break-all text-sm font-medium text-blue-500 hover:underline"
+                            >
+                                {{ selectedReport.url }}
+                            </a>
                         </div>
                     </div>
 

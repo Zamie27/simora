@@ -33,6 +33,7 @@ const submit = async () => {
     formData.append('description', form.description);
     formData.append('reporter_name', form.reporter_name);
     formData.append('reporter_contact', form.reporter_contact);
+    formData.append('url', window.location.href);
 
     form.images.forEach((image, index) => {
         formData.append(`images[${index}]`, image);

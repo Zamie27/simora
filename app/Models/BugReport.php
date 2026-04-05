@@ -21,6 +21,7 @@ class BugReport extends Model
         'image_path',
         'reporter_name',
         'reporter_contact',
+        'url',
         'user_id',
         'status',
     ];

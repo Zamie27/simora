@@ -17,6 +17,7 @@ class BugReportController extends Controller
             'description' => 'required|string',
             'reporter_name' => 'required|string|max:255',
             'reporter_contact' => 'required|string|max:255',
+            'url' => 'nullable|string|max:2048',
             'images.*' => 'nullable|image|max:5120', // Max 5MB per image
             'images' => 'nullable|array|max:5', // Max 5 images
         ]);
@@ -34,6 +35,7 @@ class BugReportController extends Controller
             'image_path' => $imagePaths,
             'reporter_name' => $validated['reporter_name'],
             'reporter_contact' => $validated['reporter_contact'],
+            'url' => $validated['url'] ?? null,
             'user_id' => $request->user()?->id,
             'status' => 'pending',
         ]);

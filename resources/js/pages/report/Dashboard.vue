@@ -421,16 +421,18 @@ const updateStatus = (reportId: number, newStatus: string) => {
                     </div>
 
                     <div v-if="selectedReport.url">
-                        <div class="rounded-lg border border-accent/20 bg-accent/5 p-4">
+                        <div
+                            class="rounded-lg border border-accent/20 bg-accent/5 p-4"
+                        >
                             <div
                                 class="mb-1 text-xs font-semibold text-accent uppercase"
                             >
                                 Halaman Saat Pelaporan (Capture)
                             </div>
-                            <a 
-                                :href="selectedReport.url" 
-                                target="_blank" 
-                                class="break-all text-sm font-medium text-blue-500 hover:underline"
+                            <a
+                                :href="selectedReport.url"
+                                target="_blank"
+                                class="text-sm font-medium break-all text-blue-500 hover:underline"
                             >
                                 {{ selectedReport.url }}
                             </a>

@@ -34,6 +34,10 @@ class DashboardController extends Controller
             return redirect()->route('athlete.dashboard');
         }
 
+        if ($role === 'Report') {
+            return redirect()->route('report.dashboard');
+        }
+
         return Inertia::render('Dashboard');
     }
 }

@@ -1,1 +1,0 @@
-import{A as e,R as t,T as n,Y as r}from"./index.esm-DVc95TD3.js";var i=e({inheritAttrs:!1,__name:`AppLogoIcon`,props:{className:{type:[Boolean,null,String,Object,Array]}},setup(e){return(i,a)=>(r(),n(`img`,t({src:`/images/simora_logo.png`,alt:`Simora Logo`,class:[`object-contain`,e.className]},i.$attrs),null,16))}});export{i as t};

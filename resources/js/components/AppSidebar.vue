@@ -142,11 +142,7 @@ const mainNavItems = computed<NavItem[]>(() => {
     }
 
     if (roleName.value === 'Report') {
-        items.push({
-            title: 'Daftar Laporan Bug',
-            href: '/report/dashboard',
-            icon: ClipboardList,
-        });
+        // No additional items needed since 'Dashboard' now points to bug reports
     }
 
     return items;

@@ -5,6 +5,12 @@ import { ref } from 'vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import {
     Card,
     CardContent,
     CardDescription,
@@ -57,13 +63,13 @@ defineProps<{
 
 const breadcrumbs = [
     {
-        title: 'Report Dashboard',
+        title: 'Dashboard',
         href: '/report/dashboard',
-        disabled: true,
     },
 ];
 
 const selectedReport = ref<BugReport | null>(null);
+const previewImage = ref<string | null>(null);
 
 const form = useForm({
     status: '',
@@ -461,20 +467,42 @@ const updateStatus = (reportId: number, newStatus: string) => {
                                     alt="Bug Screenshot"
                                     class="h-auto w-full cursor-zoom-in transition-transform duration-300 group-hover:scale-105"
                                 />
-                                <a
-                                    :href="'/storage/' + img"
-                                    target="_blank"
-                                    class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100"
+                                <div
+                                    @click="previewImage = img"
+                                    class="absolute inset-0 flex cursor-zoom-in items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100"
                                 >
-                                    <span class="text-xs font-bold text-white"
-                                        >Lihat Ukuran Penuh</span
-                                    >
-                                </a>
+                                    <span class="text-xs font-bold text-white">Lihat Detail Gambar</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </CardContent>
             </Card>
         </div>
+
+        <!-- Image Preview Modal -->
+        <Dialog :open="!!previewImage" @update:open="previewImage = null">
+            <DialogContent class="max-w-4xl border-none bg-transparent p-0 shadow-none sm:max-w-6xl">
+                <DialogHeader class="hidden">
+                    <DialogTitle>Preview Gambar Bug</DialogTitle>
+                </DialogHeader>
+                <div class="relative flex items-center justify-center overflow-hidden rounded-lg">
+                    <img
+                        v-if="previewImage"
+                        :src="'/storage/' + previewImage"
+                        alt="Bug Screenshot Preview"
+                        class="h-auto max-h-[85vh] w-full object-contain"
+                    />
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        class="absolute top-4 right-4 bg-black/50 text-white hover:bg-black/70"
+                        @click="previewImage = null"
+                    >
+                        <X class="h-4 w-4" />
+                    </Button>
+                </div>
+            </DialogContent>
+        </Dialog>
     </AppSidebarLayout>
 </template>

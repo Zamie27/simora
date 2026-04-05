@@ -30,5 +30,19 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->respond(function ($response, Throwable $exception, $request) {
+            if (! in_array($response->getStatusCode(), [500, 503, 404, 403, 419, 401])) {
+                return $response;
+            }
+
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return $response;
+            }
+
+            return Inertia\Inertia::render('Error', [
+                'status' => $response->getStatusCode(),
+            ])
+                ->toResponse($request)
+                ->setStatusCode($response->getStatusCode());
+        });
     })->create();

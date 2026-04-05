@@ -8,6 +8,8 @@ Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', '/settings/profile');
 
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('settings/profile/send-otp', [ProfileController::class, 'sendEmailOTP'])->name('profile.send-otp');
+    Route::post('settings/profile/verify-otp', [ProfileController::class, 'verifyEmailOTP'])->name('profile.verify-otp');
     Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue';
 
 import DeleteUser from '@/components/DeleteUser.vue';
@@ -16,6 +16,12 @@ import type { BreadcrumbItem } from '@/types';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
+import {
+    InputOTP,
+    InputOTPGroup,
+    InputOTPSeparator,
+    InputOTPSlot,
+} from '@/components/ui/input-otp';
 
 type Props = {
     mustVerifyEmail: boolean;
@@ -49,6 +55,11 @@ const form = useForm({
 
 const avatarPreview = ref<string | null>(null);
 
+const emailStep = ref<'initial' | 'otp_sent' | 'otp_verified'>('initial');
+const otpForm = useForm({
+    otp: '',
+});
+
 const handleAvatarChange = (e: Event) => {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (file) {
@@ -62,11 +73,33 @@ const handleAvatarChange = (e: Event) => {
     }
 };
 
+const sendOtp = () => {
+    router.post(ProfileController.sendEmailOTP().url, {}, {
+        preserveScroll: true,
+        onSuccess: () => {
+            emailStep.value = 'otp_sent';
+        },
+    });
+};
+
+const verifyOtp = () => {
+    otpForm.post(ProfileController.verifyEmailOTP().url, {
+        preserveScroll: true,
+        onSuccess: () => {
+            emailStep.value = 'otp_verified';
+            otpForm.reset();
+        },
+    });
+};
+
 const submit = () => {
     form.post('/settings/profile', {
         preserveScroll: true,
         onSuccess: () => {
             avatarPreview.value = null;
+            if (emailStep.value === 'otp_verified') {
+                emailStep.value = 'initial';
+            }
         },
     });
 };
@@ -126,15 +159,60 @@ const submit = () => {
 
                     <div class="grid gap-2">
                         <Label for="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            class="mt-1 block w-full"
-                            v-model="form.email"
-                            required
-                            autocomplete="username"
-                        />
+                        <div class="flex gap-2">
+                            <Input
+                                id="email"
+                                type="email"
+                                class="block w-full"
+                                :model-value="emailStep === 'otp_verified' ? form.email : user.email"
+                                @update:model-value="emailStep === 'otp_verified' ? (form.email = $event) : null"
+                                :disabled="emailStep !== 'otp_verified'"
+                                required
+                                autocomplete="username"
+                            />
+                            <Button 
+                                v-if="emailStep === 'initial'"
+                                type="button" 
+                                variant="outline" 
+                                @click="sendOtp"
+                                :disabled="form.processing"
+                            >
+                                Ubah Email
+                            </Button>
+                        </div>
                         <InputError class="mt-2" :message="form.errors.email" />
+                        
+                        <!-- OTP Step -->
+                        <div v-if="emailStep === 'otp_sent'" class="mt-4 space-y-4 rounded-lg border border-accent/20 bg-accent/5 p-4 transition-all">
+                            <div class="space-y-2">
+                                <Label class="text-xs font-bold text-accent uppercase tracking-wider">Verifikasi OTP</Label>
+                                <p class="text-xs text-muted-foreground">OTP telah berhasil dikirim ke email, silahkan cek.</p>
+                                <div class="flex items-end gap-3 mt-2">
+                                    <InputOTP v-model="otpForm.otp" :maxlength="6">
+                                        <InputOTPGroup>
+                                            <InputOTPSlot :index="0" />
+                                            <InputOTPSlot :index="1" />
+                                            <InputOTPSlot :index="2" />
+                                        </InputOTPGroup>
+                                        <InputOTPSeparator />
+                                        <InputOTPGroup>
+                                            <InputOTPSlot :index="3" />
+                                            <InputOTPSlot :index="4" />
+                                            <InputOTPSlot :index="5" />
+                                        </InputOTPGroup>
+                                    </InputOTP>
+                                    <Button 
+                                        type="button" 
+                                        size="sm"
+                                        @click="verifyOtp"
+                                        :disabled="otpForm.processing || otpForm.otp.length < 6"
+                                    >
+                                        Verifikasi
+                                    </Button>
+                                </div>
+                                <InputError class="mt-2" :message="otpForm.errors.otp" />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="grid gap-2">

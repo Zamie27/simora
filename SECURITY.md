@@ -1,21 +1,26 @@
-# Security Policy
+# Kebijakan Keamanan (Security Policy)
 
-## Supported Versions
+SIMORA (Sistem Informasi Monitoring Atlet Sepeda) berkomitmen untuk menjaga keamanan data dan integritas sistem. Kebijakan ini menguraikan langkah-langkah yang diperlukan untuk melaporkan kerentanan keamanan yang ditemukan.
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+## Versi yang Didukung
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+Pembaruan keamanan hanya diberikan pada versi aktif aplikasi yang sedang dalam pengembangan.
 
-## Reporting a Vulnerability
+| Versi | Status             |
+| ----- | ------------------ |
+| 1.0.x | :white_check_mark: |
+| < 1.0 | :x:                |
 
-Use this section to tell people how to report a vulnerability.
+## Melaporkan Kerentanan
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Kami sangat menghargai upaya kooperatif untuk menjaga keamanan sistem. Jika Anda menemukan kerentanan keamanan, harap ikuti prosedur berikut:
+
+1. **JANGAN membuat issue publik**: Harap laporkan kerentanan secara privat melalui mekanisme pelaporan internal (kontak manajer proyek atau pengembang utama).
+2. **Berikan rincian yang cukup**: Sertakan langkah-langkah untuk mereproduksi kerentanan, dampaknya, serta saran perbaikan jika memungkinkan.
+3. **Waktu Respons**: Kami berupaya untuk meninjau setiap laporan dalam waktu 48 jam dan memberikan estimasi waktu perbaikan jika kerentanan tersebut dikonfirmasi.
+
+Harap memberikan waktu yang cukup bagi kami untuk memperbaiki masalah sebelum mempublikasikannya kepada publik.
+
+## Terima Kasih
+
+Terima kasih telah membantu kami mempertahankan keamanan dan kepercayaan pengguna SIMORA.

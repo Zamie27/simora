@@ -1,8 +1,8 @@
-# 🚴‍♂️ SIMORA - Sistem Informasi Monitoring Atlet Sepeda
+# SIMORA - Sistem Informasi Monitoring Atlet Sepeda
 
-SIMORA adalah sistem informasi berbasis web yang dirancang untuk membantu pemantauan dan analisis performa latihan atlet sepeda. Sistem ini digunakan untuk mencatat data latihan individu, menampilkan analitik grafis performa (kecepatan rata-rata, detak jantung, cadence, dll), serta memungkinkan pelatih untuk memberikan evaluasi performa dan rekomendasi latihan secara terstruktur.
+SIMORA adalah sistem informasi berbasis web yang dirancang untuk memfasilitasi pemantauan dan analisis performa latihan atlet sepeda secara sistematis. Sistem ini berfungsi untuk mencatat data latihan individu, menyajikan analitik performa melalui visualisasi grafis (rata-rata kecepatan, detak jantung, cadence, dsb.), serta memungkinkan pelatih untuk memberikan evaluasi dan rekomendasi latihan yang terstruktur.
 
-Proyek ini dibangun menggunakan arsitektur modern (*Vue SPA + Laravel API*) dan berjalan secara penuh di dalam kontainer **Docker**. Hal ini membuat *environment web* benar-benar terisolasi dan menjamin semua anggota tim maupun evaluator/dosen memiliki standar platform yang identik (tanpa konflik dependensi antar _OS_ atau versi PHP/Node di laptop lokal).
+Proyek ini menggunakan arsitektur modern (Vue SPA + Laravel API) dan dijalankan sepenuhnya menggunakan kontainer Docker. Hal ini dilakukan untuk memastikan lingkungan pengembangan yang terisolasi, menjamin konsistensi di seluruh platform, dan menghindari konflik dependensi antar sistem operasi.
 
 <div align="center">
   <img src="public/images/simora_logo.png" alt="Logo SIMORA" width="250">
@@ -10,165 +10,139 @@ Proyek ini dibangun menggunakan arsitektur modern (*Vue SPA + Laravel API*) dan 
 
 ---
 
-## 🛠 Teknologi yang Digunakan
+## Teknologi yang Digunakan
 
-**Frontend (SPA Client)**
-- **Vue.js 3** & **Vuetify 4** (Sneat Admin Template)
-- **Pinia** (State Management) & **Vuelidate** (Form Validation)
-- **ApexCharts** (Visualisasi Data Metrik Sepeda)
+### Frontend (SPA Client)
+- **Vue.js 3** & **Vuetify 3** (Sneat Admin Template)
+- **Pinia** (State Management)
+- **Vuelidate** (Form Validation)
+- **ApexCharts** (Visualisasi Data Metrik)
 
-**Backend (REST API)**
+### Backend (REST API)
 - **PHP 8.4** & **Laravel 13**
-- **Laravel Sanctum** (Cookie-based Authentication) & Laravel Breeze
+- **Laravel Sanctum** (Cookie-based Authentication)
+- **Laravel Breeze**
 - **Database:** MySQL 8.4
 
-**Infrastruktur & Lingkungan Eksekusi**
+### Infrastruktur
 - **Docker** & **Docker Compose**
 - **Nginx** (Web Server Alpine)
 
 ---
 
-## ⚙️ Prasyarat Instalasi
+## Prasyarat Instalasi
 
-Sebelum memulai integrasi, pastikan sistem operasi/laptop Anda sudah terinstal perangkat lunak berikut:
+Sebelum memulai instalasi, pastikan sistem operasi Anda telah memiliki perangkat lunak berikut:
 1. **Git**
-2. **Docker** dan **Docker Compose** 
-   > _Pastikan service atau daemon Docker sudah berstatus "Running" di komputer Anda terlebih dahulu._
+2. **Docker** dan **Docker Compose**
 
-> 💡 **PENTING: Memulai Dengan File `.env` (Environment Variables)**
-> Demi keamanan kredensial, file konfigurasi utama `.env` **sengaja tidak diikutsertakan/di-_ignore_ di dalam repository Git ini**. 
-> 
-> **Silakan hubungi pengembang sistem (Ketua Tim/Dev Manager) untuk meminta salinan file `.env`**. File ini berisi konfigurasi akses database dan pengaturan kunci framework yang sesuai. Tanpanya, aplikasi pasti akan *error*.
+### Konfigurasi Environment (`.env`)
+File konfigurasi `.env` tidak disertakan dalam repositori ini demi alasan keamanan. Harap hubungi pengembang utama atau manajer proyek untuk mendapatkan salinan file `.env` yang valid. File ini diperlukan untuk konfigurasi database dan kunci aplikasi.
 
 ---
 
-## 🚀 Cara Menjalankan Proyek (Setup Pertama Kali Pull)
+## Instruksi Instalasi (Setup Pertama Kali)
 
-Mohon untuk mengikuti langkah-langkah di bawah ini secara **berurutan** saat Anda pertama kali mengunduh (pull/clone) dari *repository* Github ini:
+Ikuti langkah-langkah berikut secara berurutan untuk menyiapkan lingkungan pengembangan setelah melakukan kloning repositori:
 
-### 1. Clone Repositori
-Buka terminal/CMD dan eksekusi perintah di bawah:
+### 1. Kloning Repositori
 ```bash
-git clone https://github.com/USERNAME/simora.git
+git clone https://github.com/Zamie27/simora.git
 cd simora
 ```
 
-### 2. Konfigurasi Environment (`.env`)
-1. Dapatkan file `.env` dari salah satu anggota tim pengembang Anda.
-2. _Copy/paste_ file tersebut ke dalam folder *root* proyek (alias direktori `simora/`).
-*(Ingat, jangan sampai nama file terubah. Harus persis `.env`).*
+### 2. Konfigurasi File Environment
+Salin file `.env` yang telah diperoleh ke direktori akar (root) proyek dengan nama file `.env`.
 
-### 3. Build & Jalankan Container Docker
-Proyek ini mengandalkan _Docker Compose_ untuk membentuk ekosistem *web server*, database *MySQL*, dan OS aplikasi Laravel (*PHP-FPM + Node.js*).
+### 3. Membangun dan Menjalankan Kontainer Docker
 ```bash
 docker-compose up -d --build
 ```
-> *Tunggu hingga proses download image `MySQL`, `Nginx`, `PHP-FPM`, serta instalasi `Node.js 24 LTS` di dalam baris kode container selesai. Perintah ini akan menyalakan ekosistem server di latar belakang/background (`-d`).*
+Proses ini akan mengunduh image yang diperlukan dan membangun kontainer di latar belakang.
 
-### 4. Setup Dependensi Utama (⚠️ Lakukan Di Dalam Container)
-Karena aplikasi utuh berjalan dan hidup di dalam rumah Docker bernama `simora-app`, **segala proses instalasi framework dependency HARUS dieksekusi dan diketik di dalam kontainer sistem tersebut.** 
+### 4. Konfigurasi Dependensi (Eksekusi di Dalam Kontainer)
+Eksekusi perintah berikut untuk mengonfigurasi framework dan dependensi di dalam kontainer `simora-app`:
 
-Ketik baris perintah (_command_) berikut satu per satu:
-
-**a. Install Keseluruhan Package Laravel Backend (Composer):**
+**a. Instalasi Dependensi Backend (Composer):**
 ```bash
 docker exec -it simora-app composer install
 ```
 
-**b. Buat Kunci Aplikasi & Link Direktori Penyimpanan:**
+**b. Menghasilkan Kunci Aplikasi & Symlink Storage:**
 ```bash
 docker exec -it simora-app php artisan key:generate
 docker exec -it simora-app php artisan storage:link
 ```
 
-**c. Pembuatan Tabel & Ekspor Data Dummy (Migrate & Seed):**
+**c. Migrasi Database & Seeding Data:**
 ```bash
 docker exec -it simora-app php artisan migrate:fresh --seed
 ```
-> _Perintah ini membentuk pondasi tabel database dan mengisi otomatis beberapa data atlet, jadwal latihan, serta user default untuk bisa sekadar dicoba masuk (login test)._
 
-**d. Install Package Pendukung Frontend (NPM):**
+**d. Instalasi Dependensi Frontend (NPM):**
 ```bash
 docker exec -it simora-app npm install
 ```
 
-### 5. Aktivasi & Compile Resource UI (Vite Server)
-Agar aset gaya (_CSS/Vue file/Vuetify component_) berhasil disajikan secara *Real-Time*, jalankan Node server dengan pengeksekusian perintah berikut:
+### 5. Menjalankan Development Server (Vite)
 ```bash
 docker exec -it simora-app npm run dev
 ```
-> _Terminal Anda mungkin akan sedikit "tertahan" karena Vite berjalan di *foreground*, biarkan saja dan **buka tab terminal baru** bila Anda perlu mengetikkan perintah baru lainnya._
 
 ---
 
-## 🌐 Akses Tautan Aplikasi & Basis Data
+## Akses Layanan Aplikasi
 
-Jika Anda sudah berhasil melewati instruksi bernomor 1-5 di atas, silakan akses *link* dari _browser_ Anda (seperti _Chrome_ atau _Edge_):
+Setelah seluruh proses instalasi selesai, aplikasi dapat diakses melalui peramban pada alamat berikut:
 
-| Layanan Aplikasi | Akses Tautan (URL) | Port |
+| Layanan | Alamat (URL) | Port |
 | :--- | :--- | :--- |
-| **Aplikasi Website SIMORA** | [http://localhost:8080](http://localhost:8080) | `8080` |
-| **Akses Database Management (PHPMyAdmin)** | [http://localhost:8082](http://localhost:8082) | `8082` |
-| **Akses Langsung Jaringan MySQL** | `127.0.0.1` | `3307` |
-
-> *Untuk memasuki ruang kontrol **PHPMyAdmin**, lakukan login menggunakan kredensial (username & password) database yang termaktub tegas di dalam file konfigurasi `.env` Anda tadi.*
+| **Aplikasi Utama** | [http://localhost:8080](http://localhost:8080) | `8080` |
+| **PHPMyAdmin** | [http://localhost:8082](http://localhost:8082) | `8082` |
+| **MySQL (Direct Access)** | `127.0.0.1` | `3307` |
 
 ---
 
-## 💻 Panduan Aturan Terminal / Command (Khusus Tim)
+## Panduan Perintah Terminal (Khusus Pengembang)
 
-> **⚠️ Peringatan Terpenting untuk Tim Pengembang Mendasar:** 
-> Arsitektur kode server kita diwadahkan dalam environment bernama Docker! **TOLONG JANGAN mengeksekusi perintah manual `php artisan`, `composer`, atau `npm` di command prompt laptop lokal / host Anda!** 
-> *Karena kalian akan mendapatkan kegagalan versi yang tak cocok atau folder node/vendor yang hancur alias 'conflict'.*
-> 
-> Selalu hantui awalan perintah *System Commands* dengan penambahan *prefix* berikut:  
-> 👉  **`docker exec -it simora-app [perintah_anda]`**
+Pengeksekusian perintah framework (Artisan, Composer, NPM) harus dilakukan di dalam lingkungan Docker untuk menghindari konflik dependensi pada sistem host. Gunakan prefiks berikut untuk menjalankan perintah:
 
-**Dokumentasi Contoh Perintah Rutin Harian Paling Berguna:**
-- **Membuat Controller Baru:**
-  `docker exec -it simora-app php artisan make:controller Api/NotificationController`
-- **Menambah NPM Package:**
-  `docker exec -it simora-app npm install js-cookie`
-- **Mengecek Status Hidup/Mati Semua Docker:**
-  `docker-compose ps`
-- **Mematikan Wadah Kontainer Sementara Tanpa Menghancurkan Tabel:**
-  `docker-compose stop`
-- **Menghidupkan Lagi Pada Hari Besoknya:**
-  `docker-compose start`
-- **Akan Matikan Semua dan Lenyapkan Data Volume (Bersih Suci Kembali ke Titik Awal)*:**
-  `docker-compose down -v`
+**Prefix Utama:** `docker exec -it simora-app [perintah_anda]`
+
+### Contoh Perintah Rutin:
+- **Membuat Controller:** `docker exec -it simora-app php artisan make:controller NamaController`
+- **Menambah Package NPM:** `docker exec -it simora-app npm install nama-package`
+- **Menghentikan Kontainer:** `docker-compose stop`
+- **Menjalankan Kontainer:** `docker-compose start`
 
 ---
 
-## Troubleshooting (Solusi Kendala Umum)
+## Troubleshooting (Panduan Penyelesaian Kendala)
 
-### Tampilan Website Blank Putih (Vite Port Mismatch)
-Jika Anda membuka `localhost:8080` namun hanya melihat layar putih kosong, ini biasanya karena Vite di dalam Docker berjalan di port yang salah atau aksesnya terhalang.
+### Masalah Layanan Blank Putih (Vite Port Mismatch)
+Kendala ini biasanya terjadi karena Vite menggunakan port yang tidak terdaftar pada konfigurasi Docker akibat adanya proses yang belum berhenti sempurna.
 
-**Penyebab:** Ada proses `npm run dev` lama yang masih menggantung atau port `5174` sibuk, sehingga Vite pindah ke port lain (misal `5176`) yang tidak terdaftar di Docker.
+**Langkah Penyelesaian:**
+1. Hapus file cache Vite: `docker exec simora-app rm -f public/hot`
+2. Hentikan proses Node yang menggantung: `docker exec simora-app pkill node`
+3. Jalankan kembali server Vite: `docker exec -it simora-app npm run dev`
+4. Bersihkan cache peramban (Ctrl + F5).
 
-**Langkah Solusi:**
-1. **Bersihkan Cache Koneksi:**
-   ```bash
-   docker exec simora-app rm -f public/hot
-   ```
-2. **Matikan Proses Node Tersembunyi:**
-   ```bash
-   docker exec simora-app pkill node
-   ```
-3. **Jalankan Ulang Vite:**
-   ```bash
-   docker exec -it simora-app npm run dev
-   ```
-4. **Refresh Browser:** Tekan `Ctrl + F5` untuk membersihkan cache browser Anda.
+### Kendala Git: "Rejected (non-fast-forward)"
+Terjadi saat terdapat perbedaan antara riwayat commit di repositori lokal dan remote.
+
+**Langkah Penyelesaian:**
+1. Konfigurasi strategi pull: `git config pull.rebase false`
+2. Lakukan sinkronisasi: `git pull origin main`
+3. Push kembali perubahan Anda: `git push origin main`
 
 ---
 
-## 👥 Profil Evaluator & Peran Anggota Tim
+## Peran Pengguna dalam Sistem
 
-Modul aplikasi dibentuk berdasarkan tugas manajemen sistem informasi terpisah dengan 3 cakupan _Role/Aktor_ penting:
-1. **Pihak Manajemen Klub** - Dapat mengubah parameter struktur user manajemen dan klub pelatih.  
-2. **Pelatih** - Menganalisa statistik grafik metrik siswa dan berwawan rekomendasi.  
-3. **Atlet Pesepeda** - Mengkoleksi serta mempublikasikan performa kalori, kecepatan, dll  setelah pasca latihan.  
+Sistem ini mendukung tiga kategori pengguna utama:
+1. **Manajemen**: Bertanggung jawab atas pengelolaan data pengguna dan parameter sistem.
+2. **Pelatih**: Melakukan analisis performa atlet dan memberikan rekomendasi latihan.
+3. **Atlet**: Mencatat dan memantau hasil performa latihan secara mandiri.
 
-*Dibuat & didedikasi komprehensif bagi proses penilaian Dosen Pembimbing untuk mata kuliah Pengembangan Sistem Informasi.*
+Sistem ini dikembangkan secara komprehensif sebagai bagian dari proses evaluasi pada mata kuliah Pengembangan Sistem Informasi.

@@ -20,6 +20,7 @@ const avatarUrl = computed(() => {
     if (props.user.athlete_profile?.profile_photo_path) {
         return `/documents/${props.user.id}/profile_photo`;
     }
+
     return props.user.avatar || null;
 });
 

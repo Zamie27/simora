@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Athlete\DocumentController;
 use App\Http\Controllers\Athlete\EventController as AthleteEventController;
 use App\Http\Controllers\Athlete\PhysicalController;
 use App\Http\Controllers\Athlete\TrainingController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Coach\PerformanceController;
 use App\Http\Controllers\Coach\ReportController as CoachReportController;
 use App\Http\Controllers\Coach\TrainingSessionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentAccessController;
 use App\Http\Controllers\Management\CategoryController;
 use App\Http\Controllers\Management\ExerciseTypeController;
 use App\Http\Controllers\Management\ReportController as ManagementReportController;
@@ -39,7 +41,7 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
     Route::inertia('tools/gear-calculator', 'tools/GearCalculator')->name('tools.gear-calculator');
 
     // Secure Document Access
-    Route::get('documents/{athlete}/{type}', [App\Http\Controllers\DocumentAccessController::class, 'show'])->name('documents.show');
+    Route::get('documents/{athlete}/{type}', [DocumentAccessController::class, 'show'])->name('documents.show');
 
     // Management Routes (still filtered by role + verified-user)
     Route::middleware(['role:Manajemen'])->prefix('management')->name('management.')->group(function () {
@@ -136,8 +138,8 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::get('events', [AthleteEventController::class, 'index'])->name('events.index');
 
         // Documents
-        Route::get('documents', [App\Http\Controllers\Athlete\DocumentController::class, 'index'])->name('documents.index');
-        Route::post('documents', [App\Http\Controllers\Athlete\DocumentController::class, 'store'])->name('documents.store');
+        Route::get('documents', [DocumentController::class, 'index'])->name('documents.index');
+        Route::post('documents', [DocumentController::class, 'store'])->name('documents.store');
 
         // Messages
         Route::patch('messages/{message}/read', [MessageController::class, 'markAsRead'])->name('messages.read');

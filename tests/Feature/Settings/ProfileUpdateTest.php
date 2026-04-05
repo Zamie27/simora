@@ -26,7 +26,7 @@ class ProfileUpdateTest extends TestCase
     {
         $user = User::factory()->create();
 
-        Cache::put('email_change_verified_' . $user->id, true, now()->addMinutes(15));
+        Cache::put('email_change_verified_'.$user->id, true, now()->addMinutes(15));
 
         $response = $this
             ->actingAs($user)
@@ -58,7 +58,7 @@ class ProfileUpdateTest extends TestCase
             ]);
 
         $response->assertSessionHasErrors(['email' => 'Silahkan verifikasi OTP terlebih dahulu sebelum mengubah email.']);
-        
+
         $this->assertNotSame('test@example.com', $user->refresh()->email);
     }
 

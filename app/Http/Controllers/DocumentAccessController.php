@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,8 +21,8 @@ class DocumentAccessController extends Controller
         // 1. Management
         // 2. The athlete themselves
         // 3. The athlete's coach
-        $canView = $viewer->role->name === 'Manajemen' || 
-                   $viewer->id === $athlete->id || 
+        $canView = $viewer->role->name === 'Manajemen' ||
+                   $viewer->id === $athlete->id ||
                    ($viewer->role->name === 'Pelatih' && $athlete->coach_id === $viewer->id);
 
         if (! $canView) {

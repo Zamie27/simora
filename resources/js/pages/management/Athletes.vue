@@ -195,7 +195,7 @@ const formatDate = (date: string) => {
                     v-for="athlete in athletes"
                     :key="athlete.id"
                     :href="`/management/athletes/${athlete.id}`"
-                    class="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-lg transition-all hover:border-accent/40 hover:shadow-accent/5 cursor-pointer"
+                    class="group relative flex cursor-pointer items-center justify-between overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-lg transition-all hover:border-accent/40 hover:shadow-accent/5"
                 >
                     <div
                         class="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-accent/5 blur-2xl transition-all group-hover:bg-accent/10"
@@ -203,9 +203,15 @@ const formatDate = (date: string) => {
 
                     <div class="relative z-10 flex items-center gap-4">
                         <div
-                            class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-secondary-foreground/10 bg-secondary text-xs font-black text-secondary-foreground uppercase shadow-inner relative"
+                            class="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-secondary-foreground/10 bg-secondary text-xs font-black text-secondary-foreground uppercase shadow-inner"
                         >
-                            <img v-if="athlete.athlete_profile?.profile_photo_path" :src="`/documents/${athlete.id}/profile_photo`" class="h-full w-full object-cover" />
+                            <img
+                                v-if="
+                                    athlete.athlete_profile?.profile_photo_path
+                                "
+                                :src="`/documents/${athlete.id}/profile_photo`"
+                                class="h-full w-full object-cover"
+                            />
                             <span v-else>{{
                                 athlete.name
                                     .split(' ')
@@ -230,8 +236,22 @@ const formatDate = (date: string) => {
                                     class="rounded border border-accent/10 bg-accent/5 px-2 py-0.5 text-[10px] font-black tracking-widest text-accent uppercase"
                                     >ATLET</span
                                 >
-                                <span v-if="athlete.athlete_profile?.uci_id && new Date(athlete.athlete_profile?.license_valid_until || '') >= new Date()" class="rounded border border-emerald-500/10 bg-emerald-500/5 px-2 py-0.5 text-[10px] font-black tracking-widest text-emerald-500 uppercase">LISENSI AKTIF</span>
-                                <span v-else class="rounded border border-destructive/10 bg-destructive/5 px-2 py-0.5 text-[10px] font-black tracking-widest text-destructive uppercase">NON LISENSI</span>
+                                <span
+                                    v-if="
+                                        athlete.athlete_profile?.uci_id &&
+                                        new Date(
+                                            athlete.athlete_profile
+                                                ?.license_valid_until || '',
+                                        ) >= new Date()
+                                    "
+                                    class="rounded border border-emerald-500/10 bg-emerald-500/5 px-2 py-0.5 text-[10px] font-black tracking-widest text-emerald-500 uppercase"
+                                    >LISENSI AKTIF</span
+                                >
+                                <span
+                                    v-else
+                                    class="rounded border border-destructive/10 bg-destructive/5 px-2 py-0.5 text-[10px] font-black tracking-widest text-destructive uppercase"
+                                    >NON LISENSI</span
+                                >
                                 <span
                                     class="text-[10px] font-semibold text-muted-foreground"
                                     >Tgl. Terdaftar:
@@ -266,7 +286,9 @@ const formatDate = (date: string) => {
                             >No Coach Assigned</span
                         >
                         <div class="mt-4 flex justify-end">
-                            <span class="rounded-xl border border-accent/20 bg-accent/5 px-4 py-2 text-[10px] font-black tracking-widest text-accent uppercase transition-all hover:bg-accent hover:text-white">
+                            <span
+                                class="rounded-xl border border-accent/20 bg-accent/5 px-4 py-2 text-[10px] font-black tracking-widest text-accent uppercase transition-all hover:bg-accent hover:text-white"
+                            >
                                 DETAIL & LISENSI →
                             </span>
                         </div>

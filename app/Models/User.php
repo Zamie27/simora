@@ -99,9 +99,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function hasValidLicense(): bool
     {
-        return $this->athleteProfile && 
-               $this->athleteProfile->license_path && 
-               $this->athleteProfile->uci_id && 
+        return $this->athleteProfile &&
+               $this->athleteProfile->license_path &&
+               $this->athleteProfile->uci_id &&
                ($this->athleteProfile->license_valid_until === null || $this->athleteProfile->license_valid_until >= now());
     }
 

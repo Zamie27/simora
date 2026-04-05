@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Athlete;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Storage;
 use App\Models\AthleteProfile;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class DocumentController extends Controller
 {
@@ -51,9 +51,9 @@ class DocumentController extends Controller
                 if ($profile->$dbColumn) {
                     Storage::disk('local')->delete($profile->$dbColumn);
                 }
-                
+
                 // Store new file in private_documents directory
-                $path = $request->file($inputKey)->store('private_documents/' . $user->id, 'local');
+                $path = $request->file($inputKey)->store('private_documents/'.$user->id, 'local');
                 $profile->$dbColumn = $path;
             }
         }

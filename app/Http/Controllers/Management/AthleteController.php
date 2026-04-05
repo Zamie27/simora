@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Management;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-use App\Models\User;
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Storage;
 use App\Models\AthleteProfile;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class AthleteController extends Controller
 {
@@ -50,13 +49,13 @@ class AthleteController extends Controller
             if ($profile->license_path) {
                 Storage::disk('local')->delete($profile->license_path);
             }
-            
+
             $extension = $request->file('license_file')->getClientOriginalExtension();
             // Name file as UCI_ID.extension
-            $filename = 'UCI_' . $request->uci_id . '_' . time() . '.' . $extension;
-            
+            $filename = 'UCI_'.$request->uci_id.'_'.time().'.'.$extension;
+
             // Store new file securely
-            $path = $request->file('license_file')->storeAs('private_documents/' . $athlete->id, $filename, 'local');
+            $path = $request->file('license_file')->storeAs('private_documents/'.$athlete->id, $filename, 'local');
             $profile->license_path = $path;
         }
 

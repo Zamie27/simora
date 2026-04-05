@@ -9,6 +9,12 @@ import { Button } from '@/components/ui/button';
 import CustomSelect from '@/components/ui/CustomSelect.vue';
 import DatePicker from '@/components/ui/DatePicker.vue';
 import { Input } from '@/components/ui/input';
+import {
+    InputOTP,
+    InputOTPGroup,
+    InputOTPSeparator,
+    InputOTPSlot,
+} from '@/components/ui/input-otp';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
@@ -16,12 +22,6 @@ import type { BreadcrumbItem } from '@/types';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
-import {
-    InputOTP,
-    InputOTPGroup,
-    InputOTPSeparator,
-    InputOTPSlot,
-} from '@/components/ui/input-otp';
 
 type Props = {
     mustVerifyEmail: boolean;
@@ -62,6 +62,7 @@ const otpForm = useForm({
 
 const handleAvatarChange = (e: Event) => {
     const file = (e.target as HTMLInputElement).files?.[0];
+
     if (file) {
         form.avatar = file;
 
@@ -74,12 +75,16 @@ const handleAvatarChange = (e: Event) => {
 };
 
 const sendOtp = () => {
-    router.post(ProfileController.sendEmailOTP().url, {}, {
-        preserveScroll: true,
-        onSuccess: () => {
-            emailStep.value = 'otp_sent';
+    router.post(
+        ProfileController.sendEmailOTP().url,
+        {},
+        {
+            preserveScroll: true,
+            onSuccess: () => {
+                emailStep.value = 'otp_sent';
+            },
         },
-    });
+    );
 };
 
 const verifyOtp = () => {
@@ -97,6 +102,7 @@ const submit = () => {
         preserveScroll: true,
         onSuccess: () => {
             avatarPreview.value = null;
+
             if (emailStep.value === 'otp_verified') {
                 emailStep.value = 'initial';
             }
@@ -119,19 +125,30 @@ const submit = () => {
                     description="Update your name, email and birth date"
                 />
 
-                <form
-                    @submit.prevent="submit"
-                    class="space-y-6"
-                >
-                    <div class="flex flex-col items-center gap-4 border-b border-border pb-6">
-                        <div class="relative h-24 w-24 overflow-hidden rounded-full border border-border shadow-inner bg-muted/20 flex items-center justify-center">
-                            <img v-if="avatarPreview || user.avatar" :src="avatarPreview || user.avatar" class="h-full w-full object-cover" />
-                            <div v-else class="text-2xl font-black text-muted-foreground uppercase opacity-40">
+                <form @submit.prevent="submit" class="space-y-6">
+                    <div
+                        class="flex flex-col items-center gap-4 border-b border-border pb-6"
+                    >
+                        <div
+                            class="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border border-border bg-muted/20 shadow-inner"
+                        >
+                            <img
+                                v-if="avatarPreview || user.avatar"
+                                :src="avatarPreview || user.avatar"
+                                class="h-full w-full object-cover"
+                            />
+                            <div
+                                v-else
+                                class="text-2xl font-black text-muted-foreground uppercase opacity-40"
+                            >
                                 {{ user.name.substring(0, 2) }}
                             </div>
                         </div>
                         <div class="flex flex-col items-center gap-2">
-                            <Label for="avatar" class="cursor-pointer rounded-xl border border-accent/20 bg-accent/10 px-4 py-2 text-[10px] font-black tracking-widest text-accent uppercase transition-all hover:bg-accent/20">
+                            <Label
+                                for="avatar"
+                                class="cursor-pointer rounded-xl border border-accent/20 bg-accent/10 px-4 py-2 text-[10px] font-black tracking-widest text-accent uppercase transition-all hover:bg-accent/20"
+                            >
                                 Ganti Foto Profil
                             </Label>
                             <input
@@ -141,8 +158,15 @@ const submit = () => {
                                 accept="image/*"
                                 @change="handleAvatarChange"
                             />
-                            <p class="text-[9px] font-medium text-muted-foreground uppercase opacity-60">Maksimal 2MB (JPG, PNG)</p>
-                            <InputError class="mt-2" :message="form.errors.avatar" />
+                            <p
+                                class="text-[9px] font-medium text-muted-foreground uppercase opacity-60"
+                            >
+                                Maksimal 2MB (JPG, PNG)
+                            </p>
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.avatar"
+                            />
                         </div>
                     </div>
                     <div class="grid gap-2">
@@ -164,16 +188,24 @@ const submit = () => {
                                 id="email"
                                 type="email"
                                 class="block w-full"
-                                :model-value="emailStep === 'otp_verified' ? form.email : user.email"
-                                @update:model-value="emailStep === 'otp_verified' ? (form.email = $event) : null"
+                                :model-value="
+                                    emailStep === 'otp_verified'
+                                        ? form.email
+                                        : user.email
+                                "
+                                @update:model-value="
+                                    emailStep === 'otp_verified'
+                                        ? (form.email = $event)
+                                        : null
+                                "
                                 :disabled="emailStep !== 'otp_verified'"
                                 required
                                 autocomplete="username"
                             />
-                            <Button 
+                            <Button
                                 v-if="emailStep === 'initial'"
-                                type="button" 
-                                variant="outline" 
+                                type="button"
+                                variant="outline"
                                 @click="sendOtp"
                                 :disabled="form.processing"
                             >
@@ -181,14 +213,26 @@ const submit = () => {
                             </Button>
                         </div>
                         <InputError class="mt-2" :message="form.errors.email" />
-                        
+
                         <!-- OTP Step -->
-                        <div v-if="emailStep === 'otp_sent'" class="mt-4 space-y-4 rounded-lg border border-accent/20 bg-accent/5 p-4 transition-all">
+                        <div
+                            v-if="emailStep === 'otp_sent'"
+                            class="mt-4 space-y-4 rounded-lg border border-accent/20 bg-accent/5 p-4 transition-all"
+                        >
                             <div class="space-y-2">
-                                <Label class="text-xs font-bold text-accent uppercase tracking-wider">Verifikasi OTP</Label>
-                                <p class="text-xs text-muted-foreground">OTP telah berhasil dikirim ke email, silahkan cek.</p>
-                                <div class="flex items-end gap-3 mt-2">
-                                    <InputOTP v-model="otpForm.otp" :maxlength="6">
+                                <Label
+                                    class="text-xs font-bold tracking-wider text-accent uppercase"
+                                    >Verifikasi OTP</Label
+                                >
+                                <p class="text-xs text-muted-foreground">
+                                    OTP telah berhasil dikirim ke email,
+                                    silahkan cek.
+                                </p>
+                                <div class="mt-2 flex items-end gap-3">
+                                    <InputOTP
+                                        v-model="otpForm.otp"
+                                        :maxlength="6"
+                                    >
                                         <InputOTPGroup>
                                             <InputOTPSlot :index="0" />
                                             <InputOTPSlot :index="1" />
@@ -201,16 +245,22 @@ const submit = () => {
                                             <InputOTPSlot :index="5" />
                                         </InputOTPGroup>
                                     </InputOTP>
-                                    <Button 
-                                        type="button" 
+                                    <Button
+                                        type="button"
                                         size="sm"
                                         @click="verifyOtp"
-                                        :disabled="otpForm.processing || otpForm.otp.length < 6"
+                                        :disabled="
+                                            otpForm.processing ||
+                                            otpForm.otp.length < 6
+                                        "
                                     >
                                         Verifikasi
                                     </Button>
                                 </div>
-                                <InputError class="mt-2" :message="otpForm.errors.otp" />
+                                <InputError
+                                    class="mt-2"
+                                    :message="otpForm.errors.otp"
+                                />
                             </div>
                         </div>
                     </div>
@@ -231,7 +281,10 @@ const submit = () => {
                             :options="genderOptions"
                             placeholder="Pilih Jenis Kelamin"
                         />
-                        <InputError class="mt-2" :message="form.errors.gender" />
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.gender"
+                        />
                     </div>
 
                     <div v-if="user.role?.name === 'Atlet'" class="grid gap-2">

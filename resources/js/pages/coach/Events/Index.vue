@@ -247,22 +247,26 @@ const getStatusColor = (status: string) => {
     }
 };
 
-
 const typeOptions = computed(() => [
     { value: '', label: 'Pilih Jenis Event' },
     ...props.eventTypes.map((t) => ({ value: String(t.id), label: t.name })),
 ]);
 
-watch(() => form.requires_license, (newVal) => {
-    if (newVal) {
-        // Find athletes in form.athletes who don't have a valid license
-        const invalidAthleteIds = props.athletes
-            .filter((a) => !a.has_valid_license)
-            .map((a) => a.id);
+watch(
+    () => form.requires_license,
+    (newVal) => {
+        if (newVal) {
+            // Find athletes in form.athletes who don't have a valid license
+            const invalidAthleteIds = props.athletes
+                .filter((a) => !a.has_valid_license)
+                .map((a) => a.id);
 
-        form.athletes = form.athletes.filter((a) => !invalidAthleteIds.includes(a.id));
-    }
-});
+            form.athletes = form.athletes.filter(
+                (a) => !invalidAthleteIds.includes(a.id),
+            );
+        }
+    },
+);
 </script>
 
 <template>
@@ -553,11 +557,28 @@ watch(() => form.requires_license, (newVal) => {
                                     </div>
                                 </div>
                                 <div class="flex flex-col gap-2">
-                                    <div class="flex items-center gap-3 rounded-2xl border border-border bg-muted/30 p-4">
-                                        <input type="checkbox" id="requires_license" v-model="form.requires_license" class="h-5 w-5 rounded-md border-border text-accent focus:ring-accent accent-accent" />
+                                    <div
+                                        class="flex items-center gap-3 rounded-2xl border border-border bg-muted/30 p-4"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            id="requires_license"
+                                            v-model="form.requires_license"
+                                            class="h-5 w-5 rounded-md border-border text-accent accent-accent focus:ring-accent"
+                                        />
                                         <div class="flex flex-col">
-                                            <Label for="requires_license" class="text-xs font-black uppercase tracking-widest cursor-pointer">Wajib Lisensi Atlet</Label>
-                                            <span class="text-[10px] font-medium text-muted-foreground">Jika dicentang, hanya atlet dengan lisensi aktif yang dapat berpartisipasi di event ini.</span>
+                                            <Label
+                                                for="requires_license"
+                                                class="cursor-pointer text-xs font-black tracking-widest uppercase"
+                                                >Wajib Lisensi Atlet</Label
+                                            >
+                                            <span
+                                                class="text-[10px] font-medium text-muted-foreground"
+                                                >Jika dicentang, hanya atlet
+                                                dengan lisensi aktif yang dapat
+                                                berpartisipasi di event
+                                                ini.</span
+                                            >
                                         </div>
                                     </div>
                                 </div>
@@ -592,7 +613,10 @@ watch(() => form.requires_license, (newVal) => {
                                             isAthleteSelected(athlete.id)
                                                 ? 'border-2 border-accent bg-accent/10'
                                                 : 'border-border bg-card',
-                                            form.requires_license && !athlete.has_valid_license ? 'opacity-50 grayscale cursor-not-allowed' : ''
+                                            form.requires_license &&
+                                            !athlete.has_valid_license
+                                                ? 'cursor-not-allowed opacity-50 grayscale'
+                                                : '',
                                         ]"
                                         class="flex flex-col gap-4 rounded-2xl border p-4 transition-all"
                                     >
@@ -623,7 +647,13 @@ watch(() => form.requires_license, (newVal) => {
                                                     class="truncate text-xs font-black uppercase"
                                                     >{{ athlete.name }}</span
                                                 >
-                                                <span v-if="!athlete.has_valid_license" class="rounded bg-destructive/10 px-2 py-0.5 text-[8px] font-black tracking-widest text-destructive uppercase">Non Lisensi</span>
+                                                <span
+                                                    v-if="
+                                                        !athlete.has_valid_license
+                                                    "
+                                                    class="rounded bg-destructive/10 px-2 py-0.5 text-[8px] font-black tracking-widest text-destructive uppercase"
+                                                    >Non Lisensi</span
+                                                >
                                             </div>
                                             <div
                                                 v-if="

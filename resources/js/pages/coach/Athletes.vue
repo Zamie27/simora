@@ -76,9 +76,15 @@ const breadcrumbs = [
                 >
                     <div class="mb-6 flex items-center gap-4">
                         <div
-                            class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-accent/20 bg-secondary text-xs font-black text-secondary-foreground uppercase relative"
+                            class="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-accent/20 bg-secondary text-xs font-black text-secondary-foreground uppercase"
                         >
-                            <img v-if="athlete.athlete_profile?.profile_photo_path" :src="`/documents/${athlete.id}/profile_photo`" class="h-full w-full object-cover" />
+                            <img
+                                v-if="
+                                    athlete.athlete_profile?.profile_photo_path
+                                "
+                                :src="`/documents/${athlete.id}/profile_photo`"
+                                class="h-full w-full object-cover"
+                            />
                             <span v-else>{{
                                 athlete.name
                                     .split(' ')

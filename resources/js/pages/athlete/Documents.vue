@@ -27,7 +27,7 @@ interface Profile {
     license_valid_until?: string;
 }
 
-const props = defineProps<{
+defineProps<{
     profile: Profile | null;
 }>();
 

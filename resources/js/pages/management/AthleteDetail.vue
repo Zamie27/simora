@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import {
     Activity,
     AlertCircle,
-    Bike,
     Calendar,
     CheckCircle2,
     CreditCard,

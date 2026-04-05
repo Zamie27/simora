@@ -4,6 +4,7 @@ namespace Tests\Feature\Settings;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class ProfileUpdateTest extends TestCase
@@ -25,6 +26,8 @@ class ProfileUpdateTest extends TestCase
     {
         $user = User::factory()->create();
 
+        Cache::put('email_change_verified_' . $user->id, true, now()->addMinutes(15));
+
         $response = $this
             ->actingAs($user)
             ->patch(route('profile.update'), [
@@ -41,6 +44,22 @@ class ProfileUpdateTest extends TestCase
         $this->assertSame('Test User', $user->name);
         $this->assertSame('test@example.com', $user->email);
         $this->assertNull($user->email_verified_at);
+    }
+
+    public function test_email_cannot_be_updated_without_otp_verification()
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->patch(route('profile.update'), [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ]);
+
+        $response->assertSessionHasErrors(['email' => 'Silahkan verifikasi OTP terlebih dahulu sebelum mengubah email.']);
+        
+        $this->assertNotSame('test@example.com', $user->refresh()->email);
     }
 
     public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged()

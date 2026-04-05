@@ -140,6 +140,30 @@ Jika Anda sudah berhasil melewati instruksi bernomor 1-5 di atas, silakan akses 
 
 ---
 
+## Troubleshooting (Solusi Kendala Umum)
+
+### Tampilan Website Blank Putih (Vite Port Mismatch)
+Jika Anda membuka `localhost:8080` namun hanya melihat layar putih kosong, ini biasanya karena Vite di dalam Docker berjalan di port yang salah atau aksesnya terhalang.
+
+**Penyebab:** Ada proses `npm run dev` lama yang masih menggantung atau port `5174` sibuk, sehingga Vite pindah ke port lain (misal `5176`) yang tidak terdaftar di Docker.
+
+**Langkah Solusi:**
+1. **Bersihkan Cache Koneksi:**
+   ```bash
+   docker exec simora-app rm -f public/hot
+   ```
+2. **Matikan Proses Node Tersembunyi:**
+   ```bash
+   docker exec simora-app pkill node
+   ```
+3. **Jalankan Ulang Vite:**
+   ```bash
+   docker exec -it simora-app npm run dev
+   ```
+4. **Refresh Browser:** Tekan `Ctrl + F5` untuk membersihkan cache browser Anda.
+
+---
+
 ## 👥 Profil Evaluator & Peran Anggota Tim
 
 Modul aplikasi dibentuk berdasarkan tugas manajemen sistem informasi terpisah dengan 3 cakupan _Role/Aktor_ penting:
@@ -147,4 +171,4 @@ Modul aplikasi dibentuk berdasarkan tugas manajemen sistem informasi terpisah de
 2. **Pelatih** - Menganalisa statistik grafik metrik siswa dan berwawan rekomendasi.  
 3. **Atlet Pesepeda** - Mengkoleksi serta mempublikasikan performa kalori, kecepatan, dll  setelah pasca latihan.  
 
-*Dibuat & didedikasi komprehensif bagi proses penilaian Dosen Pembimbing untuk mata kuliah Pengembangan Sistem Informasi.* 🚴‍♂️🎉  
+*Dibuat & didedikasi komprehensif bagi proses penilaian Dosen Pembimbing untuk mata kuliah Pengembangan Sistem Informasi.*

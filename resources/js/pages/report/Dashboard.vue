@@ -5,18 +5,18 @@ import { ref } from 'vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
 
 interface BugReport {
@@ -473,7 +473,9 @@ const updateStatus = (reportId: number, newStatus: string) => {
                                     @click="previewImage = img"
                                     class="absolute inset-0 flex cursor-zoom-in items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100"
                                 >
-                                    <span class="text-xs font-bold text-white">Lihat Detail Gambar</span>
+                                    <span class="text-xs font-bold text-white"
+                                        >Lihat Detail Gambar</span
+                                    >
                                 </div>
                             </div>
                         </div>
@@ -484,11 +486,15 @@ const updateStatus = (reportId: number, newStatus: string) => {
 
         <!-- Image Preview Modal -->
         <Dialog :open="!!previewImage" @update:open="previewImage = null">
-            <DialogContent class="max-w-4xl border-none bg-transparent p-0 shadow-none sm:max-w-6xl">
+            <DialogContent
+                class="max-w-4xl border-none bg-transparent p-0 shadow-none sm:max-w-6xl"
+            >
                 <DialogHeader class="hidden">
                     <DialogTitle>Preview Gambar Bug</DialogTitle>
                 </DialogHeader>
-                <div class="relative flex items-center justify-center overflow-hidden rounded-lg">
+                <div
+                    class="relative flex items-center justify-center overflow-hidden rounded-lg"
+                >
                     <img
                         v-if="previewImage"
                         :src="'/storage/' + previewImage"

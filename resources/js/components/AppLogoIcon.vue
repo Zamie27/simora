@@ -18,13 +18,13 @@ defineProps<Props>();
         <img
             src="/images/simora_logo.png"
             alt="Simora Logo"
-            class="hidden h-full w-auto object-contain md:block group-data-[state=collapsed]:hidden"
+            class="hidden h-full w-auto object-contain group-data-[state=collapsed]:hidden md:block"
         />
         <!-- Small Icon (below md or when sidebar is collapsed) -->
         <img
             src="/images/simora_icon.png"
             alt="Simora Icon"
-            class="block h-full w-auto object-contain md:hidden group-data-[state=collapsed]:block"
+            class="block h-full w-auto object-contain group-data-[state=collapsed]:block md:hidden"
         />
     </div>
 </template>

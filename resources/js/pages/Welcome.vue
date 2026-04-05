@@ -2,8 +2,8 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import AppearanceTabs from '@/components/AppearanceTabs.vue';
+import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import { useAppearance } from '@/composables/useAppearance';
 import { dashboard, login, register } from '@/routes';
 

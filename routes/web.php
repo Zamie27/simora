@@ -38,6 +38,9 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
     // Tools
     Route::inertia('tools/gear-calculator', 'tools/GearCalculator')->name('tools.gear-calculator');
 
+    // Secure Document Access
+    Route::get('documents/{athlete}/{type}', [App\Http\Controllers\DocumentAccessController::class, 'show'])->name('documents.show');
+
     // Management Routes (still filtered by role + verified-user)
     Route::middleware(['role:Manajemen'])->prefix('management')->name('management.')->group(function () {
         Route::get('dashboard', [App\Http\Controllers\Management\DashboardController::class, 'index'])->name('dashboard');
@@ -50,6 +53,8 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::get('pending', [UserController::class, 'pending'])->name('users.pending');
         Route::post('users/{user}/verify', [UserController::class, 'verify'])->name('users.verify');
         Route::get('athletes', [UserController::class, 'athletes'])->name('athletes.index');
+        Route::get('athletes/{athlete}', [App\Http\Controllers\Management\AthleteController::class, 'show'])->name('athletes.show');
+        Route::post('athletes/{athlete}/license', [App\Http\Controllers\Management\AthleteController::class, 'uploadLicense'])->name('athletes.license.upload');
 
         // Category Management
         Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
@@ -129,6 +134,10 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
 
         // Events
         Route::get('events', [AthleteEventController::class, 'index'])->name('events.index');
+
+        // Documents
+        Route::get('documents', [App\Http\Controllers\Athlete\DocumentController::class, 'index'])->name('documents.index');
+        Route::post('documents', [App\Http\Controllers\Athlete\DocumentController::class, 'store'])->name('documents.store');
 
         // Messages
         Route::patch('messages/{message}/read', [MessageController::class, 'markAsRead'])->name('messages.read');

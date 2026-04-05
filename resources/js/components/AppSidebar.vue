@@ -59,7 +59,7 @@ const mainNavItems = computed<NavItem[]>(() => {
                 icon: ShieldCheck,
             },
             {
-                title: 'Monitoring Atlet',
+                title: 'Daftar Atlet',
                 href: '/management/athletes',
                 icon: UserCheck,
             },
@@ -137,6 +137,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Agenda Event',
                 href: '/athlete/events',
                 icon: Trophy,
+            },
+            {
+                title: 'Dokumen Pribadi',
+                href: '/athlete/documents',
+                icon: FileText,
             },
         );
     }

@@ -13,7 +13,7 @@ import {
     Settings,
     Pencil,
 } from 'lucide-vue-next';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 import CustomSelect from '@/components/ui/CustomSelect.vue';
 import DatePicker from '@/components/ui/DatePicker.vue';
@@ -24,6 +24,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 interface Athlete {
     id: number;
     name: string;
+    has_valid_license?: boolean;
 }
 
 interface EventType {
@@ -42,6 +43,7 @@ interface Event {
     description: string | null;
     location: string | null;
     event_date: string;
+    requires_license: boolean;
     event_type_id: number | null;
     type: EventType | null;
     athletes_count: number;
@@ -78,6 +80,7 @@ const form = useForm({
     description: '',
     location: '',
     event_date: new Date().toISOString().split('T')[0],
+    requires_license: false,
     event_type_id: null as number | null,
     athletes: [] as { id: number; event_point_id: number | null }[],
 });
@@ -103,6 +106,7 @@ const openEditModal = (event: Event) => {
     form.description = event.description || '';
     form.location = event.location || '';
     form.event_date = event.event_date;
+    form.requires_license = event.requires_license;
     form.event_type_id = event.event_type_id;
     form.athletes = event.athletes.map((a) => ({
         id: a.id,
@@ -150,11 +154,16 @@ const formatDate = (date: string) => {
     });
 };
 
-const toggleAthlete = (athleteId: number) => {
-    const index = form.athletes.findIndex((a) => a.id === athleteId);
+const toggleAthlete = (athlete: Athlete) => {
+    // If requires license and this athlete doesn't have it, ignore click
+    if (form.requires_license && !athlete.has_valid_license) {
+        return;
+    }
+
+    const index = form.athletes.findIndex((a) => a.id === athlete.id);
 
     if (index === -1) {
-        form.athletes.push({ id: athleteId, event_point_id: null });
+        form.athletes.push({ id: athlete.id, event_point_id: null });
     } else {
         form.athletes.splice(index, 1);
     }
@@ -238,10 +247,22 @@ const getStatusColor = (status: string) => {
     }
 };
 
+
 const typeOptions = computed(() => [
     { value: '', label: 'Pilih Jenis Event' },
     ...props.eventTypes.map((t) => ({ value: String(t.id), label: t.name })),
 ]);
+
+watch(() => form.requires_license, (newVal) => {
+    if (newVal) {
+        // Find athletes in form.athletes who don't have a valid license
+        const invalidAthleteIds = props.athletes
+            .filter((a) => !a.has_valid_license)
+            .map((a) => a.id);
+
+        form.athletes = form.athletes.filter((a) => !invalidAthleteIds.includes(a.id));
+    }
+});
 </script>
 
 <template>
@@ -532,6 +553,15 @@ const typeOptions = computed(() => [
                                     </div>
                                 </div>
                                 <div class="flex flex-col gap-2">
+                                    <div class="flex items-center gap-3 rounded-2xl border border-border bg-muted/30 p-4">
+                                        <input type="checkbox" id="requires_license" v-model="form.requires_license" class="h-5 w-5 rounded-md border-border text-accent focus:ring-accent accent-accent" />
+                                        <div class="flex flex-col">
+                                            <Label for="requires_license" class="text-xs font-black uppercase tracking-widest cursor-pointer">Wajib Lisensi Atlet</Label>
+                                            <span class="text-[10px] font-medium text-muted-foreground">Jika dicentang, hanya atlet dengan lisensi aktif yang dapat berpartisipasi di event ini.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gap-2">
                                     <Label
                                         class="text-[10px] font-black uppercase opacity-60"
                                         >Deskripsi / Keterangan</Label
@@ -558,16 +588,17 @@ const typeOptions = computed(() => [
                                     <div
                                         v-for="athlete in athletes"
                                         :key="athlete.id"
-                                        :class="
+                                        :class="[
                                             isAthleteSelected(athlete.id)
                                                 ? 'border-2 border-accent bg-accent/10'
-                                                : 'border-border bg-card'
-                                        "
+                                                : 'border-border bg-card',
+                                            form.requires_license && !athlete.has_valid_license ? 'opacity-50 grayscale cursor-not-allowed' : ''
+                                        ]"
                                         class="flex flex-col gap-4 rounded-2xl border p-4 transition-all"
                                     >
                                         <div
                                             class="flex cursor-pointer items-center justify-between"
-                                            @click="toggleAthlete(athlete.id)"
+                                            @click="toggleAthlete(athlete)"
                                         >
                                             <div
                                                 class="flex items-center gap-3"
@@ -592,6 +623,7 @@ const typeOptions = computed(() => [
                                                     class="truncate text-xs font-black uppercase"
                                                     >{{ athlete.name }}</span
                                                 >
+                                                <span v-if="!athlete.has_valid_license" class="rounded bg-destructive/10 px-2 py-0.5 text-[8px] font-black tracking-widest text-destructive uppercase">Non Lisensi</span>
                                             </div>
                                             <div
                                                 v-if="

@@ -15,6 +15,9 @@ interface Athlete {
     name: string;
     email: string;
     latest_physical_metric?: PhysicalMetric | null;
+    athlete_profile?: {
+        profile_photo_path?: string;
+    } | null;
 }
 
 defineProps<{
@@ -73,15 +76,16 @@ const breadcrumbs = [
                 >
                     <div class="mb-6 flex items-center gap-4">
                         <div
-                            class="flex h-14 w-14 items-center justify-center rounded-full border border-accent/20 bg-secondary text-xs font-black text-secondary-foreground"
+                            class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-accent/20 bg-secondary text-xs font-black text-secondary-foreground uppercase relative"
                         >
-                            {{
+                            <img v-if="athlete.athlete_profile?.profile_photo_path" :src="`/documents/${athlete.id}/profile_photo`" class="h-full w-full object-cover" />
+                            <span v-else>{{
                                 athlete.name
                                     .split(' ')
                                     .map((n) => n[0])
                                     .slice(0, 2)
                                     .join('')
-                            }}
+                            }}</span>
                         </div>
                         <div class="overflow-hidden">
                             <h3

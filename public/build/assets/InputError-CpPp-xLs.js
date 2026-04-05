@@ -1,1 +1,0 @@
-import{A as e,Pt as t,S as n,T as r,Y as i,dt as a,p as o}from"./index.esm-DVc95TD3.js";var s={class:`text-sm text-red-600 dark:text-red-500`},c=e({__name:`InputError`,props:{message:{}},setup(e){return(c,l)=>a((i(),r(`div`,null,[n(`p`,s,t(e.message),1)],512)),[[o,e.message]])}});export{c as t};

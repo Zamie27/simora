@@ -17,7 +17,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-#[Fillable(['name', 'email', 'date_of_birth', 'gender', 'password', 'role_id', 'is_verified', 'coach_id', 'category_id'])]
+#[Fillable(['name', 'email', 'date_of_birth', 'gender', 'password', 'role_id', 'is_verified', 'coach_id', 'category_id', 'avatar'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -87,6 +87,22 @@ class User extends Authenticatable implements MustVerifyEmail
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function athleteProfile(): HasOne
+    {
+        return $this->hasOne(AthleteProfile::class, 'user_id');
+    }
+
+    /**
+     * Check if the athlete has a valid license.
+     */
+    public function hasValidLicense(): bool
+    {
+        return $this->athleteProfile && 
+               $this->athleteProfile->license_path && 
+               $this->athleteProfile->uci_id && 
+               ($this->athleteProfile->license_valid_until === null || $this->athleteProfile->license_valid_until >= now());
     }
 
     /**

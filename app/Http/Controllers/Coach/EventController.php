@@ -38,7 +38,15 @@ class EventController extends Controller
 
         $athletes = User::whereRole('atlet')
             ->where('coach_id', auth()->id())
-            ->get(['id', 'name']);
+            ->with('athleteProfile')
+            ->get(['id', 'name'])
+            ->map(function ($athlete) {
+                return [
+                    'id' => $athlete->id,
+                    'name' => $athlete->name,
+                    'has_valid_license' => $athlete->hasValidLicense(),
+                ];
+            });
 
         $eventTypes = EventType::where('coach_id', auth()->id())->get();
         $eventPoints = EventPoint::where('coach_id', auth()->id())->get();
@@ -61,6 +69,7 @@ class EventController extends Controller
             'description' => 'nullable|string',
             'location' => 'nullable|string|max:255',
             'event_date' => 'required|date',
+            'requires_license' => 'boolean',
             'event_type_id' => 'nullable|exists:event_types,id',
             'athletes' => 'nullable|array',
             'athletes.*.id' => 'required|exists:users,id',
@@ -73,6 +82,7 @@ class EventController extends Controller
             'description' => $validated['description'],
             'location' => $validated['location'],
             'event_date' => $validated['event_date'],
+            'requires_license' => $validated['requires_license'] ?? false,
             'event_type_id' => $validated['event_type_id'],
         ]);
 
@@ -99,6 +109,7 @@ class EventController extends Controller
             'description' => 'nullable|string',
             'location' => 'nullable|string|max:255',
             'event_date' => 'required|date',
+            'requires_license' => 'boolean',
             'event_type_id' => 'nullable|exists:event_types,id',
             'athletes' => 'nullable|array',
             'athletes.*.id' => 'required|exists:users,id',
@@ -110,6 +121,7 @@ class EventController extends Controller
             'description' => $validated['description'],
             'location' => $validated['location'],
             'event_date' => $validated['event_date'],
+            'requires_license' => $validated['requires_license'] ?? false,
             'event_type_id' => $validated['event_type_id'],
         ]);
 

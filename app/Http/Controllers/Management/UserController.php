@@ -33,7 +33,7 @@ class UserController extends Controller
 
         $query = User::where('role_id', $atletRole?->id)
             ->where('is_verified', true)
-            ->with('coach');
+            ->with(['coach', 'athleteProfile']);
 
         // Filter by coach
         if ($request->filled('coach_id')) {

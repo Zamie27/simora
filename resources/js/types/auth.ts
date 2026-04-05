@@ -9,6 +9,12 @@ export type User = {
     role?: {
         name: string;
     };
+    athlete_profile?: {
+        profile_photo_path?: string;
+        license_path?: string;
+        uci_id?: string;
+        license_valid_until?: string;
+    };
     [key: string]: unknown;
 };
 

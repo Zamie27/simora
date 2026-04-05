@@ -16,12 +16,14 @@ class Event extends Model
         'description',
         'location',
         'event_date',
+        'requires_license',
     ];
 
     protected function casts(): array
     {
         return [
             'event_date' => 'date',
+            'requires_license' => 'boolean',
         ];
     }
 

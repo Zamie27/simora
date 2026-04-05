@@ -27,7 +27,7 @@ class AthleteController extends Controller
 
         $athletes = User::whereRole('Atlet')
             ->where('coach_id', $coach->id)
-            ->with(['latestPhysicalMetric'])
+            ->with(['latestPhysicalMetric', 'athleteProfile'])
             ->get();
 
         return Inertia::render('coach/Athletes', [

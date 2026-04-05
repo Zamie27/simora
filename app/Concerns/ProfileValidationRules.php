@@ -19,6 +19,7 @@ trait ProfileValidationRules
             'email' => $this->emailRules($userId),
             'date_of_birth' => ['nullable', 'date', 'before:today'],
             'gender' => ['nullable', 'string', Rule::in(['male', 'female'])],
+            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 

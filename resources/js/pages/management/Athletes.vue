@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 
 import { Label } from '@/components/ui/label';
@@ -11,6 +11,12 @@ interface User {
     email: string;
     coach?: { name: string };
     created_at: string;
+    athlete_profile?: {
+        profile_photo_path?: string;
+        license_path?: string;
+        uci_id?: string;
+        license_valid_until?: string;
+    };
 }
 
 interface Coach {
@@ -185,10 +191,11 @@ const formatDate = (date: string) => {
 
             <!-- Athletes List -->
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div
+                <Link
                     v-for="athlete in athletes"
                     :key="athlete.id"
-                    class="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-lg transition-all hover:border-accent/40 hover:shadow-accent/5"
+                    :href="`/management/athletes/${athlete.id}`"
+                    class="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-lg transition-all hover:border-accent/40 hover:shadow-accent/5 cursor-pointer"
                 >
                     <div
                         class="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-accent/5 blur-2xl transition-all group-hover:bg-accent/10"
@@ -196,15 +203,16 @@ const formatDate = (date: string) => {
 
                     <div class="relative z-10 flex items-center gap-4">
                         <div
-                            class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-secondary-foreground/10 bg-secondary text-xs font-black text-secondary-foreground uppercase shadow-inner"
+                            class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-secondary-foreground/10 bg-secondary text-xs font-black text-secondary-foreground uppercase shadow-inner relative"
                         >
-                            {{
+                            <img v-if="athlete.athlete_profile?.profile_photo_path" :src="`/documents/${athlete.id}/profile_photo`" class="h-full w-full object-cover" />
+                            <span v-else>{{
                                 athlete.name
                                     .split(' ')
                                     .map((n) => n[0])
                                     .slice(0, 2)
                                     .join('')
-                            }}
+                            }}</span>
                         </div>
                         <div>
                             <h3
@@ -222,6 +230,8 @@ const formatDate = (date: string) => {
                                     class="rounded border border-accent/10 bg-accent/5 px-2 py-0.5 text-[10px] font-black tracking-widest text-accent uppercase"
                                     >ATLET</span
                                 >
+                                <span v-if="athlete.athlete_profile?.uci_id && new Date(athlete.athlete_profile?.license_valid_until || '') >= new Date()" class="rounded border border-emerald-500/10 bg-emerald-500/5 px-2 py-0.5 text-[10px] font-black tracking-widest text-emerald-500 uppercase">LISENSI AKTIF</span>
+                                <span v-else class="rounded border border-destructive/10 bg-destructive/5 px-2 py-0.5 text-[10px] font-black tracking-widest text-destructive uppercase">NON LISENSI</span>
                                 <span
                                     class="text-[10px] font-semibold text-muted-foreground"
                                     >Tgl. Terdaftar:
@@ -255,8 +265,13 @@ const formatDate = (date: string) => {
                             class="text-xs font-black text-destructive/80 uppercase"
                             >No Coach Assigned</span
                         >
+                        <div class="mt-4 flex justify-end">
+                            <span class="rounded-xl border border-accent/20 bg-accent/5 px-4 py-2 text-[10px] font-black tracking-widest text-accent uppercase transition-all hover:bg-accent hover:text-white">
+                                DETAIL & LISENSI →
+                            </span>
+                        </div>
                     </div>
-                </div>
+                </Link>
             </div>
 
             <div

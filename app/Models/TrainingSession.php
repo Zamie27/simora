@@ -33,6 +33,26 @@ class TrainingSession extends Model
     ];
 
     /**
+     * Local Scopes
+     */
+    public function scopeUpcoming(Builder $query): void
+    {
+        $query->where(function ($q) {
+            $q->where(function ($sub) {
+                $sub->where('repeat_weekly', false)
+                    ->whereDate('scheduled_date', '>=', now()->toDateString());
+            })->orWhere('repeat_weekly', true);
+        })->orderBy('scheduled_date', 'asc');
+    }
+
+    public function scopePast(Builder $query): void
+    {
+        $query->where('repeat_weekly', false)
+            ->whereDate('scheduled_date', '<', now()->toDateString())
+            ->orderBy('scheduled_date', 'desc');
+    }
+
+    /**
      * Relationships
      */
     public function coach(): BelongsTo
@@ -56,17 +76,27 @@ class TrainingSession extends Model
     }
 
     /**
-     * Local Scopes
+     * Helpers
      */
-    public function scopeUpcoming(Builder $query): void
+    public function getActiveInstanceDate(): \Carbon\CarbonInterface
     {
-        $query->where(fn ($q) => $q->whereDate('scheduled_date', '>=', now()->toDateString()))
-            ->orderBy('scheduled_date', 'asc');
-    }
+        if (! $this->repeat_weekly) {
+            return $this->scheduled_date->startOfDay();
+        }
 
-    public function scopePast(Builder $query): void
-    {
-        $query->where(fn ($q) => $q->whereDate('scheduled_date', '<', now()->toDateString()))
-            ->orderBy('scheduled_date', 'desc');
+        $now = now()->startOfDay();
+        $targetDay = $this->scheduled_date->dayOfWeek;
+        $currentDay = $now->dayOfWeek;
+
+        if ($currentDay === $targetDay) {
+            return $now;
+        }
+
+        // Carbon's next() or previous() can be used here.
+        // If today is Tuesday (2) and target is Monday (1).
+        // next(1) will give next week's Monday.
+        
+        return $now->copy()->next($targetDay);
     }
 }
+

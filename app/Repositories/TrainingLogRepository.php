@@ -112,16 +112,47 @@ class TrainingLogRepository
     /**
      * Get upcoming sessions for an athlete.
      */
-    public function getUpcomingSessions(int $athleteId): Collection
+    public function getUpcomingSessions(int $athleteId): \Illuminate\Support\Collection
     {
-        return TrainingSession::whereHas('athletes', fn ($q) => $q->where('users.id', $athleteId))
+        $sessions = TrainingSession::whereHas('athletes', function ($q) use ($athleteId) {
+            $q->where('users.id', $athleteId);
+        })
             ->upcoming()
             ->with([
                 'coach:id,name',
                 'exerciseType',
-                'logs' => fn ($q) => $q->where('athlete_id', $athleteId),
             ])
-            ->limit(10)
             ->get();
+
+        $processed = collect();
+
+        foreach ($sessions as $session) {
+            // Ensure we have a model instance
+            if (! $session instanceof TrainingSession) {
+                continue;
+            }
+
+            $instanceDate = $session->getActiveInstanceDate();
+            
+            // Check if there is already a log for this specific instance date
+            $log = TrainingLog::where('training_session_id', $session->id)
+                ->where('athlete_id', $athleteId)
+                ->whereDate('date', $instanceDate->toDateString())
+                ->first();
+
+            // Hide if already completed for this instance
+            if ($log && $log->completion_status === 'completed') {
+                continue;
+            }
+
+            // Append instance info for the frontend
+            $session->instance_date = $instanceDate->toDateString();
+            $session->current_log = $log;
+            
+            $processed->push($session);
+        }
+
+        return $processed;
     }
 }
+

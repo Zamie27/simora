@@ -4,7 +4,10 @@ namespace App\Services;
 
 use App\Models\TrainingLog;
 use App\Models\TrainingSession;
+use App\Models\User;
+use App\Notifications\NewTrainingSessionNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class TrainingSessionService
 {
@@ -17,19 +20,21 @@ class TrainingSessionService
             $session = TrainingSession::create($data);
             $session->athletes()->sync($athleteIds);
 
-            // Create initial logs for each athlete if the session is for "today"
-            // or we might want to create them on the fly when the athlete logs in.
-            // Let's create them so they appear in their "To-Do".
+            // Create initial logs for each athlete for the starting date
             foreach ($athleteIds as $athleteId) {
                 TrainingLog::create([
                     'training_session_id' => $session->id,
                     'athlete_id' => $athleteId,
                     'date' => $session->scheduled_date,
-                    'type' => $session->exerciseType->name ?? 'General', // fallback
+                    'type' => $session->exerciseType->name ?? 'General',
                     'completion_status' => 'not_started',
-                    'attendance_status' => 'absent', // default until present
+                    'attendance_status' => 'absent',
                 ]);
             }
+
+            // Notify assigned athletes
+            $athletes = User::whereIn('id', $athleteIds)->get();
+            Notification::send($athletes, new NewTrainingSessionNotification($session));
 
             return $session;
         });
@@ -58,3 +63,4 @@ class TrainingSessionService
         return $session->delete();
     }
 }
+

@@ -116,6 +116,11 @@ const form = useForm({
     attachments: [] as File[],
 });
 
+const isToday = (dateString: string) => {
+    const today = new Date().toISOString().split('T')[0];
+    return dateString === today;
+};
+
 const openLogModal = (session: any = null, log: Log | null = null) => {
     selectedSession.value = session;
     selectedLog.value = log;
@@ -139,8 +144,8 @@ const openLogModal = (session: any = null, log: Log | null = null) => {
         form.training_session_id = session.id;
         form.type = session.exercise_type.name;
 
-        const existingLog =
-            session.logs && session.logs.length > 0 ? session.logs[0] : null;
+        // Use current_log from instance if available
+        const existingLog = session.current_log;
 
         if (existingLog) {
             form.id = existingLog.id;
@@ -158,6 +163,8 @@ const openLogModal = (session: any = null, log: Log | null = null) => {
             form.duration_minutes = session.target_duration_minutes || '';
             form.avg_speed = session.target_avg_speed || '';
             form.rpm = session.target_rpm || '';
+            // Force date to instance date for session logging
+            form.date = session.instance_date;
         }
     }
 
@@ -463,8 +470,13 @@ const chartSeries = computed(() => [
                         <div
                             v-for="session in upcomingSessions"
                             :key="session.id"
-                            @click="openLogModal(session)"
-                            class="group cursor-pointer rounded-2xl border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-lg"
+                            @click="isToday(session.instance_date) ? openLogModal(session) : null"
+                            :class="[
+                                isToday(session.instance_date)
+                                    ? 'group cursor-pointer hover:border-accent hover:shadow-lg'
+                                    : 'opacity-60 cursor-not-allowed contrast-75 grayscale-[0.5]',
+                                'relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all',
+                            ]"
                         >
                             <div class="mb-4 flex items-center justify-between">
                                 <div class="flex items-center gap-2">
@@ -473,18 +485,22 @@ const chartSeries = computed(() => [
                                         >{{ session.exercise_type.name }}</span
                                     >
                                     <span
-                                        v-if="
-                                            session.logs &&
-                                            session.logs.length > 0
-                                        "
+                                        v-if="session.current_log"
                                         class="rounded bg-emerald-500/10 px-2 py-0.5 text-[8px] font-black text-emerald-500 uppercase"
                                         >Sudah Dicatat</span
+                                    >
+                                    <span
+                                        v-if="session.repeat_weekly"
+                                        class="rounded bg-blue-500/10 px-2 py-0.5 text-[8px] font-black text-blue-500 uppercase"
+                                        >Mingguan</span
                                     >
                                 </div>
                                 <span
                                     class="text-[10px] font-bold text-muted-foreground"
                                     >{{
-                                        formatDate(session.scheduled_date)
+                                        isToday(session.instance_date)
+                                            ? 'Hari Ini'
+                                            : formatDate(session.instance_date)
                                     }}</span
                                 >
                             </div>
@@ -493,6 +509,12 @@ const chartSeries = computed(() => [
                             >
                                 {{ session.title }}
                             </h4>
+                            <p
+                                v-if="!isToday(session.instance_date)"
+                                class="mt-1 text-[8px] font-bold text-muted-foreground uppercase opacity-60"
+                            >
+                                Sesi Belum Dibuka
+                            </p>
                             <div class="mt-4 flex items-center justify-between">
                                 <div
                                     class="flex items-center gap-2 text-[9px] font-black text-muted-foreground"
@@ -501,6 +523,7 @@ const chartSeries = computed(() => [
                                     {{ session.scheduled_time || '00:00' }}
                                 </div>
                                 <ChevronRight
+                                    v-if="isToday(session.instance_date)"
                                     class="h-4 w-4 text-muted-foreground group-hover:translate-x-1 group-hover:text-accent"
                                 />
                             </div>

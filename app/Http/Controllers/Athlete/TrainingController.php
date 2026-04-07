@@ -19,7 +19,8 @@ class TrainingController extends Controller
     public function __construct(
         private TrainingLogService $logService,
         private TrainingLogRepository $logRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Display the athlete's training dashboard.
@@ -58,43 +59,34 @@ class TrainingController extends Controller
         $validated = $request->validated();
         $attachments = $request->file('attachments');
 
-        // Check if updating an existing log (manual or session)
-        $logId = $request->input('id');
-        if ($logId) {
-            $log = TrainingLog::where('id', $logId)
-                ->where('athlete_id', $athleteId)
-                ->first();
-
-            if ($log) {
-                $this->logService->update($log, $validated, $attachments);
-
-                return back()->with('success', 'Log latihan berhasil diperbarui.');
-            }
-        }
-
         // Athlete specifies a session
-        if (! empty($validated['training_session_id'])) {
-            $log = TrainingLog::where('training_session_id', $validated['training_session_id'])
+        if (!empty($validated['training_session_id'])) {
+            $session = TrainingSession::where('id', $validated['training_session_id'])
+                ->whereHas('athletes', fn($q) => $q->where('users.id', $athleteId))
+                ->first();
+
+            if (!$session) {
+                abort(403, 'Anda tidak terdaftar dalam sesi latihan ini.');
+            }
+
+            // Strict instance check: ensure they are logging for the current active instance
+            $instanceDate = $session->getActiveInstanceDate();
+            if (!$instanceDate->isToday()) {
+                abort(403, 'Sesi ini hanya dapat diisi pada hari jadwal latihan.');
+            }
+
+            // Check if log already exists for TODAY for this session
+            $log = TrainingLog::where('training_session_id', $session->id)
                 ->where('athlete_id', $athleteId)
+                ->whereDate('date', now()->toDateString())
                 ->first();
 
             if ($log) {
-                // Update the system-generated log for that session
                 $this->logService->update($log, $validated, $attachments);
 
                 return back()->with('success', 'Data latihan sesi berhasil diperbarui.');
             }
 
-            // Verify if the athlete is actually assigned to this session
-            $session = TrainingSession::where('id', $validated['training_session_id'])
-                ->whereHas('athletes', fn ($q) => $q->where('users.id', $athleteId))
-                ->first();
-
-            if (! $session) {
-                abort(403, 'Anda tidak terdaftar dalam sesi latihan ini.');
-            }
-
-            // If it's a valid session but somehow no log exists yet, create it
             $this->logService->create($athleteId, $validated, $attachments);
 
             return back()->with('success', 'Data latihan sesi berhasil dicatat.');
@@ -105,6 +97,7 @@ class TrainingController extends Controller
 
         return back()->with('success', 'Data latihan manual berhasil dicatat.');
     }
+
 
     /**
      * Remove the specified training log from storage.

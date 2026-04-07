@@ -81,8 +81,8 @@ const submitLicense = () => {
             ) as HTMLInputElement;
 
             if (fileInput) {
-fileInput.value = '';
-}
+                fileInput.value = '';
+            }
         },
     });
 };
@@ -97,8 +97,8 @@ const formatDate = (date: string) => {
 
 const isLicenseValid = (validUntil?: string) => {
     if (!validUntil) {
-return false;
-}
+        return false;
+    }
 
     return new Date(validUntil) >= new Date();
 };

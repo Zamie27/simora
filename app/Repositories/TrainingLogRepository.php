@@ -133,7 +133,7 @@ class TrainingLogRepository
             }
 
             $instanceDate = $session->getActiveInstanceDate();
-            
+
             // Check if there is already a log for this specific instance date
             $log = TrainingLog::where('training_session_id', $session->id)
                 ->where('athlete_id', $athleteId)
@@ -148,11 +148,10 @@ class TrainingLogRepository
             // Append instance info for the frontend
             $session->instance_date = $instanceDate->toDateString();
             $session->current_log = $log;
-            
+
             $processed->push($session);
         }
 
         return $processed;
     }
 }
-

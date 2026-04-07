@@ -19,8 +19,7 @@ class TrainingController extends Controller
     public function __construct(
         private TrainingLogService $logService,
         private TrainingLogRepository $logRepository
-    ) {
-    }
+    ) {}
 
     /**
      * Display the athlete's training dashboard.
@@ -60,18 +59,18 @@ class TrainingController extends Controller
         $attachments = $request->file('attachments');
 
         // Athlete specifies a session
-        if (!empty($validated['training_session_id'])) {
+        if (! empty($validated['training_session_id'])) {
             $session = TrainingSession::where('id', $validated['training_session_id'])
-                ->whereHas('athletes', fn($q) => $q->where('users.id', $athleteId))
+                ->whereHas('athletes', fn ($q) => $q->where('users.id', $athleteId))
                 ->first();
 
-            if (!$session) {
+            if (! $session) {
                 abort(403, 'Anda tidak terdaftar dalam sesi latihan ini.');
             }
 
             // Strict instance check: ensure they are logging for the current active instance
             $instanceDate = $session->getActiveInstanceDate();
-            if (!$instanceDate->isToday()) {
+            if (! $instanceDate->isToday()) {
                 abort(403, 'Sesi ini hanya dapat diisi pada hari jadwal latihan.');
             }
 
@@ -97,7 +96,6 @@ class TrainingController extends Controller
 
         return back()->with('success', 'Data latihan manual berhasil dicatat.');
     }
-
 
     /**
      * Remove the specified training log from storage.

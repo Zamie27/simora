@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -78,7 +79,7 @@ class TrainingSession extends Model
     /**
      * Helpers
      */
-    public function getActiveInstanceDate(): \Carbon\CarbonInterface
+    public function getActiveInstanceDate(): CarbonInterface
     {
         if (! $this->repeat_weekly) {
             return $this->scheduled_date->startOfDay();
@@ -95,8 +96,7 @@ class TrainingSession extends Model
         // Carbon's next() or previous() can be used here.
         // If today is Tuesday (2) and target is Monday (1).
         // next(1) will give next week's Monday.
-        
+
         return $now->copy()->next($targetDay);
     }
 }
-

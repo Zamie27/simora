@@ -63,4 +63,3 @@ class TrainingSessionService
         return $session->delete();
     }
 }
-

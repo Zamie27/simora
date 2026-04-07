@@ -14,9 +14,7 @@ class NewTrainingSessionNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(public TrainingSession $session)
-    {
-    }
+    public function __construct(public TrainingSession $session) {}
 
     /**
      * Get the notification's delivery channels.
@@ -35,15 +33,15 @@ class NewTrainingSessionNotification extends Notification
     {
         $date = $this->session->scheduled_date->format('d M Y');
         $time = $this->session->scheduled_time ?? '-';
-        $type = $this->session->repeat_weekly ? 'Mingguan (Setiap ' . $this->session->scheduled_date->translatedFormat('l') . ')' : 'Sekali';
+        $type = $this->session->repeat_weekly ? 'Mingguan (Setiap '.$this->session->scheduled_date->translatedFormat('l').')' : 'Sekali';
 
         return (new MailMessage)
-            ->subject('Sesi Latihan Baru: ' . $this->session->title)
-            ->greeting('Halo, ' . $notifiable->name . '!')
+            ->subject('Sesi Latihan Baru: '.$this->session->title)
+            ->greeting('Halo, '.$notifiable->name.'!')
             ->line('Pelatih Anda telah menambahkan sesi latihan baru.')
-            ->line('**Judul:** ' . $this->session->title)
-            ->line('**Jadwal:** ' . $date . ' Pukul ' . $time)
-            ->line('**Jenis:** ' . $type)
+            ->line('**Judul:** '.$this->session->title)
+            ->line('**Jadwal:** '.$date.' Pukul '.$time)
+            ->line('**Jenis:** '.$type)
             ->action('Lihat Dashboard', url('/athlete/training'))
             ->line('Tetap semangat berlatih!');
     }
@@ -60,8 +58,7 @@ class NewTrainingSessionNotification extends Notification
             'title' => $this->session->title,
             'scheduled_date' => $this->session->scheduled_date->toDateString(),
             'type' => $this->session->repeat_weekly ? 'recurring' : 'single',
-            'message' => 'Anda memiliki sesi latihan baru: ' . $this->session->title,
+            'message' => 'Anda memiliki sesi latihan baru: '.$this->session->title,
         ];
     }
 }
-

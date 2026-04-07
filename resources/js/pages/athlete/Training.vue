@@ -118,6 +118,7 @@ const form = useForm({
 
 const isToday = (dateString: string) => {
     const today = new Date().toISOString().split('T')[0];
+
     return dateString === today;
 };
 
@@ -470,11 +471,15 @@ const chartSeries = computed(() => [
                         <div
                             v-for="session in upcomingSessions"
                             :key="session.id"
-                            @click="isToday(session.instance_date) ? openLogModal(session) : null"
+                            @click="
+                                isToday(session.instance_date)
+                                    ? openLogModal(session)
+                                    : null
+                            "
                             :class="[
                                 isToday(session.instance_date)
                                     ? 'group cursor-pointer hover:border-accent hover:shadow-lg'
-                                    : 'opacity-60 cursor-not-allowed contrast-75 grayscale-[0.5]',
+                                    : 'cursor-not-allowed opacity-60 contrast-75 grayscale-[0.5]',
                                 'relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all',
                             ]"
                         >

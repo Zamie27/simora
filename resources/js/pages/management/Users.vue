@@ -176,7 +176,10 @@ const route = (name: string, params?: any) => {
                                                 class="h-full w-full object-cover"
                                             />
                                             <img
-                                                v-else-if="user.athlete_profile?.profile_photo_path"
+                                                v-else-if="
+                                                    user.athlete_profile
+                                                        ?.profile_photo_path
+                                                "
                                                 :src="`/documents/${user.id}/profile_photo`"
                                                 class="h-full w-full object-cover"
                                             />

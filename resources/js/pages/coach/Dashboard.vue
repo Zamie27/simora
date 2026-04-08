@@ -288,14 +288,16 @@ const formatTime = (minutes: number) => {
                             Leaderboard <span class="text-accent">Squad</span>
                         </h3>
                         <p class="text-xs font-medium text-muted-foreground">
-                            Peringkat atlet binaan berdasarkan kecepatan rata-rata
-                            (30 hari terakhir).
+                            Peringkat atlet binaan berdasarkan kecepatan
+                            rata-rata (30 hari terakhir).
                         </p>
                     </div>
                     <Trophy class="h-6 w-6 text-accent" />
                 </div>
 
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <div
+                    class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
+                >
                     <div
                         v-for="(athlete, index) in athleteRanking"
                         :key="athlete.id"
@@ -303,7 +305,7 @@ const formatTime = (minutes: number) => {
                     >
                         <!-- Rank Number -->
                         <div
-                            class="absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-surface text-[10px] font-black text-foreground shadow-xl group-hover:bg-accent group-hover:text-white"
+                            class="bg-surface absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 text-[10px] font-black text-foreground shadow-xl group-hover:bg-accent group-hover:text-white"
                         >
                             #{{ index + 1 }}
                         </div>
@@ -317,7 +319,10 @@ const formatTime = (minutes: number) => {
                                 :src="athlete.avatar"
                                 class="h-full w-full object-cover"
                             />
-                            <span v-else class="text-[10px] font-black text-accent">
+                            <span
+                                v-else
+                                class="text-[10px] font-black text-accent"
+                            >
                                 {{
                                     athlete.name
                                         .split(' ')
@@ -329,7 +334,9 @@ const formatTime = (minutes: number) => {
                         </div>
 
                         <div class="flex-1">
-                            <h4 class="truncate text-xs font-black text-foreground">
+                            <h4
+                                class="truncate text-xs font-black text-foreground"
+                            >
                                 {{ athlete.name }}
                             </h4>
                             <div class="mt-1 flex items-center gap-2">
@@ -337,7 +344,8 @@ const formatTime = (minutes: number) => {
                                     class="text-[9px] font-bold text-accent uppercase"
                                     >{{ athlete.performance_score }} KPH</span
                                 >
-                                <span class="text-[8px] text-muted-foreground/30"
+                                <span
+                                    class="text-[8px] text-muted-foreground/30"
                                     >•</span
                                 >
                                 <span

@@ -7,8 +7,10 @@ import {
     Activity,
     TrendingUp,
     Zap,
-    Trophy,
     ShieldCheck,
+    Clock,
+    MapPin,
+    Trophy,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
@@ -27,6 +29,8 @@ interface Props {
     recentLogs: any[];
     performanceTrend: any[];
     athleteRanking: any[];
+    runningSessions: any[];
+    upcomingEvents: any[];
 }
 
 const props = defineProps<Props>();
@@ -296,6 +300,130 @@ const formatDate = (date: string) => {
                     <p class="text-xs font-black uppercase">
                         Belum ada data peringkat
                     </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <!-- Running Sessions -->
+                <div class="bg-surface rounded-3xl border border-white/5 p-6">
+                    <div class="mb-6 flex items-center justify-between">
+                        <h3
+                            class="text-lg font-black tracking-tighter text-foreground uppercase"
+                        >
+                            Sesi <span class="text-accent">Hari Ini</span>
+                        </h3>
+                        <div
+                            class="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10"
+                        >
+                            <Clock class="h-4 w-4 animate-pulse text-emerald-500" />
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div
+                            v-for="session in runningSessions"
+                            :key="session.id"
+                            class="group relative overflow-hidden rounded-2xl bg-white/5 p-4 transition-all hover:bg-white/10"
+                        >
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="rounded-lg bg-accent/10 px-2 py-1 text-[10px] font-black text-accent uppercase"
+                                    >
+                                        {{ session.exercise_type?.name }}
+                                    </div>
+                                    <span
+                                        class="text-xs font-bold text-muted-foreground"
+                                        >{{ session.scheduled_time }} WIB</span
+                                    >
+                                </div>
+                                <span
+                                    v-if="session.repeat_weekly"
+                                    class="text-[9px] font-black text-accent/50 uppercase italic"
+                                    >Weekly</span
+                                >
+                            </div>
+                            <h4 class="mt-2 text-sm font-black text-foreground">
+                                {{ session.title }}
+                            </h4>
+                            <p
+                                class="mt-1 text-xs font-bold text-muted-foreground opacity-60"
+                            >
+                                Coach: {{ session.coach?.name }}
+                            </p>
+                        </div>
+
+                        <div
+                            v-if="runningSessions.length === 0"
+                            class="flex flex-col items-center justify-center py-10 opacity-30"
+                        >
+                            <Calendar class="mb-2 h-8 w-8" />
+                            <p class="text-xs font-black uppercase">
+                                Tidak ada sesi hari ini
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Events -->
+                <div class="bg-surface rounded-3xl border border-white/5 p-6">
+                    <div class="mb-6 flex items-center justify-between">
+                        <h3
+                            class="text-lg font-black tracking-tighter text-foreground uppercase"
+                        >
+                            Event <span class="text-accent">Target</span>
+                        </h3>
+                        <Trophy class="h-5 w-5 text-accent" />
+                    </div>
+
+                    <div class="space-y-4">
+                        <div
+                            v-for="event in upcomingEvents"
+                            :key="event.id"
+                            class="flex items-center gap-4 rounded-2xl border border-white/5 bg-white/5 p-4 transition-all hover:bg-white/10"
+                        >
+                            <div
+                                class="flex flex-col items-center justify-center rounded-xl bg-accent px-3 py-2 text-white"
+                            >
+                                <span class="text-xs font-black">{{
+                                    new Date(event.event_date).getDate()
+                                }}</span>
+                                <span class="text-[8px] font-black uppercase">{{
+                                    new Date(event.event_date).toLocaleDateString(
+                                        'id-ID',
+                                        { month: 'short' },
+                                    )
+                                }}</span>
+                            </div>
+                            <div class="flex-1">
+                                <h4
+                                    class="line-clamp-1 text-sm font-black text-foreground"
+                                >
+                                    {{ event.title }}
+                                </h4>
+                                <div
+                                    class="mt-1 flex items-center gap-3 text-[10px] font-bold text-muted-foreground opacity-60"
+                                >
+                                    <span class="flex items-center gap-1">
+                                        <MapPin class="h-3 w-3" />
+                                        {{ event.location }}
+                                    </span>
+                                    <span>•</span>
+                                    <span>{{ event.type?.name }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            v-if="upcomingEvents.length === 0"
+                            class="flex flex-col items-center justify-center py-10 opacity-30"
+                        >
+                            <Trophy class="mb-2 h-8 w-8" />
+                            <p class="text-xs font-black uppercase">
+                                Belum ada event terjadwal
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Management;
 use App\Http\Controllers\Controller;
 use App\Models\TrainingLog;
 use App\Models\TrainingSession;
+use App\Models\Event;
 use App\Models\User;
 use App\Repositories\TrainingLogRepository;
 use Illuminate\Http\Request;
@@ -47,6 +48,29 @@ class DashboardController extends Controller
         // 5. Athlete Ranking
         $athleteRanking = $this->logRepository->getAthleteRanking();
 
+        // 6. Running Sessions (Today)
+        $runningSessions = TrainingSession::where(function ($query) {
+            $query->whereDate('scheduled_date', now()->toDateString())
+                ->orWhere('repeat_weekly', true);
+        })
+            ->with(['coach:id,name', 'exerciseType:id,name'])
+            ->get()
+            ->filter(function ($session) {
+                if (! $session->repeat_weekly) {
+                    return true;
+                }
+
+                return $session->scheduled_date->dayOfWeek === now()->dayOfWeek;
+            })
+            ->values();
+
+        // 7. Upcoming Events
+        $upcomingEvents = Event::where('event_date', '>=', now()->toDateString())
+            ->with(['type:id,name', 'coach:id,name'])
+            ->orderBy('event_date')
+            ->take(5)
+            ->get();
+
         return Inertia::render('management/Dashboard', [
             'stats' => [
                 'total_athletes' => $totalAthletes,
@@ -58,6 +82,8 @@ class DashboardController extends Controller
             'recentLogs' => $recentLogs,
             'performanceTrend' => $performanceTrend,
             'athleteRanking' => $athleteRanking,
+            'runningSessions' => $runningSessions,
+            'upcomingEvents' => $upcomingEvents,
         ]);
     }
 }

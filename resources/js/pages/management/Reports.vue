@@ -267,7 +267,10 @@ const exportCsv = (athleteId?: number) => {
                                                 class="h-full w-full object-cover"
                                             />
                                             <img
-                                                v-else-if="item.athlete.athlete_profile?.profile_photo_path"
+                                                v-else-if="
+                                                    item.athlete.athlete_profile
+                                                        ?.profile_photo_path
+                                                "
                                                 :src="`/documents/${item.athlete.id}/profile_photo`"
                                                 class="h-full w-full object-cover"
                                             />

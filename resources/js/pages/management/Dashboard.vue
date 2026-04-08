@@ -212,7 +212,8 @@ const formatDate = (date: string) => {
                         <h3
                             class="text-lg font-black tracking-tighter text-foreground uppercase"
                         >
-                            Leaderboard <span class="text-accent">Performa</span>
+                            Leaderboard
+                            <span class="text-accent">Performa</span>
                         </h3>
                         <p class="text-xs font-medium text-muted-foreground">
                             Peringkat atlet berdasarkan kecepatan rata-rata (30
@@ -222,7 +223,9 @@ const formatDate = (date: string) => {
                     <Trophy class="h-6 w-6 text-accent" />
                 </div>
 
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div
+                    class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+                >
                     <div
                         v-for="(athlete, index) in athleteRanking.slice(0, 6)"
                         :key="athlete.id"
@@ -230,7 +233,7 @@ const formatDate = (date: string) => {
                     >
                         <!-- Rank Number -->
                         <div
-                            class="absolute -top-2 -left-2 flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-surface text-sm font-black text-foreground shadow-xl group-hover:bg-accent group-hover:text-white"
+                            class="bg-surface absolute -top-2 -left-2 flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-sm font-black text-foreground shadow-xl group-hover:bg-accent group-hover:text-white"
                         >
                             #{{ index + 1 }}
                         </div>
@@ -267,7 +270,8 @@ const formatDate = (date: string) => {
                                     class="text-[10px] font-bold text-muted-foreground"
                                     >{{ athlete.performance_score }} KPH</span
                                 >
-                                <span class="text-[8px] text-muted-foreground/30"
+                                <span
+                                    class="text-[8px] text-muted-foreground/30"
                                     >•</span
                                 >
                                 <span

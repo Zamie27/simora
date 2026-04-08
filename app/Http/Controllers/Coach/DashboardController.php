@@ -7,12 +7,17 @@ use App\Models\Message;
 use App\Models\TrainingLog;
 use App\Models\TrainingSession;
 use App\Models\User;
+use App\Repositories\TrainingLogRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
+    public function __construct(
+        private TrainingLogRepository $logRepository
+    ) {}
+
     public function index(Request $request)
     {
         $coach = $request->user();
@@ -68,6 +73,9 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        // 8. Athlete Ranking (Coach specific)
+        $athleteRanking = $this->logRepository->getAthleteRanking($athleteIds->toArray());
+
         return Inertia::render('coach/Dashboard', [
             'stats' => [
                 'total_athletes' => $athletes->count(),
@@ -83,6 +91,7 @@ class DashboardController extends Controller
             'categoryDistribution' => $categoryDistribution,
             'athletesList' => $athletes->map(fn ($a) => ['id' => $a->id, 'name' => $a->name]),
             'recentMessages' => $recentMessages,
+            'athleteRanking' => $athleteRanking,
         ]);
     }
 }

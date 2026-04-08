@@ -1,0 +1,1 @@
+import{$ as e,X as t,dt as n,j as r,w as i}from"./index.esm-Ct5KIwnn.js";import{t as a}from"./AppSidebarLayout-C8GVU5lk.js";var o=r({__name:`AppLayout`,props:{breadcrumbs:{default:()=>[]}},setup(r){return(o,s)=>(t(),i(a,{breadcrumbs:r.breadcrumbs},{default:n(()=>[e(o.$slots,`default`)]),_:3},8,[`breadcrumbs`]))}});export{o as t};

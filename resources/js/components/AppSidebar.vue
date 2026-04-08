@@ -8,12 +8,12 @@ import {
     Calculator,
     ClipboardList,
     FileText,
-    FolderGit2,
     LayoutGrid,
     ShieldCheck,
     UserCheck,
     Users,
     Trophy,
+    Info,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 
@@ -30,8 +30,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import type { NavItem, SharedData } from '@/types';
 import { dashboard } from '@/routes';
+import type { NavItem, SharedData } from '@/types';
 
 const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user);
@@ -155,14 +155,9 @@ const mainNavItems = computed<NavItem[]>(() => {
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
+        title: 'About Kuukok',
+        href: 'https://kuukok.my.id',
+        icon: Info,
     },
 ];
 </script>

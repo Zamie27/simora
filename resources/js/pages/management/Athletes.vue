@@ -11,6 +11,7 @@ interface User {
     email: string;
     coach?: { name: string };
     created_at: string;
+    avatar?: string;
     athlete_profile?: {
         profile_photo_path?: string;
         license_path?: string;
@@ -206,7 +207,12 @@ const formatDate = (date: string) => {
                             class="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-secondary-foreground/10 bg-secondary text-xs font-black text-secondary-foreground uppercase shadow-inner"
                         >
                             <img
-                                v-if="
+                                v-if="athlete.avatar"
+                                :src="athlete.avatar"
+                                class="h-full w-full object-cover"
+                            />
+                            <img
+                                v-else-if="
                                     athlete.athlete_profile?.profile_photo_path
                                 "
                                 :src="`/documents/${athlete.id}/profile_photo`"

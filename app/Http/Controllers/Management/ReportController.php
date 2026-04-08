@@ -30,8 +30,8 @@ class ReportController extends Controller
         }
 
         $athletes = User::whereRole('Atlet')
-            ->with('coach:id,name')
-            ->select('id', 'name', 'email', 'coach_id')
+            ->with(['coach:id,name', 'athleteProfile'])
+            ->select('id', 'name', 'email', 'coach_id', 'avatar')
             ->get();
 
         $coaches = User::whereRole('Pelatih')

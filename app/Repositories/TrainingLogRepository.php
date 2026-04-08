@@ -154,4 +154,26 @@ class TrainingLogRepository
 
         return $processed;
     }
+
+    /**
+     * Get athlete ranking based on performance (avg_speed) in a given period.
+     */
+    public function getAthleteRanking(?array $athleteIds = null, int $days = 30): array
+    {
+        $query = TrainingLog::query()
+            ->join('users', 'training_logs.athlete_id', '=', 'users.id')
+            ->leftJoin('categories', 'users.category_id', '=', 'categories.id')
+            ->where('training_logs.date', '>=', now()->subDays($days)->toDateString())
+            ->select('users.id', 'users.name', 'users.avatar', 'categories.name as category_name')
+            ->selectRaw('ROUND(AVG(training_logs.avg_speed), 2) as performance_score')
+            ->selectRaw('COALESCE(SUM(training_logs.distance_km), 0) as total_distance')
+            ->groupBy('users.id', 'users.name', 'users.avatar', 'categories.name')
+            ->orderByDesc('performance_score');
+
+        if ($athleteIds) {
+            $query->whereIn('users.id', $athleteIds);
+        }
+
+        return $query->get()->toArray();
+    }
 }

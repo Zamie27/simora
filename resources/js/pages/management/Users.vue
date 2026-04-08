@@ -17,6 +17,10 @@ interface User {
     email: string;
     role_id: number;
     role: Role;
+    avatar?: string;
+    athlete_profile?: {
+        profile_photo_path?: string;
+    };
 }
 
 const props = defineProps<{
@@ -164,14 +168,26 @@ const route = (name: string, params?: any) => {
                                 <td class="px-6 py-5">
                                     <div class="flex items-center gap-4">
                                         <div
-                                            class="flex h-10 w-10 items-center justify-center rounded-full border border-secondary-foreground/10 bg-secondary text-xs font-black text-secondary-foreground shadow-inner"
+                                            class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-secondary-foreground/10 bg-secondary text-xs font-black text-secondary-foreground shadow-inner"
                                         >
-                                            {{
-                                                user.name
-                                                    .split(' ')
-                                                    .map((n) => n[0])
-                                                    .join('')
-                                            }}
+                                            <img
+                                                v-if="user.avatar"
+                                                :src="user.avatar"
+                                                class="h-full w-full object-cover"
+                                            />
+                                            <img
+                                                v-else-if="user.athlete_profile?.profile_photo_path"
+                                                :src="`/documents/${user.id}/profile_photo`"
+                                                class="h-full w-full object-cover"
+                                            />
+                                            <span v-else>
+                                                {{
+                                                    user.name
+                                                        .split(' ')
+                                                        .map((n) => n[0])
+                                                        .join('')
+                                                }}
+                                            </span>
                                         </div>
                                         <div>
                                             <p

@@ -34,6 +34,7 @@ interface Props {
     categoryDistribution: any;
     athletesList: { id: number; name: string }[];
     recentMessages: any[];
+    athleteRanking: any[];
 }
 
 const props = defineProps<Props>();
@@ -274,6 +275,91 @@ const formatTime = (minutes: number) => {
                     <Clock
                         class="absolute -top-4 -right-4 h-24 w-24 text-white/5 transition-transform group-hover:scale-110 group-hover:rotate-12"
                     />
+                </div>
+            </div>
+
+            <!-- Squad Leaderboard -->
+            <div class="bg-surface rounded-3xl border border-white/5 p-6">
+                <div class="mb-6 flex items-center justify-between">
+                    <div>
+                        <h3
+                            class="text-lg font-black tracking-tighter text-foreground uppercase"
+                        >
+                            Leaderboard <span class="text-accent">Squad</span>
+                        </h3>
+                        <p class="text-xs font-medium text-muted-foreground">
+                            Peringkat atlet binaan berdasarkan kecepatan rata-rata
+                            (30 hari terakhir).
+                        </p>
+                    </div>
+                    <Trophy class="h-6 w-6 text-accent" />
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    <div
+                        v-for="(athlete, index) in athleteRanking"
+                        :key="athlete.id"
+                        class="group relative flex items-center gap-4 rounded-2xl bg-white/5 p-4 transition-all hover:bg-white/10"
+                    >
+                        <!-- Rank Number -->
+                        <div
+                            class="absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-surface text-[10px] font-black text-foreground shadow-xl group-hover:bg-accent group-hover:text-white"
+                        >
+                            #{{ index + 1 }}
+                        </div>
+
+                        <!-- Avatar -->
+                        <div
+                            class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-secondary"
+                        >
+                            <img
+                                v-if="athlete.avatar"
+                                :src="athlete.avatar"
+                                class="h-full w-full object-cover"
+                            />
+                            <span v-else class="text-[10px] font-black text-accent">
+                                {{
+                                    athlete.name
+                                        .split(' ')
+                                        .map((n: string) => n[0])
+                                        .slice(0, 2)
+                                        .join('')
+                                }}
+                            </span>
+                        </div>
+
+                        <div class="flex-1">
+                            <h4 class="truncate text-xs font-black text-foreground">
+                                {{ athlete.name }}
+                            </h4>
+                            <div class="mt-1 flex items-center gap-2">
+                                <span
+                                    class="text-[9px] font-bold text-accent uppercase"
+                                    >{{ athlete.performance_score }} KPH</span
+                                >
+                                <span class="text-[8px] text-muted-foreground/30"
+                                    >•</span
+                                >
+                                <span
+                                    class="text-[9px] font-bold text-muted-foreground"
+                                    >{{
+                                        Math.round(athlete.total_distance)
+                                    }}
+                                    KM</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    v-if="athleteRanking.length === 0"
+                    class="flex flex-col items-center justify-center py-10 opacity-30"
+                >
+                    <Trophy class="mb-2 h-10 w-10" />
+                    <p class="text-xs font-black uppercase">
+                        Belum ada data peringkat
+                    </p>
                 </div>
             </div>
 

@@ -6,11 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\TrainingLog;
 use App\Models\TrainingSession;
 use App\Models\User;
+use App\Repositories\TrainingLogRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
+    public function __construct(
+        private TrainingLogRepository $logRepository
+    ) {}
+
     public function index(Request $request)
     {
         // 1. System-wide Users Stats
@@ -39,6 +44,9 @@ class DashboardController extends Controller
             ->orderBy('date')
             ->get();
 
+        // 5. Athlete Ranking
+        $athleteRanking = $this->logRepository->getAthleteRanking();
+
         return Inertia::render('management/Dashboard', [
             'stats' => [
                 'total_athletes' => $totalAthletes,
@@ -49,6 +57,7 @@ class DashboardController extends Controller
             ],
             'recentLogs' => $recentLogs,
             'performanceTrend' => $performanceTrend,
+            'athleteRanking' => $athleteRanking,
         ]);
     }
 }

@@ -32,49 +32,57 @@ class DatabaseSeeder extends Seeder
         $reportRole = Role::where('name', 'Report')->first();
 
         // Admin User
-        User::firstOrCreate(
+        $admin = User::firstOrCreate(
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin Manajemen',
                 'password' => Hash::make('password'),
                 'role_id' => $manajemenRole->id,
+                'is_verified' => true,
             ]
         );
+        $admin->forceFill(['email_verified_at' => now()])->save();
 
         // Report User
-        User::firstOrCreate(
+        $report = User::firstOrCreate(
             ['email' => 'report@example.com'],
             [
                 'name' => 'Admin Report',
                 'password' => Hash::make('password'),
                 'role_id' => $reportRole->id,
+                'is_verified' => true,
             ]
         );
+        $report->forceFill(['email_verified_at' => now()])->save();
 
         // Coach Users
         for ($i = 0; $i < 2; $i++) {
-            User::firstOrCreate(
+            $coach = User::firstOrCreate(
                 ['email' => 'pelatih'.$i.'@example.com'],
                 [
                     'name' => 'Coach Budi '.$i,
                     'password' => Hash::make('password'),
                     'role_id' => $pelatihRole->id,
+                    'is_verified' => true,
                 ]
             );
+            $coach->forceFill(['email_verified_at' => now()])->save();
         }
 
         // Athlete Users
         for ($i = 0; $i < 10; $i++) {
-            User::firstOrCreate(
+            $athlete = User::firstOrCreate(
                 ['email' => 'atlet'.$i.'@example.com'],
                 [
                     'name' => 'Atlet Andi '.$i,
                     'password' => Hash::make('password'),
                     'role_id' => $atletRole->id,
+                    'is_verified' => true,
                 ]
             );
+            $athlete->forceFill(['email_verified_at' => now()])->save();
         }
 
-        $this->call(DummyDataSeeder::class);
+        // $this->call(DummyDataSeeder::class);
     }
 }

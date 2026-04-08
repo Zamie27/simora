@@ -20,6 +20,10 @@ interface Athlete {
     name: string;
     email: string;
     coach?: { name: string };
+    avatar?: string;
+    athlete_profile?: {
+        profile_photo_path?: string;
+    };
 }
 interface Statistics {
     total_distance_km: number;
@@ -255,15 +259,27 @@ const exportCsv = (athleteId?: number) => {
                                 <td class="px-8 py-6">
                                     <div class="flex items-center gap-4">
                                         <div
-                                            class="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 text-xs font-black text-accent transition-transform group-hover:scale-110"
+                                            class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-accent/10 text-xs font-black text-accent transition-transform group-hover:scale-110"
                                         >
-                                            {{
-                                                item.athlete.name
-                                                    .split(' ')
-                                                    .map((n) => n[0])
-                                                    .slice(0, 2)
-                                                    .join('')
-                                            }}
+                                            <img
+                                                v-if="item.athlete.avatar"
+                                                :src="item.athlete.avatar"
+                                                class="h-full w-full object-cover"
+                                            />
+                                            <img
+                                                v-else-if="item.athlete.athlete_profile?.profile_photo_path"
+                                                :src="`/documents/${item.athlete.id}/profile_photo`"
+                                                class="h-full w-full object-cover"
+                                            />
+                                            <span v-else>
+                                                {{
+                                                    item.athlete.name
+                                                        .split(' ')
+                                                        .map((n) => n[0])
+                                                        .slice(0, 2)
+                                                        .join('')
+                                                }}
+                                            </span>
                                         </div>
                                         <div>
                                             <h4

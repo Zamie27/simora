@@ -83,7 +83,7 @@ class TrainingLog extends Model
 
     public function getIsEditableAttribute(): bool
     {
-        return $this->date->isToday();
+        return $this->date?->isToday() ?? false;
     }
 
     /**

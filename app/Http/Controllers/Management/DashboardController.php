@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Management;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use App\Models\TrainingLog;
 use App\Models\TrainingSession;
-use App\Models\Event;
 use App\Models\User;
 use App\Repositories\TrainingLogRepository;
 use Illuminate\Http\Request;

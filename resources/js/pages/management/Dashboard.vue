@@ -319,7 +319,9 @@ const formatDate = (date: string) => {
                         <div
                             class="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10"
                         >
-                            <Clock class="h-4 w-4 animate-pulse text-emerald-500" />
+                            <Clock
+                                class="h-4 w-4 animate-pulse text-emerald-500"
+                            />
                         </div>
                     </div>
 
@@ -393,10 +395,11 @@ const formatDate = (date: string) => {
                                     new Date(event.event_date).getDate()
                                 }}</span>
                                 <span class="text-[8px] font-black uppercase">{{
-                                    new Date(event.event_date).toLocaleDateString(
-                                        'id-ID',
-                                        { month: 'short' },
-                                    )
+                                    new Date(
+                                        event.event_date,
+                                    ).toLocaleDateString('id-ID', {
+                                        month: 'short',
+                                    })
                                 }}</span>
                             </div>
                             <div class="flex-1">

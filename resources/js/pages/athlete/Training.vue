@@ -45,6 +45,15 @@ interface Log {
     duration_minutes: number | null;
     avg_speed: number | null;
     rpm: number | null;
+    avg_heart_rate: number | null;
+    calories: number | null;
+    elevation_m: number | null;
+    temperature_c: number | null;
+    pace_per_km: string | null;
+    hr_zone: string | null;
+    trimp: number | null;
+    vo2_max: number | null;
+    avg_watt_power: number | null;
     intensity: string | null;
     type: string | null;
     athlete_notes: string | null;
@@ -109,6 +118,10 @@ const form = useForm({
     duration_minutes: '' as string | number,
     avg_speed: '' as string | number,
     rpm: '' as string | number,
+    avg_heart_rate: '' as string | number,
+    calories: '' as string | number,
+    elevation_m: '' as string | number,
+    temperature_c: '' as string | number,
     intensity: 'medium',
     type: '',
     athlete_notes: '',
@@ -136,6 +149,10 @@ const openLogModal = (session: any = null, log: Log | null = null) => {
         form.duration_minutes = log.duration_minutes || '';
         form.avg_speed = log.avg_speed || '';
         form.rpm = log.rpm || '';
+        form.avg_heart_rate = log.avg_heart_rate || '';
+        form.calories = log.calories || '';
+        form.elevation_m = log.elevation_m || '';
+        form.temperature_c = log.temperature_c || '';
         form.intensity = log.intensity || 'medium';
         form.type =
             log.type || (log.session ? log.session.exercise_type.name : '');
@@ -156,6 +173,10 @@ const openLogModal = (session: any = null, log: Log | null = null) => {
             form.duration_minutes = existingLog.duration_minutes || '';
             form.avg_speed = existingLog.avg_speed || '';
             form.rpm = existingLog.rpm || '';
+            form.avg_heart_rate = existingLog.avg_heart_rate || '';
+            form.calories = existingLog.calories || '';
+            form.elevation_m = existingLog.elevation_m || '';
+            form.temperature_c = existingLog.temperature_c || '';
             form.intensity = existingLog.intensity || 'medium';
             form.athlete_notes = existingLog.athlete_notes || '';
             form.completion_status = existingLog.completion_status;
@@ -164,6 +185,10 @@ const openLogModal = (session: any = null, log: Log | null = null) => {
             form.duration_minutes = session.target_duration_minutes || '';
             form.avg_speed = session.target_avg_speed || '';
             form.rpm = session.target_rpm || '';
+            form.avg_heart_rate = session.target_avg_heart_rate || '';
+            form.calories = session.target_calories || '';
+            form.elevation_m = session.target_elevation_m || '';
+            form.temperature_c = session.target_temperature_c || '';
             // Force date to instance date for session logging
             form.date = session.instance_date;
         }
@@ -344,12 +369,12 @@ const chartSeries = computed(() => [
                     <div
                         class="flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-xl"
                     >
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
                             <div class="rounded-2xl bg-accent p-3 text-white">
                                 <Milestone class="h-5 w-5" />
                             </div>
                             <span
-                                class="text-[8px] font-black uppercase opacity-40"
+                                class="text-[10px] font-black uppercase"
                                 >Total Distance</span
                             >
                         </div>
@@ -368,14 +393,14 @@ const chartSeries = computed(() => [
                     <div
                         class="flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-xl"
                     >
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
                             <div
                                 class="rounded-2xl bg-secondary p-3 text-accent"
                             >
                                 <Gauge class="h-5 w-5" />
                             </div>
                             <span
-                                class="text-[8px] font-black uppercase opacity-40"
+                                class="text-[10px] font-black uppercase"
                                 >Avg Speed</span
                             >
                         </div>
@@ -394,14 +419,14 @@ const chartSeries = computed(() => [
                     <div
                         class="flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-xl"
                     >
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
                             <div
                                 class="rounded-2xl bg-emerald-500/10 p-3 text-emerald-500"
                             >
                                 <RotateCcw class="h-5 w-5" />
                             </div>
                             <span
-                                class="text-[8px] font-black uppercase opacity-40"
+                                class="text-[10px] font-black uppercase"
                                 >Avg Cadence</span
                             >
                         </div>
@@ -854,31 +879,69 @@ const chartSeries = computed(() => [
 
                                 <div class="grid grid-cols-2 gap-4">
                                     <div
-                                        class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-8 text-center"
+                                        class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center"
                                     >
                                         <span
                                             class="text-[9px] font-black tracking-widest text-accent uppercase"
                                             >Average Speed</span
                                         >
                                         <h4
-                                            class="text-4xl font-black tracking-tighter text-white italic"
+                                            class="text-2xl font-black tracking-tighter text-white italic"
                                         >
                                             {{ selectedLog?.avg_speed || 0 }}
-                                            <small class="text-xs">KPH</small>
+                                            <small class="text-[10px]">KPH</small>
                                         </h4>
                                     </div>
                                     <div
-                                        class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-8 text-center"
+                                        class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center"
                                     >
                                         <span
                                             class="text-[9px] font-black tracking-widest text-emerald-500 uppercase"
                                             >Average Cadence</span
                                         >
                                         <h4
-                                            class="text-4xl font-black tracking-tighter text-white italic"
+                                            class="text-2xl font-black tracking-tighter text-white italic"
                                         >
                                             {{ selectedLog?.rpm || 0 }}
-                                            <small class="text-xs">RPM</small>
+                                            <small class="text-[10px]">RPM</small>
+                                        </h4>
+                                    </div>
+                                    <div class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center">
+                                        <span class="text-[9px] font-black tracking-widest text-blue-500 uppercase">Pace / KM</span>
+                                        <h4 class="text-2xl font-black tracking-tighter text-white italic">
+                                            {{ selectedLog?.pace_per_km || '0:00' }}
+                                        </h4>
+                                    </div>
+                                    <div class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center">
+                                        <span class="text-[9px] font-black tracking-widest text-orange-500 uppercase">Calories</span>
+                                        <h4 class="text-2xl font-black tracking-tighter text-white italic">
+                                            {{ selectedLog?.calories || 0 }}
+                                            <small class="text-[10px]">Kcal</small>
+                                        </h4>
+                                    </div>
+                                    <div class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center">
+                                        <span class="text-[9px] font-black tracking-widest text-purple-500 uppercase">HR Zone</span>
+                                        <h4 class="text-sm mt-1 font-black tracking-tighter text-white italic">
+                                            {{ selectedLog?.hr_zone || 'Unknown' }}
+                                        </h4>
+                                    </div>
+                                    <div class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center">
+                                        <span class="text-[9px] font-black tracking-widest text-pink-500 uppercase">TRIMP Score</span>
+                                        <h4 class="text-2xl font-black tracking-tighter text-white italic">
+                                            {{ selectedLog?.trimp || 0 }}
+                                        </h4>
+                                    </div>
+                                    <div class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center">
+                                        <span class="text-[9px] font-black tracking-widest text-cyan-500 uppercase">Est. VO2 Max</span>
+                                        <h4 class="text-2xl font-black tracking-tighter text-white italic">
+                                            {{ selectedLog?.vo2_max || 0 }}
+                                        </h4>
+                                    </div>
+                                    <div class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center">
+                                        <span class="text-[9px] font-black tracking-widest text-yellow-500 uppercase">Avg Power</span>
+                                        <h4 class="text-2xl font-black tracking-tighter text-white italic">
+                                            {{ selectedLog?.avg_watt_power || 0 }}
+                                            <small class="text-[10px]">W</small>
                                         </h4>
                                     </div>
                                 </div>
@@ -1039,29 +1102,34 @@ const chartSeries = computed(() => [
                     <div
                         class="flex items-center justify-between border-b border-border bg-muted/20 p-8 md:p-10"
                     >
-                        <div>
-                            <h2
-                                class="text-2xl font-black tracking-tighter text-foreground uppercase italic"
-                            >
-                                {{
-                                    form.id
-                                        ? 'Update Record'
-                                        : selectedSession
-                                          ? 'Finish Session'
-                                          : 'Manual Entry'
-                                }}
-                            </h2>
-                            <p
-                                class="mt-1 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
-                            >
-                                {{
-                                    form.id
-                                        ? 'Refine your performance data'
-                                        : selectedSession
-                                          ? 'Complete your scheduled mission'
-                                          : 'Document your independent ride'
-                                }}
-                            </p>
+                        <div class="flex items-center gap-4">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 border border-accent/20 text-accent">
+                                <Zap class="h-6 w-6" />
+                            </div>
+                            <div>
+                                <h2
+                                    class="text-2xl font-black tracking-tighter text-foreground uppercase italic"
+                                >
+                                    {{
+                                        form.id
+                                            ? 'Update Record'
+                                            : selectedSession
+                                              ? 'Finish Session'
+                                              : 'Manual Entry'
+                                    }}
+                                </h2>
+                                <p
+                                    class="mt-1 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                                >
+                                    {{
+                                        form.id
+                                            ? 'Refine your performance data'
+                                            : selectedSession
+                                              ? 'Complete your scheduled mission'
+                                              : 'Document your independent ride'
+                                    }}
+                                </p>
+                            </div>
                         </div>
                         <button
                             @click="showLogModal = false"
@@ -1115,15 +1183,15 @@ const chartSeries = computed(() => [
                                 <p
                                     class="text-[10px] font-black tracking-[0.3em] text-emerald-500 uppercase opacity-80"
                                 >
-                                    Performance Metrics
+                                    Data Latihan Utama (Wajib)
                                 </p>
                                 <div
-                                    class="grid grid-cols-2 gap-6 md:grid-cols-4"
+                                    class="grid grid-cols-1 gap-6 md:grid-cols-3"
                                 >
                                     <div class="flex flex-col gap-2">
                                         <Label
                                             class="text-[10px] font-black uppercase opacity-60"
-                                            >Distance (KM)</Label
+                                            >Distance / Jarak (KM)</Label
                                         >
                                         <Input
                                             v-model="form.distance_km"
@@ -1136,26 +1204,13 @@ const chartSeries = computed(() => [
                                     <div class="flex flex-col gap-2">
                                         <Label
                                             class="text-[10px] font-black uppercase opacity-60"
-                                            >Duration (Min)</Label
+                                            >Duration / Waktu (Min)</Label
                                         >
                                         <Input
                                             v-model="form.duration_minutes"
                                             type="number"
                                             class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
                                             placeholder="60"
-                                        />
-                                    </div>
-                                    <div class="flex flex-col gap-2">
-                                        <Label
-                                            class="text-[10px] font-black uppercase opacity-60"
-                                            >Avg RPM</Label
-                                        >
-                                        <Input
-                                            v-model="form.rpm"
-                                            type="number"
-                                            step="0.1"
-                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
-                                            placeholder="90"
                                         />
                                     </div>
                                     <div class="flex flex-col gap-2">
@@ -1184,6 +1239,43 @@ const chartSeries = computed(() => [
                                                 },
                                             ]"
                                         />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-6">
+                                <p
+                                    class="text-[10px] font-black tracking-[0.3em] text-blue-500 uppercase opacity-80"
+                                >
+                                    Data Pendukung (Opsional)
+                                </p>
+                                <div
+                                    class="grid grid-cols-2 gap-6 md:grid-cols-4"
+                                >
+                                    <div class="flex flex-col gap-2">
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Avg RPM</Label
+                                        >
+                                        <Input
+                                            v-model="form.rpm"
+                                            type="number"
+                                            step="0.1"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="90"
+                                        />
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <Label class="text-[10px] font-black uppercase opacity-60">Avg Heart Rate</Label>
+                                        <Input v-model="form.avg_heart_rate" type="number" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="150" />
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <Label class="text-[10px] font-black uppercase opacity-60">Elevasi (M)</Label>
+                                        <Input v-model="form.elevation_m" type="number" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="250" />
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <Label class="text-[10px] font-black uppercase opacity-60">Suhu (°C)</Label>
+                                        <Input v-model="form.temperature_c" type="number" step="0.1" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="28" />
                                     </div>
                                 </div>
                             </div>

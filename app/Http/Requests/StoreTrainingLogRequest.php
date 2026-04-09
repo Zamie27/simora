@@ -23,12 +23,18 @@ class StoreTrainingLogRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => ['nullable', 'exists:training_logs,id'],
             'training_session_id' => ['nullable', 'exists:training_sessions,id'],
             'title' => ['nullable', 'string', 'max:255'],
             'date' => ['required', 'date'],
             'distance_km' => ['nullable', 'numeric', 'min:0'],
-            'duration_minutes' => ['nullable', 'integer', 'min:0'],
+            'duration_minutes' => ['nullable', 'numeric', 'min:0'],
             'avg_speed' => ['nullable', 'numeric', 'min:0'],
+            'avg_heart_rate' => ['nullable', 'integer', 'min:0'],
+            'elevation_m' => ['nullable', 'numeric', 'min:0'],
+            'temperature_c' => ['nullable', 'numeric'],
+            'weight' => ['nullable', 'numeric', 'min:20', 'max:200'],
+            'height' => ['nullable', 'numeric', 'min:100', 'max:250'],
             'rpm' => ['nullable', 'numeric', 'min:0'],
             'intensity' => ['nullable', 'in:low,medium,high,very_high'],
             'type' => ['nullable', 'string', 'max:255'],

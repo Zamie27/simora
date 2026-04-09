@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,9 +21,16 @@ class TrainingLog extends Model
         'distance_km',
         'duration_minutes',
         'avg_speed',
-        'avg_heart_rate',
         'rpm',
+        'avg_heart_rate',
         'calories',
+        'elevation_m',
+        'temperature_c',
+        'pace_per_km',
+        'hr_zone',
+        'trimp',
+        'vo2_max',
+        'avg_watt_power',
         'intensity',
         'type',
         'athlete_notes',
@@ -40,6 +48,11 @@ class TrainingLog extends Model
         'avg_heart_rate' => 'integer',
         'rpm' => 'decimal:2',
         'calories' => 'integer',
+        'elevation_m' => 'integer',
+        'temperature_c' => 'decimal:1',
+        'trimp' => 'integer',
+        'vo2_max' => 'decimal:1',
+        'avg_watt_power' => 'integer',
     ];
 
     protected $appends = [
@@ -83,7 +96,24 @@ class TrainingLog extends Model
 
     public function getIsEditableAttribute(): bool
     {
-        return $this->date?->isToday() ?? false;
+        $date = $this->date;
+        if (! $date) {
+            return false;
+        }
+
+        if (is_string($date)) {
+            try {
+                $date = Carbon::parse($date);
+            } catch (\Exception $e) {
+                return false;
+            }
+        }
+
+        if ($date instanceof Carbon || $date instanceof \DateTimeInterface) {
+            return Carbon::instance($date)->isToday();
+        }
+
+        return false;
     }
 
     /**

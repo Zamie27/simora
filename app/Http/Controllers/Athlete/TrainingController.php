@@ -92,6 +92,18 @@ class TrainingController extends Controller
         }
 
         // Independent/Manual log (no session_id)
+        if (! empty($validated['id'])) {
+            $log = TrainingLog::where('id', $validated['id'])
+                ->where('athlete_id', $athleteId)
+                ->first();
+
+            if ($log) {
+                $this->logService->update($log, $validated, $attachments);
+
+                return back()->with('success', 'Data latihan manual berhasil diperbarui.');
+            }
+        }
+
         $this->logService->create($athleteId, $validated, $attachments);
 
         return back()->with('success', 'Data latihan manual berhasil dicatat.');

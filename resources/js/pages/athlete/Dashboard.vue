@@ -2,7 +2,6 @@
 import { Head, useForm, router } from '@inertiajs/vue3';
 import type { ApexOptions } from 'apexcharts';
 import {
-    Activity,
     Clock,
     Flame,
     MapPin,
@@ -18,6 +17,10 @@ import {
 } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
+
+import CustomSelect from '@/components/ui/CustomSelect.vue';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import athlete from '@/routes/athlete';
 
@@ -50,6 +53,9 @@ const form = useForm({
     avg_heart_rate: '',
     rpm: '',
     calories: '',
+    elevation_m: '',
+    temperature_c: '',
+    intensity: 'medium',
     notes: '',
 });
 
@@ -62,8 +68,12 @@ const submitQuickUpdate = () => {
                 'distance_km',
                 'duration_minutes',
                 'avg_speed',
+                'avg_heart_rate',
                 'rpm',
                 'calories',
+                'elevation_m',
+                'temperature_c',
+                'intensity',
                 'notes',
             );
         },
@@ -476,199 +486,236 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
             <!-- Quick Update Modal -->
             <div
                 v-if="showQuickUpdate"
-                class="fixed inset-0 z-50 flex items-end justify-center bg-background/80 p-4 backdrop-blur-sm md:items-center"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-3xl"
             >
                 <div
-                    class="relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-t-[2rem] border border-b-0 border-border bg-card p-8 shadow-2xl md:rounded-[2rem] md:border-b"
+                    class="w-full max-w-2xl animate-in overflow-hidden rounded-[3rem] border border-border bg-card shadow-2xl duration-500 slide-in-from-bottom-10 fade-in zoom-in"
                 >
-                    <button
-                        @click="showQuickUpdate = false"
-                        class="absolute top-6 right-6 text-muted-foreground hover:text-foreground"
+                    <div
+                        class="flex items-center justify-between border-b border-border bg-muted/20 p-8 md:p-10"
                     >
-                        <X class="h-6 w-6" />
-                    </button>
-
-                    <div class="mb-8 flex items-center gap-3">
-                        <div class="rounded-lg bg-accent/10 p-2">
-                            <Zap class="h-6 w-6 text-accent" />
+                        <div class="flex items-center gap-4">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 border border-accent/20 text-accent">
+                                <Zap class="h-6 w-6" />
+                            </div>
+                            <div>
+                                <h2
+                                    class="text-2xl font-black tracking-tighter text-foreground uppercase italic"
+                                >
+                                    Quick Update
+                                </h2>
+                                <p
+                                    class="mt-1 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                                >
+                                    Update cepat performa latihan harian
+                                </p>
+                            </div>
                         </div>
-                        <h2
-                            class="text-2xl font-black tracking-tight text-foreground uppercase"
+                        <button
+                            @click="showQuickUpdate = false"
+                            class="rounded-full p-3 text-muted-foreground transition-all hover:bg-muted/50"
                         >
-                            Update Powerful
-                        </h2>
+                            <X class="h-6 w-6" />
+                        </button>
                     </div>
 
-                    <form @submit.prevent="submitQuickUpdate" class="space-y-8">
-                        <!-- Physical Info -->
-                        <div class="space-y-4">
-                            <h3
-                                class="flex items-center gap-2 text-xs font-black tracking-widest text-accent uppercase"
-                            >
-                                <Scale class="h-3 w-3" /> Data Fisik Terkini
-                            </h3>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="space-y-1.5">
-                                    <label
-                                        class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
-                                        >Berat (KG)</label
-                                    >
-                                    <div class="relative">
-                                        <input
-                                            v-model="form.weight"
-                                            type="number"
-                                            step="0.1"
-                                            class="w-full rounded-xl border-border bg-muted/40 px-4 py-3 text-sm font-bold focus:border-accent focus:ring-accent"
-                                            placeholder="--.-"
+                    <div
+                        class="custom-scrollbar max-h-[70vh] overflow-y-auto p-11"
+                    >
+                        <form
+                            @submit.prevent="submitQuickUpdate"
+                            class="flex flex-col gap-10"
+                        >
+                            <div class="flex flex-col gap-6">
+                                <p
+                                    class="text-[10px] font-black tracking-[0.3em] text-accent uppercase opacity-80"
+                                >
+                                    General Infomation
+                                </p>
+                                <div
+                                    class="grid grid-cols-1 gap-6 md:grid-cols-2"
+                                >
+                                    <div class="flex flex-col gap-2">
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Judul Latihan</Label
+                                        >
+                                        <Input
+                                            v-model="form.title"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="E.g. Morning Sprint"
                                         />
                                     </div>
-                                </div>
-                                <div class="space-y-1.5">
-                                    <label
-                                        class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
-                                        >Tinggi (CM)</label
-                                    >
-                                    <input
-                                        v-model="form.height"
-                                        type="number"
-                                        class="w-full rounded-xl border-border bg-muted/40 px-4 py-3 text-sm font-bold focus:border-accent focus:ring-accent"
-                                        placeholder="---"
-                                    />
+                                    <div class="flex flex-col gap-2">
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Tanggal</Label
+                                        >
+                                        <div class="flex h-14 items-center justify-between rounded-2xl border-none bg-muted/30 px-6 cursor-not-allowed opacity-80">
+                                            <span class="text-sm font-black text-white/50">Otomatis (Saat Ini)</span>
+                                            <X class="h-4 w-4 text-white/30" />
+                                        </div>
+                                    </div>
+                                    <div class="col-span-1 md:col-span-2 flex flex-col gap-2">
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Jenis Latihan</Label
+                                        >
+                                        <select
+                                            v-model="form.exercise_type_id"
+                                            class="h-14 w-full rounded-2xl border-none bg-muted/30 px-6 text-sm font-black focus:border-accent focus:ring-accent"
+                                        >
+                                            <option value="" disabled>Pilih Jenis Latihan</option>
+                                            <option
+                                                v-for="type in exerciseTypes"
+                                                :key="type.id"
+                                                :value="type.id"
+                                            >
+                                                {{ type.name }}
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Training Log -->
-                        <div class="space-y-4">
-                            <h3
-                                class="flex items-center gap-2 text-xs font-black tracking-widest text-accent uppercase"
-                            >
-                                <Activity class="h-3 w-3" /> Log Latihan
-                                Individual
-                            </h3>
-                            <div class="space-y-4">
-                                <div class="space-y-1.5">
-                                    <label
-                                        class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
-                                        >Judul Latihan</label
-                                    >
-                                    <input
-                                        v-model="form.title"
-                                        type="text"
-                                        class="w-full rounded-xl border-border bg-muted/40 px-4 py-3 text-sm font-bold italic focus:border-accent focus:ring-accent"
-                                        placeholder="Contoh: Endurance Subuh"
-                                    />
+                            <div class="flex flex-col gap-6">
+                                <p class="text-[10px] font-black tracking-[0.3em] text-blue-500 uppercase opacity-80">Data Fisik Terkini</p>
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div class="flex flex-col gap-2">
+                                        <Label class="text-[10px] font-black uppercase opacity-60">Berat Badan (KG)</Label>
+                                        <Input v-model="form.weight" type="number" step="0.1" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="70" />
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <Label class="text-[10px] font-black uppercase opacity-60">Tinggi Badan (CM)</Label>
+                                        <Input v-model="form.height" type="number" step="1" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="175" />
+                                    </div>
                                 </div>
+                            </div>
 
-                                <div class="space-y-1.5">
-                                    <label
-                                        class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
-                                        >Jenis Latihan</label
-                                    >
-                                    <select
-                                        v-model="form.exercise_type_id"
-                                        class="w-full rounded-xl border-border bg-muted/40 px-4 py-3 text-sm font-bold focus:border-accent focus:ring-accent"
-                                    >
-                                        <option value="" disabled>
-                                            Pilih Jenis Latihan
-                                        </option>
-                                        <option
-                                            v-for="type in exerciseTypes"
-                                            :key="type.id"
-                                            :value="type.id"
+                            <div class="flex flex-col gap-6">
+                                <p
+                                    class="text-[10px] font-black tracking-[0.3em] text-emerald-500 uppercase opacity-80"
+                                >
+                                    Data Latihan Utama (Wajib)
+                                </p>
+                                <div
+                                    class="grid grid-cols-1 gap-6 md:grid-cols-3"
+                                >
+                                    <div class="flex flex-col gap-2">
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Distance / Jarak (KM)</Label
                                         >
-                                            {{ type.name }}
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="space-y-1.5">
-                                        <label
-                                            class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
-                                            >Jarak (KM)</label
-                                        >
-                                        <input
+                                        <Input
                                             v-model="form.distance_km"
                                             type="number"
-                                            step="0.01"
-                                            class="w-full rounded-xl border-border bg-muted/40 px-4 py-3 text-sm font-bold focus:border-accent focus:ring-accent"
-                                            placeholder="00.00"
+                                            step="0.1"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="30.5"
                                         />
                                     </div>
-                                    <div class="space-y-1.5">
-                                        <label
-                                            class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
-                                            >Waktu (Menit)</label
+                                    <div class="flex flex-col gap-2">
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Duration / Waktu (Min)</Label
                                         >
-                                        <input
+                                        <Input
                                             v-model="form.duration_minutes"
                                             type="number"
-                                            class="w-full rounded-xl border-border bg-muted/40 px-4 py-3 text-sm font-bold focus:border-accent focus:ring-accent"
-                                            placeholder="00"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="60"
                                         />
                                     </div>
-                                </div>
-
-                                <div class="grid grid-cols-3 gap-3 text-center">
-                                    <div
-                                        class="rounded-xl border border-border bg-muted/20 p-3"
-                                    >
-                                        <label
-                                            class="mb-1 block text-[8px] font-black text-muted-foreground uppercase"
-                                            >HR</label
+                                    <div class="flex flex-col gap-2">
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Intensitas</Label
                                         >
-                                        <input
-                                            v-model="form.avg_heart_rate"
-                                            type="number"
-                                            class="w-full border-none bg-transparent p-0 text-center text-sm font-black text-accent focus:ring-0"
-                                            placeholder="0"
-                                        />
-                                    </div>
-                                    <div
-                                        class="rounded-xl border border-border bg-muted/20 p-3"
-                                    >
-                                        <label
-                                            class="mb-1 block text-[8px] font-black text-muted-foreground uppercase"
-                                            >Cad.</label
-                                        >
-                                        <input
-                                            v-model="form.rpm"
-                                            type="number"
-                                            class="w-full border-none bg-transparent p-0 text-center text-sm font-black text-accent focus:ring-0"
-                                            placeholder="0"
-                                        />
-                                    </div>
-                                    <div
-                                        class="rounded-xl border border-border bg-muted/20 p-3"
-                                    >
-                                        <label
-                                            class="mb-1 block text-[8px] font-black text-muted-foreground uppercase"
-                                            >Kcal</label
-                                        >
-                                        <input
-                                            v-model="form.calories"
-                                            type="number"
-                                            class="w-full border-none bg-transparent p-0 text-center text-sm font-black text-accent focus:ring-0"
-                                            placeholder="0"
+                                        <CustomSelect
+                                            v-model="form.intensity"
+                                            :options="[
+                                                { value: 'low', label: 'Rendah' },
+                                                { value: 'medium', label: 'Sedang' },
+                                                { value: 'high', label: 'Tinggi' },
+                                                { value: 'very_high', label: 'Sangat Tinggi' },
+                                            ]"
                                         />
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <button
-                            type="submit"
-                            :disabled="form.processing"
-                            class="flex w-full items-center justify-center gap-3 rounded-2xl bg-accent py-5 font-black tracking-[0.2em] text-accent-foreground uppercase shadow-xl shadow-accent/30 transition-all hover:bg-accent/90 active:scale-95 disabled:opacity-50"
-                        >
-                            <span
-                                v-if="form.processing"
-                                class="h-5 w-5 animate-spin rounded-full border-2 border-accent-foreground border-t-transparent"
-                            ></span>
-                            <span v-else>Simpan Performa</span>
-                        </button>
-                    </form>
+                            <div class="flex flex-col gap-6">
+                                <p
+                                    class="text-[10px] font-black tracking-[0.3em] text-blue-500 uppercase opacity-80"
+                                >
+                                    Data Pendukung (Opsional)
+                                </p>
+                                <div
+                                    class="grid grid-cols-2 gap-6 md:grid-cols-4"
+                                >
+                                    <div class="flex flex-col gap-2">
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Avg RPM</Label
+                                        >
+                                        <Input
+                                            v-model="form.rpm"
+                                            type="number"
+                                            step="0.1"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="90"
+                                        />
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <Label class="text-[10px] font-black uppercase opacity-60">Avg Heart Rate</Label>
+                                        <Input v-model="form.avg_heart_rate" type="number" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="150" />
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <Label class="text-[10px] font-black uppercase opacity-60">Elevasi (M)</Label>
+                                        <Input v-model="form.elevation_m" type="number" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="250" />
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <Label class="text-[10px] font-black uppercase opacity-60">Suhu (°C)</Label>
+                                        <Input v-model="form.temperature_c" type="number" step="0.1" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="28" />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col gap-6">
+                                <p
+                                    class="text-[10px] font-black tracking-[0.3em] text-muted-foreground uppercase opacity-80"
+                                >
+                                    Personal Notes
+                                </p>
+                                <div class="flex flex-col gap-6">
+                                    <div class="flex flex-col gap-2">
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Athlete Notes</Label
+                                        >
+                                        <textarea
+                                            v-model="form.notes"
+                                            rows="4"
+                                            class="w-full rounded-2xl border-none bg-muted/30 p-6 text-sm font-medium outline-none focus:ring-2 focus:ring-accent"
+                                            placeholder="How did you feel today? Any mechanical issues?"
+                                        ></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                :disabled="form.processing"
+                                class="rounded-[2rem] bg-accent py-6 text-xs font-black tracking-[0.3em] text-white uppercase shadow-2xl shadow-accent/40 transition-all hover:scale-[1.02] hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
+                            >
+                                <span
+                                    v-if="form.processing"
+                                    class="h-5 w-5 animate-spin rounded-full border-2 border-accent-foreground border-t-transparent"
+                                ></span>
+                                <span>{{ form.processing ? 'Menyimpan...' : 'Quick Update Data' }}</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

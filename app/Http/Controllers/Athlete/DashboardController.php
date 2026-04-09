@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Athlete;
 use App\Http\Controllers\Controller;
 use App\Models\ExerciseType;
 use App\Models\Message;
+use App\Models\TrainingLog;
 use App\Services\TrainingLogService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -89,41 +90,63 @@ class DashboardController extends Controller
             'duration_minutes' => 'nullable|integer|min:0',
             'avg_speed' => 'nullable|numeric|min:0',
             'rpm' => 'nullable|numeric|min:0', // cadence
+            'avg_heart_rate' => 'nullable|numeric|min:0',
             'calories' => 'nullable|integer|min:0',
+            'elevation_m' => 'nullable|numeric|min:0',
+            'temperature_c' => 'nullable|numeric',
+            'intensity' => 'nullable|in:low,medium,high,very_high',
             'notes' => 'nullable|string',
         ]);
 
         try {
             DB::transaction(function () use ($user, $validated) {
-                // 1. Create Physical Metric record if any physical field is provided
+                // 1. Create or Update Physical Metric record if any physical field is provided
                 if (! empty($validated['weight']) || ! empty($validated['height'])) {
                     $recordedAt = Carbon::now();
                     $age = $user->date_of_birth ? $recordedAt->diffInYears($user->date_of_birth) : 0;
 
-                    $user->physicalMetrics()->create([
-                        'weight' => $validated['weight'] ?? ($user->latestPhysicalMetric->weight ?? 0),
-                        'height' => $validated['height'] ?? ($user->latestPhysicalMetric->height ?? 0),
-                        'age' => $age,
-                        'category' => $user->category->name ?? 'Uncategorized',
-                        'recorded_at' => $recordedAt,
-                    ]);
+                    $latestMetric = $user->physicalMetrics()
+                        ->whereDate('recorded_at', Carbon::today())
+                        ->first();
+
+                    if ($latestMetric) {
+                        $latestMetric->update([
+                            'weight' => $validated['weight'] ?? $latestMetric->weight,
+                            'height' => $validated['height'] ?? $latestMetric->height,
+                            'age' => $age,
+                        ]);
+                    } else {
+                        $user->physicalMetrics()->create([
+                            'weight' => $validated['weight'] ?? ($user->latestPhysicalMetric->weight ?? 0),
+                            'height' => $validated['height'] ?? ($user->latestPhysicalMetric->height ?? 0),
+                            'age' => $age,
+                            'category' => $user->category->name ?? 'Uncategorized',
+                            'recorded_at' => $recordedAt,
+                        ]);
+                    }
                 }
 
-                // 2. Create Training Log if it has a title or distance
+                // 2. Create or Update Training Log if it has a title or distance
                 if (! empty($validated['title']) || (! empty($validated['distance_km']) && $validated['distance_km'] > 0)) {
-                    $this->logService->create($user->id, [
+                    $logData = [
                         'title' => $validated['title'] ?? 'Latihan Mandiri (Quick Update)',
-                        'exercise_type_id' => $validated['exercise_type_id'] ?? 1, // Defaulting to 1 if not provided
+                        'exercise_type_id' => $validated['exercise_type_id'] ?? 1,
                         'distance_km' => $validated['distance_km'] ?? 0,
                         'duration_minutes' => $validated['duration_minutes'] ?? 0,
-                        'avg_speed' => $validated['avg_speed'] ?? 0,
-                        'rpm' => $validated['rpm'] ?? 0,
-                        'calories' => $validated['calories'] ?? 0,
+                        'avg_speed' => $validated['avg_speed'] ?? null,
+                        'rpm' => $validated['rpm'] ?? null,
+                        'avg_heart_rate' => $validated['avg_heart_rate'] ?? null,
+                        'calories' => $validated['calories'] ?? null,
+                        'elevation_m' => $validated['elevation_m'] ?? null,
+                        'temperature_c' => $validated['temperature_c'] ?? null,
+                        'intensity' => $validated['intensity'] ?? 'medium',
                         'athlete_notes' => $validated['notes'] ?? '',
-                        'type' => 'manual', // Distinguish from coach-assigned sessions
+                        'type' => 'manual',
                         'attendance_status' => 'present',
                         'completion_status' => 'completed',
-                    ]);
+                    ];
+
+                    $this->logService->create($user->id, $logData);
                 }
             });
 

@@ -680,11 +680,18 @@ const completionOptions = [
                                             </p>
                                         </td>
                                         <td class="px-6 py-6">
-                                            <p class="text-sm font-black text-orange-500 italic">
+                                            <p
+                                                class="text-sm font-black text-orange-500 italic"
+                                            >
                                                 {{ log.avg_watt_power || '-' }}
-                                                <small class="text-[10px] opacity-40">W</small>
+                                                <small
+                                                    class="text-[10px] opacity-40"
+                                                    >W</small
+                                                >
                                             </p>
-                                            <p class="text-[10px] font-bold text-muted-foreground">
+                                            <p
+                                                class="text-[10px] font-bold text-muted-foreground"
+                                            >
                                                 {{ log.pace_per_km || '-' }} /KM
                                             </p>
                                         </td>
@@ -991,78 +998,218 @@ const completionOptions = [
                             />
                         </div>
 
-                        <div class="mb-10 grid grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div
+                            class="mb-10 grid grid-cols-2 gap-8 lg:grid-cols-4"
+                        >
                             <!-- Basic Metrics -->
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Jarak (KM)</Label>
-                                <Input type="number" step="0.01" v-model="logForm.distance_km" class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Jarak (KM)</Label
+                                >
+                                <Input
+                                    type="number"
+                                    step="0.01"
+                                    v-model="logForm.distance_km"
+                                    class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black"
+                                />
                             </div>
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Durasi (Menit)</Label>
-                                <Input type="number" v-model="logForm.duration_minutes" class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Durasi (Menit)</Label
+                                >
+                                <Input
+                                    type="number"
+                                    v-model="logForm.duration_minutes"
+                                    class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black"
+                                />
                             </div>
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Avg RPM</Label>
-                                <Input type="number" step="0.1" v-model="logForm.rpm" class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Avg RPM</Label
+                                >
+                                <Input
+                                    type="number"
+                                    step="0.1"
+                                    v-model="logForm.rpm"
+                                    class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black"
+                                />
                             </div>
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Intensitas</Label>
-                                <CustomSelect v-model="logForm.intensity" :options="intensityOptions" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Intensitas</Label
+                                >
+                                <CustomSelect
+                                    v-model="logForm.intensity"
+                                    :options="intensityOptions"
+                                />
                             </div>
                             <!-- Optional Metrics Grouping -->
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Avg HR (BPM)</Label>
-                                <Input type="number" v-model="logForm.avg_heart_rate" class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Avg HR (BPM)</Label
+                                >
+                                <Input
+                                    type="number"
+                                    v-model="logForm.avg_heart_rate"
+                                    class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black"
+                                />
                             </div>
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Calories (Kcal)</Label>
-                                <Input type="number" v-model="logForm.calories" class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Calories (Kcal)</Label
+                                >
+                                <Input
+                                    type="number"
+                                    v-model="logForm.calories"
+                                    class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black"
+                                />
                             </div>
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Elevasi (M)</Label>
-                                <Input type="number" v-model="logForm.elevation_m" class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Elevasi (M)</Label
+                                >
+                                <Input
+                                    type="number"
+                                    v-model="logForm.elevation_m"
+                                    class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black"
+                                />
                             </div>
                             <div class="space-y-2">
-                                <Label class="text-[10px] font-black uppercase opacity-60">Suhu (°C)</Label>
-                                <Input type="number" step="0.1" v-model="logForm.temperature_c" class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black" />
+                                <Label
+                                    class="text-[10px] font-black uppercase opacity-60"
+                                    >Suhu (°C)</Label
+                                >
+                                <Input
+                                    type="number"
+                                    step="0.1"
+                                    v-model="logForm.temperature_c"
+                                    class="h-14 rounded-2xl border-white/10 bg-white/5 px-6 font-black"
+                                />
                             </div>
                         </div>
 
                         <!-- Generated Metrics (Read Only) -->
                         <div class="mb-10 space-y-4">
-                            <Label class="text-[10px] font-black uppercase italic opacity-60">Hasil Auto-Generate (View Only)</Label>
-                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                                <div class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center">
-                                    <span class="text-[9px] font-black tracking-widest text-accent uppercase">Avg Speed</span>
-                                    <h4 class="text-xl font-black tracking-tighter text-white italic">{{ selectedLog?.avg_speed || 0 }} <small class="text-[9px]">KPH</small></h4>
+                            <Label
+                                class="text-[10px] font-black uppercase italic opacity-60"
+                                >Hasil Auto-Generate (View Only)</Label
+                            >
+                            <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                                <div
+                                    class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center"
+                                >
+                                    <span
+                                        class="text-[9px] font-black tracking-widest text-accent uppercase"
+                                        >Avg Speed</span
+                                    >
+                                    <h4
+                                        class="text-xl font-black tracking-tighter text-white italic"
+                                    >
+                                        {{ selectedLog?.avg_speed || 0 }}
+                                        <small class="text-[9px]">KPH</small>
+                                    </h4>
                                 </div>
-                                <div class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center">
-                                    <span class="text-[9px] font-black tracking-widest text-blue-500 uppercase">Pace / KM</span>
-                                    <h4 class="text-xl font-black tracking-tighter text-white italic">{{ selectedLog?.pace_per_km || '0:00' }}</h4>
+                                <div
+                                    class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center"
+                                >
+                                    <span
+                                        class="text-[9px] font-black tracking-widest text-blue-500 uppercase"
+                                        >Pace / KM</span
+                                    >
+                                    <h4
+                                        class="text-xl font-black tracking-tighter text-white italic"
+                                    >
+                                        {{ selectedLog?.pace_per_km || '0:00' }}
+                                    </h4>
                                 </div>
-                                <div class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center">
-                                    <span class="text-[9px] font-black tracking-widest text-orange-500 uppercase">Calories</span>
-                                    <h4 class="text-xl font-black tracking-tighter text-white italic">{{ selectedLog?.calories || 0 }} <small class="text-[9px]">Kcal</small></h4>
+                                <div
+                                    class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center"
+                                >
+                                    <span
+                                        class="text-[9px] font-black tracking-widest text-orange-500 uppercase"
+                                        >Calories</span
+                                    >
+                                    <h4
+                                        class="text-xl font-black tracking-tighter text-white italic"
+                                    >
+                                        {{ selectedLog?.calories || 0 }}
+                                        <small class="text-[9px]">Kcal</small>
+                                    </h4>
                                 </div>
-                                <div class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center">
-                                    <span class="text-[9px] font-black tracking-widest text-purple-500 uppercase">HR Zone</span>
-                                    <h4 class="text-[11px] mt-1 pr-1 font-black tracking-tighter text-white italic truncate" :title="selectedLog?.hr_zone || ''">{{ selectedLog?.hr_zone || '-' }}</h4>
+                                <div
+                                    class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center"
+                                >
+                                    <span
+                                        class="text-[9px] font-black tracking-widest text-purple-500 uppercase"
+                                        >HR Zone</span
+                                    >
+                                    <h4
+                                        class="mt-1 truncate pr-1 text-[11px] font-black tracking-tighter text-white italic"
+                                        :title="selectedLog?.hr_zone || ''"
+                                    >
+                                        {{ selectedLog?.hr_zone || '-' }}
+                                    </h4>
                                 </div>
-                                <div class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center">
-                                    <span class="text-[9px] font-black tracking-widest text-pink-500 uppercase">TRIMP Score</span>
-                                    <h4 class="text-xl font-black tracking-tighter text-white italic">{{ selectedLog?.trimp || 0 }}</h4>
+                                <div
+                                    class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center"
+                                >
+                                    <span
+                                        class="text-[9px] font-black tracking-widest text-pink-500 uppercase"
+                                        >TRIMP Score</span
+                                    >
+                                    <h4
+                                        class="text-xl font-black tracking-tighter text-white italic"
+                                    >
+                                        {{ selectedLog?.trimp || 0 }}
+                                    </h4>
                                 </div>
-                                <div class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center">
-                                    <span class="text-[9px] font-black tracking-widest text-cyan-500 uppercase">Est. VO2 Max</span>
-                                    <h4 class="text-xl font-black tracking-tighter text-white italic">{{ selectedLog?.vo2_max || 0 }}</h4>
+                                <div
+                                    class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center"
+                                >
+                                    <span
+                                        class="text-[9px] font-black tracking-widest text-cyan-500 uppercase"
+                                        >Est. VO2 Max</span
+                                    >
+                                    <h4
+                                        class="text-xl font-black tracking-tighter text-white italic"
+                                    >
+                                        {{ selectedLog?.vo2_max || 0 }}
+                                    </h4>
                                 </div>
-                                <div class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center">
-                                    <span class="text-[9px] font-black tracking-widest text-yellow-500 uppercase">Avg Power</span>
-                                    <h4 class="text-xl font-black tracking-tighter text-white italic">{{ selectedLog?.avg_watt_power || 0 }} <small class="text-[9px]">W</small></h4>
+                                <div
+                                    class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center"
+                                >
+                                    <span
+                                        class="text-[9px] font-black tracking-widest text-yellow-500 uppercase"
+                                        >Avg Power</span
+                                    >
+                                    <h4
+                                        class="text-xl font-black tracking-tighter text-white italic"
+                                    >
+                                        {{ selectedLog?.avg_watt_power || 0 }}
+                                        <small class="text-[9px]">W</small>
+                                    </h4>
                                 </div>
-                                <div class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center">
-                                    <span class="text-[9px] font-black tracking-widest text-emerald-500 uppercase">Avg Cadence</span>
-                                    <h4 class="text-xl font-black tracking-tighter text-white italic">{{ selectedLog?.rpm || 0 }} <small class="text-[9px]">RPM</small></h4>
+                                <div
+                                    class="flex flex-col gap-2 rounded-2xl border border-border bg-secondary p-4 text-center"
+                                >
+                                    <span
+                                        class="text-[9px] font-black tracking-widest text-emerald-500 uppercase"
+                                        >Avg Cadence</span
+                                    >
+                                    <h4
+                                        class="text-xl font-black tracking-tighter text-white italic"
+                                    >
+                                        {{ selectedLog?.rpm || 0 }}
+                                        <small class="text-[9px]">RPM</small>
+                                    </h4>
                                 </div>
                             </div>
                         </div>

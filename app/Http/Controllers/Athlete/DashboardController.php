@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Athlete;
 use App\Http\Controllers\Controller;
 use App\Models\ExerciseType;
 use App\Models\Message;
-use App\Models\TrainingLog;
 use App\Services\TrainingLogService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

@@ -58,9 +58,9 @@ class DatabaseSeeder extends Seeder
         // Coach Users
         for ($i = 0; $i < 2; $i++) {
             $coach = User::firstOrCreate(
-                ['email' => 'pelatih'.$i.'@example.com'],
+                ['email' => 'pelatih' . $i . '@example.com'],
                 [
-                    'name' => 'Coach Budi '.$i,
+                    'name' => 'Coach Budi ' . $i,
                     'password' => Hash::make('password'),
                     'role_id' => $pelatihRole->id,
                     'is_verified' => true,
@@ -71,16 +71,14 @@ class DatabaseSeeder extends Seeder
 
         // Athlete Users
         for ($i = 0; $i < 10; $i++) {
-            $athlete = User::firstOrCreate(
-                ['email' => 'atlet'.$i.'@example.com'],
+            User::firstOrCreate(
+                ['email' => 'atlet' . $i . '@example.com'],
                 [
-                    'name' => 'Atlet Andi '.$i,
+                    'name' => 'Atlet Andi ' . $i,
                     'password' => Hash::make('password'),
                     'role_id' => $atletRole->id,
-                    'is_verified' => true,
                 ]
             );
-            $athlete->forceFill(['email_verified_at' => now()])->save();
         }
 
         // $this->call(DummyDataSeeder::class);

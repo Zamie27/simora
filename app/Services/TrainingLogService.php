@@ -55,7 +55,7 @@ class TrainingLogService
      */
     public function update(TrainingLog $log, array $data, ?array $attachments = null): TrainingLog
     {
-        // Restriction: Only same day edit allowed for athletes through specific UI, 
+        // Restriction: Only same day edit allowed for athletes through specific UI,
         // but we allow the service to perform the update if the controller passes it.
         // The controller should handle authorization and policy.
         // We'll keep a basic check or just remove this to allow Coach edits to work for older logs too.

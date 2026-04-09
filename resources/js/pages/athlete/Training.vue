@@ -373,8 +373,7 @@ const chartSeries = computed(() => [
                             <div class="rounded-2xl bg-accent p-3 text-white">
                                 <Milestone class="h-5 w-5" />
                             </div>
-                            <span
-                                class="text-[10px] font-black uppercase"
+                            <span class="text-[10px] font-black uppercase"
                                 >Total Distance</span
                             >
                         </div>
@@ -399,8 +398,7 @@ const chartSeries = computed(() => [
                             >
                                 <Gauge class="h-5 w-5" />
                             </div>
-                            <span
-                                class="text-[10px] font-black uppercase"
+                            <span class="text-[10px] font-black uppercase"
                                 >Avg Speed</span
                             >
                         </div>
@@ -425,8 +423,7 @@ const chartSeries = computed(() => [
                             >
                                 <RotateCcw class="h-5 w-5" />
                             </div>
-                            <span
-                                class="text-[10px] font-black uppercase"
+                            <span class="text-[10px] font-black uppercase"
                                 >Avg Cadence</span
                             >
                         </div>
@@ -889,7 +886,9 @@ const chartSeries = computed(() => [
                                             class="text-2xl font-black tracking-tighter text-white italic"
                                         >
                                             {{ selectedLog?.avg_speed || 0 }}
-                                            <small class="text-[10px]">KPH</small>
+                                            <small class="text-[10px]"
+                                                >KPH</small
+                                            >
                                         </h4>
                                     </div>
                                     <div
@@ -903,44 +902,98 @@ const chartSeries = computed(() => [
                                             class="text-2xl font-black tracking-tighter text-white italic"
                                         >
                                             {{ selectedLog?.rpm || 0 }}
-                                            <small class="text-[10px]">RPM</small>
+                                            <small class="text-[10px]"
+                                                >RPM</small
+                                            >
                                         </h4>
                                     </div>
-                                    <div class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center">
-                                        <span class="text-[9px] font-black tracking-widest text-blue-500 uppercase">Pace / KM</span>
-                                        <h4 class="text-2xl font-black tracking-tighter text-white italic">
-                                            {{ selectedLog?.pace_per_km || '0:00' }}
+                                    <div
+                                        class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center"
+                                    >
+                                        <span
+                                            class="text-[9px] font-black tracking-widest text-blue-500 uppercase"
+                                            >Pace / KM</span
+                                        >
+                                        <h4
+                                            class="text-2xl font-black tracking-tighter text-white italic"
+                                        >
+                                            {{
+                                                selectedLog?.pace_per_km ||
+                                                '0:00'
+                                            }}
                                         </h4>
                                     </div>
-                                    <div class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center">
-                                        <span class="text-[9px] font-black tracking-widest text-orange-500 uppercase">Calories</span>
-                                        <h4 class="text-2xl font-black tracking-tighter text-white italic">
+                                    <div
+                                        class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center"
+                                    >
+                                        <span
+                                            class="text-[9px] font-black tracking-widest text-orange-500 uppercase"
+                                            >Calories</span
+                                        >
+                                        <h4
+                                            class="text-2xl font-black tracking-tighter text-white italic"
+                                        >
                                             {{ selectedLog?.calories || 0 }}
-                                            <small class="text-[10px]">Kcal</small>
+                                            <small class="text-[10px]"
+                                                >Kcal</small
+                                            >
                                         </h4>
                                     </div>
-                                    <div class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center">
-                                        <span class="text-[9px] font-black tracking-widest text-purple-500 uppercase">HR Zone</span>
-                                        <h4 class="text-sm mt-1 font-black tracking-tighter text-white italic">
-                                            {{ selectedLog?.hr_zone || 'Unknown' }}
+                                    <div
+                                        class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center"
+                                    >
+                                        <span
+                                            class="text-[9px] font-black tracking-widest text-purple-500 uppercase"
+                                            >HR Zone</span
+                                        >
+                                        <h4
+                                            class="mt-1 text-sm font-black tracking-tighter text-white italic"
+                                        >
+                                            {{
+                                                selectedLog?.hr_zone ||
+                                                'Unknown'
+                                            }}
                                         </h4>
                                     </div>
-                                    <div class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center">
-                                        <span class="text-[9px] font-black tracking-widest text-pink-500 uppercase">TRIMP Score</span>
-                                        <h4 class="text-2xl font-black tracking-tighter text-white italic">
+                                    <div
+                                        class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center"
+                                    >
+                                        <span
+                                            class="text-[9px] font-black tracking-widest text-pink-500 uppercase"
+                                            >TRIMP Score</span
+                                        >
+                                        <h4
+                                            class="text-2xl font-black tracking-tighter text-white italic"
+                                        >
                                             {{ selectedLog?.trimp || 0 }}
                                         </h4>
                                     </div>
-                                    <div class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center">
-                                        <span class="text-[9px] font-black tracking-widest text-cyan-500 uppercase">Est. VO2 Max</span>
-                                        <h4 class="text-2xl font-black tracking-tighter text-white italic">
+                                    <div
+                                        class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center"
+                                    >
+                                        <span
+                                            class="text-[9px] font-black tracking-widest text-cyan-500 uppercase"
+                                            >Est. VO2 Max</span
+                                        >
+                                        <h4
+                                            class="text-2xl font-black tracking-tighter text-white italic"
+                                        >
                                             {{ selectedLog?.vo2_max || 0 }}
                                         </h4>
                                     </div>
-                                    <div class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center">
-                                        <span class="text-[9px] font-black tracking-widest text-yellow-500 uppercase">Avg Power</span>
-                                        <h4 class="text-2xl font-black tracking-tighter text-white italic">
-                                            {{ selectedLog?.avg_watt_power || 0 }}
+                                    <div
+                                        class="flex flex-col gap-2 rounded-3xl border border-border bg-secondary p-4 text-center"
+                                    >
+                                        <span
+                                            class="text-[9px] font-black tracking-widest text-yellow-500 uppercase"
+                                            >Avg Power</span
+                                        >
+                                        <h4
+                                            class="text-2xl font-black tracking-tighter text-white italic"
+                                        >
+                                            {{
+                                                selectedLog?.avg_watt_power || 0
+                                            }}
                                             <small class="text-[10px]">W</small>
                                         </h4>
                                     </div>
@@ -1103,7 +1156,9 @@ const chartSeries = computed(() => [
                         class="flex items-center justify-between border-b border-border bg-muted/20 p-8 md:p-10"
                     >
                         <div class="flex items-center gap-4">
-                            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 border border-accent/20 text-accent">
+                            <div
+                                class="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent"
+                            >
                                 <Zap class="h-6 w-6" />
                             </div>
                             <div>
@@ -1266,16 +1321,41 @@ const chartSeries = computed(() => [
                                         />
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Avg Heart Rate</Label>
-                                        <Input v-model="form.avg_heart_rate" type="number" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="150" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Avg Heart Rate</Label
+                                        >
+                                        <Input
+                                            v-model="form.avg_heart_rate"
+                                            type="number"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="150"
+                                        />
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Elevasi (M)</Label>
-                                        <Input v-model="form.elevation_m" type="number" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="250" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Elevasi (M)</Label
+                                        >
+                                        <Input
+                                            v-model="form.elevation_m"
+                                            type="number"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="250"
+                                        />
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Suhu (°C)</Label>
-                                        <Input v-model="form.temperature_c" type="number" step="0.1" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="28" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Suhu (°C)</Label
+                                        >
+                                        <Input
+                                            v-model="form.temperature_c"
+                                            type="number"
+                                            step="0.1"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="28"
+                                        />
                                     </div>
                                 </div>
                             </div>

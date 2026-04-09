@@ -298,34 +298,84 @@ const completionColor = (s: string) =>
                         </div>
                     </div>
 
-                    <div class="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-7">
+                    <div
+                        class="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-7"
+                    >
                         <div class="rounded-xl bg-muted/30 p-4 text-center">
-                            <p class="text-xl font-black text-foreground">{{ log.distance_km || '-' }}</p>
-                            <p class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50">KM</p>
+                            <p class="text-xl font-black text-foreground">
+                                {{ log.distance_km || '-' }}
+                            </p>
+                            <p
+                                class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                            >
+                                KM
+                            </p>
                         </div>
                         <div class="rounded-xl bg-muted/30 p-4 text-center">
-                            <p class="text-xl font-black text-foreground">{{ log.duration_minutes || '-' }}</p>
-                            <p class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50">MENIT</p>
+                            <p class="text-xl font-black text-foreground">
+                                {{ log.duration_minutes || '-' }}
+                            </p>
+                            <p
+                                class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                            >
+                                MENIT
+                            </p>
                         </div>
                         <div class="rounded-xl bg-muted/30 p-4 text-center">
-                            <p class="text-xl font-black text-foreground">{{ log.avg_speed || '-' }}</p>
-                            <p class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50">KM/H</p>
+                            <p class="text-xl font-black text-foreground">
+                                {{ log.avg_speed || '-' }}
+                            </p>
+                            <p
+                                class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                            >
+                                KM/H
+                            </p>
                         </div>
                         <div class="rounded-xl bg-muted/30 p-4 text-center">
-                            <p class="text-xl font-black text-foreground text-orange-500">{{ log.avg_watt_power || '-' }}</p>
-                            <p class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50">WATT</p>
+                            <p
+                                class="text-xl font-black text-foreground text-orange-500"
+                            >
+                                {{ log.avg_watt_power || '-' }}
+                            </p>
+                            <p
+                                class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                            >
+                                WATT
+                            </p>
                         </div>
                         <div class="rounded-xl bg-muted/30 p-4 text-center">
-                            <p class="text-xl font-black text-foreground">{{ log.avg_heart_rate || '-' }}</p>
-                            <p class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50">BPM</p>
+                            <p class="text-xl font-black text-foreground">
+                                {{ log.avg_heart_rate || '-' }}
+                            </p>
+                            <p
+                                class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                            >
+                                BPM
+                            </p>
                         </div>
                         <div class="rounded-xl bg-muted/30 p-4 text-center">
-                            <p class="text-xl font-black text-foreground">{{ log.pace_per_km || '-' }}</p>
-                            <p class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50">PACE</p>
+                            <p class="text-xl font-black text-foreground">
+                                {{ log.pace_per_km || '-' }}
+                            </p>
+                            <p
+                                class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                            >
+                                PACE
+                            </p>
                         </div>
                         <div class="rounded-xl bg-muted/30 p-4 text-center">
-                            <p class="text-xl font-black text-foreground">{{ log.intensity ? intensityLabel(log.intensity) : '-' }}</p>
-                            <p class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50">INTENSITAS</p>
+                            <p class="text-xl font-black text-foreground">
+                                {{
+                                    log.intensity
+                                        ? intensityLabel(log.intensity)
+                                        : '-'
+                                }}
+                            </p>
+                            <p
+                                class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-50"
+                            >
+                                INTENSITAS
+                            </p>
                         </div>
                     </div>
 

@@ -495,7 +495,9 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                         class="flex items-center justify-between border-b border-border bg-muted/20 p-8 md:p-10"
                     >
                         <div class="flex items-center gap-4">
-                            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 border border-accent/20 text-accent">
+                            <div
+                                class="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10 text-accent"
+                            >
                                 <Zap class="h-6 w-6" />
                             </div>
                             <div>
@@ -551,12 +553,19 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                             class="text-[10px] font-black uppercase opacity-60"
                                             >Tanggal</Label
                                         >
-                                        <div class="flex h-14 items-center justify-between rounded-2xl border-none bg-muted/30 px-6 cursor-not-allowed opacity-80">
-                                            <span class="text-sm font-black text-white/50">Otomatis (Saat Ini)</span>
+                                        <div
+                                            class="flex h-14 cursor-not-allowed items-center justify-between rounded-2xl border-none bg-muted/30 px-6 opacity-80"
+                                        >
+                                            <span
+                                                class="text-sm font-black text-white/50"
+                                                >Otomatis (Saat Ini)</span
+                                            >
                                             <X class="h-4 w-4 text-white/30" />
                                         </div>
                                     </div>
-                                    <div class="col-span-1 md:col-span-2 flex flex-col gap-2">
+                                    <div
+                                        class="col-span-1 flex flex-col gap-2 md:col-span-2"
+                                    >
                                         <Label
                                             class="text-[10px] font-black uppercase opacity-60"
                                             >Jenis Latihan</Label
@@ -565,7 +574,9 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                             v-model="form.exercise_type_id"
                                             class="h-14 w-full rounded-2xl border-none bg-muted/30 px-6 text-sm font-black focus:border-accent focus:ring-accent"
                                         >
-                                            <option value="" disabled>Pilih Jenis Latihan</option>
+                                            <option value="" disabled>
+                                                Pilih Jenis Latihan
+                                            </option>
                                             <option
                                                 v-for="type in exerciseTypes"
                                                 :key="type.id"
@@ -579,15 +590,37 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                             </div>
 
                             <div class="flex flex-col gap-6">
-                                <p class="text-[10px] font-black tracking-[0.3em] text-blue-500 uppercase opacity-80">Data Fisik Terkini</p>
+                                <p
+                                    class="text-[10px] font-black tracking-[0.3em] text-blue-500 uppercase opacity-80"
+                                >
+                                    Data Fisik Terkini
+                                </p>
                                 <div class="grid grid-cols-2 gap-6">
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Berat Badan (KG)</Label>
-                                        <Input v-model="form.weight" type="number" step="0.1" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="70" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Berat Badan (KG)</Label
+                                        >
+                                        <Input
+                                            v-model="form.weight"
+                                            type="number"
+                                            step="0.1"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="70"
+                                        />
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Tinggi Badan (CM)</Label>
-                                        <Input v-model="form.height" type="number" step="1" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="175" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Tinggi Badan (CM)</Label
+                                        >
+                                        <Input
+                                            v-model="form.height"
+                                            type="number"
+                                            step="1"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="175"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -634,10 +667,22 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                         <CustomSelect
                                             v-model="form.intensity"
                                             :options="[
-                                                { value: 'low', label: 'Rendah' },
-                                                { value: 'medium', label: 'Sedang' },
-                                                { value: 'high', label: 'Tinggi' },
-                                                { value: 'very_high', label: 'Sangat Tinggi' },
+                                                {
+                                                    value: 'low',
+                                                    label: 'Rendah',
+                                                },
+                                                {
+                                                    value: 'medium',
+                                                    label: 'Sedang',
+                                                },
+                                                {
+                                                    value: 'high',
+                                                    label: 'Tinggi',
+                                                },
+                                                {
+                                                    value: 'very_high',
+                                                    label: 'Sangat Tinggi',
+                                                },
                                             ]"
                                         />
                                     </div>
@@ -667,20 +712,45 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                         />
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Avg Heart Rate</Label>
-                                        <Input v-model="form.avg_heart_rate" type="number" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="150" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Avg Heart Rate</Label
+                                        >
+                                        <Input
+                                            v-model="form.avg_heart_rate"
+                                            type="number"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="150"
+                                        />
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Elevasi (M)</Label>
-                                        <Input v-model="form.elevation_m" type="number" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="250" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Elevasi (M)</Label
+                                        >
+                                        <Input
+                                            v-model="form.elevation_m"
+                                            type="number"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="250"
+                                        />
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <Label class="text-[10px] font-black uppercase opacity-60">Suhu (°C)</Label>
-                                        <Input v-model="form.temperature_c" type="number" step="0.1" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="28" />
+                                        <Label
+                                            class="text-[10px] font-black uppercase opacity-60"
+                                            >Suhu (°C)</Label
+                                        >
+                                        <Input
+                                            v-model="form.temperature_c"
+                                            type="number"
+                                            step="0.1"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            placeholder="28"
+                                        />
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="flex flex-col gap-6">
                                 <p
                                     class="text-[10px] font-black tracking-[0.3em] text-muted-foreground uppercase opacity-80"
@@ -706,13 +776,17 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                             <button
                                 type="submit"
                                 :disabled="form.processing"
-                                class="rounded-[2rem] bg-accent py-6 text-xs font-black tracking-[0.3em] text-white uppercase shadow-2xl shadow-accent/40 transition-all hover:scale-[1.02] hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
+                                class="flex items-center justify-center gap-2 rounded-[2rem] bg-accent py-6 text-xs font-black tracking-[0.3em] text-white uppercase shadow-2xl shadow-accent/40 transition-all hover:scale-[1.02] hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
                             >
                                 <span
                                     v-if="form.processing"
                                     class="h-5 w-5 animate-spin rounded-full border-2 border-accent-foreground border-t-transparent"
                                 ></span>
-                                <span>{{ form.processing ? 'Menyimpan...' : 'Quick Update Data' }}</span>
+                                <span>{{
+                                    form.processing
+                                        ? 'Menyimpan...'
+                                        : 'Quick Update Data'
+                                }}</span>
                             </button>
                         </form>
                     </div>

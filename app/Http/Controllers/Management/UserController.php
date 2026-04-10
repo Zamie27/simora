@@ -41,8 +41,8 @@ class UserController extends Controller
         }
 
         // Sorting
-        $sort = $request->get('sort', 'name');
-        $direction = $request->get('direction', 'asc');
+        $sort = $request->input('sort', 'name');
+        $direction = $request->input('direction', 'asc');
 
         if (in_array($sort, ['name', 'email', 'created_at'])) {
             $query->orderBy($sort, $direction === 'desc' ? 'desc' : 'asc');
@@ -122,6 +122,7 @@ class UserController extends Controller
 
     public function update(Request $request, User $user): RedirectResponse
     {
+        /** @var User $user */
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
@@ -148,6 +149,7 @@ class UserController extends Controller
 
     public function destroy(User $user): RedirectResponse
     {
+        /** @var User $user */
         if ($user->id === auth()->id()) {
             return redirect()->back()->with('error', 'Anda tidak bisa menghapus diri sendiri.');
         }

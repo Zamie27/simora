@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
+import { useDisplay } from 'vuetify';
 
 import AppearanceTabs from '@/components/AppearanceTabs.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import { useAppearance } from '@/composables/useAppearance';
 import { dashboard, login, register } from '@/routes';
-
-import { useAppearance } from '@/composables/useAppearance';
-import { dashboard, login, register } from '@/routes';
-import { useDisplay } from 'vuetify';
  
  const { resolvedAppearance } = useAppearance();
  const currentTheme = computed(() =>
@@ -38,6 +35,7 @@ import { useDisplay } from 'vuetify';
 
         <!-- Mobile Navigation Drawer -->
         <v-navigation-drawer
+            v-if="!mdAndUp"
             v-model="drawer"
             location="right"
             temporary
@@ -181,6 +179,7 @@ import { useDisplay } from 'vuetify';
 
                     <!-- Mobile Toggle -->
                     <v-btn
+                        v-if="!mdAndUp"
                         icon="mdi-menu"
                         variant="text"
                         class="hamburger-toggle-btn"

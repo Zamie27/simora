@@ -224,64 +224,64 @@ const closePreview = () => {
                                 <div
                                     class="flex items-center justify-between rounded-2xl bg-muted/30 p-4"
                                 >
-                                        <div
-                                            class="flex items-center justify-between"
-                                        >
-                                            <p
-                                                class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
-                                            >
-                                                Dilatih Oleh
-                                            </p>
-                                            <button
-                                                v-if="!isEditingCoach"
-                                                @click="toggleEditCoach"
-                                                class="text-[9px] font-bold text-accent transition-all hover:underline"
-                                            >
-                                                GANTI
-                                            </button>
-                                        </div>
-                                        <div
-                                            v-if="isEditingCoach"
-                                            class="mt-1 flex items-center gap-2"
-                                        >
-                                            <select
-                                                v-model="coachForm.coach_id"
-                                                class="flex-1 rounded-lg border border-muted bg-background px-2 py-1 text-xs font-bold text-foreground focus:ring-accent focus:outline-none dark:[color-scheme:dark]"
-                                            >
-                                                <option :value="null">
-                                                    Belum Ada Pelatih
-                                                </option>
-                                                <option
-                                                    v-for="c in coaches"
-                                                    :key="c.id"
-                                                    :value="c.id"
-                                                >
-                                                    {{ c.name }}
-                                                </option>
-                                            </select>
-                                            <button
-                                                @click="updateCoach"
-                                                :disabled="coachForm.processing"
-                                                class="rounded-lg bg-emerald-500 p-1.5 text-white transition-all hover:bg-emerald-600 disabled:opacity-50"
-                                            >
-                                                <Save class="h-3 w-3" />
-                                            </button>
-                                            <button
-                                                @click="toggleEditCoach"
-                                                class="rounded-lg bg-muted p-1.5 text-muted-foreground transition-all hover:bg-muted-foreground hover:text-white"
-                                            >
-                                                <X class="h-3 w-3" />
-                                            </button>
-                                        </div>
+                                    <div
+                                        class="flex items-center justify-between"
+                                    >
                                         <p
-                                            v-else
-                                            class="mt-0.5 text-sm font-black text-foreground uppercase"
+                                            class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
                                         >
-                                            {{
-                                                athlete.coach?.name ||
-                                                'BELUM ADA PELATIH'
-                                            }}
+                                            Dilatih Oleh
                                         </p>
+                                        <button
+                                            v-if="!isEditingCoach"
+                                            @click="toggleEditCoach"
+                                            class="text-[9px] font-bold text-accent transition-all hover:underline"
+                                        >
+                                            GANTI
+                                        </button>
+                                    </div>
+                                    <div
+                                        v-if="isEditingCoach"
+                                        class="mt-1 flex items-center gap-2"
+                                    >
+                                        <select
+                                            v-model="coachForm.coach_id"
+                                            class="flex-1 rounded-lg border border-muted bg-background px-2 py-1 text-xs font-bold text-foreground focus:ring-accent focus:outline-none dark:[color-scheme:dark]"
+                                        >
+                                            <option :value="null">
+                                                Belum Ada Pelatih
+                                            </option>
+                                            <option
+                                                v-for="c in coaches"
+                                                :key="c.id"
+                                                :value="c.id"
+                                            >
+                                                {{ c.name }}
+                                            </option>
+                                        </select>
+                                        <button
+                                            @click="updateCoach"
+                                            :disabled="coachForm.processing"
+                                            class="rounded-lg bg-emerald-500 p-1.5 text-white transition-all hover:bg-emerald-600 disabled:opacity-50"
+                                        >
+                                            <Save class="h-3 w-3" />
+                                        </button>
+                                        <button
+                                            @click="toggleEditCoach"
+                                            class="rounded-lg bg-muted p-1.5 text-muted-foreground transition-all hover:bg-muted-foreground hover:text-white"
+                                        >
+                                            <X class="h-3 w-3" />
+                                        </button>
+                                    </div>
+                                    <p
+                                        v-else
+                                        class="mt-0.5 text-sm font-black text-foreground uppercase"
+                                    >
+                                        {{
+                                            athlete.coach?.name ||
+                                            'BELUM ADA PELATIH'
+                                        }}
+                                    </p>
                                     <div
                                         class="rounded-full bg-orange-500/10 p-2 text-orange-500"
                                     >

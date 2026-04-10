@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Management;
 
 use App\Http\Controllers\Controller;
 use App\Models\AthleteProfile;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -22,7 +23,7 @@ class AthleteController extends Controller
         }
 
         $athlete->load('coach', 'athleteProfile');
-        $coachRole = \App\Models\Role::where('name', 'Pelatih')->first();
+        $coachRole = Role::where('name', 'Pelatih')->first();
 
         return Inertia::render('management/AthleteDetail', [
             'athlete' => $athlete,

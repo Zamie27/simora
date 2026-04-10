@@ -255,7 +255,7 @@ const closePreview = () => {
                         <p class="text-sm font-black tracking-widest uppercase">
                             Berhasil Disimpan
                         </p>
-                        <p class="text-[10px] font-bold opacity-80 uppercase">
+                        <p class="text-[10px] font-bold uppercase opacity-80">
                             Dokumen identitas Anda telah diperbarui dan
                             disinkronkan.
                         </p>

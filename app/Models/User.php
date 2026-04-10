@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
 /**
@@ -225,7 +226,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
             // Delete old secure file
             if ($profile->profile_photo_path) {
-                \Illuminate\Support\Facades\Storage::disk('local')->delete($profile->profile_photo_path);
+                Storage::disk('local')->delete($profile->profile_photo_path);
             }
 
             // Store new secure file
@@ -233,20 +234,20 @@ class User extends Authenticatable implements MustVerifyEmail
             $profile->update(['profile_photo_path' => $path]);
 
             // Set avatar column with cache busting timestamp
-            $this->avatar = "/documents/{$this->id}/profile_photo?v=" . time();
+            $this->avatar = "/documents/{$this->id}/profile_photo?v=".time();
 
             // Clean up old public avatar if it existed
             if ($oldAvatar && str_contains($oldAvatar, '/storage/avatars')) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete(str_replace('/storage/', '', $oldAvatar));
+                Storage::disk('public')->delete(str_replace('/storage/', '', $oldAvatar));
             }
         } else {
             // Standard avatar handling for other roles
             if ($oldAvatar) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete(str_replace('/storage/', '', $oldAvatar));
+                Storage::disk('public')->delete(str_replace('/storage/', '', $oldAvatar));
             }
 
             $path = $file->store('avatars', 'public');
-            $this->avatar = '/storage/' . $path;
+            $this->avatar = '/storage/'.$path;
         }
 
         $this->save();

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
+import { CheckCircle2 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
 import DeleteUser from '@/components/DeleteUser.vue';
@@ -15,7 +16,6 @@ import {
     InputOTPSeparator,
     InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { CheckCircle2 } from 'lucide-vue-next';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';

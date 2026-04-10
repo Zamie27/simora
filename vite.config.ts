@@ -5,6 +5,8 @@ import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
 import vuetify from 'vite-plugin-vuetify';
 
+import { VitePWA } from 'vite-plugin-pwa';
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -26,6 +28,37 @@ export default defineConfig({
         }),
         wayfinder({
             formVariants: true,
+        }),
+        VitePWA({
+            outDir: 'public',
+            buildBase: '/',
+            scope: '/',
+            registerType: 'autoUpdate',
+            manifest: {
+                name: 'SIMORA',
+                short_name: 'SIMORA',
+                description: 'Sistem Informasi Monitoring Atlet Sepeda',
+                theme_color: '#f97316',
+                background_color: '#ffffff',
+                display: 'standalone',
+                icons: [
+                    {
+                        src: '/images/simora_icon.png',
+                        sizes: '192x192',
+                        type: 'image/png',
+                    },
+                    {
+                        src: '/images/simora_icon.png',
+                        sizes: '512x512',
+                        type: 'image/png',
+                    },
+                ],
+            },
+            workbox: {
+                navigateFallback: null,
+                globDirectory: 'public/build',
+                globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,eot}'],
+            },
         }),
     ],
     server: {

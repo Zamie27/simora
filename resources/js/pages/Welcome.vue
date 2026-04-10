@@ -1,34 +1,96 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { computed } from 'vue';
-
-import AppearanceTabs from '@/components/AppearanceTabs.vue';
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import { useAppearance } from '@/composables/useAppearance';
-import { dashboard, login, register } from '@/routes';
-
-const { resolvedAppearance } = useAppearance();
-const currentTheme = computed(() =>
-    resolvedAppearance.value === 'dark' ? 'simoraDark' : 'simoraLight',
-);
-const isDark = computed(() => resolvedAppearance.value === 'dark');
-
-withDefaults(
-    defineProps<{
-        canRegister: boolean;
-    }>(),
-    {
-        canRegister: true,
-    },
-);
+import { computed, ref } from 'vue';
+ 
+ import AppearanceTabs from '@/components/AppearanceTabs.vue';
+ import AppLogoIcon from '@/components/AppLogoIcon.vue';
+ import { useAppearance } from '@/composables/useAppearance';
+ import { dashboard, login, register } from '@/routes';
+ 
+ const { resolvedAppearance } = useAppearance();
+ const currentTheme = computed(() =>
+     resolvedAppearance.value === 'dark' ? 'simoraDark' : 'simoraLight',
+ );
+ const isDark = computed(() => resolvedAppearance.value === 'dark');
+ const drawer = ref(false);
+ 
+ withDefaults(
+     defineProps<{
+         canRegister: boolean;
+     }>(),
+     {
+         canRegister: true,
+     },
+ );
 </script>
 
 <template>
     <v-app
-        :theme="currentTheme"
-        class="kinetic-archive scroll-smooth selection:bg-accent/30"
-    >
-        <Head title="SIMORA | Kinetic Road Archive" />
+         :theme="currentTheme"
+         class="kinetic-archive scroll-smooth selection:bg-accent/30"
+     >
+         <Head title="SIMORA | Kinetic Road Archive" />
+ 
+         <!-- Mobile Navigation Drawer -->
+         <v-navigation-drawer
+             v-model="drawer"
+             location="right"
+             temporary
+             :theme="currentTheme"
+             class="kinetic-archive !z-[200]"
+         >
+             <div class="flex flex-col p-8 pt-12">
+                 <div class="mb-12 flex items-center justify-between">
+                     <AppLogoIcon class="h-8 text-accent" />
+                     <v-btn
+                         icon="mdi-close"
+                         variant="text"
+                         @click="drawer = false"
+                     ></v-btn>
+                 </div>
+ 
+                 <div class="flex flex-col gap-8">
+                     <a href="#protocol" class="nav-link !opacity-100" @click="drawer = false">PROTOKOL</a>
+                     <a href="#metric" class="nav-link !opacity-100" @click="drawer = false">METRIK</a>
+                     <a href="#identity" class="nav-link !opacity-100" @click="drawer = false">IDENTITAS</a>
+                     
+                     <v-divider class="my-4"></v-divider>
+ 
+                     <div class="flex flex-col gap-6">
+                         <Link
+                             v-if="$page.props.auth.user"
+                             :href="dashboard().url"
+                             class="nav-link !text-accent font-black !opacity-100"
+                         >
+                             DASHBOARD
+                         </Link>
+                         <template v-else>
+                             <Link
+                                 :href="login().url"
+                                 class="nav-link font-black !opacity-100"
+                             >
+                                 MASUK
+                             </Link>
+                             <v-btn
+                                 v-if="canRegister"
+                                 :href="register().url"
+                                 color="accent"
+                                 block
+                                 rounded="sm"
+                                 class="cta-btn text-xs font-black tracking-widest"
+                                 height="60"
+                             >
+                                 DAFTAR
+                             </v-btn>
+                         </template>
+                     </div>
+ 
+                     <div class="mt-8 flex justify-center">
+                         <AppearanceTabs />
+                     </div>
+                 </div>
+             </div>
+         </v-navigation-drawer>
 
         <!-- Navigation: The Slipstream Header -->
         <nav
@@ -57,36 +119,46 @@ withDefaults(
                     <a href="#identity" class="nav-link">IDENTITAS</a>
                 </div>
 
-                <div class="flex items-center gap-4 lg:gap-8">
-                    <AppearanceTabs class="hidden md:flex" />
-
-                    <Link
-                        v-if="$page.props.auth.user"
-                        :href="dashboard().url"
-                        class="nav-link font-black text-accent opacity-100"
-                    >
-                        DASHBOARD
-                    </Link>
-                    <template v-else>
-                        <Link
-                            :href="login().url"
-                            class="nav-link px-4 text-[0.8rem] font-black tracking-[0.2em] text-foreground opacity-100 transition-colors hover:text-accent"
-                        >
-                            MASUK
-                        </Link>
-                        <v-btn
-                            v-if="canRegister"
-                            :href="register().url"
-                            color="accent"
-                            variant="flat"
-                            rounded="sm"
-                            class="cta-btn px-12 text-[0.75rem] font-black tracking-[0.3em]"
-                            height="50"
-                        >
-                            DAFTAR
-                        </v-btn>
-                    </template>
-                </div>
+                <div class="flex items-center gap-2 lg:gap-8">
+                     <AppearanceTabs class="hidden md:flex" />
+ 
+                     <div class="hidden items-center lg:flex lg:gap-8">
+                         <Link
+                             v-if="$page.props.auth.user"
+                             :href="dashboard().url"
+                             class="nav-link font-black text-accent opacity-100"
+                         >
+                             DASHBOARD
+                         </Link>
+                         <template v-else>
+                             <Link
+                                 :href="login().url"
+                                 class="nav-link px-4 text-[0.8rem] font-black tracking-[0.2em] text-foreground opacity-100 transition-colors hover:text-accent"
+                             >
+                                 MASUK
+                             </Link>
+                             <v-btn
+                                 v-if="canRegister"
+                                 :href="register().url"
+                                 color="accent"
+                                 variant="flat"
+                                 rounded="sm"
+                                 class="cta-btn px-12 text-[0.75rem] font-black tracking-[0.3em]"
+                                 height="50"
+                             >
+                                 DAFTAR
+                             </v-btn>
+                         </template>
+                     </div>
+ 
+                     <!-- Mobile Toggle -->
+                     <v-btn
+                         icon="mdi-menu"
+                         variant="text"
+                         class="lg:hidden"
+                         @click="drawer = true"
+                     ></v-btn>
+                 </div>
             </div>
         </nav>
 

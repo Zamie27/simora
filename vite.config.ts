@@ -30,19 +30,18 @@ export default defineConfig({
             formVariants: true,
         }),
         VitePWA({
-            outDir: 'public',
-            buildBase: '/',
+            base: '/',
             scope: '/',
+            outDir: 'public',
             registerType: 'autoUpdate',
             manifest: {
                 name: 'SIMORA',
                 short_name: 'SIMORA',
                 description: 'Sistem Informasi Monitoring Atlet Sepeda',
-                start_url: '/',
-                scope: '/',
-                theme_color: '#f97316',
-                background_color: '#ffffff',
+                start_url: '/?source=pwa',
                 display: 'standalone',
+                background_color: '#ffffff',
+                theme_color: '#f97316',
                 icons: [
                     {
                         src: '/images/simora_icon.png',

@@ -46,7 +46,7 @@
 
     <!-- SEO & Icons -->
     <meta name="theme-color" content="#f97316">
-    <link rel="manifest" href="/build/manifest.webmanifest">
+    <link rel="manifest" href="/build/manifest.webmanifest?v={{ time() }}">
     <meta name="description"
         content="Sistem Informasi Monitoring Atlet Sepeda - SIMORA. Precision Performance Redefined.">
     <link rel="icon" type="image/png" href="/images/simora_icon.png">

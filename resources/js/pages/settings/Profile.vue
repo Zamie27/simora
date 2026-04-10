@@ -15,6 +15,7 @@ import {
     InputOTPSeparator,
     InputOTPSlot,
 } from '@/components/ui/input-otp';
+import { CheckCircle2 } from 'lucide-vue-next';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
@@ -336,17 +337,23 @@ const submit = () => {
                         >
 
                         <Transition
-                            enter-active-class="transition ease-in-out"
-                            enter-from-class="opacity-0"
-                            leave-active-class="transition ease-in-out"
+                            enter-active-class="transition duration-300 ease-out"
+                            enter-from-class="transform -translate-x-4 opacity-0"
+                            enter-to-class="transform translate-x-0 opacity-100"
+                            leave-active-class="transition duration-200 ease-in"
+                            leave-from-class="opacity-100"
                             leave-to-class="opacity-0"
                         >
-                            <p
+                            <div
                                 v-show="form.recentlySuccessful"
-                                class="text-sm text-neutral-600"
+                                class="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-emerald-500"
                             >
-                                Saved.
-                            </p>
+                                <CheckCircle2 class="h-3 w-3" />
+                                <span
+                                    class="text-[10px] font-black tracking-widest uppercase"
+                                    >Tersimpan</span
+                                >
+                            </div>
                         </Transition>
                     </div>
                 </form>

@@ -211,4 +211,44 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new CustomVerifyEmail);
     }
+
+    /**
+     * Update the user's profile photo and keep it in sync with athlete documents if applicable.
+     */
+    public function updateProfilePhoto($file): void
+    {
+        $oldAvatar = $this->avatar;
+        $isAthlete = $this->role?->name === 'Atlet';
+
+        if ($isAthlete) {
+            $profile = $this->athleteProfile ?? $this->athleteProfile()->create();
+
+            // Delete old secure file
+            if ($profile->profile_photo_path) {
+                \Illuminate\Support\Facades\Storage::disk('local')->delete($profile->profile_photo_path);
+            }
+
+            // Store new secure file
+            $path = $file->store('private_documents/'.$this->id, 'local');
+            $profile->update(['profile_photo_path' => $path]);
+
+            // Set avatar column with cache busting timestamp
+            $this->avatar = "/documents/{$this->id}/profile_photo?v=" . time();
+
+            // Clean up old public avatar if it existed
+            if ($oldAvatar && str_contains($oldAvatar, '/storage/avatars')) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete(str_replace('/storage/', '', $oldAvatar));
+            }
+        } else {
+            // Standard avatar handling for other roles
+            if ($oldAvatar) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete(str_replace('/storage/', '', $oldAvatar));
+            }
+
+            $path = $file->store('avatars', 'public');
+            $this->avatar = '/storage/' . $path;
+        }
+
+        $this->save();
+    }
 }

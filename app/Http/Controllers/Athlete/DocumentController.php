@@ -58,6 +58,10 @@ class DocumentController extends Controller
             }
         }
 
+        if ($request->hasFile('profile_photo')) {
+            $user->updateProfilePhoto($request->file('profile_photo'));
+        }
+
         $profile->save();
 
         return back()->with('success', 'Dokumen berhasil diunggah.');

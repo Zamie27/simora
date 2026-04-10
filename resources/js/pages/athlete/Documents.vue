@@ -51,6 +51,7 @@ const handleFileUpload = (e: Event, field: keyof typeof form) => {
     }
 };
 
+const showSuccessMessage = ref(false);
 const submit = () => {
     // We send via POST with multipart/form-data rules in Inertia
     form.post('/athlete/documents', {
@@ -58,6 +59,10 @@ const submit = () => {
         forceFormData: true,
         onSuccess: () => {
             form.reset();
+            showSuccessMessage.value = true;
+            setTimeout(() => {
+                showSuccessMessage.value = false;
+            }, 5000);
         },
     });
 };
@@ -229,6 +234,34 @@ const closePreview = () => {
                     </div>
                 </div>
             </div>
+
+            <!-- Success Message -->
+            <transition
+                enter-active-class="transition duration-300 ease-out"
+                enter-from-class="transform -translate-y-4 opacity-0"
+                enter-to-class="transform translate-y-0 opacity-100"
+                leave-active-class="transition duration-200 ease-in"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
+            >
+                <div
+                    v-if="showSuccessMessage"
+                    class="flex items-center gap-4 rounded-[2rem] border border-emerald-500/20 bg-emerald-500/5 p-6 text-emerald-500 shadow-xl shadow-emerald-500/5"
+                >
+                    <div class="rounded-xl bg-emerald-500/10 p-2">
+                        <CheckCircle2 class="h-6 w-6" />
+                    </div>
+                    <div>
+                        <p class="text-sm font-black tracking-widest uppercase">
+                            Berhasil Disimpan
+                        </p>
+                        <p class="text-[10px] font-bold opacity-80 uppercase">
+                            Dokumen identitas Anda telah diperbarui dan
+                            disinkronkan.
+                        </p>
+                    </div>
+                </div>
+            </transition>
 
             <!-- Upload Forms -->
             <form

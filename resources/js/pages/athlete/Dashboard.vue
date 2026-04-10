@@ -149,6 +149,13 @@ const chartSeries = [
 ];
 
 const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
+
+const exerciseTypeOptions = computed(() =>
+    props.exerciseTypes.map((type) => ({
+        value: type.id.toString(),
+        label: type.name,
+    })),
+);
 </script>
 
 <template>
@@ -544,7 +551,7 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                         >
                                         <Input
                                             v-model="form.title"
-                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black text-foreground dark:[color-scheme:dark]"
                                             placeholder="E.g. Morning Sprint"
                                         />
                                     </div>
@@ -570,21 +577,11 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                             class="text-[10px] font-black uppercase opacity-60"
                                             >Jenis Latihan</Label
                                         >
-                                        <select
+                                        <CustomSelect
                                             v-model="form.exercise_type_id"
-                                            class="h-14 w-full rounded-2xl border-none bg-muted/30 px-6 text-sm font-black focus:border-accent focus:ring-accent"
-                                        >
-                                            <option value="" disabled>
-                                                Pilih Jenis Latihan
-                                            </option>
-                                            <option
-                                                v-for="type in exerciseTypes"
-                                                :key="type.id"
-                                                :value="type.id"
-                                            >
-                                                {{ type.name }}
-                                            </option>
-                                        </select>
+                                            :options="exerciseTypeOptions"
+                                            placeholder="Pilih Jenis Latihan"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -605,7 +602,7 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                             v-model="form.weight"
                                             type="number"
                                             step="0.1"
-                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black text-foreground dark:[color-scheme:dark]"
                                             placeholder="70"
                                         />
                                     </div>
@@ -618,7 +615,7 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                             v-model="form.height"
                                             type="number"
                                             step="1"
-                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black text-foreground dark:[color-scheme:dark]"
                                             placeholder="175"
                                         />
                                     </div>
@@ -643,7 +640,7 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                             v-model="form.distance_km"
                                             type="number"
                                             step="0.1"
-                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black text-foreground dark:[color-scheme:dark]"
                                             placeholder="30.5"
                                         />
                                     </div>
@@ -655,7 +652,7 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                         <Input
                                             v-model="form.duration_minutes"
                                             type="number"
-                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black text-foreground dark:[color-scheme:dark]"
                                             placeholder="60"
                                         />
                                     </div>
@@ -707,7 +704,7 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                             v-model="form.rpm"
                                             type="number"
                                             step="0.1"
-                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black text-foreground dark:[color-scheme:dark]"
                                             placeholder="90"
                                         />
                                     </div>
@@ -719,7 +716,7 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                         <Input
                                             v-model="form.avg_heart_rate"
                                             type="number"
-                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black text-foreground dark:[color-scheme:dark]"
                                             placeholder="150"
                                         />
                                     </div>
@@ -731,7 +728,7 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                         <Input
                                             v-model="form.elevation_m"
                                             type="number"
-                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black text-foreground dark:[color-scheme:dark]"
                                             placeholder="250"
                                         />
                                     </div>
@@ -744,7 +741,7 @@ const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
                                             v-model="form.temperature_c"
                                             type="number"
                                             step="0.1"
-                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                            class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black text-foreground dark:[color-scheme:dark]"
                                             placeholder="28"
                                         />
                                     </div>

@@ -84,11 +84,7 @@ class ProfileController extends Controller
         $request->user()->fill(Arr::except($validated, ['avatar']));
 
         if ($request->hasFile('avatar')) {
-            if ($request->user()->avatar) {
-                Storage::disk('public')->delete(str_replace('/storage/', '', $request->user()->avatar));
-            }
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $request->user()->avatar = '/storage/'.$path;
+            $request->user()->updateProfilePhoto($request->file('avatar'));
         }
 
         if ($request->user()->isDirty('email')) {

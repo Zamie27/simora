@@ -15,14 +15,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { getInitials } = useInitials();
 
-// Compute avatar URL specifically handling secure document routes for athletes
-const avatarUrl = computed(() => {
-    if (props.user.athlete_profile?.profile_photo_path) {
-        return `/documents/${props.user.id}/profile_photo`;
-    }
-
-    return props.user.avatar || null;
-});
+// Compute avatar URL is now handled by the User model's getAvatarAttribute accessor
+const avatarUrl = computed(() => props.user.avatar || null);
 
 // Compute whether we should show the avatar image
 const showAvatar = computed(

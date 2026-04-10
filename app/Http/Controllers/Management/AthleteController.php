@@ -22,9 +22,11 @@ class AthleteController extends Controller
         }
 
         $athlete->load('coach', 'athleteProfile');
+        $coachRole = \App\Models\Role::where('name', 'Pelatih')->first();
 
         return Inertia::render('management/AthleteDetail', [
             'athlete' => $athlete,
+            'coaches' => User::where('role_id', $coachRole?->id)->get(),
         ]);
     }
 

@@ -65,7 +65,7 @@ const cogs = [
                 >
                 <select
                     v-model="frontChainring"
-                    class="h-14 w-full appearance-none rounded-2xl border-none bg-muted/30 px-6 text-lg font-black focus:ring-2 focus:ring-accent"
+                    class="h-14 w-full appearance-none rounded-2xl border-none bg-muted/30 px-6 text-lg font-black text-foreground focus:ring-2 focus:ring-accent dark:[color-scheme:dark]"
                 >
                     <option v-for="t in chainrings" :key="t" :value="t">
                         {{ t }}T
@@ -119,7 +119,7 @@ const cogs = [
                     <input
                         type="number"
                         v-model="cadence"
-                        class="h-14 w-full rounded-2xl border-none bg-muted/30 px-6 text-lg font-black focus:ring-2 focus:ring-accent"
+                        class="h-14 w-full rounded-2xl border-none bg-muted/30 px-6 text-lg font-black text-foreground focus:ring-2 focus:ring-accent dark:[color-scheme:dark]"
                     />
                     <span
                         class="absolute top-1/2 right-6 -translate-y-1/2 text-[10px] font-black text-muted-foreground uppercase"

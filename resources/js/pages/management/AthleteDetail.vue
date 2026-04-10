@@ -9,10 +9,12 @@ import {
     FileImage,
     FileText,
     Mail,
+    Save,
     Shield,
     UploadCloud,
     UserCircle,
     Users,
+    X,
 } from 'lucide-vue-next';
 
 import { ref } from 'vue';
@@ -40,8 +42,14 @@ interface User {
     athlete_profile?: Profile;
 }
 
+interface Coach {
+    id: number;
+    name: string;
+}
+
 const props = defineProps<{
     athlete: User;
+    coaches: Coach[];
 }>();
 
 const breadcrumbs = [
@@ -53,6 +61,10 @@ const breadcrumbs = [
     },
 ];
 
+const coachForm = useForm({
+    coach_id: props.athlete.coach_id || null,
+});
+
 const form = useForm({
     uci_id: props.athlete.athlete_profile?.uci_id || '',
     license_valid_until: props.athlete.athlete_profile?.license_valid_until
@@ -60,6 +72,21 @@ const form = useForm({
         : '',
     license_file: null as File | null,
 });
+
+const isEditingCoach = ref(false);
+
+const toggleEditCoach = () => {
+    isEditingCoach.value = !isEditingCoach.value;
+};
+
+const updateCoach = () => {
+    coachForm.patch(`/management/users/${props.athlete.id}`, {
+        preserveScroll: true,
+        onSuccess: () => {
+            isEditingCoach.value = false;
+        },
+    });
+};
 
 const handleFileUpload = (e: Event) => {
     const target = e.target as HTMLInputElement;
@@ -197,13 +224,57 @@ const closePreview = () => {
                                 <div
                                     class="flex items-center justify-between rounded-2xl bg-muted/30 p-4"
                                 >
-                                    <div>
-                                        <p
-                                            class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
+                                        <div
+                                            class="flex items-center justify-between"
                                         >
-                                            Dilatih Oleh
-                                        </p>
+                                            <p
+                                                class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
+                                            >
+                                                Dilatih Oleh
+                                            </p>
+                                            <button
+                                                v-if="!isEditingCoach"
+                                                @click="toggleEditCoach"
+                                                class="text-[9px] font-bold text-accent transition-all hover:underline"
+                                            >
+                                                GANTI
+                                            </button>
+                                        </div>
+                                        <div
+                                            v-if="isEditingCoach"
+                                            class="mt-1 flex items-center gap-2"
+                                        >
+                                            <select
+                                                v-model="coachForm.coach_id"
+                                                class="flex-1 rounded-lg border border-muted bg-background px-2 py-1 text-xs font-bold text-foreground focus:ring-accent focus:outline-none dark:[color-scheme:dark]"
+                                            >
+                                                <option :value="null">
+                                                    Belum Ada Pelatih
+                                                </option>
+                                                <option
+                                                    v-for="c in coaches"
+                                                    :key="c.id"
+                                                    :value="c.id"
+                                                >
+                                                    {{ c.name }}
+                                                </option>
+                                            </select>
+                                            <button
+                                                @click="updateCoach"
+                                                :disabled="coachForm.processing"
+                                                class="rounded-lg bg-emerald-500 p-1.5 text-white transition-all hover:bg-emerald-600 disabled:opacity-50"
+                                            >
+                                                <Save class="h-3 w-3" />
+                                            </button>
+                                            <button
+                                                @click="toggleEditCoach"
+                                                class="rounded-lg bg-muted p-1.5 text-muted-foreground transition-all hover:bg-muted-foreground hover:text-white"
+                                            >
+                                                <X class="h-3 w-3" />
+                                            </button>
+                                        </div>
                                         <p
+                                            v-else
                                             class="mt-0.5 text-sm font-black text-foreground uppercase"
                                         >
                                             {{
@@ -211,7 +282,6 @@ const closePreview = () => {
                                                 'BELUM ADA PELATIH'
                                             }}
                                         </p>
-                                    </div>
                                     <div
                                         class="rounded-full bg-orange-500/10 p-2 text-orange-500"
                                     >
@@ -255,6 +325,40 @@ const closePreview = () => {
                         </h3>
 
                         <div class="flex flex-col gap-3">
+                            <div
+                                class="flex items-center justify-between rounded-xl border border-border bg-muted/20 p-3"
+                            >
+                                <div class="flex items-center gap-3">
+                                    <UserCircle
+                                        class="h-4 w-4 text-orange-500"
+                                    />
+                                    <span
+                                        class="text-[10px] font-black tracking-widest text-foreground uppercase"
+                                        >Pas Foto (Foto Profil)</span
+                                    >
+                                </div>
+                                <button
+                                    type="button"
+                                    v-if="
+                                        athlete.athlete_profile
+                                            ?.profile_photo_path
+                                    "
+                                    @click="
+                                        showPreview(
+                                            `/documents/${athlete.id}/profile_photo`,
+                                        )
+                                    "
+                                    class="rounded-full bg-accent/10 px-3 py-1 text-[9px] font-black text-accent uppercase transition-all hover:bg-accent hover:text-white"
+                                >
+                                    Lihat
+                                </button>
+                                <span
+                                    v-else
+                                    class="text-[9px] font-black text-destructive uppercase"
+                                    >Kosong</span
+                                >
+                            </div>
+
                             <div
                                 class="flex items-center justify-between rounded-xl border border-border bg-muted/20 p-3"
                             >

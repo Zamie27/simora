@@ -18,17 +18,17 @@ const installPwa = async () => {
     if (!deferredPrompt.value) {
         return;
     }
-    
+
     // Show the install prompt
     deferredPrompt.value.prompt();
-    
+
     // Wait for the user to respond to the prompt
     const { outcome } = await deferredPrompt.value.userChoice;
-    
+
     if (outcome === 'accepted') {
         showBanner.value = false;
     }
-    
+
     // We've used the prompt, and can't use it again, throw it away
     deferredPrompt.value = null;
 };
@@ -42,7 +42,10 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-    window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.removeEventListener(
+        'beforeinstallprompt',
+        handleBeforeInstallPrompt,
+    );
 });
 </script>
 
@@ -55,27 +58,39 @@ onUnmounted(() => {
         leave-from-class="opacity-100"
         leave-to-class="opacity-0"
     >
-        <div v-if="showBanner" class="fixed bottom-4 left-4 right-4 z-50 md:bottom-auto md:top-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-96">
-            <div class="flex items-center gap-4 rounded-2xl border border-border bg-card p-4 shadow-2xl">
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent text-white">
+        <div
+            v-if="showBanner"
+            class="fixed right-4 bottom-4 left-4 z-50 md:top-4 md:right-auto md:bottom-auto md:left-1/2 md:w-96 md:-translate-x-1/2"
+        >
+            <div
+                class="flex items-center gap-4 rounded-2xl border border-border bg-card p-4 shadow-2xl"
+            >
+                <div
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent text-white"
+                >
                     <Download class="h-5 w-5" />
                 </div>
                 <div class="flex-1">
-                    <p class="text-sm font-black tracking-wide text-foreground uppercase">
+                    <p
+                        class="text-sm font-black tracking-wide text-foreground uppercase"
+                    >
                         Install Aplikasi
                     </p>
-                    <p class="text-[10px] font-medium text-muted-foreground uppercase opacity-80">
-                        Tambahkan SIMORA ke perangkat Anda untuk akses lebih cepat
+                    <p
+                        class="text-[10px] font-medium text-muted-foreground uppercase opacity-80"
+                    >
+                        Tambahkan SIMORA ke perangkat Anda untuk akses lebih
+                        cepat
                     </p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button 
+                    <button
                         @click="installPwa"
-                        class="rounded-lg bg-accent px-3 py-1.5 text-[10px] font-black text-white hover:bg-accent-foreground uppercase transition-colors"
+                        class="rounded-lg bg-accent px-3 py-1.5 text-[10px] font-black text-white uppercase transition-colors hover:bg-accent-foreground"
                     >
                         Install
                     </button>
-                    <button 
+                    <button
                         @click="dismissBanner"
                         class="rounded-lg p-1.5 text-muted-foreground hover:bg-muted"
                     >

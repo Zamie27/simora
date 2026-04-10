@@ -7,21 +7,26 @@ import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import { useAppearance } from '@/composables/useAppearance';
 import { dashboard, login, register } from '@/routes';
 
-const { resolvedAppearance } = useAppearance();
-const currentTheme = computed(() =>
-    resolvedAppearance.value === 'dark' ? 'simoraDark' : 'simoraLight',
-);
-const isDark = computed(() => resolvedAppearance.value === 'dark');
-const drawer = ref(false);
-
-withDefaults(
-    defineProps<{
-        canRegister: boolean;
-    }>(),
-    {
-        canRegister: true,
-    },
-);
+import { useAppearance } from '@/composables/useAppearance';
+import { dashboard, login, register } from '@/routes';
+import { useDisplay } from 'vuetify';
+ 
+ const { resolvedAppearance } = useAppearance();
+ const currentTheme = computed(() =>
+     resolvedAppearance.value === 'dark' ? 'simoraDark' : 'simoraLight',
+ );
+ const isDark = computed(() => resolvedAppearance.value === 'dark');
+ const drawer = ref(false);
+ const { mdAndUp } = useDisplay();
+ 
+ withDefaults(
+     defineProps<{
+         canRegister: boolean;
+     }>(),
+     {
+         canRegister: true,
+     },
+ );
 </script>
 
 <template>
@@ -36,73 +41,81 @@ withDefaults(
             v-model="drawer"
             location="right"
             temporary
+            :scrim="false"
             :theme="currentTheme"
-            class="kinetic-archive !z-[200]"
+            class="kinetic-archive mobile-drawer-custom"
+            width="340"
         >
-            <div class="flex flex-col p-8 pt-12">
+            <div class="flex h-full flex-col p-8 bg-gradient-to-b from-surface to-background">
                 <div class="mb-12 flex items-center justify-between">
-                    <AppLogoIcon class="h-8 text-accent" />
+                    <AppLogoIcon class="h-10 text-accent" />
                     <v-btn
                         icon="mdi-close"
-                        variant="text"
+                        variant="tonal"
+                        color="accent"
+                        class="rounded-lg"
                         @click="drawer = false"
                     ></v-btn>
                 </div>
 
-                <div class="flex flex-col gap-8">
-                    <a
-                        href="#protocol"
-                        class="nav-link !opacity-100"
+                <v-list bg-transparent class="flex-grow space-y-4">
+                    <v-list-item
+                        v-for="item in [
+                            { title: 'PROTOKOL', href: '#protocol', icon: 'mdi-shield-check-outline' },
+                            { title: 'METRIK', href: '#metric', icon: 'mdi-gauge' },
+                            { title: 'IDENTITAS', href: '#identity', icon: 'mdi-fingerprint' },
+                        ]"
+                        :key="item.title"
+                        :href="item.href"
+                        class="drawer-item px-4"
                         @click="drawer = false"
-                        >PROTOKOL</a
                     >
-                    <a
-                        href="#metric"
-                        class="nav-link !opacity-100"
-                        @click="drawer = false"
-                        >METRIK</a
-                    >
-                    <a
-                        href="#identity"
-                        class="nav-link !opacity-100"
-                        @click="drawer = false"
-                        >IDENTITAS</a
-                    >
+                        <template #prepend>
+                            <v-icon :icon="item.icon" color="accent" class="mr-4"></v-icon>
+                        </template>
+                        <v-list-item-title class="text-[0.8rem] font-black tracking-[0.4em]">{{ item.title }}</v-list-item-title>
+                    </v-list-item>
 
-                    <v-divider class="my-4"></v-divider>
+                    <v-divider class="my-8 opacity-20"></v-divider>
 
-                    <div class="flex flex-col gap-6">
-                        <Link
-                            v-if="$page.props.auth.user"
-                            :href="dashboard().url"
-                            class="nav-link font-black !text-accent !opacity-100"
-                        >
-                            DASHBOARD
-                        </Link>
-                        <template v-else>
-                            <Link
-                                :href="login().url"
-                                class="nav-link font-black !opacity-100"
-                            >
-                                MASUK
-                            </Link>
+                    <v-list-item
+                        v-if="$page.props.auth.user"
+                        :href="dashboard().url"
+                        class="drawer-item active-item px-4"
+                    >
+                        <template #prepend>
+                            <v-icon icon="mdi-view-dashboard-outline" color="accent" class="mr-4"></v-icon>
+                        </template>
+                        <v-list-item-title class="text-[0.8rem] font-black tracking-[0.4em] text-accent">DASHBOARD</v-list-item-title>
+                    </v-list-item>
+                    
+                    <template v-else>
+                        <v-list-item :href="login().url" class="drawer-item px-4">
+                            <template #prepend>
+                                <v-icon icon="mdi-login" color="foreground" class="mr-4"></v-icon>
+                            </template>
+                            <v-list-item-title class="text-[0.8rem] font-black tracking-[0.4em]">MASUK</v-list-item-title>
+                        </v-list-item>
+                        
+                        <div class="mt-8">
                             <v-btn
                                 v-if="canRegister"
                                 :href="register().url"
                                 color="accent"
                                 block
                                 rounded="sm"
-                                class="cta-btn text-xs font-black tracking-widest"
                                 height="60"
+                                class="cta-btn text-[0.7rem] font-black tracking-[0.3em] elevation-10"
                             >
-                                DAFTAR
+                                DAFTAR SEKARANG
                             </v-btn>
-                        </template>
-                    </div>
+                        </div>
+                    </template>
+                </v-list>
 
-                    <div class="mt-8 flex justify-center">
-                        <AppearanceTabs />
-                    </div>
+                <div class="mt-auto pt-8 border-t border-white/5 flex flex-col items-center gap-6">
+                    <AppearanceTabs />
+                    <span class="text-[0.6rem] font-black tracking-[0.5em] opacity-30 uppercase">SIMORA v2.0</span>
                 </div>
             </div>
         </v-navigation-drawer>
@@ -170,7 +183,7 @@ withDefaults(
                     <v-btn
                         icon="mdi-menu"
                         variant="text"
-                        class="lg:hidden"
+                        class="hamburger-toggle-btn"
                         @click="drawer = true"
                     ></v-btn>
                 </div>
@@ -921,6 +934,50 @@ html {
     .hero-text-block {
         border-left: 4px solid var(--accent);
         padding-left: 2rem;
+    }
+}
+
+/* --- FINAL MOBILE FIXES --- */
+
+/* 1. Force Scrim (Overlay) Removal */
+:deep(.v-navigation-drawer__scrim) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* 2. Premium Drawer Styling */
+.drawer-item {
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.drawer-item:hover {
+    background: rgba(var(--v-theme-accent), 0.1) !important;
+    transform: translateX(8px);
+}
+
+.active-item {
+    background: rgba(var(--v-theme-accent), 0.1) !important;
+}
+
+/* 3. Strict Visibility Control */
+@media (min-width: 1024px) {
+    .hamburger-toggle-btn {
+        display: none !important;
+    }
+    .mobile-drawer-custom {
+        display: none !important;
+        visibility: hidden !important;
+    }
+}
+
+/* Mobile specific font tweaks */
+@media (max-width: 600px) {
+    .display-lg {
+        font-size: 2.8rem;
     }
 }
 </style>

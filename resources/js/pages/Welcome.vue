@@ -7,23 +7,23 @@ import AppearanceTabs from '@/components/AppearanceTabs.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import { useAppearance } from '@/composables/useAppearance';
 import { dashboard, login, register } from '@/routes';
- 
- const { resolvedAppearance } = useAppearance();
- const currentTheme = computed(() =>
-     resolvedAppearance.value === 'dark' ? 'simoraDark' : 'simoraLight',
- );
- const isDark = computed(() => resolvedAppearance.value === 'dark');
- const drawer = ref(false);
- const { mdAndUp } = useDisplay();
- 
- withDefaults(
-     defineProps<{
-         canRegister: boolean;
-     }>(),
-     {
-         canRegister: true,
-     },
- );
+
+const { resolvedAppearance } = useAppearance();
+const currentTheme = computed(() =>
+    resolvedAppearance.value === 'dark' ? 'simoraDark' : 'simoraLight',
+);
+const isDark = computed(() => resolvedAppearance.value === 'dark');
+const drawer = ref(false);
+const { mdAndUp } = useDisplay();
+
+withDefaults(
+    defineProps<{
+        canRegister: boolean;
+    }>(),
+    {
+        canRegister: true,
+    },
+);
 </script>
 
 <template>
@@ -44,7 +44,9 @@ import { dashboard, login, register } from '@/routes';
             class="kinetic-archive mobile-drawer-custom"
             width="340"
         >
-            <div class="flex h-full flex-col p-8 bg-gradient-to-b from-surface to-background">
+            <div
+                class="from-surface flex h-full flex-col bg-gradient-to-b to-background p-8"
+            >
                 <div class="mb-12 flex items-center justify-between">
                     <AppLogoIcon class="h-10 text-accent" />
                     <v-btn
@@ -59,9 +61,21 @@ import { dashboard, login, register } from '@/routes';
                 <v-list bg-transparent class="flex-grow space-y-4">
                     <v-list-item
                         v-for="item in [
-                            { title: 'PROTOKOL', href: '#protocol', icon: 'mdi-shield-check-outline' },
-                            { title: 'METRIK', href: '#metric', icon: 'mdi-gauge' },
-                            { title: 'IDENTITAS', href: '#identity', icon: 'mdi-fingerprint' },
+                            {
+                                title: 'PROTOKOL',
+                                href: '#protocol',
+                                icon: 'mdi-shield-check-outline',
+                            },
+                            {
+                                title: 'METRIK',
+                                href: '#metric',
+                                icon: 'mdi-gauge',
+                            },
+                            {
+                                title: 'IDENTITAS',
+                                href: '#identity',
+                                icon: 'mdi-fingerprint',
+                            },
                         ]"
                         :key="item.title"
                         :href="item.href"
@@ -69,9 +83,16 @@ import { dashboard, login, register } from '@/routes';
                         @click="drawer = false"
                     >
                         <template #prepend>
-                            <v-icon :icon="item.icon" color="accent" class="mr-4"></v-icon>
+                            <v-icon
+                                :icon="item.icon"
+                                color="accent"
+                                class="mr-4"
+                            ></v-icon>
                         </template>
-                        <v-list-item-title class="text-[0.8rem] font-black tracking-[0.4em]">{{ item.title }}</v-list-item-title>
+                        <v-list-item-title
+                            class="text-[0.8rem] font-black tracking-[0.4em]"
+                            >{{ item.title }}</v-list-item-title
+                        >
                     </v-list-item>
 
                     <v-divider class="my-8 opacity-20"></v-divider>
@@ -82,19 +103,36 @@ import { dashboard, login, register } from '@/routes';
                         class="drawer-item active-item px-4"
                     >
                         <template #prepend>
-                            <v-icon icon="mdi-view-dashboard-outline" color="accent" class="mr-4"></v-icon>
+                            <v-icon
+                                icon="mdi-view-dashboard-outline"
+                                color="accent"
+                                class="mr-4"
+                            ></v-icon>
                         </template>
-                        <v-list-item-title class="text-[0.8rem] font-black tracking-[0.4em] text-accent">DASHBOARD</v-list-item-title>
+                        <v-list-item-title
+                            class="text-[0.8rem] font-black tracking-[0.4em] text-accent"
+                            >DASHBOARD</v-list-item-title
+                        >
                     </v-list-item>
-                    
+
                     <template v-else>
-                        <v-list-item :href="login().url" class="drawer-item px-4">
+                        <v-list-item
+                            :href="login().url"
+                            class="drawer-item px-4"
+                        >
                             <template #prepend>
-                                <v-icon icon="mdi-login" color="foreground" class="mr-4"></v-icon>
+                                <v-icon
+                                    icon="mdi-login"
+                                    color="foreground"
+                                    class="mr-4"
+                                ></v-icon>
                             </template>
-                            <v-list-item-title class="text-[0.8rem] font-black tracking-[0.4em]">MASUK</v-list-item-title>
+                            <v-list-item-title
+                                class="text-[0.8rem] font-black tracking-[0.4em]"
+                                >MASUK</v-list-item-title
+                            >
                         </v-list-item>
-                        
+
                         <div class="mt-8">
                             <v-btn
                                 v-if="canRegister"
@@ -103,7 +141,7 @@ import { dashboard, login, register } from '@/routes';
                                 block
                                 rounded="sm"
                                 height="60"
-                                class="cta-btn text-[0.7rem] font-black tracking-[0.3em] elevation-10"
+                                class="cta-btn elevation-10 text-[0.7rem] font-black tracking-[0.3em]"
                             >
                                 DAFTAR SEKARANG
                             </v-btn>
@@ -111,9 +149,14 @@ import { dashboard, login, register } from '@/routes';
                     </template>
                 </v-list>
 
-                <div class="mt-auto pt-8 border-t border-white/5 flex flex-col items-center gap-6">
+                <div
+                    class="mt-auto flex flex-col items-center gap-6 border-t border-white/5 pt-8"
+                >
                     <AppearanceTabs />
-                    <span class="text-[0.6rem] font-black tracking-[0.5em] opacity-30 uppercase">SIMORA v2.0</span>
+                    <span
+                        class="text-[0.6rem] font-black tracking-[0.5em] uppercase opacity-30"
+                        >SIMORA v2.0</span
+                    >
                 </div>
             </div>
         </v-navigation-drawer>

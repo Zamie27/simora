@@ -6,6 +6,7 @@ use App\Models\TrainingLog;
 use App\Models\TrainingSession;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class TrainingLogRepository
 {
@@ -165,11 +166,11 @@ class TrainingLogRepository
             ->with(['athleteProfile', 'category'])
             ->withCount(['trainingLogs as performance_score' => function ($q) use ($days) {
                 $q->where('date', '>=', now()->subDays($days)->toDateString())
-                    ->select(\Illuminate\Support\Facades\DB::raw('ROUND(AVG(avg_speed), 2)'));
+                    ->select(DB::raw('ROUND(AVG(avg_speed), 2)'));
             }])
             ->withCount(['trainingLogs as total_distance' => function ($q) use ($days) {
                 $q->where('date', '>=', now()->subDays($days)->toDateString())
-                    ->select(\Illuminate\Support\Facades\DB::raw('COALESCE(SUM(distance_km), 0)'));
+                    ->select(DB::raw('COALESCE(SUM(distance_km), 0)'));
             }])
             ->having('performance_score', '>', 0)
             ->orderByDesc('performance_score');

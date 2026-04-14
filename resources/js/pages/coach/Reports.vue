@@ -260,7 +260,11 @@ const exportCsv = (athleteId?: number) => {
                                                 class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-accent/10 text-xs font-black text-accent transition-transform group-hover:scale-110"
                                             >
                                                 <img
-                                                    v-if="item.athlete.athlete_profile?.profile_photo_path"
+                                                    v-if="
+                                                        item.athlete
+                                                            .athlete_profile
+                                                            ?.profile_photo_path
+                                                    "
                                                     :src="`/documents/${item.athlete.id}/profile_photo`"
                                                     class="h-full w-full object-cover"
                                                 />

@@ -491,7 +491,10 @@ const formatDate = (date: string) => {
                                     :src="log.athlete.avatar"
                                     class="h-full w-full object-cover"
                                 />
-                                <span v-else class="text-xs font-black text-accent">
+                                <span
+                                    v-else
+                                    class="text-xs font-black text-accent"
+                                >
                                     {{
                                         log.athlete?.name
                                             .split(' ')

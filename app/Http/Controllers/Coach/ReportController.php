@@ -33,7 +33,7 @@ class ReportController extends Controller
 
         $athletes = User::whereRole('Atlet')
             ->where('coach_id', $coach->id)
-            ->select('id', 'name', 'email')
+            ->with(['athleteProfile'])
             ->get();
 
         $reportData = [];

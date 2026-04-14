@@ -39,7 +39,8 @@ class TrainingSessionController extends Controller
             'exerciseTypes' => ExerciseType::all(),
             'athletes' => User::where('coach_id', $coachId)
                 ->where('is_verified', true)
-                ->get(['id', 'name']),
+                ->with(['athleteProfile'])
+                ->get(['id', 'name', 'avatar']),
         ]);
     }
 
@@ -81,9 +82,11 @@ class TrainingSessionController extends Controller
 
         $session->load([
             'exerciseType',
-            'athletes:id,name,email',
-            'logs' => fn ($q) => $q->with(['athlete:id,name,email', 'attachments'])->orderBy('date', 'desc'),
+            'athletes:id,name,email,avatar',
+            'logs' => fn ($q) => $q->with(['athlete:id,name,email,avatar', 'attachments'])->orderBy('date', 'desc'),
         ]);
+        $session->athletes->load('athleteProfile');
+        $session->logs->pluck('athlete')->each->load('athleteProfile');
 
         return Inertia::render('coach/TrainingSessionDetail', [
             'session' => $session,

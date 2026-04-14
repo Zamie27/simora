@@ -6,7 +6,6 @@ import {
     Calendar,
     Activity,
     TrendingUp,
-    Zap,
     ShieldCheck,
     Clock,
     MapPin,
@@ -485,13 +484,22 @@ const formatDate = (date: string) => {
                             class="group flex items-center gap-4 rounded-2xl bg-white/5 p-4 transition-all hover:bg-white/10"
                         >
                             <div
-                                class="flex h-12 w-12 items-center justify-center rounded-xl border border-accent/20 bg-accent/10"
+                                class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-secondary"
                             >
-                                <Trophy
-                                    v-if="log.completion_status === 'completed'"
-                                    class="h-6 w-6 text-accent"
+                                <img
+                                    v-if="log.athlete?.avatar"
+                                    :src="log.athlete.avatar"
+                                    class="h-full w-full object-cover"
                                 />
-                                <Zap v-else class="h-6 w-6 text-yellow-500" />
+                                <span v-else class="text-xs font-black text-accent">
+                                    {{
+                                        log.athlete?.name
+                                            .split(' ')
+                                            .map((n: string) => n[0])
+                                            .slice(0, 2)
+                                            .join('')
+                                    }}
+                                </span>
                             </div>
                             <div class="flex-1">
                                 <div class="flex items-center justify-between">

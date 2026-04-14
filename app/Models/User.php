@@ -72,6 +72,23 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the user's avatar URL.
+     */
+    public function getAvatarAttribute(?string $value): ?string
+    {
+        if ($value) {
+            return $value;
+        }
+
+        // Fallback for athletes who have a profile photo path but no avatar URL set
+        if ($this->relationLoaded('athleteProfile') && $this->athleteProfile?->profile_photo_path) {
+            return "/documents/{$this->id}/profile_photo";
+        }
+
+        return null;
+    }
+
+    /**
      * Get the role associated with the user.
      *
      * @return BelongsTo<Role, $this>

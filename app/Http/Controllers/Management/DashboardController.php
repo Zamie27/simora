@@ -32,7 +32,7 @@ class DashboardController extends Controller
         $totalLogs = TrainingLog::count();
 
         // 3. Recent Activity Feed (Global)
-        $recentLogs = TrainingLog::with(['athlete.category', 'exerciseType'])
+        $recentLogs = TrainingLog::with(['athlete.category', 'athlete.athleteProfile', 'exerciseType'])
             ->latest('date')
             ->latest('created_at')
             ->take(10)

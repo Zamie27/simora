@@ -35,7 +35,7 @@ interface Log {
     coach_rating: number | null;
     coach_evaluation: string | null;
     coach_comments: string | null;
-    athlete: { id: number; name: string; email: string };
+    athlete: { id: number; name: string; email: string; avatar?: string };
     attachments: Attachment[];
 }
 interface Session {
@@ -49,7 +49,7 @@ interface Session {
     target_duration_minutes: number | null;
     target_avg_speed: number | null;
     target_rpm: number | null;
-    athletes: { id: number; name: string }[];
+    athletes: { id: number; name: string; avatar?: string }[];
     logs: Log[];
 }
 
@@ -262,15 +262,22 @@ const completionColor = (s: string) =>
                     >
                         <div class="flex items-center gap-4">
                             <div
-                                class="flex h-10 w-10 items-center justify-center rounded-full bg-accent/10 text-xs font-black text-accent"
+                                class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-accent/10 text-xs font-black text-accent"
                             >
-                                {{
-                                    log.athlete.name
-                                        .split(' ')
-                                        .map((n) => n[0])
-                                        .slice(0, 2)
-                                        .join('')
-                                }}
+                                <img
+                                    v-if="log.athlete.avatar"
+                                    :src="log.athlete.avatar"
+                                    class="h-full w-full object-cover"
+                                />
+                                <span v-else>
+                                    {{
+                                        log.athlete.name
+                                            .split(' ')
+                                            .map((n) => n[0])
+                                            .slice(0, 2)
+                                            .join('')
+                                    }}
+                                </span>
                             </div>
                             <div>
                                 <h4 class="font-bold text-foreground">

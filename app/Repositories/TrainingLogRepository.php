@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\TrainingLog;
 use App\Models\TrainingSession;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 class TrainingLogRepository
@@ -137,7 +138,7 @@ class TrainingLogRepository
             // Check if there is already a log for this specific instance date
             $log = TrainingLog::where('training_session_id', $session->id)
                 ->where('athlete_id', $athleteId)
-                ->whereDate('date', $instanceDate->toDateString())
+                ->whereDate('date', '=', $instanceDate->toDateString())
                 ->first();
 
             // Hide if already completed for this instance
@@ -160,20 +161,30 @@ class TrainingLogRepository
      */
     public function getAthleteRanking(?array $athleteIds = null, int $days = 30): array
     {
-        $query = TrainingLog::query()
-            ->join('users', 'training_logs.athlete_id', '=', 'users.id')
-            ->leftJoin('categories', 'users.category_id', '=', 'categories.id')
-            ->where('training_logs.date', '>=', now()->subDays($days)->toDateString())
-            ->select('users.id', 'users.name', 'users.avatar', 'categories.name as category_name')
-            ->selectRaw('ROUND(AVG(training_logs.avg_speed), 2) as performance_score')
-            ->selectRaw('COALESCE(SUM(training_logs.distance_km), 0) as total_distance')
-            ->groupBy('users.id', 'users.name', 'users.avatar', 'categories.name')
+        $query = User::whereRole('Atlet')
+            ->with(['athleteProfile', 'category'])
+            ->withCount(['trainingLogs as performance_score' => function ($q) use ($days) {
+                $q->where('date', '>=', now()->subDays($days)->toDateString())
+                    ->select(\Illuminate\Support\Facades\DB::raw('ROUND(AVG(avg_speed), 2)'));
+            }])
+            ->withCount(['trainingLogs as total_distance' => function ($q) use ($days) {
+                $q->where('date', '>=', now()->subDays($days)->toDateString())
+                    ->select(\Illuminate\Support\Facades\DB::raw('COALESCE(SUM(distance_km), 0)'));
+            }])
+            ->having('performance_score', '>', 0)
             ->orderByDesc('performance_score');
 
         if ($athleteIds) {
-            $query->whereIn('users.id', $athleteIds);
+            $query->whereIn('id', $athleteIds);
         }
 
-        return $query->get()->toArray();
+        return $query->get()->map(fn ($user) => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'avatar' => $user->avatar,
+            'category_name' => $user->category?->name ?? 'Personal',
+            'performance_score' => (float) $user->performance_score,
+            'total_distance' => (float) $user->total_distance,
+        ])->toArray();
     }
 }

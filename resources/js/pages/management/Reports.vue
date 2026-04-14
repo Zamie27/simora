@@ -285,20 +285,25 @@ const exportCsv = (athleteId?: number) => {
                                             </span>
                                         </div>
                                         <div>
-                                            <h4
-                                                class="font-black text-foreground uppercase"
+                                            <Link
+                                                :href="`/management/athletes/${item.athlete.id}`"
+                                                class="group/link"
                                             >
-                                                {{ item.athlete.name }}
-                                            </h4>
-                                            <p
-                                                class="text-[9px] font-bold text-muted-foreground opacity-50"
-                                            >
-                                                Pelatih:
-                                                {{
-                                                    item.athlete.coach?.name ||
-                                                    '-'
-                                                }}
-                                            </p>
+                                                <h4
+                                                    class="font-black text-foreground uppercase transition-colors group-hover/link:text-accent"
+                                                >
+                                                    {{ item.athlete.name }}
+                                                </h4>
+                                                <p
+                                                    class="text-[9px] font-bold text-muted-foreground opacity-50"
+                                                >
+                                                    Pelatih:
+                                                    {{
+                                                        item.athlete.coach?.name ||
+                                                        '-'
+                                                    }}
+                                                </p>
+                                            </Link>
                                         </div>
                                     </div>
                                 </td>

@@ -7,7 +7,6 @@ import {
     Calendar,
     Clock,
     Edit3,
-    Gauge,
     Milestone,
     Plus,
     RotateCcw,
@@ -101,6 +100,10 @@ interface Athlete {
     category_id: number | null;
     category: Category | null;
     physical_metrics: PhysicalMetric[];
+    avatar?: string | null;
+    athlete_profile?: {
+        profile_photo_path?: string;
+    } | null;
 }
 
 const props = defineProps<{
@@ -342,15 +345,22 @@ const completionOptions = [
             >
                 <div class="flex items-center gap-6">
                     <div
-                        class="flex h-20 w-20 items-center justify-center rounded-full border-2 border-accent/20 bg-accent/20 text-2xl font-black text-accent shadow-2xl shadow-accent/10"
+                        class="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-accent/20 bg-accent/20 text-2xl font-black text-accent shadow-2xl shadow-accent/10"
                     >
-                        {{
-                            athlete.name
-                                .split(' ')
-                                .map((n) => n[0])
-                                .slice(0, 2)
-                                .join('')
-                        }}
+                        <img
+                            v-if="athlete.athlete_profile?.profile_photo_path"
+                            :src="`/documents/${athlete.id}/profile_photo`"
+                            class="h-full w-full object-cover"
+                        />
+                        <span v-else>
+                            {{
+                                athlete.name
+                                    .split(' ')
+                                    .map((n) => n[0])
+                                    .slice(0, 2)
+                                    .join('')
+                            }}
+                        </span>
                     </div>
                     <div>
                         <h1
@@ -456,9 +466,11 @@ const completionOptions = [
                 >
                     <div class="flex items-center gap-4">
                         <div
-                            class="rounded-2xl bg-accent/10 p-4 text-accent transition-colors duration-500 group-hover:bg-accent group-hover:text-white"
+                            class="rounded-2xl bg-orange-500/10 p-4 text-orange-500 transition-colors duration-500 group-hover:bg-orange-500 group-hover:text-white"
                         >
-                            <Gauge class="h-6 w-6" />
+                            <TrendingUp
+                                class="h-6 w-6 transition-colors duration-500 group-hover:text-white"
+                            />
                         </div>
                         <div>
                             <p

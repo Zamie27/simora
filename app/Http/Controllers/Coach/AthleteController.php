@@ -43,7 +43,7 @@ class AthleteController extends Controller
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
 
-        $athlete->load(['category', 'physicalMetrics' => function ($query) {
+        $athlete->load(['category', 'athleteProfile', 'physicalMetrics' => function ($query) {
             $query->orderBy('recorded_at', 'desc');
         }]);
 

@@ -24,6 +24,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 interface Athlete {
     id: number;
     name: string;
+    avatar?: string;
 }
 
 interface ExerciseType {
@@ -240,15 +241,22 @@ const deleteSession = (session: Session) => {
                             <div
                                 v-for="athlete in session.athletes.slice(0, 3)"
                                 :key="athlete.id"
-                                class="flex h-7 w-7 items-center justify-center rounded-full border-2 border-card bg-secondary text-[8px] font-black text-foreground"
+                                class="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full border-2 border-card bg-secondary text-[8px] font-black text-foreground"
                             >
-                                {{
-                                    athlete.name
-                                        .split(' ')
-                                        .map((n) => n[0])
-                                        .slice(0, 2)
-                                        .join('')
-                                }}
+                                <img
+                                    v-if="athlete.avatar"
+                                    :src="athlete.avatar"
+                                    class="h-full w-full object-cover"
+                                />
+                                <span v-else>
+                                    {{
+                                        athlete.name
+                                            .split(' ')
+                                            .map((n) => n[0])
+                                            .slice(0, 2)
+                                            .join('')
+                                    }}
+                                </span>
                             </div>
                             <div
                                 v-if="session.athletes_count > 3"
@@ -402,13 +410,20 @@ const deleteSession = (session: Session) => {
                                                     ? 'bg-white/20'
                                                     : 'bg-secondary'
                                             "
-                                            class="flex h-6 w-6 items-center justify-center rounded-full text-[8px] font-black"
+                                            class="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full text-[8px] font-black"
                                         >
-                                            {{
-                                                athlete.name
-                                                    .substring(0, 2)
-                                                    .toUpperCase()
-                                            }}
+                                            <img
+                                                v-if="athlete.avatar"
+                                                :src="athlete.avatar"
+                                                class="h-full w-full object-cover"
+                                            />
+                                            <span v-else>
+                                                {{
+                                                    athlete.name
+                                                        .substring(0, 2)
+                                                        .toUpperCase()
+                                                }}
+                                            </span>
                                         </div>
                                         <span
                                             class="truncate text-[11px] font-black uppercase"

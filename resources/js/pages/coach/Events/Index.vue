@@ -297,7 +297,7 @@ watch(
                         <p
                             class="mt-1 text-[10px] font-bold tracking-widest text-muted-foreground uppercase opacity-60"
                         >
-                            Manage competitions & athlete participation
+                            Kelola kompetisi & partisipasi atlet
                         </p>
                     </div>
                 </div>
@@ -372,7 +372,7 @@ watch(
                                 v-else
                                 class="rounded-lg border border-border bg-muted px-3 py-1 text-[8px] font-black tracking-widest text-muted-foreground uppercase"
                             >
-                                Uncategorized
+                                Tanpa Kategori
                             </span>
                             <div
                                 class="flex items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100"
@@ -429,14 +429,14 @@ watch(
                             <div class="flex flex-col gap-0.5">
                                 <span
                                     class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
-                                    >Participating Athletes</span
+                                    >Atlet yang Berpartisipasi</span
                                 >
                                 <div class="flex items-center gap-2">
                                     <Users class="h-3.5 w-3.5 text-accent" />
                                     <span class="text-sm font-black"
                                         >{{ event.athletes_count }}
                                         <small class="text-[9px] opacity-40"
-                                            >Athletes</small
+                                            >Atlet</small
                                         ></span
                                     >
                                 </div>
@@ -499,7 +499,7 @@ watch(
                                 <p
                                     class="flex items-center gap-2 text-[10px] font-black tracking-[0.3em] text-accent uppercase italic opacity-80"
                                 >
-                                    <Flag class="h-3 w-3" /> Event Details
+                                    <Flag class="h-3 w-3" /> Detail Event
                                 </p>
                                 <div
                                     class="grid grid-cols-1 gap-6 md:grid-cols-2"
@@ -729,7 +729,7 @@ watch(
                             >
                                 {{
                                     form.processing
-                                        ? 'Syncing...'
+                                        ? 'Menyimpan...'
                                         : editingEvent
                                           ? 'Perbarui Agenda Event'
                                           : 'Simpan Agenda Event'

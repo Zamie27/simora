@@ -114,7 +114,7 @@ const breadcrumbs = [
                             <p
                                 class="text-[9px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
                             >
-                                Latest Weight
+                                Berat Terakhir
                             </p>
                             <p class="text-lg font-black text-foreground">
                                 {{
@@ -130,7 +130,7 @@ const breadcrumbs = [
                             <p
                                 class="text-[9px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
                             >
-                                Latest Height
+                                Tinggi Terakhir
                             </p>
                             <p class="text-lg font-black text-foreground">
                                 {{
@@ -146,12 +146,12 @@ const breadcrumbs = [
                             <p
                                 class="text-[9px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
                             >
-                                Category
+                                Kategori
                             </p>
                             <p class="text-xs font-black text-accent uppercase">
                                 {{
                                     athlete.latest_physical_metric?.category ||
-                                    'No Category'
+                                    'Belum Ada Kategori'
                                 }}
                             </p>
                         </div>

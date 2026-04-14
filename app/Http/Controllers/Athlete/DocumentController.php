@@ -53,7 +53,7 @@ class DocumentController extends Controller
                 }
 
                 // Store new file in private_documents directory
-                $path = $request->file($inputKey)->store('private_documents/'.$user->id, 'local');
+                $path = $request->file($inputKey)->store('private_documents/' . $user->id, 'local');
                 $profile->$dbColumn = $path;
             }
         }

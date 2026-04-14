@@ -33,7 +33,7 @@ defineProps<Props>();
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Profile settings',
+        title: 'Pengaturan Profil',
         href: edit(),
     },
 ];
@@ -114,16 +114,16 @@ const submit = () => {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Profile settings" />
+        <Head title="Pengaturan Profil" />
 
-        <h1 class="sr-only">Profile settings</h1>
+        <h1 class="sr-only">Pengaturan Profil</h1>
 
         <SettingsLayout>
             <div class="flex flex-col space-y-6">
                 <Heading
                     variant="small"
-                    title="Profile information"
-                    description="Update your name, email and birth date"
+                    title="Informasi Profil"
+                    description="Perbarui nama, email, dan tanggal lahir Anda"
                 />
 
                 <form @submit.prevent="submit" class="space-y-6">
@@ -171,7 +171,7 @@ const submit = () => {
                         </div>
                     </div>
                     <div class="grid gap-2">
-                        <Label for="name">Name</Label>
+                        <Label for="name">Nama Lengkap</Label>
                         <Input
                             id="name"
                             class="mt-1 block w-full"
@@ -183,7 +183,7 @@ const submit = () => {
                     </div>
 
                     <div class="grid gap-2">
-                        <Label for="email">Email address</Label>
+                        <Label for="email">Alamat Email</Label>
                         <div class="flex gap-2">
                             <Input
                                 id="email"
@@ -310,13 +310,13 @@ const submit = () => {
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">
                         <p class="-mt-4 text-sm text-muted-foreground">
-                            Your email address is unverified.
+                            Alamat email Anda belum diverifikasi.
                             <Link
                                 :href="send()"
                                 as="button"
                                 class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                             >
-                                Click here to resend the verification email.
+                                Klik di sini untuk mengirim ulang email verifikasi.
                             </Link>
                         </p>
 
@@ -324,8 +324,7 @@ const submit = () => {
                             v-if="status === 'verification-link-sent'"
                             class="mt-2 text-sm font-medium text-green-600"
                         >
-                            A new verification link has been sent to your email
-                            address.
+                            Tautan verifikasi baru telah dikirim ke alamat email Anda.
                         </div>
                     </div>
 
@@ -333,7 +332,7 @@ const submit = () => {
                         <Button
                             :disabled="form.processing"
                             data-test="update-profile-button"
-                            >Save</Button
+                            >Simpan</Button
                         >
 
                         <Transition

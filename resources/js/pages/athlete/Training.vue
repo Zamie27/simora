@@ -374,7 +374,7 @@ const chartSeries = computed(() => [
                                 <Milestone class="h-5 w-5" />
                             </div>
                             <span class="text-[10px] font-black uppercase"
-                                >Total Distance</span
+                                >Total Jarak</span
                             >
                         </div>
                         <div class="mt-6 flex items-baseline gap-2">
@@ -399,7 +399,7 @@ const chartSeries = computed(() => [
                                 <Gauge class="h-5 w-5" />
                             </div>
                             <span class="text-[10px] font-black uppercase"
-                                >Avg Speed</span
+                                >Rata-Rata Kecepatan</span
                             >
                         </div>
                         <div class="mt-6 flex items-baseline gap-2">
@@ -409,7 +409,7 @@ const chartSeries = computed(() => [
                             >
                             <span
                                 class="text-[10px] font-black text-accent uppercase italic"
-                                >KM/H</span
+                                >KM/JAM</span
                             >
                         </div>
                     </div>
@@ -424,7 +424,7 @@ const chartSeries = computed(() => [
                                 <RotateCcw class="h-5 w-5" />
                             </div>
                             <span class="text-[10px] font-black uppercase"
-                                >Avg Cadence</span
+                                >Rata-Rata Kadens</span
                             >
                         </div>
                         <div class="mt-6 flex items-baseline gap-2">
@@ -474,7 +474,7 @@ const chartSeries = computed(() => [
                             <Calendar class="h-5 w-5" />
                         </div>
                         <h2 class="text-xl font-black uppercase">
-                            Upcoming Missions
+                            Misi Mendatang
                         </h2>
                     </div>
 
@@ -485,7 +485,7 @@ const chartSeries = computed(() => [
                         <p
                             class="text-[10px] font-bold text-muted-foreground uppercase"
                         >
-                            No scheduled sessions
+                            Tidak ada jadwal sesi
                         </p>
                     </div>
 
@@ -603,7 +603,7 @@ const chartSeries = computed(() => [
                         <p
                             class="text-xs font-black tracking-widest text-muted-foreground uppercase opacity-40"
                         >
-                            Your journey begins here.
+                            Perjalananmu dimulai di sini.
                         </p>
                     </div>
 
@@ -712,7 +712,7 @@ const chartSeries = computed(() => [
                                             >
                                                 <span
                                                     class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
-                                                    >Distance</span
+                                                    >Jarak</span
                                                 >
                                                 <span class="text-lg font-black"
                                                     >{{ log.distance_km || 0 }}
@@ -727,7 +727,7 @@ const chartSeries = computed(() => [
                                             >
                                                 <span
                                                     class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
-                                                    >Duration</span
+                                                    >Durasi</span
                                                 >
                                                 <span class="text-lg font-black"
                                                     >{{
@@ -745,7 +745,7 @@ const chartSeries = computed(() => [
                                             >
                                                 <span
                                                     class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
-                                                    >Speed</span
+                                                    >Kecepatan</span
                                                 >
                                                 <span
                                                     class="text-lg font-black text-accent italic"
@@ -795,7 +795,7 @@ const chartSeries = computed(() => [
                             <p
                                 class="text-[10px] font-black tracking-widest text-accent uppercase"
                             >
-                                Training Results Detail
+                                Detail Hasil Latihan
                             </p>
                             <h2
                                 class="text-2xl font-black tracking-tighter text-foreground uppercase italic"
@@ -880,14 +880,14 @@ const chartSeries = computed(() => [
                                     >
                                         <span
                                             class="text-[9px] font-black tracking-widest text-accent uppercase"
-                                            >Average Speed</span
+                                            >Rata-Rata Kecepatan</span
                                         >
                                         <h4
                                             class="text-2xl font-black tracking-tighter text-white italic"
                                         >
                                             {{ selectedLog?.avg_speed || 0 }}
                                             <small class="text-[10px]"
-                                                >KPH</small
+                                                >KM/JAM</small
                                             >
                                         </h4>
                                     </div>
@@ -896,7 +896,7 @@ const chartSeries = computed(() => [
                                     >
                                         <span
                                             class="text-[9px] font-black tracking-widest text-emerald-500 uppercase"
-                                            >Average Cadence</span
+                                            >Rata-Rata Kadens</span
                                         >
                                         <h4
                                             class="text-2xl font-black tracking-tighter text-white italic"
@@ -912,7 +912,7 @@ const chartSeries = computed(() => [
                                     >
                                         <span
                                             class="text-[9px] font-black tracking-widest text-blue-500 uppercase"
-                                            >Pace / KM</span
+                                            >Tempo / KM</span
                                         >
                                         <h4
                                             class="text-2xl font-black tracking-tighter text-white italic"
@@ -928,7 +928,7 @@ const chartSeries = computed(() => [
                                     >
                                         <span
                                             class="text-[9px] font-black tracking-widest text-orange-500 uppercase"
-                                            >Calories</span
+                                            >Kalori</span
                                         >
                                         <h4
                                             class="text-2xl font-black tracking-tighter text-white italic"
@@ -944,7 +944,7 @@ const chartSeries = computed(() => [
                                     >
                                         <span
                                             class="text-[9px] font-black tracking-widest text-purple-500 uppercase"
-                                            >HR Zone</span
+                                            >Zona HR</span
                                         >
                                         <h4
                                             class="mt-1 text-sm font-black tracking-tighter text-white italic"
@@ -986,7 +986,7 @@ const chartSeries = computed(() => [
                                     >
                                         <span
                                             class="text-[9px] font-black tracking-widest text-yellow-500 uppercase"
-                                            >Avg Power</span
+                                            >Rata-Rata Daya</span
                                         >
                                         <h4
                                             class="text-2xl font-black tracking-tighter text-white italic"
@@ -1133,7 +1133,7 @@ const chartSeries = computed(() => [
                                             <p
                                                 class="text-[8px] font-black tracking-widest uppercase"
                                             >
-                                                No Attachments Provided
+                                                Tidak ada bukti lampiran
                                             </p>
                                         </div>
                                     </div>
@@ -1169,8 +1169,8 @@ const chartSeries = computed(() => [
                                         form.id
                                             ? 'Update Record'
                                             : selectedSession
-                                              ? 'Finish Session'
-                                              : 'Manual Entry'
+                                              ? 'Selesaikan Sesi'
+                                              : 'Input Manual'
                                     }}
                                 </h2>
                                 <p
@@ -1180,8 +1180,8 @@ const chartSeries = computed(() => [
                                         form.id
                                             ? 'Refine your performance data'
                                             : selectedSession
-                                              ? 'Complete your scheduled mission'
-                                              : 'Document your independent ride'
+                                              ? 'Selesaikan misi jadwal Anda'
+                                              : 'Dokumentasikan latihan mandiri Anda'
                                     }}
                                 </p>
                             </div>
@@ -1205,7 +1205,7 @@ const chartSeries = computed(() => [
                                 <p
                                     class="text-[10px] font-black tracking-[0.3em] text-accent uppercase opacity-80"
                                 >
-                                    General Infomation
+                                    Informasi Umum
                                 </p>
                                 <div
                                     class="grid grid-cols-1 gap-6 md:grid-cols-2"
@@ -1246,7 +1246,7 @@ const chartSeries = computed(() => [
                                     <div class="flex flex-col gap-2">
                                         <Label
                                             class="text-[10px] font-black uppercase opacity-60"
-                                            >Distance / Jarak (KM)</Label
+                                            >Jarak (KM)</Label
                                         >
                                         <Input
                                             v-model="form.distance_km"
@@ -1259,7 +1259,7 @@ const chartSeries = computed(() => [
                                     <div class="flex flex-col gap-2">
                                         <Label
                                             class="text-[10px] font-black uppercase opacity-60"
-                                            >Duration / Waktu (Min)</Label
+                                            >Durasi / Waktu (Menit)</Label
                                         >
                                         <Input
                                             v-model="form.duration_minutes"
@@ -1310,7 +1310,7 @@ const chartSeries = computed(() => [
                                     <div class="flex flex-col gap-2">
                                         <Label
                                             class="text-[10px] font-black uppercase opacity-60"
-                                            >Avg RPM</Label
+                                            >Rata-Rata RPM</Label
                                         >
                                         <Input
                                             v-model="form.rpm"
@@ -1323,7 +1323,7 @@ const chartSeries = computed(() => [
                                     <div class="flex flex-col gap-2">
                                         <Label
                                             class="text-[10px] font-black uppercase opacity-60"
-                                            >Avg Heart Rate</Label
+                                            >Rata-Rata Detak Jantung</Label
                                         >
                                         <Input
                                             v-model="form.avg_heart_rate"
@@ -1376,7 +1376,7 @@ const chartSeries = computed(() => [
                                             v-model="form.athlete_notes"
                                             rows="4"
                                             class="w-full rounded-2xl border-none bg-muted/30 p-6 text-sm font-medium outline-none focus:ring-2 focus:ring-accent"
-                                            placeholder="How did you feel today? Any mechanical issues?"
+                                            placeholder="Bagaimana perasaan Anda hari ini? Adakah kendala teknis?"
                                         ></textarea>
                                     </div>
 
@@ -1401,7 +1401,7 @@ const chartSeries = computed(() => [
                                             <p
                                                 class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
                                             >
-                                                Tap to upload files
+                                                Ketuk untuk mengunggah file
                                             </p>
                                         </div>
 
@@ -1435,8 +1435,8 @@ const chartSeries = computed(() => [
                                     form.processing
                                         ? 'Syncing...'
                                         : form.id
-                                          ? 'Update Performance Metrics'
-                                          : 'Log Activity Performance'
+                                          ? 'Perbarui Data Performa'
+                                          : 'Simpan Log Latihan'
                                 }}
                             </button>
                         </form>

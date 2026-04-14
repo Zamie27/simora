@@ -147,7 +147,7 @@ const getTypeColor = (id: number | null) => {
                     <h1
                         class="text-2xl font-black tracking-tight text-foreground uppercase md:text-3xl"
                     >
-                        System <span class="text-accent">Overview</span>
+                        Ikhtisar <span class="text-accent">Sistem</span>
                     </h1>
                     <p
                         class="text-sm font-bold text-muted-foreground opacity-70"
@@ -253,7 +253,7 @@ const getTypeColor = (id: number | null) => {
                             class="text-lg font-black tracking-tighter text-foreground uppercase"
                         >
                             Leaderboard
-                            <span class="text-accent">Performa</span>
+                            <span class="text-accent">Atlet</span>
                         </h3>
                         <p class="text-xs font-medium text-muted-foreground">
                             Peringkat atlet berdasarkan kecepatan rata-rata (30
@@ -310,7 +310,7 @@ const getTypeColor = (id: number | null) => {
                                 {{ athlete.name }}
                             </h4>
                             <p class="text-[10px] font-bold text-accent">
-                                {{ athlete.category_name || 'Personal' }}
+                                {{ athlete.category_name || 'Umum' }}
                             </p>
                             <div class="mt-1 flex items-center gap-3">
                                 <span
@@ -568,7 +568,7 @@ const getTypeColor = (id: number | null) => {
                         <h3
                             class="text-lg font-black tracking-tighter text-foreground uppercase"
                         >
-                            Log Global Terbaru
+                            Aktivitas Riwayat Latihan
                         </h3>
                     </div>
                     <div class="space-y-4">

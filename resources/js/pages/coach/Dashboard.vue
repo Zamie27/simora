@@ -190,7 +190,7 @@ const formatTime = (minutes: number) => {
                     <p
                         class="text-sm font-bold text-muted-foreground opacity-70"
                     >
-                        Overview performa tim dan aktivitas atlet hari ini.
+                        Ikhtisar performa tim dan aktivitas atlet hari ini.
                     </p>
                 </div>
 
@@ -259,7 +259,7 @@ const formatTime = (minutes: number) => {
                         <p
                             class="text-[10px] font-black tracking-widest text-muted-foreground uppercase"
                         >
-                            Total Jarak (Week)
+                            Total Jarak (Minggu)
                         </p>
                         <div class="flex items-end gap-2">
                             <h2 class="text-3xl font-black text-foreground">
@@ -283,7 +283,7 @@ const formatTime = (minutes: number) => {
                         <p
                             class="text-[10px] font-black tracking-widest text-muted-foreground uppercase"
                         >
-                            Waktu Latihan (Week)
+                            Waktu Latihan (Minggu)
                         </p>
                         <h2 class="text-3xl font-black text-foreground">
                             {{ formatTime(stats.weekly_duration) }}
@@ -428,7 +428,7 @@ const formatTime = (minutes: number) => {
                             <h3
                                 class="text-lg font-black tracking-tighter text-foreground uppercase"
                             >
-                                Aktivitas Terbaru
+                                Riwayat Latihan Terbaru
                             </h3>
                             <Link
                                 :href="coach.athletes.index().url"
@@ -640,7 +640,7 @@ const formatTime = (minutes: number) => {
                         <h4
                             class="mb-3 text-xs font-black tracking-widest text-muted-foreground uppercase"
                         >
-                            Pesan Terkirim
+                            Riwayat Pesan
                         </h4>
                         <div class="space-y-3">
                             <div
@@ -653,7 +653,7 @@ const formatTime = (minutes: number) => {
                                 >
                                     <span
                                         class="text-xs font-black text-foreground"
-                                        >Ke: {{ msg.receiver?.name }}</span
+                                        >Kepada: {{ msg.receiver?.name }}</span
                                     >
                                     <div class="flex items-center gap-2">
                                         <span
@@ -709,7 +709,7 @@ const formatTime = (minutes: number) => {
                         <h3
                             class="mb-6 text-lg font-black tracking-tighter text-foreground uppercase"
                         >
-                            Distribusi Atlet
+                            Kategori Atlet
                         </h3>
                         <div class="h-[250px]">
                             <VueApexCharts

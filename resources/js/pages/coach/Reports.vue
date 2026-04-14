@@ -214,7 +214,7 @@ const exportCsv = (athleteId?: number) => {
                                     <th
                                         class="px-8 py-6 text-left text-[10px] font-black tracking-[0.2em] text-muted-foreground uppercase opacity-50"
                                     >
-                                        Atlet Binaaan
+                                        Atlet Binaan
                                     </th>
                                     <th
                                         class="px-6 py-6 text-center text-[10px] font-black tracking-[0.2em] text-muted-foreground uppercase opacity-50"
@@ -308,7 +308,7 @@ const exportCsv = (athleteId?: number) => {
                                             >
                                             <span
                                                 class="text-[8px] font-black text-muted-foreground uppercase opacity-40"
-                                                >Total Session</span
+                                                >Total Sesi</span
                                             >
                                         </div>
                                     </td>
@@ -333,7 +333,7 @@ const exportCsv = (athleteId?: number) => {
                                                 class="mt-1 flex items-center gap-1 text-[8px] font-black text-muted-foreground uppercase opacity-40"
                                             >
                                                 <Milestone class="h-2 w-2" />
-                                                Distance
+                                                Jarak
                                             </div>
                                         </div>
                                     </td>
@@ -358,7 +358,7 @@ const exportCsv = (athleteId?: number) => {
                                                 class="mt-1 flex items-center gap-1 text-[8px] font-black text-muted-foreground uppercase opacity-40"
                                             >
                                                 <TrendingUp class="h-2 w-2" />
-                                                Avg Speed
+                                                Rata-Rata Kecepatan
                                             </div>
                                         </div>
                                     </td>
@@ -382,7 +382,7 @@ const exportCsv = (athleteId?: number) => {
                                                 class="mt-1 flex items-center gap-1 text-[8px] font-black text-muted-foreground uppercase opacity-40"
                                             >
                                                 <RotateCcw class="h-2 w-2" />
-                                                Cadence
+                                                Kadens
                                             </div>
                                         </div>
                                     </td>
@@ -440,8 +440,7 @@ const exportCsv = (athleteId?: number) => {
                                         <p
                                             class="text-xs font-black tracking-[0.2em] text-muted-foreground uppercase opacity-60"
                                         >
-                                            No performance records found for
-                                            this period.
+                                            Data riwayat performa tidak ditemukan untuk periode ini.
                                         </p>
                                     </td>
                                 </tr>

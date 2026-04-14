@@ -100,11 +100,11 @@ const chartOptions = computed<ApexOptions>(() => ({
 
 const chartSeries = computed(() => [
     {
-        name: 'Weight (kg)',
+        name: 'Berat (kg)',
         data: [...props.metrics].reverse().map((m) => Number(m.weight)),
     },
     {
-        name: 'Height (cm)',
+        name: 'Tinggi (cm)',
         data: [...props.metrics].reverse().map((m) => Number(m.height)),
     },
 ]);
@@ -230,7 +230,7 @@ const chartSeries = computed(() => [
                             <p
                                 class="text-[10px] font-black tracking-[0.2em] text-[#a4badd] uppercase opacity-60"
                             >
-                                Latest Measurement
+                                Pengukuran Terakhir
                             </p>
                         </div>
 
@@ -247,7 +247,7 @@ const chartSeries = computed(() => [
                                 <p
                                     class="mt-1 text-[10px] font-black tracking-widest text-[#a4badd] uppercase opacity-40"
                                 >
-                                    Weight
+                                    Berat Badan
                                 </p>
                             </div>
                             <div>
@@ -262,7 +262,7 @@ const chartSeries = computed(() => [
                                 <p
                                     class="mt-1 text-[10px] font-black tracking-widest text-[#a4badd] uppercase opacity-40"
                                 >
-                                    Height
+                                    Tinggi Badan
                                 </p>
                             </div>
                             <div>
@@ -293,7 +293,7 @@ const chartSeries = computed(() => [
                             <h3
                                 class="text-xs font-black tracking-widest text-muted-foreground uppercase opacity-60"
                             >
-                                Summary Info
+                                Ringkasan Info
                             </h3>
                         </div>
                         <div class="flex flex-col gap-4">
@@ -317,7 +317,7 @@ const chartSeries = computed(() => [
                                     >Usia Saat Terakhir</span
                                 >
                                 <span class="text-xs font-black text-foreground"
-                                    >{{ metrics[0]?.age || '-' }} Years</span
+                                    >{{ metrics[0]?.age || '-' }} Tahun</span
                                 >
                             </div>
                             <div class="flex items-center justify-between">
@@ -350,7 +350,7 @@ const chartSeries = computed(() => [
                     <h2
                         class="text-2xl font-black tracking-tight text-foreground uppercase"
                     >
-                        History Physical Performance
+                        Riwayat Performa Fisik
                     </h2>
                 </div>
                 <div
@@ -432,12 +432,12 @@ const chartSeries = computed(() => [
                             <h2
                                 class="text-2xl font-black tracking-tight text-foreground uppercase"
                             >
-                                Record My Physical Data
+                                Catat Data Fisik Saya
                             </h2>
                             <p
                                 class="mt-1 text-xs font-bold tracking-widest text-muted-foreground uppercase opacity-60"
                             >
-                                Athlete Monitoring System
+                                Sistem Monitoring Atlet
                             </p>
                         </div>
                         <button

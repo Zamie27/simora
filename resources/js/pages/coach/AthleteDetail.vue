@@ -260,13 +260,13 @@ const physicalChartOptions = computed<ApexOptions>(() => ({
 
 const physicalChartSeries = computed(() => [
     {
-        name: 'Weight (kg)',
+        name: 'Berat (kg)',
         data: [...props.athlete.physical_metrics]
             .reverse()
             .map((m) => Number(m.weight)),
     },
     {
-        name: 'Height (cm)',
+        name: 'Tinggi (cm)',
         data: [...props.athlete.physical_metrics]
             .reverse()
             .map((m) => Number(m.height)),
@@ -289,13 +289,13 @@ const trainingChartOptions = computed<ApexOptions>(() => ({
     },
     yaxis: [
         {
-            title: { text: 'Average Speed (kph)', style: { color: '#FF6120' } },
+            title: { text: 'Kecepatan Rata-Rata (km/jam)', style: { color: '#FF6120' } },
             labels: { style: { colors: '#FF6120' } },
         },
         {
             opposite: true,
             title: {
-                text: 'Average Cadence (RPM)',
+                text: 'Kadens Rata-Rata (RPM)',
                 style: { color: '#10B981' },
             },
             labels: { style: { colors: '#10B981' } },
@@ -306,8 +306,8 @@ const trainingChartOptions = computed<ApexOptions>(() => ({
 }));
 
 const trainingChartSeries = computed(() => [
-    { name: 'Avg Speed', data: props.performanceTrend.map((t) => t.avg_speed) },
-    { name: 'Avg RPM', data: props.performanceTrend.map((t) => t.rpm) },
+    { name: 'Rata Kecepatan', data: props.performanceTrend.map((t) => t.avg_speed) },
+    { name: 'Rata RPM', data: props.performanceTrend.map((t) => t.rpm) },
 ]);
 
 const intensityOptions = [
@@ -476,11 +476,11 @@ const completionOptions = [
                             <p
                                 class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
                             >
-                                Avg Speed
+                                Rata Kecepatan
                             </p>
                             <h4 class="text-3xl font-black italic">
                                 {{ statistics.avg_speed }}
-                                <small class="text-xs">KPH</small>
+                                <small class="text-xs">KM/JAM</small>
                             </h4>
                         </div>
                     </div>
@@ -499,7 +499,7 @@ const completionOptions = [
                             <p
                                 class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
                             >
-                                Avg RPM
+                                Rata RPM
                             </p>
                             <h4 class="text-3xl font-black italic">
                                 {{ statistics.avg_rpm }}
@@ -631,7 +631,7 @@ const completionOptions = [
                                         <th class="px-8 py-5">Atlet</th>
                                         <th class="px-6 py-5">Tanggal</th>
                                         <th class="px-6 py-5">Jenis</th>
-                                        <th class="px-6 py-5">Km / Speed</th>
+                                        <th class="px-6 py-5">Km / Kecepatan</th>
                                         <th class="px-6 py-5">Power / Pace</th>
                                         <th class="px-6 py-5">Status</th>
                                     </tr>
@@ -695,7 +695,7 @@ const completionOptions = [
                                             <span
                                                 v-if="log.session"
                                                 class="text-[8px] font-bold tracking-tighter text-accent uppercase"
-                                                >Scheduled Sesi</span
+                                                >Sesi Terjadwal</span
                                             >
                                         </td>
                                         <td class="px-6 py-6">
@@ -730,7 +730,7 @@ const completionOptions = [
                                             <p
                                                 class="text-[10px] font-bold text-accent italic"
                                             >
-                                                {{ log.avg_speed || 0 }} kph
+                                                {{ log.avg_speed || 0 }} km/jam
                                             </p>
                                         </td>
                                         <td class="px-6 py-6">

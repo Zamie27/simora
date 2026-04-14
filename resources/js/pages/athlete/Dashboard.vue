@@ -223,11 +223,11 @@ const getTypeColor = (id: number | null) => {
                     <p
                         class="text-sm font-bold text-muted-foreground opacity-70"
                     >
-                        Level:
+                        Kategori:
                         <span class="text-secondary-foreground">{{
-                            user.category?.name || 'Uncategorized'
+                            user.category?.name || 'Umum'
                         }}</span>
-                        • Fokus hari ini: Stay Hydrated & Consistent.
+                        • Fokus hari ini: Tetap Hidrasi & Konsisten.
                     </p>
                 </div>
             </div>
@@ -321,7 +321,7 @@ const getTypeColor = (id: number | null) => {
                     <div
                         class="mt-1 flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase"
                     >
-                        Siklus 7 Hari
+                        Statistik 7 Hari
                     </div>
                 </div>
 
@@ -586,7 +586,7 @@ const getTypeColor = (id: number | null) => {
                                 <p
                                     class="text-[10px] font-black tracking-[0.3em] text-accent uppercase opacity-80"
                                 >
-                                    General Infomation
+                                    Informasi Umum
                                 </p>
                                 <div
                                     class="grid grid-cols-1 gap-6 md:grid-cols-2"
@@ -612,7 +612,7 @@ const getTypeColor = (id: number | null) => {
                                         >
                                             <span
                                                 class="text-sm font-black text-white/50"
-                                                >Otomatis (Saat Ini)</span
+                                                >Otomatis (Hari Ini)</span
                                             >
                                             <X class="h-4 w-4 text-white/30" />
                                         </div>
@@ -799,19 +799,19 @@ const getTypeColor = (id: number | null) => {
                                 <p
                                     class="text-[10px] font-black tracking-[0.3em] text-muted-foreground uppercase opacity-80"
                                 >
-                                    Personal Notes
+                                    Catatan Pribadi
                                 </p>
                                 <div class="flex flex-col gap-6">
                                     <div class="flex flex-col gap-2">
                                         <Label
                                             class="text-[10px] font-black uppercase opacity-60"
-                                            >Athlete Notes</Label
+                                            >Catatan Atlet</Label
                                         >
                                         <textarea
                                             v-model="form.notes"
                                             rows="4"
                                             class="w-full rounded-2xl border-none bg-muted/30 p-6 text-sm font-medium outline-none focus:ring-2 focus:ring-accent"
-                                            placeholder="How did you feel today? Any mechanical issues?"
+                                            placeholder="Bagaimana perasaanmu hari ini? Ada kendala mekanis?"
                                         ></textarea>
                                     </div>
                                 </div>

@@ -231,12 +231,12 @@ const exportCsv = (athleteId?: number) => {
                                 <th
                                     class="px-6 py-6 text-center text-[10px] font-black tracking-[0.2em] text-muted-foreground uppercase opacity-50"
                                 >
-                                    Avg Speed
+                                    Rata-Rata Kecepatan
                                 </th>
                                 <th
                                     class="px-6 py-6 text-center text-[10px] font-black tracking-[0.2em] text-muted-foreground uppercase opacity-50"
                                 >
-                                    Avg RPM
+                                    Rata-Rata RPM
                                 </th>
                                 <th
                                     class="px-6 py-6 text-center text-[10px] font-black tracking-[0.2em] text-muted-foreground uppercase opacity-50"
@@ -432,7 +432,7 @@ const exportCsv = (athleteId?: number) => {
                                     <p
                                         class="text-xs font-black tracking-[0.2em] text-muted-foreground uppercase opacity-60"
                                     >
-                                        No data found.
+                                        Data tidak ditemukan.
                                     </p>
                                 </td>
                             </tr>

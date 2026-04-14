@@ -228,7 +228,7 @@ const deleteSession = (session: Session) => {
                                 v-if="session.repeat_weekly"
                                 class="flex items-center gap-1 rounded bg-green-500/10 px-2 py-0.5 text-[8px] font-black tracking-wider text-green-500 uppercase"
                             >
-                                <RotateCcw class="h-2.5 w-2.5" /> Repeat
+                                <RotateCcw class="h-2.5 w-2.5" /> Ulangi
                             </span>
                         </div>
                         <h3
@@ -488,7 +488,7 @@ const deleteSession = (session: Session) => {
                                             />
                                             <span
                                                 class="text-[9px] leading-none font-black uppercase"
-                                                >Ulang Mingguan</span
+                                                >Ulangi Mingguan</span
                                             >
                                         </div>
                                         <Checkbox
@@ -539,7 +539,7 @@ const deleteSession = (session: Session) => {
                                     <div class="space-y-1">
                                         <span
                                             class="text-[8px] font-black text-muted-foreground uppercase opacity-60"
-                                            >Speed (KM/H)</span
+                                            >Kecepatan (KM/JAM)</span
                                         >
                                         <Input
                                             v-model="form.target_avg_speed"
@@ -551,7 +551,7 @@ const deleteSession = (session: Session) => {
                                     <div class="space-y-1">
                                         <span
                                             class="text-[8px] font-black text-muted-foreground uppercase opacity-60"
-                                            >Cadence (RPM)</span
+                                            >Kadens (RPM)</span
                                         >
                                         <Input
                                             v-model="form.target_rpm"

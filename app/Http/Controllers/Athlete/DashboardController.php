@@ -42,7 +42,12 @@ class DashboardController extends Controller
         // Upcoming Events (Missions)
         $upcomingEvents = $user->athleteEvents()
             ->where('event_date', '>=', $now->copy()->startOfDay())
-            ->with(['type', 'participants' => fn ($q) => $q->where('user_id', $user->id)])
+            ->with([
+                'type',
+                'coach:id,name',
+                'participants.user:id,name,avatar',
+                'participants.point',
+            ])
             ->orderBy('event_date', 'asc')
             ->take(3)
             ->get();

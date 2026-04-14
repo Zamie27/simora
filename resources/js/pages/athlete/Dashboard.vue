@@ -14,6 +14,8 @@ import {
     X,
     MessageSquare,
     CheckCircle2,
+    Calendar,
+    Users,
 } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
@@ -156,6 +158,50 @@ const exerciseTypeOptions = computed(() =>
         label: type.name,
     })),
 );
+
+const showDetailModal = ref(false);
+const selectedEvent = ref<any>(null);
+
+const openDetail = (event: any) => {
+    selectedEvent.value = event;
+    showDetailModal.value = true;
+};
+
+const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString('id-ID', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+    });
+};
+
+const getStatusColor = (status: string) => {
+    switch (status) {
+        case 'participated':
+            return 'text-emerald-500';
+        case 'planned':
+            return 'text-accent';
+        case 'cancelled':
+            return 'text-destructive';
+        default:
+            return 'text-muted-foreground';
+    }
+};
+
+const getTypeColor = (id: number | null) => {
+    if (!id) {
+        return 'bg-muted text-muted-foreground border-border';
+    }
+
+    const colors = [
+        'bg-orange-500/10 text-orange-500 border-orange-500/20',
+        'bg-blue-500/10 text-blue-500 border-blue-500/20',
+        'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+        'bg-purple-500/10 text-purple-500 border-purple-500/20',
+    ];
+
+    return colors[id % colors.length];
+};
 </script>
 
 <template>
@@ -347,7 +393,7 @@ const exerciseTypeOptions = computed(() =>
                             <h2
                                 class="text-lg font-black tracking-tight text-foreground uppercase"
                             >
-                                Misi Mendatang
+                                Event Mendatang
                             </h2>
                         </div>
                         <div class="flex flex-col gap-4">
@@ -365,7 +411,8 @@ const exerciseTypeOptions = computed(() =>
                             <div
                                 v-for="event in upcomingEvents"
                                 :key="event.id"
-                                class="group flex items-center gap-4 rounded-xl border border-border bg-muted/30 p-4 transition-all hover:border-accent/40"
+                                @click="openDetail(event)"
+                                class="group flex cursor-pointer items-center gap-4 rounded-xl border border-border bg-muted/30 p-4 transition-all hover:border-accent/40 hover:bg-muted/50"
                             >
                                 <div
                                     class="flex h-12 w-12 flex-col items-center justify-center rounded-lg bg-accent text-[10px] leading-tight font-black text-accent-foreground uppercase"
@@ -786,6 +833,168 @@ const exerciseTypeOptions = computed(() =>
                                 }}</span>
                             </button>
                         </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Event Detail Modal -->
+            <div
+                v-if="showDetailModal && selectedEvent"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-2xl"
+            >
+                <div
+                    class="w-full max-w-4xl animate-in overflow-hidden rounded-[3rem] border border-border bg-card shadow-2xl duration-300 fade-in zoom-in"
+                >
+                    <div
+                        class="flex items-center justify-between border-b border-border bg-muted/20 p-8 md:p-10"
+                    >
+                        <div class="flex items-center gap-6">
+                            <div
+                                :class="getTypeColor(selectedEvent.event_type_id)"
+                                class="flex h-20 w-20 items-center justify-center rounded-3xl border shadow-xl"
+                            >
+                                <Trophy class="h-10 w-10 text-accent" />
+                            </div>
+                            <div>
+                                <h2
+                                    class="text-3xl leading-none font-black tracking-tighter text-foreground uppercase italic"
+                                >
+                                    {{ selectedEvent.title }}
+                                </h2>
+                                <p
+                                    class="mt-2 flex items-center gap-2 text-[10px] font-black tracking-widest text-accent uppercase opacity-80"
+                                >
+                                    <Calendar class="h-3 w-3" />
+                                    {{ formatDate(selectedEvent.event_date) }}
+                                    <span class="mx-2 opacity-20">|</span>
+                                    <MapPin class="h-3 w-3" />
+                                    {{ selectedEvent.location || 'Lokasi TBA' }}
+                                </p>
+                            </div>
+                        </div>
+                        <button
+                            @click="showDetailModal = false"
+                            class="rounded-full bg-muted/30 p-3 text-muted-foreground transition-all hover:bg-muted/50"
+                        >
+                            <X class="h-6 w-6" />
+                        </button>
+                    </div>
+
+                    <div
+                        class="grid max-h-[70vh] grid-cols-1 gap-10 overflow-y-auto p-10 md:grid-cols-3"
+                    >
+                        <!-- Left: Details -->
+                        <div class="space-y-8 md:col-span-1">
+                            <div v-if="selectedEvent.description" class="space-y-3">
+                                <h4
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                >
+                                    Deskripsi Event
+                                </h4>
+                                <p
+                                    class="text-sm leading-relaxed font-medium italic"
+                                >
+                                    {{ selectedEvent.description }}
+                                </p>
+                            </div>
+                            <div class="space-y-3">
+                                <h4
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                >
+                                    Penanggung Jawab
+                                </h4>
+                                <p class="text-sm font-black text-foreground">
+                                    Coach: {{ selectedEvent.coach?.name || 'TBA' }}
+                                </p>
+                            </div>
+
+                            <div class="space-y-3">
+                                <h4
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                >
+                                    Status Keikutsertaan
+                                </h4>
+                                <div class="flex flex-col gap-2">
+                                    <p
+                                        v-for="participation in selectedEvent.participants.filter((p: any) => p.user_id === user.id)"
+                                        :key="participation.id"
+                                        class="text-sm font-black uppercase"
+                                        :class="getStatusColor(participation.status)"
+                                    >
+                                        {{ participation.status }}
+                                    </p>
+                                    <p
+                                        v-for="participation in selectedEvent.participants.filter((p: any) => p.user_id === user.id)"
+                                        :key="'point-'+participation.id"
+                                        class="text-xs font-bold text-muted-foreground uppercase opacity-60"
+                                    >
+                                        Kategori Poin:
+                                        <span class="text-accent">{{
+                                            participation.point?.name || '-'
+                                        }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Participant List -->
+                        <div class="space-y-6 md:col-span-2">
+                            <h4
+                                class="flex items-center gap-2 text-xs font-black tracking-widest uppercase"
+                            >
+                                <Users class="h-4 w-4 text-orange-500" /> Peserta Lain
+                                ({{ selectedEvent.participants?.length || 0 }})
+                            </h4>
+                            <div class="grid grid-cols-1 gap-3">
+                                <div
+                                    v-for="participation in selectedEvent.participants"
+                                    :key="participation.id"
+                                    class="flex items-center justify-between rounded-2xl border border-border bg-muted/10 p-4 transition-all hover:bg-muted/20"
+                                >
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-border bg-secondary"
+                                        >
+                                            <img
+                                                v-if="participation.user?.avatar"
+                                                :src="participation.user.avatar"
+                                                class="h-full w-full object-cover"
+                                            />
+                                            <span v-else class="text-[10px] font-black uppercase">
+                                                {{ participation.user?.name.substring(0, 2) }}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-black uppercase">
+                                                {{ participation.user?.name }}
+                                                <span v-if="participation.user_id === user.id" class="ml-2 text-[8px] text-accent">(Anda)</span>
+                                            </p>
+                                            <p
+                                                class="text-[8px] font-bold text-muted-foreground uppercase opacity-60"
+                                            >
+                                                Kategori: {{ participation.point?.name || 'General' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div
+                                        :class="getStatusColor(participation.status)"
+                                        class="text-[8px] font-black tracking-widest uppercase"
+                                    >
+                                        {{ participation.status }}
+                                    </div>
+                                </div>
+                                <div
+                                    v-if="!selectedEvent.participants?.length"
+                                    class="flex flex-col items-center justify-center rounded-3xl border border-dashed border-border p-10 opacity-40"
+                                >
+                                    <Users class="mb-2 h-8 w-8" />
+                                    <p
+                                        class="text-[10px] font-black tracking-widest uppercase italic"
+                                    >
+                                        Belum ada peserta terdaftar
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

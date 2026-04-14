@@ -10,8 +10,9 @@ import {
     Clock,
     MapPin,
     Trophy,
+    X,
 } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
 
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -94,6 +95,42 @@ const formatDate = (date: string) => {
         month: 'long',
         year: 'numeric',
     });
+};
+
+const showDetailModal = ref(false);
+const selectedEvent = ref<any>(null);
+
+const openDetail = (event: any) => {
+    selectedEvent.value = event;
+    showDetailModal.value = true;
+};
+
+const getStatusColor = (status: string) => {
+    switch (status) {
+        case 'participated':
+            return 'text-emerald-500';
+        case 'planned':
+            return 'text-accent';
+        case 'cancelled':
+            return 'text-destructive';
+        default:
+            return 'text-muted-foreground';
+    }
+};
+
+const getTypeColor = (id: number | null) => {
+    if (!id) {
+        return 'bg-muted text-muted-foreground border-border';
+    }
+
+    const colors = [
+        'bg-orange-500/10 text-orange-500 border-orange-500/20',
+        'bg-blue-500/10 text-blue-500 border-blue-500/20',
+        'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+        'bg-purple-500/10 text-purple-500 border-purple-500/20',
+    ];
+
+    return colors[id % colors.length];
 };
 </script>
 
@@ -433,7 +470,8 @@ const formatDate = (date: string) => {
                         <div
                             v-for="event in upcomingEvents"
                             :key="event.id"
-                            class="flex items-center gap-4 rounded-2xl border border-white/5 bg-white/5 p-4 transition-all hover:bg-white/10"
+                            @click="openDetail(event)"
+                            class="flex cursor-pointer items-center gap-4 rounded-2xl border border-white/5 bg-white/5 p-4 transition-all hover:bg-white/10"
                         >
                             <div
                                 class="flex flex-col items-center justify-center rounded-xl bg-accent px-3 py-2 text-white"
@@ -456,14 +494,20 @@ const formatDate = (date: string) => {
                                     {{ event.title }}
                                 </h4>
                                 <div
-                                    class="mt-1 flex items-center gap-3 text-[10px] font-bold text-muted-foreground opacity-60"
+                                    class="mt-1 flex items-center justify-between gap-3 text-[10px] font-bold text-muted-foreground opacity-60"
                                 >
-                                    <span class="flex items-center gap-1">
-                                        <MapPin class="h-3 w-3" />
-                                        {{ event.location }}
-                                    </span>
-                                    <span>•</span>
-                                    <span>{{ event.type?.name }}</span>
+                                    <div class="flex items-center gap-3">
+                                        <span class="flex items-center gap-1">
+                                            <MapPin class="h-3 w-3" />
+                                            {{ event.location }}
+                                        </span>
+                                        <span>•</span>
+                                        <span>{{ event.type?.name }}</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <Users class="h-3 w-3" />
+                                        <span>{{ event.participants?.length || 0 }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -526,9 +570,10 @@ const formatDate = (date: string) => {
                         </h3>
                     </div>
                     <div class="space-y-4">
-                        <div
+                        <Link
                             v-for="log in recentLogs"
                             :key="log.id"
+                            :href="`/management/athletes/${log.athlete_id}`"
                             class="group flex items-center gap-4 rounded-2xl bg-white/5 p-4 transition-all hover:bg-white/10"
                         >
                             <div
@@ -581,7 +626,7 @@ const formatDate = (date: string) => {
                                     {{ log.duration_minutes }} Min
                                 </p>
                             </div>
-                        </div>
+                        </Link>
 
                         <div
                             v-if="recentLogs.length === 0"
@@ -595,6 +640,142 @@ const formatDate = (date: string) => {
                             >
                                 Belum ada aktivitas
                             </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Modal (Admin View) -->
+        <div
+            v-if="showDetailModal && selectedEvent"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-2xl"
+        >
+            <div
+                class="w-full max-w-4xl animate-in overflow-hidden rounded-[3rem] border border-white/5 bg-surface shadow-2xl duration-300 fade-in zoom-in"
+            >
+                <div
+                    class="flex items-center justify-between border-b border-white/5 bg-white/5 p-8 md:p-10"
+                >
+                    <div class="flex items-center gap-6">
+                        <div
+                            :class="getTypeColor(selectedEvent.event_type_id)"
+                            class="flex h-20 w-20 items-center justify-center rounded-3xl border shadow-xl"
+                        >
+                            <Trophy class="h-10 w-10" />
+                        </div>
+                        <div>
+                            <h2
+                                class="text-3xl leading-none font-black tracking-tighter text-foreground uppercase italic"
+                            >
+                                {{ selectedEvent.title }}
+                            </h2>
+                            <p
+                                class="mt-2 flex items-center gap-2 text-[10px] font-black tracking-widest text-accent uppercase opacity-80"
+                            >
+                                <Calendar class="h-3 w-3" />
+                                {{ formatDate(selectedEvent.event_date) }}
+                                <span class="mx-2 opacity-20">|</span>
+                                <MapPin class="h-3 w-3" />
+                                {{ selectedEvent.location || 'No Location' }}
+                            </p>
+                        </div>
+                    </div>
+                    <button
+                        @click="showDetailModal = false"
+                        class="rounded-full bg-white/5 p-3 text-muted-foreground transition-all hover:bg-white/10"
+                    >
+                        <X class="h-6 w-6" />
+                    </button>
+                </div>
+
+                <div
+                    class="grid max-h-[70vh] grid-cols-1 gap-10 overflow-y-auto p-10 md:grid-cols-3"
+                >
+                    <!-- Left: Details -->
+                    <div class="space-y-8 md:col-span-1">
+                        <div v-if="selectedEvent.description" class="space-y-3">
+                            <h4
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                            >
+                                Deskripsi Event
+                            </h4>
+                            <p
+                                class="text-sm leading-relaxed font-medium italic"
+                            >
+                                {{ selectedEvent.description }}
+                            </p>
+                        </div>
+                        <div class="space-y-3">
+                            <h4
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                            >
+                                Penanggung Jawab
+                            </h4>
+                            <p class="text-sm font-black text-foreground">
+                                Coach: {{ selectedEvent.coach?.name }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Participant List -->
+                    <div class="space-y-6 md:col-span-2">
+                        <h4
+                            class="flex items-center gap-2 text-xs font-black tracking-widest uppercase"
+                        >
+                            <Users class="h-4 w-4 text-orange-500" /> Atlet
+                            Peserta ({{ selectedEvent.participants?.length || 0 }})
+                        </h4>
+                        <div class="grid grid-cols-1 gap-3">
+                            <div
+                                v-for="participation in selectedEvent.participants"
+                                :key="participation.id"
+                                class="flex items-center justify-between rounded-2xl border border-white/5 bg-white/5 p-6 transition-all hover:bg-white/10"
+                            >
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="flex h-12 w-12 items-center justify-center rounded-xl bg-surface text-xs font-black shadow-sm"
+                                    >
+                                        {{
+                                            participation.user?.name
+                                                .substring(0, 2)
+                                                .toUpperCase()
+                                        }}
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-black uppercase">
+                                            {{ participation.user?.name }}
+                                        </p>
+                                        <p
+                                            class="text-[10px] font-bold text-muted-foreground uppercase opacity-60"
+                                        >
+                                            Kategori:
+                                            <span class="text-accent">{{
+                                                participation.point?.name || 'General'
+                                            }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-end gap-1">
+                                    <div
+                                        :class="getStatusColor(participation.status)"
+                                        class="text-[10px] font-black tracking-widest uppercase"
+                                    >
+                                        {{ participation.status }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                v-if="!selectedEvent.participants?.length"
+                                class="flex flex-col items-center justify-center rounded-3xl border border-dashed border-white/5 p-10 opacity-40"
+                            >
+                                <Users class="mb-2 h-8 w-8" />
+                                <p
+                                    class="text-[10px] font-black tracking-widest uppercase italic"
+                                >
+                                    Belum ada atlet ditugaskan
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

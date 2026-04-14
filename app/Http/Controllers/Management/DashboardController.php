@@ -66,7 +66,7 @@ class DashboardController extends Controller
 
         // 7. Upcoming Events
         $upcomingEvents = Event::where('event_date', '>=', now()->toDateString())
-            ->with(['type:id,name', 'coach:id,name'])
+            ->with(['type:id,name', 'coach:id,name', 'participants.user', 'participants.point'])
             ->orderBy('event_date')
             ->take(5)
             ->get();

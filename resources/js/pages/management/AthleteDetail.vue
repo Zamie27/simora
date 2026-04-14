@@ -355,7 +355,7 @@ const trainingChartSeries = computed(() => [
                 </div>
                 <div class="flex flex-wrap gap-4">
                     <div
-                        class="flex shrink-0 items-center gap-4 rounded-2xl bg-secondary/50 p-4 border border-border"
+                        class="flex shrink-0 items-center gap-4 rounded-2xl border border-border bg-secondary/50 p-4"
                     >
                         <div class="flex flex-col">
                             <span
@@ -905,8 +905,15 @@ const trainingChartSeries = computed(() => [
                                         }}
                                     </span>
                                     <button
-                                        v-if="athlete.athlete_profile?.license_path"
-                                        @click="showPreview(`/documents/${athlete.id}/license`)"
+                                        v-if="
+                                            athlete.athlete_profile
+                                                ?.license_path
+                                        "
+                                        @click="
+                                            showPreview(
+                                                `/documents/${athlete.id}/license`,
+                                            )
+                                        "
                                         class="text-[8px] font-black text-accent uppercase hover:underline"
                                     >
                                         Lihat File
@@ -999,8 +1006,16 @@ const trainingChartSeries = computed(() => [
                                     >
                                 </div>
                                 <button
-                                    v-if="athlete.athlete_profile?.[`${doc.path}_path` as keyof typeof athlete.athlete_profile]"
-                                    @click="showPreview(`/documents/${athlete.id}/${doc.path}`)"
+                                    v-if="
+                                        athlete.athlete_profile?.[
+                                            `${doc.path}_path` as keyof typeof athlete.athlete_profile
+                                        ]
+                                    "
+                                    @click="
+                                        showPreview(
+                                            `/documents/${athlete.id}/${doc.path}`,
+                                        )
+                                    "
                                     class="rounded-full bg-accent/10 px-3 py-1 text-[9px] font-black text-accent uppercase hover:bg-accent hover:text-white"
                                 >
                                     Lihat

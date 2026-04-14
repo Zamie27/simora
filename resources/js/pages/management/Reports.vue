@@ -301,8 +301,8 @@ const exportCsv = (athleteId?: number) => {
                                                 >
                                                     Pelatih:
                                                     {{
-                                                        item.athlete.coach?.name ||
-                                                        '-'
+                                                        item.athlete.coach
+                                                            ?.name || '-'
                                                     }}
                                                 </p>
                                             </Link>

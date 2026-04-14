@@ -246,7 +246,9 @@ const formatDate = (date: string) => {
                             class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-secondary"
                         >
                             <img
-                                v-if="athlete.athlete_profile?.profile_photo_path"
+                                v-if="
+                                    athlete.athlete_profile?.profile_photo_path
+                                "
                                 :src="`/documents/${athlete.id}/profile_photo`"
                                 class="h-full w-full object-cover"
                             />
@@ -369,7 +371,7 @@ const formatDate = (date: string) => {
                                             4,
                                         )"
                                         :key="athlete.id"
-                                        class="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full border-2 border-surface bg-secondary text-[8px] font-black"
+                                        class="border-surface flex h-6 w-6 items-center justify-center overflow-hidden rounded-full border-2 bg-secondary text-[8px] font-black"
                                     >
                                         <img
                                             v-if="
@@ -396,7 +398,7 @@ const formatDate = (date: string) => {
                                     </div>
                                     <div
                                         v-if="session.athletes.length > 4"
-                                        class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-surface bg-muted text-[8px] font-black text-muted-foreground"
+                                        class="border-surface flex h-6 w-6 items-center justify-center rounded-full border-2 bg-muted text-[8px] font-black text-muted-foreground"
                                     >
                                         +{{ session.athletes.length - 4 }}
                                     </div>
@@ -533,7 +535,10 @@ const formatDate = (date: string) => {
                                 class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-secondary"
                             >
                                 <img
-                                    v-if="log.athlete?.athlete_profile?.profile_photo_path"
+                                    v-if="
+                                        log.athlete?.athlete_profile
+                                            ?.profile_photo_path
+                                    "
                                     :src="`/documents/${log.athlete.id}/profile_photo`"
                                     class="h-full w-full object-cover"
                                 />

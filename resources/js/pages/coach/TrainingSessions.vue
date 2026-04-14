@@ -247,7 +247,10 @@ const deleteSession = (session: Session) => {
                                 class="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full border-2 border-card bg-secondary text-[8px] font-black text-foreground"
                             >
                                 <img
-                                    v-if="athlete.athlete_profile?.profile_photo_path"
+                                    v-if="
+                                        athlete.athlete_profile
+                                            ?.profile_photo_path
+                                    "
                                     :src="`/documents/${athlete.id}/profile_photo`"
                                     class="h-full w-full object-cover"
                                 />
@@ -421,7 +424,10 @@ const deleteSession = (session: Session) => {
                                             class="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full text-[8px] font-black"
                                         >
                                             <img
-                                                v-if="athlete.athlete_profile?.profile_photo_path"
+                                                v-if="
+                                                    athlete.athlete_profile
+                                                        ?.profile_photo_path
+                                                "
                                                 :src="`/documents/${athlete.id}/profile_photo`"
                                                 class="h-full w-full object-cover"
                                             />

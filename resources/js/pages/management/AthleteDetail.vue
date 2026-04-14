@@ -675,17 +675,25 @@ const trainingChartSeries = computed(() => [
                                         class="group transition-colors hover:bg-muted/10"
                                     >
                                         <td class="px-8 py-6">
-                                            <div class="flex items-center gap-3">
+                                            <div
+                                                class="flex items-center gap-3"
+                                            >
                                                 <div
                                                     class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary"
                                                 >
                                                     <img
-                                                        v-if="athlete.athlete_profile?.profile_photo_path"
+                                                        v-if="
+                                                            athlete
+                                                                .athlete_profile
+                                                                ?.profile_photo_path
+                                                        "
                                                         :src="`/documents/${athlete.id}/profile_photo`"
                                                         class="h-full w-full object-cover"
                                                     />
                                                     <img
-                                                        v-else-if="athlete.avatar"
+                                                        v-else-if="
+                                                            athlete.avatar
+                                                        "
                                                         :src="athlete.avatar"
                                                         class="h-full w-full object-cover"
                                                     />
@@ -704,7 +712,10 @@ const trainingChartSeries = computed(() => [
                                                         }}
                                                     </span>
                                                 </div>
-                                                <span class="text-xs font-bold text-foreground">{{ athlete.name }}</span>
+                                                <span
+                                                    class="text-xs font-bold text-foreground"
+                                                    >{{ athlete.name }}</span
+                                                >
                                             </div>
                                         </td>
                                         <td class="px-6 py-6">

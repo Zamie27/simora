@@ -273,7 +273,10 @@ const completionColor = (s: string) =>
                                 class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-accent/10 text-xs font-black text-accent"
                             >
                                 <img
-                                    v-if="log.athlete.athlete_profile?.profile_photo_path"
+                                    v-if="
+                                        log.athlete.athlete_profile
+                                            ?.profile_photo_path
+                                    "
                                     :src="`/documents/${log.athlete.id}/profile_photo`"
                                     class="h-full w-full object-cover"
                                 />

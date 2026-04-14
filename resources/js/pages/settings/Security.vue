@@ -71,7 +71,9 @@ onUnmounted(() => clearTwoFactorAuthData());
                     v-slot="{ errors, processing, recentlySuccessful }"
                 >
                     <div class="grid gap-2">
-                        <Label for="current_password">Kata sandi saat ini</Label>
+                        <Label for="current_password"
+                            >Kata sandi saat ini</Label
+                        >
                         <PasswordInput
                             id="current_password"
                             name="current_password"
@@ -145,9 +147,9 @@ onUnmounted(() => clearTwoFactorAuthData());
                     class="flex flex-col items-start justify-start space-y-4"
                 >
                     <p class="text-sm text-muted-foreground">
-                        Saat Anda mengaktifkan autentikasi dua faktor, Anda akan diminta
-                        memasukkan PIN aman saat login. PIN ini dapat diperoleh
-                        dari aplikasi pendukung TOTP di ponsel Anda.
+                        Saat Anda mengaktifkan autentikasi dua faktor, Anda akan
+                        diminta memasukkan PIN aman saat login. PIN ini dapat
+                        diperoleh dari aplikasi pendukung TOTP di ponsel Anda.
                     </p>
 
                     <div>
@@ -175,9 +177,9 @@ onUnmounted(() => clearTwoFactorAuthData());
                     class="flex flex-col items-start justify-start space-y-4"
                 >
                     <p class="text-sm text-muted-foreground">
-                        Anda akan diminta memasukkan PIN acak yang aman saat login,
-                        yang dapat Anda peroleh dari aplikasi pendukung TOTP di
-                        ponsel Anda.
+                        Anda akan diminta memasukkan PIN acak yang aman saat
+                        login, yang dapat Anda peroleh dari aplikasi pendukung
+                        TOTP di ponsel Anda.
                     </p>
 
                     <div class="relative inline">

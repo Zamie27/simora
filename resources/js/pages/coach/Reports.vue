@@ -440,7 +440,8 @@ const exportCsv = (athleteId?: number) => {
                                         <p
                                             class="text-xs font-black tracking-[0.2em] text-muted-foreground uppercase opacity-60"
                                         >
-                                            Data riwayat performa tidak ditemukan untuk periode ini.
+                                            Data riwayat performa tidak
+                                            ditemukan untuk periode ini.
                                         </p>
                                     </td>
                                 </tr>

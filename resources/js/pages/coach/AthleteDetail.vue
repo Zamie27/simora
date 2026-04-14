@@ -289,7 +289,10 @@ const trainingChartOptions = computed<ApexOptions>(() => ({
     },
     yaxis: [
         {
-            title: { text: 'Kecepatan Rata-Rata (km/jam)', style: { color: '#FF6120' } },
+            title: {
+                text: 'Kecepatan Rata-Rata (km/jam)',
+                style: { color: '#FF6120' },
+            },
             labels: { style: { colors: '#FF6120' } },
         },
         {
@@ -306,7 +309,10 @@ const trainingChartOptions = computed<ApexOptions>(() => ({
 }));
 
 const trainingChartSeries = computed(() => [
-    { name: 'Rata Kecepatan', data: props.performanceTrend.map((t) => t.avg_speed) },
+    {
+        name: 'Rata Kecepatan',
+        data: props.performanceTrend.map((t) => t.avg_speed),
+    },
     { name: 'Rata RPM', data: props.performanceTrend.map((t) => t.rpm) },
 ]);
 
@@ -631,7 +637,9 @@ const completionOptions = [
                                         <th class="px-8 py-5">Atlet</th>
                                         <th class="px-6 py-5">Tanggal</th>
                                         <th class="px-6 py-5">Jenis</th>
-                                        <th class="px-6 py-5">Km / Kecepatan</th>
+                                        <th class="px-6 py-5">
+                                            Km / Kecepatan
+                                        </th>
                                         <th class="px-6 py-5">Power / Pace</th>
                                         <th class="px-6 py-5">Status</th>
                                     </tr>

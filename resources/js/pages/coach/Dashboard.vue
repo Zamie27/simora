@@ -19,8 +19,8 @@ import {
 import { computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
 
-import AppLayout from '@/layouts/AppLayout.vue';
 import CustomSelect from '@/components/ui/CustomSelect.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 import coach from '@/routes/coach';
 
 interface Props {

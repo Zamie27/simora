@@ -30,11 +30,13 @@ interface Athlete {
 interface EventType {
     id: number;
     name: string;
+    coach_id: number | null;
 }
 
 interface EventPoint {
     id: number;
     name: string;
+    coach_id: number | null;
 }
 
 interface Event {
@@ -800,12 +802,25 @@ watch(
                                 <div
                                     v-for="type in eventTypes"
                                     :key="type.id"
-                                    class="flex items-center justify-between rounded-xl border border-border bg-card p-4"
+                                    :class="[
+                                        !type.coach_id
+                                            ? 'border-accent/20 bg-accent/5'
+                                            : 'border-border bg-card',
+                                    ]"
+                                    class="flex items-center justify-between rounded-xl border p-4"
                                 >
-                                    <span class="text-xs font-bold uppercase">{{
-                                        type.name
-                                    }}</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold uppercase">{{
+                                            type.name
+                                        }}</span>
+                                        <span
+                                            v-if="!type.coach_id"
+                                            class="rounded bg-accent/20 px-1.5 py-0.5 text-[8px] font-black tracking-widest text-accent uppercase"
+                                            >System</span
+                                        >
+                                    </div>
                                     <button
+                                        v-if="type.coach_id"
                                         @click="deleteType(type.id)"
                                         class="text-destructive opacity-40 transition-opacity hover:opacity-100"
                                     >
@@ -843,12 +858,25 @@ watch(
                                 <div
                                     v-for="point in eventPoints"
                                     :key="point.id"
-                                    class="flex items-center justify-between rounded-xl border border-border bg-card p-4"
+                                    :class="[
+                                        !point.coach_id
+                                            ? 'border-accent/20 bg-accent/5'
+                                            : 'border-border bg-card',
+                                    ]"
+                                    class="flex items-center justify-between rounded-xl border p-4"
                                 >
-                                    <span class="text-xs font-bold uppercase">{{
-                                        point.name
-                                    }}</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold uppercase">{{
+                                            point.name
+                                        }}</span>
+                                        <span
+                                            v-if="!point.coach_id"
+                                            class="rounded bg-accent/20 px-1.5 py-0.5 text-[8px] font-black tracking-widest text-accent uppercase"
+                                            >System</span
+                                        >
+                                    </div>
                                     <button
+                                        v-if="point.coach_id"
                                         @click="deletePoint(point.id)"
                                         class="text-destructive opacity-40 transition-opacity hover:opacity-100"
                                     >

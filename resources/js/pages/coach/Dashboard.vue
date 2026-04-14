@@ -438,9 +438,14 @@ const formatTime = (minutes: number) => {
                             </Link>
                         </div>
                         <div class="space-y-4">
-                            <div
+                            <Link
                                 v-for="log in recentLogs"
                                 :key="log.id"
+                                :href="
+                                    log.training_session_id
+                                        ? `/coach/training-sessions/${log.training_session_id}`
+                                        : `/coach/athletes/${log.athlete_id}`
+                                "
                                 class="group flex items-center gap-4 rounded-2xl bg-white/5 p-4 transition-all hover:bg-white/10"
                             >
                                 <div
@@ -486,7 +491,7 @@ const formatTime = (minutes: number) => {
                                 <ArrowUpRight
                                     class="h-4 w-4 transform text-white/20 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-accent"
                                 />
-                            </div>
+                            </Link>
 
                             <div
                                 v-if="recentLogs.length === 0"

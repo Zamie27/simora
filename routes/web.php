@@ -73,6 +73,15 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         // Reports
         Route::get('reports', [ManagementReportController::class, 'index'])->name('reports.index');
         Route::post('reports/export', [ManagementReportController::class, 'export'])->name('reports.export');
+
+        // Event Settings
+        Route::get('event-settings', [App\Http\Controllers\Management\EventSettingController::class, 'index'])->name('event-settings.index');
+        Route::post('event-types', [App\Http\Controllers\Management\EventSettingController::class, 'storeType'])->name('event-types.store');
+        Route::patch('event-types/{type}', [App\Http\Controllers\Management\EventSettingController::class, 'updateType'])->name('event-types.update');
+        Route::delete('event-types/{type}', [App\Http\Controllers\Management\EventSettingController::class, 'destroyType'])->name('event-types.destroy');
+        Route::post('event-points', [App\Http\Controllers\Management\EventSettingController::class, 'storePoint'])->name('event-points.store');
+        Route::patch('event-points/{point}', [App\Http\Controllers\Management\EventSettingController::class, 'updatePoint'])->name('event-points.update');
+        Route::delete('event-points/{point}', [App\Http\Controllers\Management\EventSettingController::class, 'destroyPoint'])->name('event-points.destroy');
     });
 
     // Coach specific routes

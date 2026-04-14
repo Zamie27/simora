@@ -15,7 +15,7 @@ import {
     Trophy,
     Info,
 } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
@@ -30,8 +30,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import type { NavItem, SharedData } from '@/types';
 import { dashboard } from '@/routes';
+import type { NavItem, SharedData } from '@/types';
 
 const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user);
@@ -77,6 +77,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Laporan Performa',
                 href: '/management/reports',
                 icon: FileText,
+            },
+            {
+                title: 'Setting Event',
+                href: '/management/event-settings',
+                icon: Trophy,
             },
         );
     }
@@ -153,6 +158,34 @@ const mainNavItems = computed<NavItem[]>(() => {
     return items;
 });
 
+const currentTime = ref(new Date());
+let timer: any = null;
+
+const formatClock = (date: Date) => {
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${hours}/${minutes}/${seconds}/, ${day}/${month}/${year}`;
+};
+
+const clockString = computed(() => formatClock(currentTime.value));
+
+onMounted(() => {
+    timer = setInterval(() => {
+        currentTime.value = new Date();
+    }, 1000);
+});
+
+onUnmounted(() => {
+    if (timer) {
+        clearInterval(timer);
+    }
+});
+
 const footerNavItems: NavItem[] = [
     {
         title: 'About Kuukok',
@@ -181,6 +214,11 @@ const footerNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
+            <div
+                class="text-muted-foreground mb-2 px-4 text-[10px] font-black tracking-widest opacity-60 group-data-[state=collapsed]:hidden"
+            >
+                {{ clockString }}
+            </div>
             <NavFooter :items="footerNavItems" />
             <NavUser />
         </SidebarFooter>

@@ -48,8 +48,12 @@ class EventController extends Controller
                 ];
             });
 
-        $eventTypes = EventType::where('coach_id', auth()->id())->get();
-        $eventPoints = EventPoint::where('coach_id', auth()->id())->get();
+        $eventTypes = EventType::where('coach_id', auth()->id())
+            ->orWhereNull('coach_id')
+            ->get();
+        $eventPoints = EventPoint::where('coach_id', auth()->id())
+            ->orWhereNull('coach_id')
+            ->get();
 
         return Inertia::render('coach/Events/Index', [
             'events' => $events,

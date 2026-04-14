@@ -16,7 +16,7 @@ withDefaults(
 
 <template>
     <header
-        class="bg-background/95 fixed top-0 right-0 z-50 flex h-16 items-center justify-between gap-2 border-b border-sidebar-border/70 px-6 backdrop-blur-xl transition-[left,height] duration-200 ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 md:px-4 left-0 md:left-(--sidebar-width) group-data-[state=collapsed]/sidebar-wrapper:md:left-(--sidebar-width-icon)"
+        class="fixed top-0 right-0 left-0 z-50 flex h-16 items-center justify-between gap-2 border-b border-sidebar-border/70 bg-background/95 px-6 backdrop-blur-xl transition-[left,height] duration-200 ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 md:left-(--sidebar-width) md:px-4 group-data-[state=collapsed]/sidebar-wrapper:md:left-(--sidebar-width-icon)"
     >
         <div class="flex flex-1 items-center gap-2 overflow-hidden">
             <SidebarTrigger class="-ml-1" />

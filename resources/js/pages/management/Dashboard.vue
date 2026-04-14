@@ -506,7 +506,9 @@ const getTypeColor = (id: number | null) => {
                                     </div>
                                     <div class="flex items-center gap-1">
                                         <Users class="h-3 w-3" />
-                                        <span>{{ event.participants?.length || 0 }}</span>
+                                        <span>{{
+                                            event.participants?.length || 0
+                                        }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -652,7 +654,7 @@ const getTypeColor = (id: number | null) => {
             class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-2xl"
         >
             <div
-                class="w-full max-w-4xl animate-in overflow-hidden rounded-[3rem] border border-white/5 bg-surface shadow-2xl duration-300 fade-in zoom-in"
+                class="bg-surface w-full max-w-4xl animate-in overflow-hidden rounded-[3rem] border border-white/5 shadow-2xl duration-300 fade-in zoom-in"
             >
                 <div
                     class="flex items-center justify-between border-b border-white/5 bg-white/5 p-8 md:p-10"
@@ -724,7 +726,9 @@ const getTypeColor = (id: number | null) => {
                             class="flex items-center gap-2 text-xs font-black tracking-widest uppercase"
                         >
                             <Users class="h-4 w-4 text-orange-500" /> Atlet
-                            Peserta ({{ selectedEvent.participants?.length || 0 }})
+                            Peserta ({{
+                                selectedEvent.participants?.length || 0
+                            }})
                         </h4>
                         <div class="grid grid-cols-1 gap-3">
                             <div
@@ -734,7 +738,7 @@ const getTypeColor = (id: number | null) => {
                             >
                                 <div class="flex items-center gap-4">
                                     <div
-                                        class="flex h-12 w-12 items-center justify-center rounded-xl bg-surface text-xs font-black shadow-sm"
+                                        class="bg-surface flex h-12 w-12 items-center justify-center rounded-xl text-xs font-black shadow-sm"
                                     >
                                         {{
                                             participation.user?.name
@@ -751,14 +755,17 @@ const getTypeColor = (id: number | null) => {
                                         >
                                             Kategori:
                                             <span class="text-accent">{{
-                                                participation.point?.name || 'General'
+                                                participation.point?.name ||
+                                                'General'
                                             }}</span>
                                         </p>
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-end gap-1">
                                     <div
-                                        :class="getStatusColor(participation.status)"
+                                        :class="
+                                            getStatusColor(participation.status)
+                                        "
                                         class="text-[10px] font-black tracking-widest uppercase"
                                     >
                                         {{ participation.status }}

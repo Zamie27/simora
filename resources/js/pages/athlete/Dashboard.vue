@@ -849,7 +849,9 @@ const getTypeColor = (id: number | null) => {
                     >
                         <div class="flex items-center gap-6">
                             <div
-                                :class="getTypeColor(selectedEvent.event_type_id)"
+                                :class="
+                                    getTypeColor(selectedEvent.event_type_id)
+                                "
                                 class="flex h-20 w-20 items-center justify-center rounded-3xl border shadow-xl"
                             >
                                 <Trophy class="h-10 w-10 text-accent" />
@@ -884,7 +886,10 @@ const getTypeColor = (id: number | null) => {
                     >
                         <!-- Left: Details -->
                         <div class="space-y-8 md:col-span-1">
-                            <div v-if="selectedEvent.description" class="space-y-3">
+                            <div
+                                v-if="selectedEvent.description"
+                                class="space-y-3"
+                            >
                                 <h4
                                     class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
                                 >
@@ -903,7 +908,8 @@ const getTypeColor = (id: number | null) => {
                                     Penanggung Jawab
                                 </h4>
                                 <p class="text-sm font-black text-foreground">
-                                    Coach: {{ selectedEvent.coach?.name || 'TBA' }}
+                                    Coach:
+                                    {{ selectedEvent.coach?.name || 'TBA' }}
                                 </p>
                             </div>
 
@@ -915,16 +921,22 @@ const getTypeColor = (id: number | null) => {
                                 </h4>
                                 <div class="flex flex-col gap-2">
                                     <p
-                                        v-for="participation in selectedEvent.participants.filter((p: any) => p.user_id === user.id)"
+                                        v-for="participation in selectedEvent.participants.filter(
+                                            (p: any) => p.user_id === user.id,
+                                        )"
                                         :key="participation.id"
                                         class="text-sm font-black uppercase"
-                                        :class="getStatusColor(participation.status)"
+                                        :class="
+                                            getStatusColor(participation.status)
+                                        "
                                     >
                                         {{ participation.status }}
                                     </p>
                                     <p
-                                        v-for="participation in selectedEvent.participants.filter((p: any) => p.user_id === user.id)"
-                                        :key="'point-'+participation.id"
+                                        v-for="participation in selectedEvent.participants.filter(
+                                            (p: any) => p.user_id === user.id,
+                                        )"
+                                        :key="'point-' + participation.id"
                                         class="text-xs font-bold text-muted-foreground uppercase opacity-60"
                                     >
                                         Kategori Poin:
@@ -941,8 +953,10 @@ const getTypeColor = (id: number | null) => {
                             <h4
                                 class="flex items-center gap-2 text-xs font-black tracking-widest uppercase"
                             >
-                                <Users class="h-4 w-4 text-orange-500" /> Peserta Lain
-                                ({{ selectedEvent.participants?.length || 0 }})
+                                <Users class="h-4 w-4 text-orange-500" />
+                                Peserta Lain ({{
+                                    selectedEvent.participants?.length || 0
+                                }})
                             </h4>
                             <div class="grid grid-cols-1 gap-3">
                                 <div
@@ -955,28 +969,53 @@ const getTypeColor = (id: number | null) => {
                                             class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-border bg-secondary"
                                         >
                                             <img
-                                                v-if="participation.user?.avatar"
+                                                v-if="
+                                                    participation.user?.avatar
+                                                "
                                                 :src="participation.user.avatar"
                                                 class="h-full w-full object-cover"
                                             />
-                                            <span v-else class="text-[10px] font-black uppercase">
-                                                {{ participation.user?.name.substring(0, 2) }}
+                                            <span
+                                                v-else
+                                                class="text-[10px] font-black uppercase"
+                                            >
+                                                {{
+                                                    participation.user?.name.substring(
+                                                        0,
+                                                        2,
+                                                    )
+                                                }}
                                             </span>
                                         </div>
                                         <div>
-                                            <p class="text-xs font-black uppercase">
+                                            <p
+                                                class="text-xs font-black uppercase"
+                                            >
                                                 {{ participation.user?.name }}
-                                                <span v-if="participation.user_id === user.id" class="ml-2 text-[8px] text-accent">(Anda)</span>
+                                                <span
+                                                    v-if="
+                                                        participation.user_id ===
+                                                        user.id
+                                                    "
+                                                    class="ml-2 text-[8px] text-accent"
+                                                    >(Anda)</span
+                                                >
                                             </p>
                                             <p
                                                 class="text-[8px] font-bold text-muted-foreground uppercase opacity-60"
                                             >
-                                                Kategori: {{ participation.point?.name || 'General' }}
+                                                Kategori:
+                                                {{
+                                                    participation.point?.name ||
+                                                    'General'
+                                                }}
                                             </p>
                                         </div>
                                     </div>
                                     <div
-                                        :class="getStatusColor(participation.status)"
+                                        :class="
+                                            getStatusColor(participation.status)
+                                        "
                                         class="text-[8px] font-black tracking-widest uppercase"
                                     >
                                         {{ participation.status }}

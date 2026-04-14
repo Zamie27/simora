@@ -119,6 +119,7 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
 
         // Messages
         Route::post('messages', [MessageController::class, 'store'])->name('messages.store');
+        Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
     });
 
     // Athlete specific routes

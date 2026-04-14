@@ -16,8 +16,8 @@ class MessageController extends Controller
 
         Message::create([
             'sender_id' => $request->user()->id,
-            'receiver_id' => $request->receiver_id,
-            'content' => $request->content,
+            'receiver_id' => $request->input('receiver_id'),
+            'content' => $request->input('content'),
             'is_read' => false,
         ]);
 
@@ -33,5 +33,16 @@ class MessageController extends Controller
         $message->update(['is_read' => true]);
 
         return back()->with('success', 'Pesan ditandai telah dibaca.');
+    }
+
+    public function destroy(Message $message)
+    {
+        if ($message->sender_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $message->delete();
+
+        return back()->with('success', 'Pesan berhasil dihapus.');
     }
 }

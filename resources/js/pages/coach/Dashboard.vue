@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import type { ApexOptions } from 'apexcharts';
 import {
     Users,
@@ -14,11 +14,13 @@ import {
     MessageSquare,
     Send,
     Plus,
+    Trash2,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
 
 import AppLayout from '@/layouts/AppLayout.vue';
+import CustomSelect from '@/components/ui/CustomSelect.vue';
 import coach from '@/routes/coach';
 
 interface Props {
@@ -50,6 +52,21 @@ const sendMessage = () => {
         onSuccess: () => messageForm.reset(),
     });
 };
+
+const deleteMessage = (id: number) => {
+    if (confirm('Apakah Anda yakin ingin menghapus pesan ini?')) {
+        router.delete(`/coach/messages/${id}`, {
+            preserveScroll: true,
+        });
+    }
+};
+
+const athleteOptions = computed(() =>
+    props.athletesList.map((a) => ({
+        value: String(a.id),
+        label: a.name,
+    })),
+);
 
 // Chart Options: Squad Performance Trend
 const chartOptions = computed<ApexOptions>(() => ({
@@ -579,22 +596,11 @@ const formatTime = (minutes: number) => {
                             class="mb-6 space-y-4"
                         >
                             <div>
-                                <select
+                                <CustomSelect
                                     v-model="messageForm.receiver_id"
-                                    class="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-foreground focus:border-accent focus:ring-accent"
-                                    required
-                                >
-                                    <option value="" disabled>
-                                        Pilih Atlet
-                                    </option>
-                                    <option
-                                        v-for="ath in athletesList"
-                                        :key="ath.id"
-                                        :value="ath.id"
-                                    >
-                                        {{ ath.name }}
-                                    </option>
-                                </select>
+                                    :options="athleteOptions"
+                                    placeholder="Pilih Atlet"
+                                />
                                 <span
                                     v-if="messageForm.errors.receiver_id"
                                     class="text-xs text-red-500"
@@ -644,10 +650,21 @@ const formatTime = (minutes: number) => {
                                         class="text-xs font-black text-foreground"
                                         >Ke: {{ msg.receiver?.name }}</span
                                     >
-                                    <span
-                                        class="text-[9px] font-bold text-muted-foreground uppercase"
-                                        >{{ formatDate(msg.created_at) }}</span
-                                    >
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="text-[9px] font-bold text-muted-foreground uppercase"
+                                            >{{
+                                                formatDate(msg.created_at)
+                                            }}</span
+                                        >
+                                        <button
+                                            @click="deleteMessage(msg.id)"
+                                            class="text-muted-foreground transition-all hover:text-destructive"
+                                            title="Hapus Pesan"
+                                        >
+                                            <Trash2 class="h-3 w-3" />
+                                        </button>
+                                    </div>
                                 </div>
                                 <p
                                     class="line-clamp-2 text-xs text-muted-foreground"

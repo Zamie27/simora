@@ -35,7 +35,15 @@ interface Log {
     coach_rating: number | null;
     coach_evaluation: string | null;
     coach_comments: string | null;
-    athlete: { id: number; name: string; email: string; avatar?: string };
+    athlete: {
+        id: number;
+        name: string;
+        email: string;
+        avatar?: string;
+        athlete_profile?: {
+            profile_photo_path?: string;
+        } | null;
+    };
     attachments: Attachment[];
 }
 interface Session {
@@ -265,7 +273,12 @@ const completionColor = (s: string) =>
                                 class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-accent/10 text-xs font-black text-accent"
                             >
                                 <img
-                                    v-if="log.athlete.avatar"
+                                    v-if="log.athlete.athlete_profile?.profile_photo_path"
+                                    :src="`/documents/${log.athlete.id}/profile_photo`"
+                                    class="h-full w-full object-cover"
+                                />
+                                <img
+                                    v-else-if="log.athlete.avatar"
                                     :src="log.athlete.avatar"
                                     class="h-full w-full object-cover"
                                 />

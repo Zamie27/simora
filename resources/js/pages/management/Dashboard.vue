@@ -246,7 +246,12 @@ const formatDate = (date: string) => {
                             class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-secondary"
                         >
                             <img
-                                v-if="athlete.avatar"
+                                v-if="athlete.athlete_profile?.profile_photo_path"
+                                :src="`/documents/${athlete.id}/profile_photo`"
+                                class="h-full w-full object-cover"
+                            />
+                            <img
+                                v-else-if="athlete.avatar"
                                 :src="athlete.avatar"
                                 class="h-full w-full object-cover"
                             />
@@ -351,11 +356,52 @@ const formatDate = (date: string) => {
                             <h4 class="mt-2 text-sm font-black text-foreground">
                                 {{ session.title }}
                             </h4>
-                            <p
-                                class="mt-1 text-xs font-bold text-muted-foreground opacity-60"
-                            >
-                                Coach: {{ session.coach?.name }}
-                            </p>
+                            <div class="mt-2 flex items-center justify-between">
+                                <p
+                                    class="text-xs font-bold text-muted-foreground opacity-60"
+                                >
+                                    Coach: {{ session.coach?.name }}
+                                </p>
+                                <div class="flex -space-x-2">
+                                    <div
+                                        v-for="athlete in session.athletes.slice(
+                                            0,
+                                            4,
+                                        )"
+                                        :key="athlete.id"
+                                        class="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full border-2 border-surface bg-secondary text-[8px] font-black"
+                                    >
+                                        <img
+                                            v-if="
+                                                athlete.athlete_profile
+                                                    ?.profile_photo_path
+                                            "
+                                            :src="`/documents/${athlete.id}/profile_photo`"
+                                            class="h-full w-full object-cover"
+                                        />
+                                        <img
+                                            v-else-if="athlete.avatar"
+                                            :src="athlete.avatar"
+                                            class="h-full w-full object-cover"
+                                        />
+                                        <span v-else>
+                                            {{
+                                                athlete.name
+                                                    .split(' ')
+                                                    .map((n: string) => n[0])
+                                                    .slice(0, 2)
+                                                    .join('')
+                                            }}
+                                        </span>
+                                    </div>
+                                    <div
+                                        v-if="session.athletes.length > 4"
+                                        class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-surface bg-muted text-[8px] font-black text-muted-foreground"
+                                    >
+                                        +{{ session.athletes.length - 4 }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div
@@ -487,11 +533,19 @@ const formatDate = (date: string) => {
                                 class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-secondary"
                             >
                                 <img
-                                    v-if="log.athlete?.avatar"
+                                    v-if="log.athlete?.athlete_profile?.profile_photo_path"
+                                    :src="`/documents/${log.athlete.id}/profile_photo`"
+                                    class="h-full w-full object-cover"
+                                />
+                                <img
+                                    v-else-if="log.athlete?.avatar"
                                     :src="log.athlete.avatar"
                                     class="h-full w-full object-cover"
                                 />
-                                <span v-else class="text-xs font-black text-accent">
+                                <span
+                                    v-else
+                                    class="text-xs font-black text-accent"
+                                >
                                     {{
                                         log.athlete?.name
                                             .split(' ')

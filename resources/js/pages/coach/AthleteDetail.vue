@@ -628,25 +628,56 @@ const completionOptions = [
                                     <tr
                                         class="text-[10px] font-black tracking-widest text-muted-foreground uppercase"
                                     >
-                                        <th class="px-8 py-5">Tanggal</th>
+                                        <th class="px-8 py-5">Atlet</th>
+                                        <th class="px-6 py-5">Tanggal</th>
                                         <th class="px-6 py-5">Jenis</th>
                                         <th class="px-6 py-5">Km / Speed</th>
                                         <th class="px-6 py-5">Power / Pace</th>
                                         <th class="px-6 py-5">Status</th>
-                                        <th class="px-8 py-5 text-right">
-                                            Action
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-border/50">
                                     <tr
                                         v-for="log in trainingLogs"
                                         :key="log.id"
-                                        class="group transition-colors hover:bg-muted/10"
+                                        class="group transition-colors hover:bg-muted/10 font-bold"
                                     >
                                         <td class="px-8 py-6">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary"
+                                                >
+                                                    <img
+                                                        v-if="athlete.athlete_profile?.profile_photo_path"
+                                                        :src="`/documents/${athlete.id}/profile_photo`"
+                                                        class="h-full w-full object-cover"
+                                                    />
+                                                    <img
+                                                        v-else-if="athlete.avatar"
+                                                        :src="athlete.avatar"
+                                                        class="h-full w-full object-cover"
+                                                    />
+                                                    <span
+                                                        v-else
+                                                        class="text-[10px] font-black text-accent"
+                                                    >
+                                                        {{
+                                                            athlete.name
+                                                                .split(' ')
+                                                                .map(
+                                                                    (n) => n[0],
+                                                                )
+                                                                .slice(0, 2)
+                                                                .join('')
+                                                        }}
+                                                    </span>
+                                                </div>
+                                                <span class="text-xs font-bold text-foreground">{{ athlete.name }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-6">
                                             <p
-                                                class="text-xs font-black text-foreground"
+                                                class="text-xs font-black text-foreground uppercase opacity-80"
                                             >
                                                 {{ formatDate(log.date) }}
                                             </p>

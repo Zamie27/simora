@@ -171,7 +171,10 @@ class TrainingLogRepository
                 $q->where('date', '>=', now()->subDays($days)->toDateString())
                     ->select(\Illuminate\Support\Facades\DB::raw('COALESCE(SUM(distance_km), 0)'));
             }])
-            ->having('performance_score', '>', 0)
+            ->whereHas('trainingLogs', function ($q) use ($days) {
+                $q->where('date', '>=', now()->subDays($days)->toDateString())
+                    ->where('avg_speed', '>', 0);
+            })
             ->orderByDesc('performance_score');
 
         if ($athleteIds) {

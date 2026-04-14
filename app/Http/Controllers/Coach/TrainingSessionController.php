@@ -32,7 +32,7 @@ class TrainingSessionController extends Controller
 
         return Inertia::render('coach/TrainingSessions', [
             'sessions' => TrainingSession::where('coach_id', $coachId)
-                ->with(['exerciseType', 'athletes'])
+                ->with(['exerciseType', 'athletes' => fn ($q) => $q->with('athleteProfile')])
                 ->withCount('athletes')
                 ->orderBy('scheduled_date', 'desc')
                 ->get(),

@@ -53,7 +53,7 @@ class DashboardController extends Controller
             $query->whereDate('scheduled_date', now()->toDateString())
                 ->orWhere('repeat_weekly', true);
         })
-            ->with(['coach:id,name', 'exerciseType:id,name'])
+            ->with(['coach:id,name', 'exerciseType:id,name', 'athletes' => fn ($q) => $q->with('athleteProfile')])
             ->get()
             ->filter(function ($session) {
                 if (! $session->repeat_weekly) {

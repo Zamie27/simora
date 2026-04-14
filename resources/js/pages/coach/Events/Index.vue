@@ -810,9 +810,10 @@ watch(
                                     class="flex items-center justify-between rounded-xl border p-4"
                                 >
                                     <div class="flex items-center gap-2">
-                                        <span class="text-xs font-bold uppercase">{{
-                                            type.name
-                                        }}</span>
+                                        <span
+                                            class="text-xs font-bold uppercase"
+                                            >{{ type.name }}</span
+                                        >
                                         <span
                                             v-if="!type.coach_id"
                                             class="rounded bg-accent/20 px-1.5 py-0.5 text-[8px] font-black tracking-widest text-accent uppercase"
@@ -866,9 +867,10 @@ watch(
                                     class="flex items-center justify-between rounded-xl border p-4"
                                 >
                                     <div class="flex items-center gap-2">
-                                        <span class="text-xs font-bold uppercase">{{
-                                            point.name
-                                        }}</span>
+                                        <span
+                                            class="text-xs font-bold uppercase"
+                                            >{{ point.name }}</span
+                                        >
                                         <span
                                             v-if="!point.coach_id"
                                             class="rounded bg-accent/20 px-1.5 py-0.5 text-[8px] font-black tracking-widest text-accent uppercase"

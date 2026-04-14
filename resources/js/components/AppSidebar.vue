@@ -30,8 +30,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import type { NavItem, SharedData } from '@/types';
+import { dashboard } from '@/routes';
 
 const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user);
@@ -215,7 +215,7 @@ const footerNavItems: NavItem[] = [
 
         <SidebarFooter>
             <div
-                class="text-muted-foreground mb-2 px-4 text-[10px] font-black tracking-widest opacity-60 group-data-[state=collapsed]:hidden"
+                class="mb-2 px-4 text-[10px] font-black tracking-widest text-muted-foreground opacity-60 group-data-[state=collapsed]:hidden"
             >
                 {{ clockString }}
             </div>

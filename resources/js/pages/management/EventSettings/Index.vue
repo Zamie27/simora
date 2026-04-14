@@ -74,7 +74,9 @@ const submitType = () => {
 };
 
 const deleteType = (type: EventType) => {
-    if (confirm(`Apakah Anda yakin ingin menghapus jenis event "${type.name}"?`)) {
+    if (
+        confirm(`Apakah Anda yakin ingin menghapus jenis event "${type.name}"?`)
+    ) {
         typeForm.delete(`/management/event-types/${type.id}`);
     }
 };
@@ -111,7 +113,11 @@ const submitPoint = () => {
 };
 
 const deletePoint = (point: EventPoint) => {
-    if (confirm(`Apakah Anda yakin ingin menghapus poin kejuaraan "${point.name}"?`)) {
+    if (
+        confirm(
+            `Apakah Anda yakin ingin menghapus poin kejuaraan "${point.name}"?`,
+        )
+    ) {
         pointForm.delete(`/management/event-points/${point.id}`);
     }
 };
@@ -127,14 +133,23 @@ const closePointModal = () => {
     <Head title="Pengaturan Event" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-10 bg-background p-6 text-foreground md:p-10">
-            <div class="flex flex-col items-baseline justify-between gap-4 border-b border-border pb-6 md:flex-row">
+        <div
+            class="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-10 bg-background p-6 text-foreground md:p-10"
+        >
+            <div
+                class="flex flex-col items-baseline justify-between gap-4 border-b border-border pb-6 md:flex-row"
+            >
                 <div>
-                    <h1 class="text-3xl font-black tracking-tight text-foreground uppercase">
+                    <h1
+                        class="text-3xl font-black tracking-tight text-foreground uppercase"
+                    >
                         Pengaturan Event
                     </h1>
-                    <p class="mt-2 text-[10px] font-medium tracking-widest text-muted-foreground uppercase italic opacity-80">
-                        Kelola jenis event dan kategori poin kejuaraan secara global.
+                    <p
+                        class="mt-2 text-[10px] font-medium tracking-widest text-muted-foreground uppercase italic opacity-80"
+                    >
+                        Kelola jenis event dan kategori poin kejuaraan secara
+                        global.
                     </p>
                 </div>
             </div>
@@ -145,7 +160,11 @@ const closePointModal = () => {
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <Tag class="h-6 w-6 text-accent" />
-                            <h2 class="text-xl font-black tracking-tight text-foreground uppercase">Jenis Event</h2>
+                            <h2
+                                class="text-xl font-black tracking-tight text-foreground uppercase"
+                            >
+                                Jenis Event
+                            </h2>
                         </div>
                         <button
                             @click="openTypeCreate"
@@ -162,9 +181,19 @@ const closePointModal = () => {
                             class="group flex items-center justify-between rounded-3xl border border-border bg-card p-6 transition-all hover:border-accent"
                         >
                             <div>
-                                <h3 class="font-black text-foreground uppercase">{{ type.name }}</h3>
-                                <p class="text-[9px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">
-                                    {{ type.coach_id ? `Oleh Pelatih: ${type.coach?.name}` : 'SISTEM / GLOBAL' }}
+                                <h3
+                                    class="font-black text-foreground uppercase"
+                                >
+                                    {{ type.name }}
+                                </h3>
+                                <p
+                                    class="text-[9px] font-bold tracking-widest text-muted-foreground uppercase opacity-60"
+                                >
+                                    {{
+                                        type.coach_id
+                                            ? `Oleh Pelatih: ${type.coach?.name}`
+                                            : 'SISTEM / GLOBAL'
+                                    }}
                                 </p>
                             </div>
                             <div class="flex gap-2">
@@ -182,8 +211,15 @@ const closePointModal = () => {
                                 </button>
                             </div>
                         </div>
-                        <div v-if="eventTypes.length === 0" class="rounded-3xl border border-dashed border-border p-12 text-center">
-                            <p class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40 italic">Belum ada jenis event.</p>
+                        <div
+                            v-if="eventTypes.length === 0"
+                            class="rounded-3xl border border-dashed border-border p-12 text-center"
+                        >
+                            <p
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase italic opacity-40"
+                            >
+                                Belum ada jenis event.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -193,7 +229,11 @@ const closePointModal = () => {
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <Trophy class="h-6 w-6 text-accent" />
-                            <h2 class="text-xl font-black tracking-tight text-foreground uppercase">Poin Kejuaraan</h2>
+                            <h2
+                                class="text-xl font-black tracking-tight text-foreground uppercase"
+                            >
+                                Poin Kejuaraan
+                            </h2>
                         </div>
                         <button
                             @click="openPointCreate"
@@ -210,9 +250,19 @@ const closePointModal = () => {
                             class="group flex items-center justify-between rounded-3xl border border-border bg-card p-6 transition-all hover:border-accent"
                         >
                             <div>
-                                <h3 class="font-black text-foreground uppercase">{{ point.name }}</h3>
-                                <p class="text-[9px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">
-                                    {{ point.coach_id ? `Oleh Pelatih: ${point.coach?.name}` : 'SISTEM / GLOBAL' }}
+                                <h3
+                                    class="font-black text-foreground uppercase"
+                                >
+                                    {{ point.name }}
+                                </h3>
+                                <p
+                                    class="text-[9px] font-bold tracking-widest text-muted-foreground uppercase opacity-60"
+                                >
+                                    {{
+                                        point.coach_id
+                                            ? `Oleh Pelatih: ${point.coach?.name}`
+                                            : 'SISTEM / GLOBAL'
+                                    }}
                                 </p>
                             </div>
                             <div class="flex gap-2">
@@ -230,34 +280,77 @@ const closePointModal = () => {
                                 </button>
                             </div>
                         </div>
-                        <div v-if="eventPoints.length === 0" class="rounded-3xl border border-dashed border-border p-12 text-center">
-                            <p class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40 italic">Belum ada kategori poin.</p>
+                        <div
+                            v-if="eventPoints.length === 0"
+                            class="rounded-3xl border border-dashed border-border p-12 text-center"
+                        >
+                            <p
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase italic opacity-40"
+                            >
+                                Belum ada kategori poin.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Type Modal -->
-            <div v-if="showTypeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-xl">
-                <div class="w-full max-w-lg animate-in overflow-hidden rounded-[2.5rem] border border-border bg-card shadow-2xl duration-300 fade-in zoom-in">
-                    <div class="flex items-center justify-between border-b border-border bg-muted/20 p-8">
+            <div
+                v-if="showTypeModal"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-xl"
+            >
+                <div
+                    class="w-full max-w-lg animate-in overflow-hidden rounded-[2.5rem] border border-border bg-card shadow-2xl duration-300 fade-in zoom-in"
+                >
+                    <div
+                        class="flex items-center justify-between border-b border-border bg-muted/20 p-8"
+                    >
                         <div>
-                            <h2 class="text-2xl font-black tracking-tight text-foreground uppercase">
-                                {{ editingType ? 'Edit Jenis Event' : 'Tambah Jenis Event' }}
+                            <h2
+                                class="text-2xl font-black tracking-tight text-foreground uppercase"
+                            >
+                                {{
+                                    editingType
+                                        ? 'Edit Jenis Event'
+                                        : 'Tambah Jenis Event'
+                                }}
                             </h2>
-                            <p class="text-[9px] font-bold tracking-widest text-muted-foreground uppercase opacity-60 mt-1">Global Configuration</p>
+                            <p
+                                class="mt-1 text-[9px] font-bold tracking-widest text-muted-foreground uppercase opacity-60"
+                            >
+                                Global Configuration
+                            </p>
                         </div>
-                        <button @click="closeTypeModal" class="rounded-full p-2 text-muted-foreground hover:bg-muted/50">
+                        <button
+                            @click="closeTypeModal"
+                            class="rounded-full p-2 text-muted-foreground hover:bg-muted/50"
+                        >
                             <Plus class="h-6 w-6 rotate-45" />
                         </button>
                     </div>
-                    <form @submit.prevent="submitType" class="p-8 space-y-6">
+                    <form @submit.prevent="submitType" class="space-y-6 p-8">
                         <div class="space-y-2">
-                            <Label class="text-[10px] font-black tracking-widest text-muted-foreground uppercase">Nama Jenis Event</Label>
-                            <Input v-model="typeForm.name" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="Contoh: Kejurnas / Latihan Bersama" />
-                            <p v-if="typeForm.errors.name" class="text-[10px] font-bold text-destructive">{{ typeForm.errors.name }}</p>
+                            <Label
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase"
+                                >Nama Jenis Event</Label
+                            >
+                            <Input
+                                v-model="typeForm.name"
+                                class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                placeholder="Contoh: Kejurnas / Latihan Bersama"
+                            />
+                            <p
+                                v-if="typeForm.errors.name"
+                                class="text-[10px] font-bold text-destructive"
+                            >
+                                {{ typeForm.errors.name }}
+                            </p>
                         </div>
-                        <button type="submit" :disabled="typeForm.processing" class="w-full rounded-2xl bg-accent py-4 text-[10px] font-black tracking-widest text-white uppercase">
+                        <button
+                            type="submit"
+                            :disabled="typeForm.processing"
+                            class="w-full rounded-2xl bg-accent py-4 text-[10px] font-black tracking-widest text-white uppercase"
+                        >
                             {{ editingType ? 'Perbarui' : 'Simpan' }}
                         </button>
                     </form>
@@ -265,26 +358,62 @@ const closePointModal = () => {
             </div>
 
             <!-- Point Modal -->
-            <div v-if="showPointModal" class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-xl">
-                <div class="w-full max-w-lg animate-in overflow-hidden rounded-[2.5rem] border border-border bg-card shadow-2xl duration-300 fade-in zoom-in">
-                    <div class="flex items-center justify-between border-b border-border bg-muted/20 p-8">
+            <div
+                v-if="showPointModal"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-xl"
+            >
+                <div
+                    class="w-full max-w-lg animate-in overflow-hidden rounded-[2.5rem] border border-border bg-card shadow-2xl duration-300 fade-in zoom-in"
+                >
+                    <div
+                        class="flex items-center justify-between border-b border-border bg-muted/20 p-8"
+                    >
                         <div>
-                            <h2 class="text-2xl font-black tracking-tight text-foreground uppercase">
-                                {{ editingPoint ? 'Edit Poin Kejuaraan' : 'Tambah Poin Kejuaraan' }}
+                            <h2
+                                class="text-2xl font-black tracking-tight text-foreground uppercase"
+                            >
+                                {{
+                                    editingPoint
+                                        ? 'Edit Poin Kejuaraan'
+                                        : 'Tambah Poin Kejuaraan'
+                                }}
                             </h2>
-                            <p class="text-[9px] font-bold tracking-widest text-muted-foreground uppercase opacity-60 mt-1">Global Configuration</p>
+                            <p
+                                class="mt-1 text-[9px] font-bold tracking-widest text-muted-foreground uppercase opacity-60"
+                            >
+                                Global Configuration
+                            </p>
                         </div>
-                        <button @click="closePointModal" class="rounded-full p-2 text-muted-foreground hover:bg-muted/50">
+                        <button
+                            @click="closePointModal"
+                            class="rounded-full p-2 text-muted-foreground hover:bg-muted/50"
+                        >
                             <Plus class="h-6 w-6 rotate-45" />
                         </button>
                     </div>
-                    <form @submit.prevent="submitPoint" class="p-8 space-y-6">
+                    <form @submit.prevent="submitPoint" class="space-y-6 p-8">
                         <div class="space-y-2">
-                            <Label class="text-[10px] font-black tracking-widest text-muted-foreground uppercase">Nama Kategori Poin</Label>
-                            <Input v-model="pointForm.name" class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black" placeholder="Contoh: Juara 1 / Podium / Finisher" />
-                            <p v-if="pointForm.errors.name" class="text-[10px] font-bold text-destructive">{{ pointForm.errors.name }}</p>
+                            <Label
+                                class="text-[10px] font-black tracking-widest text-muted-foreground uppercase"
+                                >Nama Kategori Poin</Label
+                            >
+                            <Input
+                                v-model="pointForm.name"
+                                class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
+                                placeholder="Contoh: Juara 1 / Podium / Finisher"
+                            />
+                            <p
+                                v-if="pointForm.errors.name"
+                                class="text-[10px] font-bold text-destructive"
+                            >
+                                {{ pointForm.errors.name }}
+                            </p>
                         </div>
-                        <button type="submit" :disabled="pointForm.processing" class="w-full rounded-2xl bg-accent py-4 text-[10px] font-black tracking-widest text-white uppercase">
+                        <button
+                            type="submit"
+                            :disabled="pointForm.processing"
+                            class="w-full rounded-2xl bg-accent py-4 text-[10px] font-black tracking-widest text-white uppercase"
+                        >
                             {{ editingPoint ? 'Perbarui' : 'Simpan' }}
                         </button>
                     </form>

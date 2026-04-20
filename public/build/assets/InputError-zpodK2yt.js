@@ -1,1 +1,0 @@
-import{C as e,E as t,Ft as n,X as r,ft as i,j as a,m as o}from"./index.esm-Ct5KIwnn.js";var s={class:`text-sm text-red-600 dark:text-red-500`},c=a({__name:`InputError`,props:{message:{}},setup(a){return(c,l)=>i((r(),t(`div`,null,[e(`p`,s,n(a.message),1)],512)),[[o,a.message]])}});export{c as t};

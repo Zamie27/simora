@@ -1,0 +1,59 @@
+KODE DOKUMEN: DOKUMEN SPESIFIKASI KEBUTUHAN PERANGKAT LUNAK (FINAL)
+PROJECT: SIMORA (Sistem Monitoring Latihan Atlet)
+
+A. KEBUTUHAN FUNGSIONAL
+
+- Fungsional Manajer
+SRS-F-01: Sistem kelola seluruh data pengguna, baik admin, pelatih, maupun atlet (termasuk unggahan lisensi/sertifikat dan kelengkapan Nomor UCI).
+SRS-F-02: Sistem verifikasi pendaftaran akun atlet baru.
+SRS-F-03: Sistem pilih dan tetapkan pelatih untuk masing-masing atlet.
+SRS-F-04: Sistem kelola entitas Master Data untuk kategori atlet dan jenis latihan.
+
+- Fungsional Manajer & Pelatih
+SRS-F-05: Sistem tampilkan ringkasan semua atlet yang terdaftar.
+SRS-F-06: Sistem hasilkan dan unduh laporan riwayat performa atlet. (*Penggabungan fitur report)
+SRS-F-07: Sistem kelola tipe event kompetisi dan aturan poin event. (*Fitur tambahan dari project)
+
+- Fungsional Pelatih
+SRS-F-08: Sistem buat dan bagikan jadwal sesi latihan untuk banyak atlet sekaligus.
+SRS-F-09: Sistem tetapkan target latihan (jarak, durasi, kecepatan, dan rpm) di setiap sesi yang dibuat.
+SRS-F-10: Sistem berikan evaluasi performa, berupa nilai dan komentar, atas log catatan latihan atlet. (*Penggabungan penilaian & komentar)
+SRS-F-11: Sistem kelola data event kompetisi dan tentukan nama atlet yang akan berpartisipasi.
+SRS-F-12: Sistem bandingkan grafik performa antara satu atlet dengan atlet lainnya.
+SRS-F-13: Fitur kirim pesan dan notifikasi internal langsung ke atlet. (*Fitur tambahan dari project)
+
+- Fungsional Atlet
+SRS-F-14: Sistem sediakan tool kalkulator perhitungan gear sepeda mandiri. (*Fitur tambahan dari project)
+SRS-F-15: Fitur amankan dan kelola unggahan privat pengguna seperti dokumen lisensi. (*Fitur tambahan dari project)
+
+- Fungsional Pelatih & Atlet
+SRS-F-16: Sistem perbarui profil diri dan atur foto pengguna.
+SRS-F-17: Sistem simpan detail metrik fisik atlet secara berkala seperti tinggi dan berat badan untuk hitung BMI.
+SRS-F-18: Sistem tampilkan kalender rutin jadwal latihan beserta target dari pelatih.
+SRS-F-19: Sistem rekam status penyelesaian sesi atlet sebagai bukti kehadiran latihan. (*Penggabungan status tugas dan absensi sesi)
+SRS-F-20: Sistem catat form log latihan detail yang meliputi tanggal, jarak riil, speed, durasi, dan intensitas.
+SRS-F-21: Sistem tunjukkan grafik progres, riwayat histori, dan statistik hasil keseluruhan latihan.
+SRS-F-22: Sistem perlihatkan perbandingan antara realisasi uji atlet dengan target wajib dari pelatih.
+SRS-F-23: Sistem suguhkan halaman utama Dashboard ringkas sesuai akses peran masing-masing.
+SRS-F-24: Sistem saring atau filter pencarian riwayat data latihan pakai fitur rentang tanggal tertentu.
+SRS-F-25: Sistem perlihatkan seluruh rekam jejak turnamen dan event yang diikuti atlet.
+SRS-F-26: Fitur unggah file foto atau gambar sebagai lampiran bukti fisik saat merekam log latihan.
+
+- Fungsional Umum (Semua Pengguna)
+SRS-F-27: Sistem proses alur otentikasi aman akun masuk pakai username/email dan sandi.
+SRS-F-28: Sistem beri pesan error apabila login pengguna tersendat, dan menyediakan opsi sign-out/logout.
+SRS-F-29: Fitur adukan keluhan laporan kendala/bug saat error aplikasi ke tim developer. (*Fitur tambahan dari project)
+
+
+B. KEBUTUHAN NON-FUNGSIONAL
+
+SRS-NF-1: Sistem pastikan antarmuka (UI) sederhana dan mudah dimengerti atlet, pelatih, maupun manajer.
+SRS-NF-2: Sistem bisa dibuka lewat browser biasa, baik dari layar komputer meja maupun layar handphone portabel.
+SRS-NF-3: Sistem respon setiap klik atau perpindahan halaman aplikasi kurang dari 3 detik.
+SRS-NF-4: Sistem jaga kerahasiaan pertukaran data internal pengguna menggunakan login ketat.
+SRS-NF-5: Sistem pisahkan hak wewenang secara aman memakai sistem role (Manajer tidak keliru masuk ke menu Pelatih).
+SRS-NF-6: Sistem simpan dan jaga data tetap murni tanpa ada kehilangan baris data di server.
+SRS-NF-7: Sistem sedia navigasi menu terarah dan jelas supaya pengguna tidak mudah kebingungan mencari fitur.
+SRS-NF-8: Sistem jalan dengan baik di waktu bersamaan asal perangkat tersambung internet yang bagus.
+SRS-NF-9: Sistem pasang antarmuka yang sanggup merubah bentuk ukuran menyesuaikan dimensi layar hp / laptop (responsif).
+SRS-NF-10: Sistem tangani dengan cepat tumpukan data input dari puluhan rekam harian tanpa melambat.

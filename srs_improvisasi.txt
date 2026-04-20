@@ -1,0 +1,28 @@
+IMPROVISASI DAN PENYESUAIAN SRS (DRAFT AWAL VS AKTUAL PROJECT)
+
+Berdasarkan pengecekan sistem Simora, secara garis besar SRS awal yang Anda buat sudah sangat baik dan terstruktur, namun ada beberapa tumpah-tindih (overlap) serta beberapa fitur kuat yang sudah terbangun di source code namun BISA jadi nilai tambah jika masuk ke dalam dokumen SRS akhir. 
+
+Berikut improvisasi dan rekonsiliasinya:
+
+1. PENGGABUNGAN KEBUTUHAN (MERGE)
+- SRS-F-3 (Mencatat kehadiran atlet) dan SRS-F-22 (Mencatat status penyelesaian). 
+  Alasan: Di sistem project nyata, rutinitas 'kehadiran' dilakukan dengan cara atlet melakukan "Submit Log Latihan" berdasarkan "Sesi Latihan" pelatih. Sehingga, poin ini cukup digabung menjadi satu: "Sistem memantau dan mencatat status penyelesaian sesi latihan atlet sebagai bentuk kehadiran atau partisipasi latihan."
+- SRS-F-4 (Menginput hasil evaluasi) dan SRS-F-5 (Memberikan catatan/komentar evaluasi).
+  Alasan: Keduanya berada di satu antarmuka yang sama dalam sistem saat pelatih me-review log latihan. Keduanya akan digabung menjadi: "Sistem memungkinkan pelatih memberikan evaluasi komprehensif (berupa nilai atau indikator) dan catatan komentar pada hasil latihan atlet."
+- SRS-F-26 dan SRS-F-34.
+  Alasan: Keduanya membahas tentang Laporan. Disatukan menjadi: "Sistem dapat menghasilkan dan memungkinkan Manajer serta Pelatih mengunduh laporan performa secara komprehensif."
+
+2. PERBAIKAN DESKRIPSI
+- SRS-F-27 (Sistem dapat memanajemen kategori atlet). Pada sistem aslinya, Manajer berfungsi mengelola "Master Data Kategori", sedangkan Pelatih berfungsi mengubah "Status Kategori pada Profil Atlet".
+
+3. PENAMBAHAN FITUR BARU YANG DITEMUKAN DI PROJECT (YANG BELUM ADA DI SRS ANDA)
+- Sistem Pesan (Notification/Message): Sistem dapat mengirim dan mengelola pesan internal khususnya untuk komunikasi pelatih dan atlet.
+- Manajemen Pengaturan Event Master (Manajer & Pelatih): Sistem dapat mengelola master tipe event (Event Types) dan poin prestasi (Event Points).
+- Tool Kalkulator Gear Sepeda (Kebutuhan Atlet/Umum): Karena lingkupnya olahraga sepeda, sistem menambahkan utilitas perhitungan "Gear Calculator" untuk optimalisasi atlet bersepeda.
+- Manajemen Lisensi & Dokumen Aman (Privasi): Sistem memungkinkan manajer atau atlet mengunggah dan menampilkan dokumen sensitif penting seperti Lisensi Atlet dengan proteksi jalur (Secure document access).
+- Modul Pelaporan Bug / Feedback: Sistem menyediakan fitur dimana pengguna bisa melaporkan kendala kepada pengembang (Bug Reporting).
+
+4. KEBUTUHAN NON-FUNGSIONAL (SRS-NF)
+- Tidak ada yang perlu dibuang. Seluruh poin mulai dari NF-1 (UI Sederhana) sampai NF-10 (Volume data besar) sangat sesuai dengan arsitektur teknologi project saat ini (Laravel & Vue Inertia) yang mendukung performansi stabil, responsif, waktu memuat cepat, dan pengelolaan data relasional tingkat tinggi.
+
+Setelah tahapan ini, SRS akan disusun ulang sehingga bersih, rapi, merepresentasikan semua fungsionalitas di sistem yang sesungguhnya.

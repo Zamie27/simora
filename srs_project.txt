@@ -1,0 +1,35 @@
+BERDASARKAN ANALISIS PROJECT SIMORA (Analisis Route, Controller, Logika Sistem):
+
+1. ROLE MANAJER / ADMIN:
+- Manajemen Pengguna: Melihat daftar, menambah, mengedit, dan menghapus pengguna (Admin, Pelatih, Atlet).
+- Manajemen Atlet: Memverifikasi akun atlet yang baru mendaftar (Verification Pending), dan menetapkan/memilihkan pelatih bagi atlet tersebut.
+- Manajemen Master Data: Mengelola Kategori Atlet (Junior, Senior, dll) dan Jenis Latihan (Endurance, Sprint, dll).
+- Manajemen Event: Mengelola Tipe Event dan Poin Event.
+- Laporan: Melihat dan mengekspor (download) laporan data sistem/atlet.
+- Lisensi Atlet: Manajer dapat mengunggah dokumen lisensi resmi untuk atlet.
+
+2. ROLE PELATIH:
+- Dashboard: Menampilkan daftar atlet yang dikelolanya beserta ringkasan performanya.
+- Pengelolaan Atlet: Mengatur kategori dari setiap atletnya, serta dapat mengatur metrik/dimensi tubuh (physical) untuk diupdate.
+- Sesi Latihan terpusat: Membuat jadwal dan sesi latihan untuk beberapa atlet sekaligus, menetapkan target (jarak tempuh, durasi, kecepatan, putaran/RPM).
+- Evaluasi Latihan: Mengupdate evaluasi performa (niliai/komentar) terhadap "Training Log" (catatan latihan) yang diserahkan atlet.
+- Perbandingan Performa: Menganalisis dan membandingkan grafik performa antara beberapa atlet (Performance Comparison).
+- Manajemen Event: Membuat dan mengelola event/kompetisi, serta menetapkan atlet mana saja yang berpartisipasi/ikut dalam event tersebut.
+- Pengaturan Event: Ikut mengelola Tipe Event dan Point Event.
+- Laporan: Melihat hasil laporan latihannya dan melakukan ekspor file.
+- Pesan: Memiliki kemampuan mengirim/mengelola pesan notifikasi ke anggota sistem.
+
+3. ROLE ATLET:
+- Dashboard Atlet: Ringkasan aktivitas harian, terdapat juga fitur quick update (update cepat) latihan.
+- Data Fisik: Atlet menginput dan menyimpan histori data fisik seperti tinggi badan dan berat badan berkelanjutan.
+- Log Latihan: Mencatat aktivitas latihan secara mandiri (termasuk tanggal, jarak, durasi), ataupun mengisi/menautkan hasil latihannya terhadap Sesi Latihan yang dibuat oleh Pelatih.
+- Verifikasi Bukti Latihan: Atlet dapat mengunggah foto / dokumen pendukung (attachments) saat mensubmit log latihan.
+- Dokumen Khusus: Mengelola (upload) dokumen pribadi yang diperlukan sistem.
+- Event: Melihat event/kompetisi yang akan atau telah diikuti.
+- Tools: Memiliki kalkulator khusus (Gear Calculator) untuk perhitungan sepeda.
+
+4. SISTEM (FITUR UMUM):
+- Autentikasi dan otorisasi dengan role-based control (Manajemen, Pelatih, Atlet).
+- Pelaporan bug / feedback error sistem untuk pengguna.
+- Akses pembatasan dokumen secara terenkripsi (Secure Document Access).
+- Waktu responsif dan design frontend yang ditenagai oleh framework modern (Vue/Inertia).

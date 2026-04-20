@@ -1,0 +1,24 @@
+IMPROVISASI DAN PENYESUAIAN USE CASE (UC) SIMORA
+
+Berdasarkan keselarasan spesifikasi di `srs_final.txt` dan kondisi fungsional riil proyek Simora, struktur Use Case dari Anda direstrukturisasi agar selaras, masuk akal secara alur sistem, dan optimal:
+
+1. REVISI & PERBAIKAN ALOKASI AKTOR
+- UC-4 (Mengelola Data Atlet) dihapus dari cakupan peran Atlet. Mengapa? Karena secara logika sistem, atlet tidak mengelola atlet lain. Atlet murni mengelola data fisiknya dan profil pribadinya sendiri (UC-2). Fitur melihat/mengelola daftar atlet adalah murni wewenang Manajer & Pelatih.
+- UC-14 (Upload Bukti Latihan) yang awalnya di bagian Atlet & Pelatih diubah. Secara logis, hanya Atlet yang menyerahkan bukti (unggah file), sementara pelatih hanya meninjaunya. Karenanya ini diintegrasikan langsung ke dalam alur Atlet untuk merekam hasil latihannya.
+
+2. PENGGABUNGAN USE CASE (MERGING)
+- Rekam Latihan & Bukti: UC-3 (Input Data Latihan) dan UC-14 (Upload Bukti) dipadatkan menjadi satu use case Atlet yaitu "Catat Latihan dan Unggah Bukti".
+- Evaluasi & Kehadiran: UC-6 (Catat Kehadiran) tidak dilakukan secara manual seperti presensi kelas di aplikasi ini. Pelatih mengecek kehadiran dari keberhasilan atlet mengirim log yang kemudian dievaluasi. Oleh karena itu UC-6 dilebur sempurna ke UC-7 menjadi "Beri Evaluasi & Pantau Penyelesaian Sesi Latihan".
+- Ekosistem Pesan: UC-9 (Pelatih Kelola Pesan) dan UC-13 (Atlet & Pelatih Lihat Pesan) disatukan dengan rapi menjadi fitur bersama: "Kirim dan Baca Pesan Internal".
+- Visualisasi Data: UC-11 (Riwayat Latihan) dan UC-12 (Statistik Latihan) cukup dijadikan satu paket Use Case "Lihat Histori dan Statistik Pertumbuhan Latihan" karena keduanya sama-sama menampilkan grafik pasca latihan bagi pelatih maupun atlet.
+
+3. PENAMBAHAN USE CASE SESUAI SISTEM AKTUAL (MENGISI GAP)
+- Manajer kini memiliki fungsional sangat vital: "Verifikasi Pendaftaran Atlet", "Tetapkan Pelatih", serta "Kelola Referensi Master Data" (kategori & jenis latihan).
+- Pelatih memiliki fungsional tingkat tinggi: "Komparasi/Bandingkan Performa Antar Atlet" dan "Setel Pengaturan Aturan Event" bersama Manajer.
+- Atlet memiliki fitur pendukung baru: "Kelola Akses Dokumen Privat (Lisensi)" dan "Gunakan Kalkulator Sepeda".
+- Seluruh Pengguna (Umum) difasilitasi Use Case baru: "Kirim Laporan Bug/Kendala Sistem".
+
+4. STANDARISASI LOGIN & LOGOUT
+- Login (UC-19) dan Logout (UC-20) adalah hal mendasar, telah digeneralisasi sebagai Use Case tunggal "Lakukan Autentikasi Sistem" (karena Logout adalah sub_extend mutlak dari aktifnya Login).
+
+Seluruh penyesuaian ini menghasilkan dokumen diagram/daftar Use Case baru yang sangat stabil, efisien, dan siap dimasukkan ke dalam dokumen UML (Unified Modeling Language) milik Anda.

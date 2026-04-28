@@ -1,0 +1,1094 @@
+1. Sequence Diagram UC-1: Daftar akun sebagai Atlet
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Halaman Registrasi
+    participant Ctrl as RegisteredUserController
+    participant DB as Database
+
+    A->>UI: Input Nama, Email, Password & Konfirmasi
+    UI->>Ctrl: POST /register
+    Ctrl->>Ctrl: Validasi Input (Email Unique, dsb)
+    Ctrl->>DB: INSERT INTO users (role='Atlet', is_verified=false)
+    DB-->>Ctrl: User_ID Baru
+    Ctrl->>DB: INSERT INTO athlete_profiles (user_id)
+    DB-->>Ctrl: Profil Terbuat
+    Ctrl-->>UI: Redirect ke Halaman Pending
+    UI-->>A: Notifikasi "Akun menunggu verifikasi pelatih/manajer"
+
+2. Sequence Diagram UC-2: Login
+sequenceDiagram
+    autonumber
+    actor U as Pengguna (Atlet/Pelatih/Manajer)
+    participant UI as Halaman Login
+    participant Ctrl as AuthenticatedSessionController
+    participant DB as Database
+
+    U->>UI: Input Email & Password
+    UI->>Ctrl: POST /login
+    Ctrl->>DB: Query User berdasarkan Email
+    DB-->>Ctrl: Data User & Password Hash
+    Ctrl->>Ctrl: Verify Password Hash
+    
+    alt is_verified == false
+        Ctrl-->>UI: Lempar ValidationException
+        UI-->>U: Error: "Akun belum diverifikasi"
+    else is_verified == true
+        Ctrl->>Ctrl: Create Auth Session
+        Ctrl-->>UI: Redirect Intended Dashboard
+        UI-->>U: Tampilkan Halaman Dashboard sesuai Role
+    end
+
+3. Sequence Diagram UC-2.1: Logout
+sequenceDiagram
+    autonumber
+    actor U as Pengguna (Atlet/Pelatih/Manajer)
+    participant UI as Navbar Aplikasi
+    participant Ctrl as AuthenticatedSessionController
+    
+    U->>UI: Klik tombol "Logout"
+    UI->>Ctrl: POST /logout
+    Ctrl->>Ctrl: Hapus/Invalidasi Auth Session
+    Ctrl->>Ctrl: Regenerate CSRF Token
+    Ctrl-->>UI: Redirect ke Halaman Utama (/)
+    UI-->>U: Tampilkan Halaman Landing / Login
+
+4. Sequence Diagram UC-3.1: Melihat Daftar Jadwal Latihan
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Halaman Jadwal Latihan
+    participant Ctrl as TrainingSessionController
+    participant DB as Database
+
+    P->>UI: Klik Menu "Jadwal Latihan"
+    UI->>Ctrl: GET /coach/sessions
+    Ctrl->>DB: SELECT * FROM training_sessions WHERE coach_id = auth->id()
+    DB-->>Ctrl: Koleksi Data Sesi Latihan
+    Ctrl-->>UI: Render Tabel Inertia
+    UI-->>P: Tampilkan Daftar Seluruh Jadwal Latihan
+
+5. Sequence Diagram UC-3.2: Menambah Jadwal dan Target Latihan
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Form Tambah Jadwal
+    participant Ctrl as TrainingSessionController
+    participant DB as Database
+
+    P->>UI: Input Judul, Tanggal, Target (KM), Pilih Atlet
+    P->>UI: Klik "Simpan Jadwal"
+    UI->>Ctrl: POST /coach/sessions
+    Ctrl->>Ctrl: Validasi (Tanggal tidak boleh lampau, dll)
+    Ctrl->>DB: INSERT INTO training_sessions
+    DB-->>Ctrl: Return Session_ID
+    Ctrl->>DB: INSERT INTO training_session_user (Tabel Pivot Atlet)
+    DB-->>Ctrl: Relasi Tersimpan
+    Ctrl-->>UI: Redirect Back
+    UI-->>P: Notifikasi "Jadwal Latihan Berhasil Dibuat"
+
+6. Sequence Diagram UC-3.3: Melihat Rincian Jadwal dan Target Latihan
+sequenceDiagram
+    autonumber
+    actor P as Pelatih / Atlet
+    participant UI as Halaman Detail Jadwal
+    participant Ctrl as TrainingSessionController
+    participant DB as Database
+
+    P->>UI: Klik "Lihat Detail" pada salah satu sesi
+    UI->>Ctrl: GET /sessions/{id}
+    Ctrl->>DB: Query: TrainingSession::with('athletes', 'trainingLogs')
+    DB-->>Ctrl: Return Data Lengkap (Relasi)
+    Ctrl-->>UI: Render Tampilan Detail Inertia
+    UI-->>P: Tampilkan Rincian Target & Siapa Saja yang Sudah Latihan
+
+7. Sequence Diagram UC-3.4: Memberikan Evaluasi Hasil Latihan
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Modal Evaluasi Log
+    participant Ctrl as TrainingLogController
+    participant DB as Database
+
+    P->>UI: Klik "Beri Evaluasi" pada laporan atlet
+    P->>UI: Input Rating Bintang (1-5) & Catatan Teks
+    UI->>Ctrl: PUT /coach/logs/{id}/evaluate
+    Ctrl->>DB: UPDATE training_logs SET coach_rating = X, evaluation_notes = Y
+    DB-->>Ctrl: Row Updated
+    Ctrl-->>UI: Redirect Back
+    UI-->>P: Notifikasi "Evaluasi Tersimpan" & Ikon Bintang Berubah Emas
+
+8. Sequence Diagram UC-3.5: Menghapus Jadwal Latihan
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Tabel Jadwal Latihan
+    participant Ctrl as TrainingSessionController
+    participant DB as Database
+
+    P->>UI: Klik "Hapus" (Logo Tong Sampah)
+    UI->>UI: Tampilkan Konfirmasi Pop-up
+    P->>UI: Konfirmasi "Ya, Hapus"
+    UI->>Ctrl: DELETE /coach/sessions/{id}
+    Ctrl->>DB: Cek apakah sesi sudah punya Log Latihan?
+    
+    alt Sesi sudah ada log-nya
+        Ctrl-->>UI: Error: "Tidak bisa dihapus karena sudah ada hasil"
+        UI-->>P: Notifikasi Gagal
+    else Sesi belum dikerjakan
+        Ctrl->>DB: DELETE FROM training_sessions WHERE id = X
+        DB-->>Ctrl: Deleted
+        Ctrl-->>UI: Redirect Back
+        UI-->>P: Notifikasi Sukses Terhapus
+    end
+
+9. Sequence Diagram UC-4.1: Menginput Data Latihan Harian (Log)
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Form Input Log
+    participant Ctrl as TrainingLogController
+    participant Svc as TrainingLogService
+    participant DB as Database
+
+    A->>UI: Input Jarak(KM), Waktu, Avg Speed, Max Speed, BPM, RPM
+    A->>UI: Klik "Simpan Log"
+    UI->>Ctrl: POST /athlete/logs
+    Ctrl->>Svc: storeLog(Payload Data)
+    Svc->>DB: INSERT INTO training_logs
+    DB-->>Svc: Log_ID Baru
+    Svc->>Svc: Panggil Kalkulasi Metrik Otomatis (VO2Max/Kalori)
+    Svc-->>Ctrl: Service Selesai
+    Ctrl-->>UI: Redirect
+    UI-->>A: Notifikasi "Log Latihan Berhasil Disimpan"
+
+10. Sequence Diagram UC-4.2: Mengunggah Bukti Latihan
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Form Bukti/Attachment
+    participant Ctrl as TrainingLogController
+    participant Disk as Storage (Lokal/S3)
+    participant DB as Database
+
+    A->>UI: Pilih File Foto/Screenshot Strava
+    UI->>Ctrl: POST /athlete/logs/{id}/attachments
+    Ctrl->>Disk: Pindahkan File ke Folder 'training_proofs'
+    Disk-->>Ctrl: Return File Path
+    Ctrl->>DB: INSERT INTO training_attachments (file_path)
+    DB-->>Ctrl: Tersimpan
+    Ctrl-->>UI: Redirect Back
+    UI-->>A: Gambar Bukti Muncul di Layar
+
+11. Sequence Diagram UC-4.3: Melihat Riwayat Latihan
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Halaman Riwayat Latihan
+    participant Ctrl as TrainingLogController
+    participant DB as Database
+
+    A->>UI: Buka Menu "Riwayat Latihan"
+    UI->>Ctrl: GET /athlete/logs
+    Ctrl->>DB: SELECT * FROM training_logs WHERE user_id = auth->id() ORDER BY date DESC
+    DB-->>Ctrl: Koleksi Riwayat Latihan
+    Ctrl-->>UI: Render Inertia Page
+    UI-->>A: Tampilkan Tabel & Grafik Riwayat Latihan Pribadi
+
+12. Sequence Diagram UC-4.4: Menghapus Log Latihan
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Halaman Riwayat Latihan
+    participant Ctrl as TrainingLogController
+    participant DB as Database
+
+    A->>UI: Klik "Hapus Log"
+    UI->>Ctrl: DELETE /athlete/logs/{id}
+    Ctrl->>DB: Cek Aturan: Apakah tanggal latihan adalah HARI INI?
+    
+    alt Log sudah lewat hari (Kadaluarsa)
+        Ctrl-->>UI: Error "Log di masa lalu tidak bisa dihapus"
+        UI-->>A: Notifikasi Penolakan
+    else Log masih bisa di-edit/hapus
+        Ctrl->>DB: DELETE FROM training_logs WHERE id = X
+        DB-->>Ctrl: Row Deleted
+        Ctrl-->>UI: Return Sukses
+        UI-->>A: Daftar Riwayat Latihan Berkurang
+    end
+
+13. Sequence Diagram UC-5.1: Melihat Daftar Event / Kompetisi
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Halaman Kalender Event
+    participant Ctrl as EventController
+    participant DB as Database
+
+    P->>UI: Klik Menu "Kelola Event"
+    UI->>Ctrl: GET /coach/events
+    Ctrl->>DB: Query seluruh data events berserta EventType
+    DB-->>Ctrl: Koleksi Event
+    Ctrl-->>UI: Render Inertia (Daftar Event)
+    UI-->>P: Tampilkan Kalender / List Acara Kejuaraan
+
+14. Sequence Diagram UC-5.2: Membuat Agenda Event Baru
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Form Buat Event
+    participant Ctrl as EventController
+    participant DB as Database
+
+    P->>UI: Input Nama Kejuaraan, Lokasi, Tanggal Mulai-Selesai, dan Tipe (Nasional/Daerah)
+    P->>UI: Klik "Buat Event"
+    UI->>Ctrl: POST /coach/events
+    Ctrl->>Ctrl: Validasi Input
+    Ctrl->>DB: INSERT INTO events (nama, lokasi, dates, event_type_id)
+    DB-->>Ctrl: Return Event_ID
+    Ctrl-->>UI: Redirect Back
+    UI-->>P: Notifikasi "Event Berhasil Ditambahkan ke Kalender"
+
+15. Sequence Diagram UC-5.3: Mendaftarkan Atlet ke Event
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Halaman Detail Event
+    participant Ctrl as EventController
+    participant Model as AthleteProfile
+    participant DB as Database
+
+    P->>UI: Pilih Nama Atlet & Klik "Daftarkan"
+    UI->>Ctrl: POST /coach/events/{id}/participants
+    
+    %% Validasi Lisensi (Fitur Keamanan Kejuaraan)
+    Ctrl->>Model: Cek Lisensi Atlet
+    Model->>DB: SELECT license_valid_until FROM athlete_profiles
+    DB-->>Model: Return Tanggal Lisensi
+    
+    alt Lisensi Kadaluarsa (Expired)
+        Ctrl-->>UI: Lempar Validation Exception
+        UI-->>P: Tampilkan Error: "Lisensi atlet tidak aktif"
+    else Lisensi Valid
+        Ctrl->>DB: INSERT INTO event_user (event_id, user_id, status='Planned')
+        DB-->>Ctrl: Sukses
+        Ctrl-->>UI: Redirect Back
+        UI-->>P: Atlet masuk ke dalam daftar peserta event
+    end
+
+16. Sequence Diagram UC-5.4: Mencatat Hasil dan Poin Event
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Modal Hasil Event
+    participant Ctrl as EventController
+    participant DB as Database
+
+    P->>UI: Input Peringkat Juara (Rank) & Poin yang Didapat
+    P->>UI: Klik "Simpan Hasil"
+    UI->>Ctrl: PUT /coach/events/{id}/results
+    Ctrl->>Ctrl: Validasi Input Angka
+    Ctrl->>DB: UPDATE event_user SET rank = X, points_earned = Y, status = 'Completed'
+    DB-->>Ctrl: Row Updated
+    Ctrl-->>UI: Redirect Back
+    UI-->>P: Notifikasi "Hasil dan Poin Event Berhasil Disimpan"
+
+17. Sequence Diagram UC-5.5: Menghapus Event
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Halaman Kelola Event
+    participant Ctrl as EventController
+    participant DB as Database
+
+    P->>UI: Klik tombol Hapus (Ikon Sampah) pada sebuah Event
+    UI->>UI: Tampilkan Dialog Konfirmasi
+    P->>UI: Konfirmasi "Ya, Hapus Agenda"
+    UI->>Ctrl: DELETE /coach/events/{id}
+    
+    Ctrl->>DB: Cek apakah Event sudah selesai? (Berisi nilai/poin)
+    alt Event sudah ada hasilnya
+        Ctrl-->>UI: Error: "Event yang sudah ada rekam jejak poin tidak bisa dihapus"
+        UI-->>P: Notifikasi Penolakan
+    else Event masih berstatus Rencana (Planned)
+        Ctrl->>DB: DELETE FROM events WHERE id = X
+        DB-->>Ctrl: Deleted
+        Ctrl-->>UI: Redirect
+        UI-->>P: Kalender Event berkurang
+    end
+
+18. Sequence Diagram UC-6.1: Membandingkan Performa Atlet
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Halaman Komparasi
+    participant Ctrl as PerformanceController
+    participant Repo as TrainingLogRepository
+    participant DB as Database
+
+    P->>UI: Pilih 2 atau lebih Atlet dari Dropdown
+    P->>UI: Klik "Bandingkan"
+    UI->>Ctrl: GET /coach/performance/compare?athletes=[A,B]
+    
+    Ctrl->>Repo: getMultipleAthletesStats([A,B])
+    activate Repo
+    Repo->>DB: SELECT avg(speed), max(vo2max) WHERE user_id IN (A,B) GROUP BY user_id
+    DB-->>Repo: Hasil Query Array
+    Repo->>Repo: Memformat data untuk grafik Multi-line
+    Repo-->>Ctrl: Return DTO (Data Transfer Object)
+    deactivate Repo
+    
+    Ctrl-->>UI: Render Data via Inertia Props
+    UI-->>P: Tampilkan Grafik Radar/Garis yang membandingkan performa antar atlet
+
+19. Sequence Diagram UC-6.2: Melihat Ringkasan Performa
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Halaman Report
+    participant Ctrl as ReportController
+    participant Repo as TrainingLogRepository
+    participant DB as Database
+
+    P->>UI: Memilih Tab "Ringkasan Performa" (Overview)
+    UI->>Ctrl: GET /coach/reports
+    Ctrl->>Repo: getCoachAggregateStats(auth->id)
+    Repo->>DB: SUM() Jarak Total, AVG() Kecepatan dari seluruh atlet asuhan
+    DB-->>Repo: Data Kalkulasi Mentah
+    Repo-->>Ctrl: Angka Statistik Akhir
+    Ctrl-->>UI: Lempar ke View Vue.js
+    UI-->>P: Tampilkan "Kartu Ringkasan" (Total KM, Total Kalori Tim)
+
+20. Sequence Diagram UC-6.3: Melihat Grafik Perkembangan
+sequenceDiagram
+    autonumber
+    actor A as Atlet / Pelatih
+    participant UI as Halaman Grafik
+    participant Ctrl as PerformanceController
+    participant DB as Database
+
+    A->>UI: Pilih Filter Rentang Waktu (Misal: 6 Bulan Terakhir)
+    UI->>Ctrl: GET /performance/trends?range=6m
+    Ctrl->>DB: SELECT log_date, avg_speed, vo2_max FROM training_logs ORDER BY date ASC
+    DB-->>Ctrl: Koleksi Time-Series
+    Ctrl-->>UI: Kembalikan JSON Array
+    UI->>UI: Chart.js / ApexCharts merender ulang kanvas grafik
+    UI-->>A: Tampilkan Tren Garis Naik/Turun secara Interaktif
+
+21. Sequence Diagram UC-7.1: Mengubah Profil Pribadi
+sequenceDiagram
+    autonumber
+    actor U as Pengguna
+    participant UI as Halaman Edit Profile
+    participant Ctrl as ProfileController
+    participant DB as Database
+
+    U->>UI: Mengubah field Nama / Nomor Telepon / Email
+    U->>UI: Klik "Simpan Perubahan"
+    UI->>Ctrl: PATCH /profile
+    Ctrl->>Ctrl: Validasi Unique Email (Mengecualikan Email Sendiri)
+    Ctrl->>DB: UPDATE users SET name = X, email = Y
+    DB-->>Ctrl: Row Updated
+    Ctrl-->>UI: Return Success
+    UI-->>U: Notifikasi "Profil Berhasil Diperbarui"
+
+22. Sequence Diagram UC-7.2: Mengubah Kata Sandi
+sequenceDiagram
+    autonumber
+    actor U as Pengguna
+    participant UI as Halaman Keamanan Akun
+    participant Ctrl as PasswordController
+    participant DB as Database
+
+    U->>UI: Input Password Lama & Password Baru
+    UI->>Ctrl: PUT /password
+    Ctrl->>DB: Ambil Current Password Hash
+    Ctrl->>Ctrl: Hash::check(Password Lama)
+    
+    alt Password Lama Salah
+        Ctrl-->>UI: Lempar Validation Error
+        UI-->>U: Peringatan "Password Lama Tidak Cocok"
+    else Password Lama Benar
+        Ctrl->>Ctrl: Hash::make(Password Baru)
+        Ctrl->>DB: UPDATE users SET password = X
+        DB-->>Ctrl: Updated
+        Ctrl-->>UI: Redirect Back
+        UI-->>U: Notifikasi "Kata Sandi Berhasil Diubah"
+    end
+
+23. Sequence Diagram UC-7.3: Menghapus Akun
+sequenceDiagram
+    autonumber
+    actor U as Pengguna
+    participant UI as Halaman Pengaturan Bahaya
+    participant Ctrl as ProfileController
+    participant Auth as Session Guard
+    participant DB as Database
+
+    U->>UI: Klik "Hapus Akun Permanen"
+    UI->>UI: Tampilkan Modal Konfirmasi & Minta Password Ulang
+    U->>UI: Input Password & Klik Konfirmasi Akhir
+    UI->>Ctrl: DELETE /profile
+    Ctrl->>Ctrl: Hash::check(Password) memastikan pemilik asli
+    
+    Ctrl->>DB: DELETE FROM users WHERE id = X (Cascade on Delete aktif)
+    DB-->>Ctrl: Seluruh data log & profil terhapus otomatis
+    Ctrl->>Auth: Logout Session & Invalidasi Cookie
+    Ctrl-->>UI: Redirect ke Halaman Login (/)
+    UI-->>U: Tampilkan Halaman Pendaftaran Awal
+
+24. Sequence Diagram UC-7.4: Mengubah Tema Tampilan (Appearance)
+sequenceDiagram
+    autonumber
+    actor U as Pengguna
+    participant UI as Navbar / Sidebar (Vue)
+    participant Ctrl as AppearanceController
+    participant Cookie as Browser Cookie / LocalStorage
+    participant DB as Database (Opsional)
+
+    U->>UI: Klik Ikon Bulan/Matahari (Toggle Dark Mode)
+    UI->>Cookie: Simpan preferensi tema ('dark' / 'light')
+    UI->>UI: Mengubah class Tailwind/Vuetify menjadi 'dark'
+    
+    %% Jika sistem menyimpan preferensi ke database agar tersinkronisasi antar perangkat:
+    UI->>Ctrl: POST /profile/appearance (Tema: dark)
+    Ctrl->>DB: UPDATE users SET theme_preference = 'dark'
+    DB-->>Ctrl: Row Updated
+    Ctrl-->>UI: OK
+    UI-->>U: Layar seketika berubah menjadi mode gelap
+
+25. Sequence Diagram UC-8.1: Melaporkan Bug Sistem
+sequenceDiagram
+    autonumber
+    actor U as Pengguna
+    participant UI as Form Lapor Bug
+    participant Ctrl as BugReportController
+    participant DB as Database
+
+    U->>UI: Mengisi Judul Bug, Deskripsi, & Lampirkan Screenshot
+    U->>UI: Klik "Kirim Laporan"
+    UI->>Ctrl: POST /bug-reports
+    Ctrl->>Ctrl: Validasi Input (Max Size Gambar, dsb)
+    Ctrl->>DB: INSERT INTO bug_reports (user_id, title, description, status='Open')
+    DB-->>Ctrl: Sukses
+    Ctrl-->>UI: Redirect Back
+    UI-->>U: Notifikasi "Terima kasih, laporan bug Anda telah dikirim"
+
+26. Sequence Diagram UC-8.2: Memeriksa dan Menutup Laporan Bug
+sequenceDiagram
+    autonumber
+    actor M as Manajemen / Admin
+    participant UI as Halaman Daftar Bug
+    participant Ctrl as BugReportController
+    participant DB as Database
+
+    M->>UI: Buka Menu "Laporan Bug"
+    UI->>Ctrl: GET /management/bug-reports
+    Ctrl->>DB: Query: SELECT * FROM bug_reports
+    DB-->>Ctrl: Koleksi Laporan
+    Ctrl-->>UI: Render Data Inertia
+    
+    M->>UI: Klik "Tandai Selesai" (Mark as Resolved)
+    UI->>Ctrl: PATCH /management/bug-reports/{id}/resolve
+    Ctrl->>DB: UPDATE bug_reports SET status = 'Resolved'
+    DB-->>Ctrl: Sukses
+    Ctrl-->>UI: Redirect Back
+    UI-->>M: Notifikasi "Bug telah ditandai selesai"
+
+27. Sequence Diagram UC-9.1: Mengelola Pertukaran Pesan (Kirim Pesan)
+sequenceDiagram
+    autonumber
+    actor A as Pengirim (Pelatih/Atlet)
+    participant UI as Widget Pesan
+    participant Ctrl as MessageController
+    participant DB as Database
+
+    A->>UI: Pilih Penerima, Ketik Pesan
+    A->>UI: Klik "Kirim"
+    UI->>Ctrl: POST /messages
+    Ctrl->>DB: INSERT INTO messages (sender_id, receiver_id, content, is_read=false)
+    DB-->>Ctrl: Return Message ID
+    
+    %% Jika ada WebSockets/Broadcasting:
+    Ctrl->>Ctrl: Broadcast(MessageSentEvent) ke channel penerima
+    Ctrl-->>UI: Return JSON Sukses
+    UI-->>A: Chat bubble muncul di layar pengirim
+
+28. Sequence Diagram UC-9.2: Membaca Pesan Masuk
+sequenceDiagram
+    autonumber
+    actor B as Penerima
+    participant UI as Kotak Masuk (Inbox)
+    participant Ctrl as MessageController
+    participant DB as Database
+
+    B->>UI: Klik Notifikasi Pesan Masuk / Buka Chat
+    UI->>Ctrl: GET /messages/{conversation_id}
+    Ctrl->>DB: UPDATE messages SET is_read = true WHERE receiver_id = auth->id
+    DB-->>Ctrl: Sukses
+    
+    Ctrl->>DB: SELECT * FROM messages WHERE conversation_id = X
+    DB-->>Ctrl: Riwayat Pesan
+    Ctrl-->>UI: Return Data
+    UI-->>B: Tampilan Centang Biru (Read) dan Riwayat Chat Terbuka
+
+29. Sequence Diagram UC-9.3: Menghapus Pesan
+sequenceDiagram
+    autonumber
+    actor U as Pengguna
+    participant UI as Kotak Masuk
+    participant Ctrl as MessageController
+    participant DB as Database
+
+    U->>UI: Klik "Hapus" pada pesan tertentu
+    UI->>Ctrl: DELETE /messages/{id}
+    Ctrl->>DB: Cek otoritas (hanya pengirim/penerima yang bisa hapus)
+    Ctrl->>DB: DELETE FROM messages WHERE id = X
+    DB-->>Ctrl: Row Deleted
+    Ctrl-->>UI: OK
+    UI-->>U: Pesan hilang dari layar
+
+30. Sequence Diagram UC-10.1: Mengelola Keamanan Dua Faktor (2FA) - Setup
+sequenceDiagram
+    autonumber
+    actor U as Pengguna
+    participant UI as Pengaturan Keamanan
+    participant Ctrl as TwoFactorAuthenticationController
+    participant Engine as Laravel Fortify
+    participant DB as Database
+
+    U->>UI: Klik "Aktifkan 2FA"
+    UI->>Ctrl: POST /user/two-factor-authentication
+    Ctrl->>Engine: Generate Secret Key & Recovery Codes
+    Engine->>DB: UPDATE users SET two_factor_secret = X, two_factor_recovery_codes = Y
+    DB-->>Engine: Updated
+    Engine-->>Ctrl: Return QR Code SVG
+    Ctrl-->>UI: Render Modal
+    UI-->>U: Tampilkan QR Code untuk di-scan oleh Google Authenticator
+
+31. Sequence Diagram UC-10.2: Login dengan 2FA
+sequenceDiagram
+    autonumber
+    actor U as Pengguna
+    participant UI as Halaman Login
+    participant Ctrl as AuthenticatedSessionController
+    participant Engine as Laravel Fortify
+
+    U->>UI: Input Email & Password Benar
+    UI->>Ctrl: POST /login
+    Ctrl->>Engine: Validasi Kredensial (Sukses)
+    Engine->>Ctrl: Cek whether 2FA is enabled
+    Ctrl-->>UI: Redirect ke Form 2FA Challenge
+    UI-->>U: Minta input 6-digit PIN dari Aplikasi
+    
+    U->>UI: Input 6-Digit PIN
+    UI->>Ctrl: POST /two-factor-challenge
+    Ctrl->>Engine: Verifikasi PIN (Time-based One-Time Password)
+    
+    alt PIN Salah / Expired
+        Engine-->>UI: Error Validation
+        UI-->>U: "Kode salah atau kadaluarsa"
+    else PIN Benar
+        Engine->>Ctrl: Buat Session Auth Penuh
+        Ctrl-->>UI: Redirect Dashboard
+        UI-->>U: Berhasil Masuk ke Aplikasi
+    end
+
+32. Sequence Diagram UC-11.1: Memantau Statistik Aktivitas Mingguan
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Dashboard Utama
+    participant Ctrl as DashboardController
+    participant Repo as TrainingLogRepository
+    participant DB as Database
+
+    A->>UI: Membuka Aplikasi (Login Berhasil)
+    UI->>Ctrl: GET /athlete/dashboard
+    Ctrl->>Repo: getWeeklyStats(auth->id)
+    
+    activate Repo
+    Repo->>DB: SELECT SUM(distance), SUM(duration) WHERE date >= (H-7)
+    DB-->>Repo: Hasil Agregasi Mingguan
+    Repo-->>Ctrl: Array (Total Jarak, Waktu, Kalori)
+    deactivate Repo
+    
+    Ctrl-->>UI: Kirim via Inertia Props
+    UI-->>A: Tampilkan "Kartu Ringkasan" 7 Hari Terakhir
+
+33. Sequence Diagram UC-11.2: Menganalisis Grafik Evolusi Performa
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Panel "Tren Performa"
+    participant Ctrl as DashboardController
+    participant DB as Database
+
+    A->>UI: Scroll ke area Grafik Evolusi
+    UI->>Ctrl: (Otomatis termuat saat buka Dashboard)
+    Ctrl->>DB: SELECT log_date, avg_speed FROM training_logs ORDER BY date DESC LIMIT 7
+    DB-->>Ctrl: Koleksi Time-Series
+    Ctrl-->>UI: Array JSON Data
+    
+    UI->>UI: Render VueApexCharts (Tipe: Area Line)
+    A->>UI: Arahkan kursor (hover) ke titik grafik
+    UI-->>A: Tampilkan Tooltip berisi tanggal & KM pasti
+
+34. Sequence Diagram UC-11.3: Memantau Agenda Kompetisi dan Pesan Pelatih
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Right Sidebar (Dashboard)
+    participant Ctrl as DashboardController
+    participant DB as Database
+
+    A->>UI: Melihat Panel Kanan (Misi & Pesan)
+    Ctrl->>DB: Query tabel `events` yang berstatus aktif (LIMIT 3)
+    DB-->>Ctrl: Daftar Event Terdekat
+    Ctrl->>DB: Query `messages` terbaru dari `coach_id`
+    DB-->>Ctrl: Teks Instruksi/Pesan
+    Ctrl-->>UI: Render Data
+    UI-->>A: Tampilkan Daftar 3 Event & Pengumuman Pelatih
+
+35. Sequence Diagram UC-11.4: Melakukan Pembaruan Data Cepat (Quick Update)
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Modal "Quick Update"
+    participant Ctrl as PhysicalController
+    participant DB as Database
+
+    A->>UI: Klik Tombol "Update Fisik Hari Ini"
+    UI->>Ctrl: PUT /athlete/physical-quick-update
+    Ctrl->>Ctrl: Validasi (Berat Badan, Tinggi Badan)
+    Ctrl->>DB: UPDATE athlete_profiles SET weight = X, height = Y
+    DB-->>Ctrl: Row Updated
+    Ctrl-->>UI: Redirect Back (Refresh otomatis)
+    UI-->>A: Notifikasi "Status Fisik Terbarui" & BMI Berubah
+
+36. Sequence Diagram UC-12.1: Memantau Kepatuhan Latihan (Atlet)
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Daftar Misi Latihan
+    participant Ctrl as TrainingController
+    participant DB as Database
+
+    A->>UI: Melihat Kolom "Misi Belum Selesai"
+    UI->>Ctrl: GET /athlete/trainings/pending
+    Ctrl->>DB: SELECT * FROM training_sessions WHERE status='Scheduled'
+    DB-->>Ctrl: Koleksi Agenda
+    Ctrl-->>UI: Render List Inertia
+    UI-->>A: Tampilkan Tugas yang harus diselesaikan minggu ini
+
+37. Sequence Diagram UC-12.2: Mengevaluasi Pencapaian Target Latihan (Pelatih)
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Halaman Evaluasi Target
+    participant Ctrl as PerformanceController
+    participant DB as Database
+
+    P->>UI: Buka Tab "Evaluasi Kepatuhan"
+    UI->>Ctrl: GET /coach/performance/compliance
+    Ctrl->>DB: Join `training_sessions` dan `training_logs`
+    DB-->>Ctrl: Return Nilai (Target KM vs Realisasi KM)
+    Ctrl->>Ctrl: Hitung Persentase Kepatuhan (%)
+    Ctrl-->>UI: Kirim JSON Props
+    UI-->>P: Tampilkan Progress Bar (Hijau jika tercapai, Merah jika kurang)
+
+38. Sequence Diagram UC-13.1: Mengelola Data Medis Atlet
+sequenceDiagram
+    autonumber
+    actor M as Manajemen / Pelatih
+    participant UI as Form Profil Medis
+    participant Ctrl as AthleteProfileController
+    participant DB as Database
+
+    M->>UI: Input Golongan Darah, Riwayat Penyakit, Alergi
+    M->>UI: Klik "Simpan Medis"
+    UI->>Ctrl: POST /management/athletes/{id}/medical
+    Ctrl->>DB: UPDATE athlete_profiles SET medical_notes = X
+    DB-->>Ctrl: Row Updated
+    Ctrl-->>UI: Redirect Back
+    UI-->>M: Notifikasi "Rekam Medis Disimpan"
+
+39. Sequence Diagram UC-13.2: Melaporkan Riwayat Cedera
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Form Lapor Cedera
+    participant Ctrl as HealthLogController
+    participant DB as Database
+
+    A->>UI: Buka Menu "Kesehatan", Isi Form Cedera (Lokasi, Tingkat Nyeri)
+    UI->>Ctrl: POST /athlete/injuries
+    Ctrl->>DB: INSERT INTO health_logs (type='injury', pain_scale=X)
+    DB-->>Ctrl: Inserted
+    Ctrl->>Ctrl: Kirim Notifikasi ke Pelatih
+    Ctrl-->>UI: Redirect Back
+    UI-->>A: Label "Sedang Cedera" muncul di profil
+
+40. Sequence Diagram UC-13.3: Memantau Masa Pemulihan (Recovery)
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Dashboard Kondisi Tim
+    participant Ctrl as HealthLogController
+    participant DB as Database
+
+    P->>UI: Lihat Widget "Atlet Cedera/Pemulihan"
+    UI->>Ctrl: GET /coach/health-status
+    Ctrl->>DB: SELECT * FROM health_logs WHERE status='recovering'
+    DB-->>Ctrl: Daftar Atlet
+    Ctrl-->>UI: Tampilkan ke View
+    UI-->>P: Alert untuk tidak memberikan beban latihan berat pada atlet terkait
+
+41. Sequence Diagram UC-14.1: Mengakses Panduan dan Modul Latihan
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Halaman Pustaka Modul
+    participant Ctrl as DocumentController
+    participant DB as Database
+
+    A->>UI: Klik Menu "E-Learning / Modul Panduan"
+    UI->>Ctrl: GET /athlete/modules
+    Ctrl->>DB: SELECT * FROM modules WHERE is_published = true
+    DB-->>Ctrl: Daftar File PDF/Video
+    Ctrl-->>UI: Render Data
+    UI-->>A: Tampilkan Katalog Panduan Nutrisi/Teknik
+
+42. Sequence Diagram UC-14.2: Mengunduh Berkas Sertifikat
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Halaman Riwayat Event
+    participant Ctrl as EventController
+    participant Storage as File Storage
+
+    A->>UI: Klik "Unduh e-Sertifikat" pada Event yang telah Selesai
+    UI->>Ctrl: GET /athlete/events/{id}/certificate
+    Ctrl->>Ctrl: Cek Otorisasi & Kepesertaan
+    Ctrl->>Storage: Akses Path PDF Sertifikat
+    Storage-->>Ctrl: Stream File
+    Ctrl-->>UI: Force Download Response
+    UI-->>A: Dokumen PDF tersimpan di perangkat
+
+43. Sequence Diagram UC-15.1: Menetapkan Target Musiman (Makro)
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Form Rencana Tahunan
+    participant Ctrl as TrainingPlanController
+    participant DB as Database
+
+    P->>UI: Input Target Makro (Misal: PON 2026, Jarak 10.000 KM)
+    P->>UI: Klik "Simpan Rencana"
+    UI->>Ctrl: POST /coach/training-plans
+    Ctrl->>Ctrl: Validasi Range Tanggal (Start - End Date)
+    Ctrl->>DB: INSERT INTO training_plans (coach_id, goal_description, target_km)
+    DB-->>Ctrl: Inserted
+    Ctrl-->>UI: Redirect Back
+    UI-->>P: Rencana Musiman Tersimpan
+
+44. Sequence Diagram UC-15.2: Mengevaluasi Target Musiman
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Halaman Evaluasi Makro
+    participant Ctrl as TrainingPlanController
+    participant DB as Database
+
+    P->>UI: Buka Tab "Progress Tahunan"
+    UI->>Ctrl: GET /coach/training-plans/progress
+    Ctrl->>DB: Agregasi SUM(distance) dari training_logs berdasarkan tahun
+    DB-->>Ctrl: Total Jarak Tahunan
+    Ctrl->>Ctrl: Hitung (Realisasi / Target * 100%)
+    Ctrl-->>UI: JSON Props
+    UI-->>P: Tampilkan Donut Chart Persentase Ketercapaian
+
+45. Sequence Diagram UC-16.1: Mengisi Form Penilaian Bulanan (Rapor)
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Form Rapor Bulanan
+    participant Ctrl as ReportController
+    participant DB as Database
+
+    P->>UI: Input Nilai Kedisiplinan, Daya Tahan, dan Sikap (Skala 1-100)
+    UI->>Ctrl: POST /coach/monthly-evaluations
+    Ctrl->>DB: INSERT INTO monthly_evaluations (athlete_id, score_discipline, score_endurance)
+    DB-->>Ctrl: Tersimpan
+    Ctrl-->>UI: Redirect
+    UI-->>P: Notifikasi "Rapor Bulanan Diterbitkan"
+
+46. Sequence Diagram UC-17.1: Memeriksa Data Pendaftar Baru (Pending List)
+sequenceDiagram
+    autonumber
+    actor M as Manajemen
+    participant UI as Halaman Pendaftar Baru
+    participant Ctrl as UserController
+    participant DB as Database
+
+    M->>UI: Klik Menu "Verifikasi Akun"
+    UI->>Ctrl: GET /management/pending-users
+    Ctrl->>DB: SELECT * FROM users WHERE is_verified = false AND role_id = 2
+    DB-->>Ctrl: Daftar Pendaftar
+    Ctrl-->>UI: Render Data
+    UI-->>M: Tampilkan Tabel Antrean Pendaftar Atlet
+
+47. Sequence Diagram UC-17.2: Memberikan Status Aktivasi Akun
+sequenceDiagram
+    autonumber
+    actor M as Manajemen
+    participant UI as Modal Verifikasi
+    participant Ctrl as UserController
+    participant DB as Database
+
+    M->>UI: Pilih Pelatih & Klik "Aktivasi Akun"
+    UI->>Ctrl: PATCH /management/users/{id}/verify
+    Ctrl->>DB: UPDATE users SET is_verified = true, coach_id = X
+    DB-->>Ctrl: Updated
+    Ctrl->>Ctrl: Trigger Notification "Account Activated"
+    Ctrl-->>UI: Redirect Back
+    UI-->>M: Pendaftar hilang dari antrean pending
+
+48. Sequence Diagram UC-18.1: Menugaskan Pelatih ke Atlet
+sequenceDiagram
+    autonumber
+    actor M as Manajemen
+    participant UI as Halaman Daftar Atlet
+    participant Ctrl as AthleteController
+    participant DB as Database
+
+    M->>UI: Klik "Assign Coach" pada baris atlet
+    UI->>Ctrl: PATCH /management/athletes/{id}/assign-coach
+    Ctrl->>DB: UPDATE users SET coach_id = [ID Pelatih Baru]
+    DB-->>Ctrl: Row Updated
+    Ctrl-->>UI: Success
+    UI-->>M: "Atlet berhasil dipindahtugaskan ke Pelatih Baru"
+
+49. Sequence Diagram UC-18.2: Memantau Daftar Pembagian Atlet
+sequenceDiagram
+    autonumber
+    actor M as Manajemen
+    participant UI as Halaman Daftar Atlet
+    participant Ctrl as UserController
+    participant DB as Database
+
+    M->>UI: Buka Halaman Daftar Atlet Utama
+    UI->>Ctrl: GET /management/athletes
+    Ctrl->>DB: Query dengan Eager Loading: User::with('coach', 'athleteProfile')
+    DB-->>Ctrl: Return Data Lengkap
+    Ctrl-->>UI: Render Tabel Inertia
+    
+    M->>UI: Pilih filter "By Coach" pada dropdown
+    UI->>Ctrl: GET /management/athletes?coach_id=X
+    Ctrl->>DB: Query Filter: WHERE coach_id = X
+    DB-->>Ctrl: Return Data Tersaring
+    Ctrl-->>UI: Render Ulang Tabel Secara Reaktif
+
+50. Sequence Diagram UC-19.1: Mengelola Referensi Kategori Atlet
+sequenceDiagram
+    autonumber
+    actor M as Manajemen
+    participant UI as Halaman Kategori
+    participant Ctrl as CategoryController
+    participant DB as Database
+
+    M->>UI: Input Kategori Baru (Misal: Men Elite)
+    UI->>Ctrl: POST /management/categories
+    Ctrl->>Ctrl: Validasi Unique Name
+    Ctrl->>DB: INSERT INTO categories (name)
+    DB-->>Ctrl: Tersimpan
+    Ctrl-->>UI: Render Ulang
+    UI-->>M: Tipe Kategori Muncul di Master Data
+
+51. Sequence Diagram UC-19.2: Mengelola Master Tipe Latihan
+sequenceDiagram
+    autonumber
+    actor M as Manajemen
+    participant UI as Halaman Tipe Latihan
+    participant Ctrl as ExerciseTypeController
+    participant DB as Database
+
+    M->>UI: Input Tipe (Misal: Recovery Ride)
+    UI->>Ctrl: POST /management/exercise-types
+    Ctrl->>DB: INSERT INTO exercise_types
+    DB-->>Ctrl: Tersimpan
+    Ctrl-->>UI: Success
+    UI-->>M: Dropdown pilihan tipe latihan pelatih otomatis bertambah
+
+52. Sequence Diagram UC-20.1: Mengatur Nomor UCI dan Dokumen Lisensi
+sequenceDiagram
+    autonumber
+    actor M as Manajemen
+    participant UI as Halaman Profil Atlet
+    participant Ctrl as AthleteProfileController
+    participant DB as Database
+
+    M->>UI: Input UCI ID & Tanggal Expired
+    UI->>Ctrl: POST /management/athletes/{id}/license
+    Ctrl->>DB: UPDATE athlete_profiles SET uci_id = X, license_valid_until = Y
+    DB-->>Ctrl: Updated
+    Ctrl-->>UI: Redirect
+    UI-->>M: Tanda hijau "Lisensi Aktif"
+
+53. Sequence Diagram UC-20.2: Mengunggah Dokumen Identitas Pribadi
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Form Identitas
+    participant Ctrl as DocumentController
+    participant Storage as File Storage
+
+    A->>UI: Upload File KTP/Akte (PDF)
+    UI->>Ctrl: POST /athlete/identity
+    Ctrl->>Ctrl: Validasi Ekstensi & Ukuran (< 5MB)
+    Ctrl->>Storage: Put File ke /private_docs
+    Storage-->>Ctrl: File Path
+    Ctrl->>Ctrl: Update ke Database Profile
+    Ctrl-->>UI: Success
+    UI-->>A: "Dokumen Pribadi Tersimpan Aman"
+
+54. Sequence Diagram UC-20.3: Memantau Status dan Validitas Lisensi
+sequenceDiagram
+    autonumber
+    actor A as Atlet / Pelatih
+    participant UI as Profil Sidebar
+    participant Ctrl as DashboardController
+    participant DB as Database
+
+    UI->>Ctrl: (Auto-load Profil)
+    Ctrl->>DB: SELECT license_valid_until FROM athlete_profiles
+    Ctrl->>Ctrl: Bandingkan dengan Carbon::now()
+    
+    alt Sisa < 30 Hari
+        Ctrl-->>UI: Warning Flag
+        UI-->>A: Tampilkan Box Kuning: "Lisensi akan segera habis"
+    else Expired
+        Ctrl-->>UI: Danger Flag
+        UI-->>A: Tampilkan Box Merah: "Lisensi Kadaluarsa"
+    end
+
+55. Sequence Diagram UC-21.1: Mengelola Daftar Peralatan (Inventory)
+sequenceDiagram
+    autonumber
+    actor A as Atlet
+    participant UI as Halaman Inventaris
+    participant Ctrl as InventoryController
+    participant DB as Database
+
+    A->>UI: Input Nama Sepeda, Groupset, Wheelset
+    UI->>Ctrl: POST /athlete/inventory
+    Ctrl->>DB: INSERT INTO inventories (user_id, item_name, specification)
+    DB-->>Ctrl: Row Inserted
+    Ctrl-->>UI: Redirect Back
+    UI-->>A: Daftar Alat Olahraga Bertambah
+
+56. Sequence Diagram UC-21.2: Memantau Spesifikasi Alat Atlet
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Modal Detail Atlet
+    participant Ctrl as CoachAthleteController
+    participant DB as Database
+
+    P->>UI: Klik "Lihat Equipment" pada profil atlet
+    UI->>Ctrl: GET /coach/athletes/{id}/inventory
+    Ctrl->>DB: SELECT * FROM inventories WHERE user_id = X
+    DB-->>Ctrl: Daftar Peralatan
+    Ctrl-->>UI: Render Data
+    UI-->>P: Tampilkan Spesifikasi Rasio Gear/Sepeda Atlet
+
+57. Sequence Diagram UC-22.1: Memantau Rekapitulasi Performa Atlet
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Dashboard Evaluasi
+    participant Ctrl as ReportController
+    participant Repo as TrainingLogRepository
+
+    P->>UI: Buka Tab Rekapitulasi
+    UI->>Ctrl: GET /coach/recap
+    Ctrl->>Repo: getCoachAggregateStats(auth->id)
+    Repo-->>Ctrl: Data Kalkulasi Penuh
+    Ctrl-->>UI: Render View
+    UI-->>P: Tampilkan Total KM Tim & Rata-rata Kepatuhan
+
+58. Sequence Diagram UC-22.2: Mengatur Filter Periode Laporan
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Filter Form
+    participant Ctrl as ReportController
+
+    P->>UI: Set Filter Tanggal (Start - End Date)
+    UI->>Ctrl: GET /coach/reports?start=X&end=Y
+    Ctrl->>Ctrl: Modifikasi Query Builder berdasarkan whereBetween('date')
+    Ctrl-->>UI: Kembalikan Data Terfilter
+    UI-->>P: Tabel & Grafik Berubah Sesuai Rentang Waktu
+
+59. Sequence Diagram UC-22.3: Mengekspor Laporan Performa Atlet Mandiri
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Halaman Detail Atlet
+    participant Ctrl as ReportController
+    participant DB as Database
+
+    P->>UI: Klik "Download PDF/CSV Laporan Atlet"
+    UI->>Ctrl: GET /coach/reports/export?athlete_id=X
+    Ctrl->>DB: Ambil seluruh row training_logs milik atlet X
+    DB-->>Ctrl: Koleksi Log
+    Ctrl->>Ctrl: Buat Stream CSV / Generate PDF View
+    Ctrl-->>UI: File Download Response
+    UI-->>P: File berhasil diunduh ke komputer
+
+60. Sequence Diagram UC-22.4: Mengekspor Laporan Performa Kolektif
+sequenceDiagram
+    autonumber
+    actor M as Manajemen / Pelatih
+    participant UI as Halaman Rekap
+    participant Ctrl as ReportController
+    participant DB as Database
+
+    M->>UI: Klik "Unduh Semua Data (CSV)"
+    UI->>Ctrl: GET /management/reports/export-all
+    Ctrl->>DB: Query seluruh log dengan Eager Loading User & Session
+    DB-->>Ctrl: Array Raksasa Data Latihan
+    Ctrl->>Ctrl: Chunking Stream (menghindari memory limit)
+    Ctrl-->>UI: Streamed File .csv
+    UI-->>M: Laporan Kolektif Skala Penuh Terunduh
+
+61. Sequence Diagram UC-23.1: Mengelola Pengaturan Poin / Skala Event
+sequenceDiagram
+    autonumber
+    actor M as Manajemen
+    participant UI as Halaman Event Settings
+    participant Ctrl as EventSettingController
+    participant DB as Database
+
+    M->>UI: Ubah bobot poin juara 1 = 100, Juara 2 = 80
+    UI->>Ctrl: PUT /management/event-settings/{id}
+    Ctrl->>DB: UPDATE event_types SET point_1=100, point_2=80
+    DB-->>Ctrl: Updated
+    Ctrl-->>UI: Success
+    UI-->>M: Master Poin Event Terbarui
+
+62. Sequence Diagram UC-23.2: Memilih Tipe Poin Event (Daerah/Nasional)
+sequenceDiagram
+    autonumber
+    actor P as Pelatih
+    participant UI as Form Buat Event
+    participant Ctrl as EventController
+    participant DB as Database
+
+    P->>UI: Memilih Tipe Event "Kejurda" (Skala Poin Rendah)
+    UI->>Ctrl: POST /coach/events (payload: event_type_id)
+    Ctrl->>DB: Validasi relasi ke event_types
+    Ctrl->>DB: INSERT INTO events
+    DB-->>Ctrl: Created
+    Ctrl-->>UI: Redirect
+    UI-->>P: Event Terbuat. Peringkat atlet yang menang di event ini akan mengikuti bobot poin Kejurda.

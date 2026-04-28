@@ -2,35 +2,35 @@ KODE DOKUMEN: DAFTAR USE CASE SISTEM (FINAL)
 PROJECT: SIMORA (Sistem Monitoring Latihan Atlet)
 
 Aktor: ATLET
-- UC-01: Kelola Profil Diri (Nama, Avatar, Demografi Dasar)
-- UC-02: Input Pembaruan Metrik Fisik (Tinggi dan Berat Badan per bulan)
-- UC-03: Catat Log Latihan dan Unggah File Bukti Pelaksanaan
-- UC-04: Kelola Berkas Dokumen Lisensi Privat Terenkripsi
+Kelola Profil Diri (Nama, Avatar, Demografi Dasar)
+Input Pembaruan Metrik Fisik (Tinggi dan Berat Badan per bulan)
+Catat Log Latihan dan Unggah File Bukti Pelaksanaan
+Kelola Berkas Dokumen Lisensi Privat Terenkripsi
 
 Aktor: PELATIH
-- UC-05: Buat dan Bagikan Jadwal beserta Target Latihan
-- UC-06: Beri Nilai Evaluasi dan Pantau Status Penyelesaian Latihan Atlet
-- UC-07: Tentukan Penetapan Partisipasi Atlet di suatu Kompetisi/Event
-- UC-08: Bandingkan Matriks Visual Performa antara Satu Atlet dengan Lainnya
+Buat dan Bagikan Jadwal beserta Target Latihan
+Beri Nilai Evaluasi dan Pantau Status Penyelesaian Latihan Atlet
+Tentukan Penetapan Partisipasi Atlet di suatu Kompetisi/Event
+Bandingkan Matriks Visual Performa antara Satu Atlet dengan Lainnya
 
 Aktor: MANAJER
-- UC-09: Kelola Seluruh Referensi Data Pengguna Sistem (Admin, Pelatih, Atlet)
-- UC-10: Verifikasi Penerimaan Pendaftaran Calon Atlet Baru
-- UC-11: Pilih dan Tetapkan Pelatih Utama untuk Seorang Atlet
-- UC-12: Input dan Kelola Skema Master Data (Jenis Latihan dan Kategori Atlet)
-- UC-13: Unggah Kelengkapan Dokumen Lisensi/Sertifikat dan Nomor UCI Atlet
+Kelola Seluruh Referensi Data Pengguna Sistem (Admin, Pelatih, Atlet)
+Verifikasi Penerimaan Pendaftaran Calon Atlet Baru
+Pilih dan Tetapkan Pelatih Utama untuk Seorang Atlet
+Input dan Kelola Skema Master Data (Jenis Latihan dan Kategori Atlet)
+Unggah Kelengkapan Dokumen Lisensi/Sertifikat dan Nomor UCI Atlet
 
 Aktor Gabungan: PELATIH & MANAJER
-- UC-14: Tinjau Daftar Lengkap Inventori Atlet di Tim
-- UC-15: Unduh Ekspor Laporan Resmi Performa Atlet
-- UC-16: Atur Konfigurasi Regulasi Tipe Event & Standar Skala Poin
+Tinjau Daftar Lengkap Inventori Atlet di Tim
+Unduh Ekspor Laporan Resmi Performa Atlet
+Atur Konfigurasi Regulasi Tipe Event & Standar Skala Poin
 
 Aktor Gabungan: ATLET & PELATIH
-- UC-17: Saksikan Tampilan Ringkasan Muka Dashboard Sesuai Wewenang Peran
-- UC-18: Kirim, Kelola, dan Baca Pesan Masuk Notifikasi Internal
-- UC-19: Tinjau dan Filter Riwayat Penelusuran Grafik Pertumbuhan Pelatihan
-- UC-20: Cek Jejak Riwayat Semua Ajang Turnamen Kompetisi yang Tercatat
-- UC-21: Gunakan Fitur Alat Bantu Kalkulator Rasio Gear Sepeda
+Saksikan Tampilan Ringkasan Muka Dashboard Sesuai Wewenang Peran
+Kirim, Kelola, dan Baca Pesan Masuk Notifikasi Internal
+Tinjau dan Filter Riwayat Penelusuran Grafik Pertumbuhan Pelatihan
+Cek Jejak Riwayat Semua Ajang Turnamen Kompetisi yang Tercatat
+Gunakan Fitur Alat Bantu Kalkulator Rasio Gear Sepeda
 
 Aktor Gabungan: SELURUH PENGGUNA (ATLET, PELATIH, MANAJER)
-- UC-22: Lakukan Autentikasi Aplikasi (Sesi Login Masuk dan Logout)
+Lakukan Autentikasi Aplikasi (Sesi Login Masuk dan Logout)

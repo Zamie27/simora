@@ -29,6 +29,8 @@ import DatePicker from '@/components/ui/DatePicker.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { useConfirm } from '@/composables/useConfirm';
+import { useSnackbar } from '@/composables/useSnackbar';
 
 interface Attachment {
     id: number;
@@ -108,6 +110,9 @@ const selectedLog = ref<Log | null>(null);
 
 const startDate = ref(props.filters.start_date || '');
 const endDate = ref(props.filters.end_date || '');
+
+const confirmDialog = useConfirm();
+const snackbar = useSnackbar();
 
 const form = useForm({
     id: null as number | null,
@@ -234,13 +239,16 @@ const submitLog = () => {
             showLogModal.value = false;
             form.reset();
             attachmentPreviews.value = [];
+            snackbar.success('Log latihan berhasil disimpan');
         },
     });
 };
 
-const deleteLog = (logId: number) => {
-    if (confirm('Apakah Anda yakin ingin menghapus log latihan ini?')) {
-        router.delete(`/athlete/training/log/${logId}`);
+const deleteLog = async (logId: number) => {
+    if (await confirmDialog.ask('Hapus Log Latihan', 'Apakah Anda yakin ingin menghapus log latihan ini?')) {
+        router.delete(`/athlete/training/log/${logId}`, {
+            onSuccess: () => snackbar.success('Log latihan berhasil dihapus'),
+        });
     }
 };
 

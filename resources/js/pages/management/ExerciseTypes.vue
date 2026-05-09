@@ -6,6 +6,8 @@ import { ref } from 'vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { useConfirm } from '@/composables/useConfirm';
+import { useSnackbar } from '@/composables/useSnackbar';
 
 interface ExerciseType {
     id: number;
@@ -24,6 +26,9 @@ const breadcrumbs = [
 
 const showModal = ref(false);
 const editingType = ref<ExerciseType | null>(null);
+
+const confirmDialog = useConfirm();
+const snackbar = useSnackbar();
 
 const form = useForm({
     name: '',
@@ -46,22 +51,28 @@ const openEdit = (type: ExerciseType) => {
 const submit = () => {
     if (editingType.value) {
         form.put(`/management/exercise-types/${editingType.value.id}`, {
-            onSuccess: () => closeModal(),
+            onSuccess: () => {
+                closeModal();
+                snackbar.success('Jenis latihan berhasil diperbarui');
+            },
         });
     } else {
         form.post('/management/exercise-types', {
-            onSuccess: () => closeModal(),
+            onSuccess: () => {
+                closeModal();
+                snackbar.success('Jenis latihan berhasil ditambahkan');
+            },
         });
     }
 };
 
-const deleteType = (type: ExerciseType) => {
+const deleteType = async (type: ExerciseType) => {
     if (
-        confirm(
-            `Apakah Anda yakin ingin menghapus jenis latihan "${type.name}"?`,
-        )
+        await confirmDialog.ask('Hapus Jenis Latihan', `Apakah Anda yakin ingin menghapus jenis latihan "${type.name}"?`)
     ) {
-        form.delete(`/management/exercise-types/${type.id}`);
+        form.delete(`/management/exercise-types/${type.id}`, {
+            onSuccess: () => snackbar.success('Jenis latihan berhasil dihapus'),
+        });
     }
 };
 

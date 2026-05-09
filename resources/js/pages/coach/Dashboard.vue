@@ -22,6 +22,8 @@ import VueApexCharts from 'vue3-apexcharts';
 import CustomSelect from '@/components/ui/CustomSelect.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import coach from '@/routes/coach';
+import { useConfirm } from '@/composables/useConfirm';
+import { useSnackbar } from '@/composables/useSnackbar';
 
 interface Props {
     stats: {
@@ -46,17 +48,24 @@ const messageForm = useForm({
     content: '',
 });
 
+const confirmDialog = useConfirm();
+const snackbar = useSnackbar();
+
 const sendMessage = () => {
     messageForm.post(coach.messages.store().url, {
         preserveScroll: true,
-        onSuccess: () => messageForm.reset(),
+        onSuccess: () => {
+            messageForm.reset();
+            snackbar.success('Pesan berhasil dikirim');
+        },
     });
 };
 
-const deleteMessage = (id: number) => {
-    if (confirm('Apakah Anda yakin ingin menghapus pesan ini?')) {
+const deleteMessage = async (id: number) => {
+    if (await confirmDialog.ask('Hapus Pesan', 'Apakah Anda yakin ingin menghapus pesan ini?')) {
         router.delete(`/coach/messages/${id}`, {
             preserveScroll: true,
+            onSuccess: () => snackbar.success('Pesan berhasil dihapus'),
         });
     }
 };

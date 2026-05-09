@@ -5,6 +5,8 @@ import { ref } from 'vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { useConfirm } from '@/composables/useConfirm';
+import { useSnackbar } from '@/composables/useSnackbar';
 
 interface Role {
     id: number;
@@ -37,6 +39,9 @@ const isEditing = ref(false);
 const editingUserId = ref<number | null>(null);
 const showModal = ref(false);
 
+const confirmDialog = useConfirm();
+const snackbar = useSnackbar();
+
 const form = useForm({
     name: '',
     email: '',
@@ -67,6 +72,7 @@ const submit = () => {
             onSuccess: () => {
                 showModal.value = false;
                 form.reset();
+                snackbar.success('User berhasil diperbarui');
             },
         });
     } else {
@@ -74,14 +80,17 @@ const submit = () => {
             onSuccess: () => {
                 showModal.value = false;
                 form.reset();
+                snackbar.success('User berhasil ditambahkan');
             },
         });
     }
 };
 
-const deleteUser = (id: number) => {
-    if (confirm('Apakah Anda yakin ingin menghapus user ini?')) {
-        router.delete(route('management.users.destroy', id));
+const deleteUser = async (id: number) => {
+    if (await confirmDialog.ask('Hapus User', 'Apakah Anda yakin ingin menghapus user ini?')) {
+        router.delete(route('management.users.destroy', id), {
+            onSuccess: () => snackbar.success('User berhasil dihapus'),
+        });
     }
 };
 

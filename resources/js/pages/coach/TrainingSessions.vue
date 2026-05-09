@@ -20,6 +20,8 @@ import DatePicker from '@/components/ui/DatePicker.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { useConfirm } from '@/composables/useConfirm';
+import { useSnackbar } from '@/composables/useSnackbar';
 
 interface Athlete {
     id: number;
@@ -64,6 +66,9 @@ const breadcrumbs = [
 
 const showCreateModal = ref(false);
 
+const confirmDialog = useConfirm();
+const snackbar = useSnackbar();
+
 const form = useForm({
     exercise_type_id: '',
     title: '',
@@ -83,6 +88,7 @@ const submit = () => {
         onSuccess: () => {
             showCreateModal.value = false;
             form.reset();
+            snackbar.success('Jadwal latihan berhasil ditambahkan');
         },
     });
 };
@@ -107,9 +113,11 @@ const toggleAthlete = (id: number) => {
     }
 };
 
-const deleteSession = (session: Session) => {
-    if (confirm(`Apakah Anda yakin ingin menghapus sesi "${session.title}"?`)) {
-        router.delete(`/coach/training-sessions/${session.id}`);
+const deleteSession = async (session: Session) => {
+    if (await confirmDialog.ask('Hapus Jadwal Latihan', `Apakah Anda yakin ingin menghapus sesi "${session.title}"?`)) {
+        router.delete(`/coach/training-sessions/${session.id}`, {
+            onSuccess: () => snackbar.success('Jadwal latihan berhasil dihapus'),
+        });
     }
 };
 </script>

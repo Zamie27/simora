@@ -6,6 +6,8 @@ import { ref } from 'vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { useConfirm } from '@/composables/useConfirm';
+import { useSnackbar } from '@/composables/useSnackbar';
 
 interface User {
     id: number;
@@ -48,6 +50,9 @@ const pointForm = useForm({
     name: '',
 });
 
+const confirmDialog = useConfirm();
+const snackbar = useSnackbar();
+
 // Type Actions
 const openTypeCreate = () => {
     editingType.value = null;
@@ -64,20 +69,28 @@ const openTypeEdit = (type: EventType) => {
 const submitType = () => {
     if (editingType.value) {
         typeForm.patch(`/management/event-types/${editingType.value.id}`, {
-            onSuccess: () => closeTypeModal(),
+            onSuccess: () => {
+                closeTypeModal();
+                snackbar.success('Jenis event berhasil diperbarui');
+            },
         });
     } else {
         typeForm.post('/management/event-types', {
-            onSuccess: () => closeTypeModal(),
+            onSuccess: () => {
+                closeTypeModal();
+                snackbar.success('Jenis event berhasil ditambahkan');
+            },
         });
     }
 };
 
-const deleteType = (type: EventType) => {
+const deleteType = async (type: EventType) => {
     if (
-        confirm(`Apakah Anda yakin ingin menghapus jenis event "${type.name}"?`)
+        await confirmDialog.ask('Hapus Jenis Event', `Apakah Anda yakin ingin menghapus jenis event "${type.name}"?`)
     ) {
-        typeForm.delete(`/management/event-types/${type.id}`);
+        typeForm.delete(`/management/event-types/${type.id}`, {
+            onSuccess: () => snackbar.success('Jenis event berhasil dihapus'),
+        });
     }
 };
 
@@ -103,22 +116,28 @@ const openPointEdit = (point: EventPoint) => {
 const submitPoint = () => {
     if (editingPoint.value) {
         pointForm.patch(`/management/event-points/${editingPoint.value.id}`, {
-            onSuccess: () => closePointModal(),
+            onSuccess: () => {
+                closePointModal();
+                snackbar.success('Poin kejuaraan berhasil diperbarui');
+            },
         });
     } else {
         pointForm.post('/management/event-points', {
-            onSuccess: () => closePointModal(),
+            onSuccess: () => {
+                closePointModal();
+                snackbar.success('Poin kejuaraan berhasil ditambahkan');
+            },
         });
     }
 };
 
-const deletePoint = (point: EventPoint) => {
+const deletePoint = async (point: EventPoint) => {
     if (
-        confirm(
-            `Apakah Anda yakin ingin menghapus poin kejuaraan "${point.name}"?`,
-        )
+        await confirmDialog.ask('Hapus Poin', `Apakah Anda yakin ingin menghapus poin kejuaraan "${point.name}"?`)
     ) {
-        pointForm.delete(`/management/event-points/${point.id}`);
+        pointForm.delete(`/management/event-points/${point.id}`, {
+            onSuccess: () => snackbar.success('Poin kejuaraan berhasil dihapus'),
+        });
     }
 };
 

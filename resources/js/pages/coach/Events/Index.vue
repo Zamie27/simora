@@ -20,6 +20,8 @@ import DatePicker from '@/components/ui/DatePicker.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { useConfirm } from '@/composables/useConfirm';
+import { useSnackbar } from '@/composables/useSnackbar';
 
 interface Athlete {
     id: number;
@@ -77,6 +79,9 @@ const showDetailModal = ref(false);
 const editingEvent = ref<Event | null>(null);
 const selectedEvent = ref<Event | null>(null);
 
+const confirmDialog = useConfirm();
+const snackbar = useSnackbar();
+
 const form = useForm({
     title: '',
     description: '',
@@ -128,6 +133,7 @@ const submit = () => {
             onSuccess: () => {
                 showModal.value = false;
                 form.reset();
+                snackbar.success('Agenda event berhasil diperbarui');
             },
         });
     } else {
@@ -135,14 +141,17 @@ const submit = () => {
             onSuccess: () => {
                 showModal.value = false;
                 form.reset();
+                snackbar.success('Agenda event berhasil ditambahkan');
             },
         });
     }
 };
 
-const deleteEvent = (event: Event) => {
-    if (confirm(`Apakah Anda yakin ingin menghapus event "${event.title}"?`)) {
-        router.delete(`/coach/events/${event.id}`);
+const deleteEvent = async (event: Event) => {
+    if (await confirmDialog.ask('Hapus Event', `Apakah Anda yakin ingin menghapus event "${event.title}"?`)) {
+        router.delete(`/coach/events/${event.id}`, {
+            onSuccess: () => snackbar.success('Agenda event berhasil dihapus'),
+        });
     }
 };
 
@@ -191,25 +200,35 @@ const updateAthletePoint = (athleteId: number, pointId: any) => {
 
 const addType = () => {
     typeForm.post('/coach/event-types', {
-        onSuccess: () => typeForm.reset(),
+        onSuccess: () => {
+            typeForm.reset();
+            snackbar.success('Jenis event berhasil ditambahkan');
+        },
     });
 };
 
-const deleteType = (id: number) => {
-    if (confirm('Hapus jenis event ini?')) {
-        router.delete(`/coach/event-types/${id}`);
+const deleteType = async (id: number) => {
+    if (await confirmDialog.ask('Hapus Jenis Event', 'Hapus jenis event ini?')) {
+        router.delete(`/coach/event-types/${id}`, {
+            onSuccess: () => snackbar.success('Jenis event berhasil dihapus'),
+        });
     }
 };
 
 const addPoint = () => {
     pointForm.post('/coach/event-points', {
-        onSuccess: () => pointForm.reset(),
+        onSuccess: () => {
+            pointForm.reset();
+            snackbar.success('Poin kejuaraan berhasil ditambahkan');
+        },
     });
 };
 
-const deletePoint = (id: number) => {
-    if (confirm('Hapus poin kejuaraan ini?')) {
-        router.delete(`/coach/event-points/${id}`);
+const deletePoint = async (id: number) => {
+    if (await confirmDialog.ask('Hapus Poin Kejuaraan', 'Hapus poin kejuaraan ini?')) {
+        router.delete(`/coach/event-points/${id}`, {
+            onSuccess: () => snackbar.success('Poin kejuaraan berhasil dihapus'),
+        });
     }
 };
 

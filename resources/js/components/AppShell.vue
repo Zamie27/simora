@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { usePage } from '@inertiajs/vue3';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import GlobalConfirmDialog from '@/components/ui/GlobalConfirmDialog.vue';
+import GlobalSnackbar from '@/components/ui/GlobalSnackbar.vue';
 import type { AppVariant } from '@/types';
 
 type Props = {
@@ -21,4 +23,6 @@ const isOpen = usePage().props.sidebarOpen;
     <SidebarProvider v-else :default-open="isOpen">
         <slot />
     </SidebarProvider>
+    <GlobalConfirmDialog />
+    <GlobalSnackbar />
 </template>

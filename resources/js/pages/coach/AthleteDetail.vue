@@ -22,6 +22,8 @@ import DatePicker from '@/components/ui/DatePicker.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { useConfirm } from '@/composables/useConfirm';
+import { useSnackbar } from '@/composables/useSnackbar';
 
 interface PhysicalMetric {
     id: number;
@@ -131,6 +133,9 @@ const selectedLog = ref<TrainingLog | null>(null);
 const startDate = ref(props.filters.start_date || '');
 const endDate = ref(props.filters.end_date || '');
 
+const confirmDialog = useConfirm();
+const snackbar = useSnackbar();
+
 const form = useForm({
     height: props.athlete.physical_metrics[0]?.height || '',
     weight: props.athlete.physical_metrics[0]?.weight || '',
@@ -165,6 +170,7 @@ const submit = () => {
         onSuccess: () => {
             showAddModal.value = false;
             form.reset('recorded_at');
+            snackbar.success('Data fisik berhasil diperbarui');
         },
     });
 };
@@ -172,6 +178,7 @@ const submit = () => {
 const updateCategory = () => {
     categoryForm.patch(`/coach/athletes/${props.athlete.id}/category`, {
         preserveScroll: true,
+        onSuccess: () => snackbar.success('Kategori berhasil diperbarui'),
     });
 };
 
@@ -196,9 +203,11 @@ const openEditLog = (log: TrainingLog) => {
     showEditLogModal.value = true;
 };
 
-const deleteLog = (logId: number) => {
-    if (confirm('Apakah Anda yakin ingin menghapus log latihan ini?')) {
-        router.delete(`/coach/training-logs/${logId}`);
+const deleteLog = async (logId: number) => {
+    if (await confirmDialog.ask('Hapus Log Latihan', 'Apakah Anda yakin ingin menghapus log latihan ini?')) {
+        router.delete(`/coach/training-logs/${logId}`, {
+            onSuccess: () => snackbar.success('Log latihan berhasil dihapus'),
+        });
     }
 };
 
@@ -210,6 +219,7 @@ const submitLogUpdate = () => {
     logForm.patch(`/coach/training-logs/${selectedLog.value.id}`, {
         onSuccess: () => {
             showEditLogModal.value = false;
+            snackbar.success('Log latihan berhasil diperbarui');
         },
     });
 };

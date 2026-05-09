@@ -6,6 +6,8 @@ import { ref } from 'vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { useConfirm } from '@/composables/useConfirm';
+import { useSnackbar } from '@/composables/useSnackbar';
 
 interface Category {
     id: number;
@@ -24,6 +26,9 @@ const breadcrumbs = [
 
 const showModal = ref(false);
 const editingCategory = ref<Category | null>(null);
+
+const confirmDialog = useConfirm();
+const snackbar = useSnackbar();
 
 const form = useForm({
     name: '',
@@ -46,22 +51,31 @@ const openEdit = (category: Category) => {
 const submit = () => {
     if (editingCategory.value) {
         form.put(`/management/categories/${editingCategory.value.id}`, {
-            onSuccess: () => closeModal(),
+            onSuccess: () => {
+                closeModal();
+                snackbar.success('Kategori berhasil diperbarui');
+            },
         });
     } else {
         form.post('/management/categories', {
-            onSuccess: () => closeModal(),
+            onSuccess: () => {
+                closeModal();
+                snackbar.success('Kategori berhasil ditambahkan');
+            },
         });
     }
 };
 
-const deleteCategory = (category: Category) => {
+const deleteCategory = async (category: Category) => {
     if (
-        confirm(
-            `Apakah Anda yakin ingin menghapus kategori "${category.name}"?`,
+        await confirmDialog.ask(
+            'Hapus Kategori',
+            `Apakah Anda yakin ingin menghapus kategori "${category.name}"?`
         )
     ) {
-        form.delete(`/management/categories/${category.id}`);
+        form.delete(`/management/categories/${category.id}`, {
+            onSuccess: () => snackbar.success('Kategori berhasil dihapus'),
+        });
     }
 };
 

@@ -28,9 +28,9 @@ import CustomSelect from '@/components/ui/CustomSelect.vue';
 import DatePicker from '@/components/ui/DatePicker.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { useConfirm } from '@/composables/useConfirm';
 import { useSnackbar } from '@/composables/useSnackbar';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 interface Attachment {
     id: number;
@@ -245,7 +245,12 @@ const submitLog = () => {
 };
 
 const deleteLog = async (logId: number) => {
-    if (await confirmDialog.ask('Hapus Log Latihan', 'Apakah Anda yakin ingin menghapus log latihan ini?')) {
+    if (
+        await confirmDialog.ask(
+            'Hapus Log Latihan',
+            'Apakah Anda yakin ingin menghapus log latihan ini?',
+        )
+    ) {
         router.delete(`/athlete/training/log/${logId}`, {
             onSuccess: () => snackbar.success('Log latihan berhasil dihapus'),
         });

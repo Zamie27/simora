@@ -19,9 +19,9 @@ import CustomSelect from '@/components/ui/CustomSelect.vue';
 import DatePicker from '@/components/ui/DatePicker.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { useConfirm } from '@/composables/useConfirm';
 import { useSnackbar } from '@/composables/useSnackbar';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 interface Athlete {
     id: number;
@@ -114,9 +114,15 @@ const toggleAthlete = (id: number) => {
 };
 
 const deleteSession = async (session: Session) => {
-    if (await confirmDialog.ask('Hapus Jadwal Latihan', `Apakah Anda yakin ingin menghapus sesi "${session.title}"?`)) {
+    if (
+        await confirmDialog.ask(
+            'Hapus Jadwal Latihan',
+            `Apakah Anda yakin ingin menghapus sesi "${session.title}"?`,
+        )
+    ) {
         router.delete(`/coach/training-sessions/${session.id}`, {
-            onSuccess: () => snackbar.success('Jadwal latihan berhasil dihapus'),
+            onSuccess: () =>
+                snackbar.success('Jadwal latihan berhasil dihapus'),
         });
     }
 };

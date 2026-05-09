@@ -5,9 +5,9 @@ import { ref } from 'vue';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { useConfirm } from '@/composables/useConfirm';
 import { useSnackbar } from '@/composables/useSnackbar';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 interface ExerciseType {
     id: number;
@@ -68,7 +68,10 @@ const submit = () => {
 
 const deleteType = async (type: ExerciseType) => {
     if (
-        await confirmDialog.ask('Hapus Jenis Latihan', `Apakah Anda yakin ingin menghapus jenis latihan "${type.name}"?`)
+        await confirmDialog.ask(
+            'Hapus Jenis Latihan',
+            `Apakah Anda yakin ingin menghapus jenis latihan "${type.name}"?`,
+        )
     ) {
         form.delete(`/management/exercise-types/${type.id}`, {
             onSuccess: () => snackbar.success('Jenis latihan berhasil dihapus'),

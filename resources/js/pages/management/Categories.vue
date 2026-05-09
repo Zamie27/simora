@@ -5,9 +5,9 @@ import { ref } from 'vue';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { useConfirm } from '@/composables/useConfirm';
 import { useSnackbar } from '@/composables/useSnackbar';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 interface Category {
     id: number;
@@ -70,7 +70,7 @@ const deleteCategory = async (category: Category) => {
     if (
         await confirmDialog.ask(
             'Hapus Kategori',
-            `Apakah Anda yakin ingin menghapus kategori "${category.name}"?`
+            `Apakah Anda yakin ingin menghapus kategori "${category.name}"?`,
         )
     ) {
         form.delete(`/management/categories/${category.id}`, {

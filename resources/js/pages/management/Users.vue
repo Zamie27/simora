@@ -4,9 +4,9 @@ import { ref } from 'vue';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { useConfirm } from '@/composables/useConfirm';
 import { useSnackbar } from '@/composables/useSnackbar';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 interface Role {
     id: number;
@@ -87,7 +87,12 @@ const submit = () => {
 };
 
 const deleteUser = async (id: number) => {
-    if (await confirmDialog.ask('Hapus User', 'Apakah Anda yakin ingin menghapus user ini?')) {
+    if (
+        await confirmDialog.ask(
+            'Hapus User',
+            'Apakah Anda yakin ingin menghapus user ini?',
+        )
+    ) {
         router.delete(route('management.users.destroy', id), {
             onSuccess: () => snackbar.success('User berhasil dihapus'),
         });

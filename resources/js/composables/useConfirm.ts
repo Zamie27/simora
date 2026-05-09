@@ -10,7 +10,7 @@ export function useConfirm() {
         title.value = newTitle;
         message.value = newMessage;
         isOpen.value = true;
-        
+
         return new Promise((resolve) => {
             resolveCallback = resolve;
         });
@@ -18,12 +18,18 @@ export function useConfirm() {
 
     const confirm = () => {
         isOpen.value = false;
-        if (resolveCallback) resolveCallback(true);
+
+        if (resolveCallback) {
+resolveCallback(true);
+}
     };
 
     const cancel = () => {
         isOpen.value = false;
-        if (resolveCallback) resolveCallback(false);
+
+        if (resolveCallback) {
+resolveCallback(false);
+}
     };
 
     return {

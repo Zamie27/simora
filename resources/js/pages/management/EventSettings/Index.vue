@@ -5,9 +5,9 @@ import { ref } from 'vue';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { useConfirm } from '@/composables/useConfirm';
 import { useSnackbar } from '@/composables/useSnackbar';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 interface User {
     id: number;
@@ -86,7 +86,10 @@ const submitType = () => {
 
 const deleteType = async (type: EventType) => {
     if (
-        await confirmDialog.ask('Hapus Jenis Event', `Apakah Anda yakin ingin menghapus jenis event "${type.name}"?`)
+        await confirmDialog.ask(
+            'Hapus Jenis Event',
+            `Apakah Anda yakin ingin menghapus jenis event "${type.name}"?`,
+        )
     ) {
         typeForm.delete(`/management/event-types/${type.id}`, {
             onSuccess: () => snackbar.success('Jenis event berhasil dihapus'),
@@ -133,10 +136,14 @@ const submitPoint = () => {
 
 const deletePoint = async (point: EventPoint) => {
     if (
-        await confirmDialog.ask('Hapus Poin', `Apakah Anda yakin ingin menghapus poin kejuaraan "${point.name}"?`)
+        await confirmDialog.ask(
+            'Hapus Poin',
+            `Apakah Anda yakin ingin menghapus poin kejuaraan "${point.name}"?`,
+        )
     ) {
         pointForm.delete(`/management/event-points/${point.id}`, {
-            onSuccess: () => snackbar.success('Poin kejuaraan berhasil dihapus'),
+            onSuccess: () =>
+                snackbar.success('Poin kejuaraan berhasil dihapus'),
         });
     }
 };

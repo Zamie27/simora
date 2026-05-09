@@ -19,9 +19,9 @@ import CustomSelect from '@/components/ui/CustomSelect.vue';
 import DatePicker from '@/components/ui/DatePicker.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { useConfirm } from '@/composables/useConfirm';
 import { useSnackbar } from '@/composables/useSnackbar';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 interface Athlete {
     id: number;
@@ -148,7 +148,12 @@ const submit = () => {
 };
 
 const deleteEvent = async (event: Event) => {
-    if (await confirmDialog.ask('Hapus Event', `Apakah Anda yakin ingin menghapus event "${event.title}"?`)) {
+    if (
+        await confirmDialog.ask(
+            'Hapus Event',
+            `Apakah Anda yakin ingin menghapus event "${event.title}"?`,
+        )
+    ) {
         router.delete(`/coach/events/${event.id}`, {
             onSuccess: () => snackbar.success('Agenda event berhasil dihapus'),
         });
@@ -208,7 +213,9 @@ const addType = () => {
 };
 
 const deleteType = async (id: number) => {
-    if (await confirmDialog.ask('Hapus Jenis Event', 'Hapus jenis event ini?')) {
+    if (
+        await confirmDialog.ask('Hapus Jenis Event', 'Hapus jenis event ini?')
+    ) {
         router.delete(`/coach/event-types/${id}`, {
             onSuccess: () => snackbar.success('Jenis event berhasil dihapus'),
         });
@@ -225,9 +232,15 @@ const addPoint = () => {
 };
 
 const deletePoint = async (id: number) => {
-    if (await confirmDialog.ask('Hapus Poin Kejuaraan', 'Hapus poin kejuaraan ini?')) {
+    if (
+        await confirmDialog.ask(
+            'Hapus Poin Kejuaraan',
+            'Hapus poin kejuaraan ini?',
+        )
+    ) {
         router.delete(`/coach/event-points/${id}`, {
-            onSuccess: () => snackbar.success('Poin kejuaraan berhasil dihapus'),
+            onSuccess: () =>
+                snackbar.success('Poin kejuaraan berhasil dihapus'),
         });
     }
 };

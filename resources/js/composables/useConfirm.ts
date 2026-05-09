@@ -20,16 +20,16 @@ export function useConfirm() {
         isOpen.value = false;
 
         if (resolveCallback) {
-resolveCallback(true);
-}
+            resolveCallback(true);
+        }
     };
 
     const cancel = () => {
         isOpen.value = false;
 
         if (resolveCallback) {
-resolveCallback(false);
-}
+            resolveCallback(false);
+        }
     };
 
     return {

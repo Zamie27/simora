@@ -204,6 +204,9 @@ const updateStatus = (reportId: number, newStatus: string) => {
                                     </th>
                                     <th class="px-4 py-3 font-medium">Judul</th>
                                     <th class="px-4 py-3 font-medium">
+                                        Deskripsi
+                                    </th>
+                                    <th class="px-4 py-3 font-medium">
                                         Status
                                     </th>
                                     <th
@@ -236,16 +239,16 @@ const updateStatus = (reportId: number, newStatus: string) => {
                                         <div class="font-medium">
                                             {{ report.reporter_name }}
                                         </div>
-                                        <div
-                                            class="text-xs text-muted-foreground"
-                                        >
-                                            {{ report.reporter_contact }}
-                                        </div>
                                     </td>
                                     <td
-                                        class="max-w-[300px] truncate px-4 py-3"
+                                        class="max-w-[200px] truncate px-4 py-3"
                                     >
                                         {{ report.title }}
+                                    </td>
+                                    <td
+                                        class="max-w-[300px] truncate px-4 py-3 text-muted-foreground"
+                                    >
+                                        {{ report.description }}
                                     </td>
                                     <td class="px-4 py-3">
                                         <Badge
@@ -277,7 +280,7 @@ const updateStatus = (reportId: number, newStatus: string) => {
                                 </tr>
                                 <tr v-if="bugReports.length === 0">
                                     <td
-                                        colspan="5"
+                                        colspan="6"
                                         class="px-4 py-8 text-center text-muted-foreground"
                                     >
                                         Belum ada laporan bug.

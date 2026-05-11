@@ -32,7 +32,6 @@ yarn-error.log
 /.claude
 /.github/workflows
 
-/tests/Feature
 
 dokumen_projek.pdf
 CLAUDE.md

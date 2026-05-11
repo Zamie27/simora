@@ -37,7 +37,7 @@ interface Profile {
     license_valid_until?: string;
 }
 
-interface PhysicalMetric {
+interface DataFisik {
     id: number;
     height: number;
     weight: number;
@@ -48,19 +48,19 @@ interface PhysicalMetric {
     recorded_at: string;
 }
 
-interface Category {
+interface Kategori {
     id: number;
     name: string;
 }
 
-interface TrainingAttachment {
+interface LampiranLatihan {
     id: number;
     file_path: string;
     file_name: string;
     file_type: string;
 }
 
-interface TrainingLog {
+interface LogLatihan {
     id: number;
     title: string | null;
     date: string;

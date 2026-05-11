@@ -81,7 +81,7 @@ interface Statistics {
     completed_sessions: number;
 }
 
-interface ExerciseType {
+interface JenisLatihan {
     id: number;
     name: string;
 }

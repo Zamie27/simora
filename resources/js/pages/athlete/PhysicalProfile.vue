@@ -19,7 +19,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 
-interface PhysicalMetric {
+interface DataFisik {
     id: number;
     height: number;
     weight: number;
@@ -30,7 +30,7 @@ interface PhysicalMetric {
     recorded_at: string;
 }
 
-interface Category {
+interface Kategori {
     id: number;
     name: string;
 }

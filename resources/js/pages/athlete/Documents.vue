@@ -235,7 +235,7 @@ const closePreview = () => {
                 </div>
             </div>
 
-            <!-- Success Message -->
+            <!-- Success Pesan -->
             <transition
                 enter-active-class="transition duration-300 ease-out"
                 enter-from-class="transform -translate-y-4 opacity-0"

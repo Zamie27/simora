@@ -32,7 +32,7 @@ interface Athlete {
     } | null;
 }
 
-interface ExerciseType {
+interface JenisLatihan {
     id: number;
     name: string;
 }

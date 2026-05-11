@@ -135,7 +135,7 @@ const chartSeries = [
     },
 ];
 
-// Pie Chart for Category Distribution
+// Pie Chart for Kategori Distribution
 const pieOptions = computed<ApexOptions>(() => ({
     chart: { type: 'donut', background: 'transparent' },
     colors: ['#FF6120', '#102844', '#0F1414', '#94a3b8'],
@@ -716,7 +716,7 @@ const formatTime = (minutes: number) => {
                         </div>
                     </div>
 
-                    <!-- Category Dist -->
+                    <!-- Kategori Dist -->
                     <div
                         class="bg-surface rounded-3xl border border-white/5 p-6"
                     >

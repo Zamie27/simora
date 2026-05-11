@@ -16,12 +16,12 @@ import { ref } from 'vue';
 
 import AppLayout from '@/layouts/AppLayout.vue';
 
-interface EventType {
+interface JenisEvent {
     id: number;
     name: string;
 }
 
-interface EventPoint {
+interface PoinEvent {
     id: number;
     name: string;
 }
@@ -220,7 +220,7 @@ const getStatusColor = (status: string) => {
                                             v-if="event.pivot.point"
                                             class="flex w-fit items-center gap-2 rounded-lg bg-orange-500/5 px-2 py-1 text-[9px] font-black tracking-widest text-orange-500 uppercase"
                                         >
-                                            Category:
+                                            Kategori:
                                             {{ event.pivot.point.name }}
                                         </div>
                                         <div
@@ -399,7 +399,7 @@ const getStatusColor = (status: string) => {
                                 v-if="selectedEvent?.pivot.point"
                                 class="mt-2 text-[10px] font-black tracking-widest text-orange-500 uppercase"
                             >
-                                Assigned Category:
+                                Assigned Kategori:
                                 {{ selectedEvent.pivot.point.name }}
                             </div>
                         </div>

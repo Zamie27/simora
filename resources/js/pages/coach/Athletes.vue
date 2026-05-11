@@ -2,7 +2,7 @@
 import { Head, Link } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 
-interface PhysicalMetric {
+interface DataFisik {
     height: number;
     weight: number;
     age: number;

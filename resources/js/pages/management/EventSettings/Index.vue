@@ -14,14 +14,14 @@ interface User {
     name: string;
 }
 
-interface EventType {
+interface JenisEvent {
     id: number;
     name: string;
     coach_id: number | null;
     coach?: User;
 }
 
-interface EventPoint {
+interface PoinEvent {
     id: number;
     name: string;
     coach_id: number | null;
@@ -39,13 +39,13 @@ const breadcrumbs = [
 ];
 
 const showTypeModal = ref(false);
-const editingType = ref<EventType | null>(null);
+const editingType = ref<JenisEvent | null>(null);
 const typeForm = useForm({
     name: '',
 });
 
 const showPointModal = ref(false);
-const editingPoint = ref<EventPoint | null>(null);
+const editingPoint = ref<PoinEvent | null>(null);
 const pointForm = useForm({
     name: '',
 });

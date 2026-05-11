@@ -9,7 +9,7 @@ import { useConfirm } from '@/composables/useConfirm';
 import { useSnackbar } from '@/composables/useSnackbar';
 import AppLayout from '@/layouts/AppLayout.vue';
 
-interface Category {
+interface Kategori {
     id: number;
     name: string;
     description: string;
@@ -25,7 +25,7 @@ const breadcrumbs = [
 ];
 
 const showModal = ref(false);
-const editingCategory = ref<Category | null>(null);
+const editingCategory = ref<Kategori | null>(null);
 
 const confirmDialog = useConfirm();
 const snackbar = useSnackbar();

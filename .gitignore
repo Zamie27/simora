@@ -27,11 +27,6 @@ yarn-error.log
 /.vscode
 /.zed
 
-/.agent
-/.agents
-/.claude
-/.github/workflows
-
 
 dokumen_projek.pdf
 CLAUDE.md

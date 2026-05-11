@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/dialog';
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
 
-interface BugReport {
+interface LaporanBug {
     id: number;
     title: string;
     description: string;
@@ -68,7 +68,7 @@ const breadcrumbs = [
     },
 ];
 
-const selectedReport = ref<BugReport | null>(null);
+const selectedReport = ref<LaporanBug | null>(null);
 const previewImage = ref<string | null>(null);
 
 const form = useForm({

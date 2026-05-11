@@ -29,13 +29,13 @@ interface Athlete {
     has_valid_license?: boolean;
 }
 
-interface EventType {
+interface JenisEvent {
     id: number;
     name: string;
     coach_id: number | null;
 }
 
-interface EventPoint {
+interface PoinEvent {
     id: number;
     name: string;
     coach_id: number | null;

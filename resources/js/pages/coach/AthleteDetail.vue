@@ -25,7 +25,7 @@ import { useConfirm } from '@/composables/useConfirm';
 import { useSnackbar } from '@/composables/useSnackbar';
 import AppLayout from '@/layouts/AppLayout.vue';
 
-interface PhysicalMetric {
+interface DataFisik {
     id: number;
     height: number;
     weight: number;
@@ -36,25 +36,25 @@ interface PhysicalMetric {
     recorded_at: string;
 }
 
-interface Category {
+interface Kategori {
     id: number;
     name: string;
 }
 
-interface TrainingAttachment {
+interface LampiranLatihan {
     id: number;
     file_path: string;
     file_name: string;
     file_type: string;
 }
 
-interface TrainingSession {
+interface SesiLatihan {
     id: number;
     exercise_type: { name: string };
     scheduled_date: string;
 }
 
-interface TrainingLog {
+interface LogLatihan {
     id: number;
     title: string | null;
     date: string;
@@ -128,7 +128,7 @@ const breadcrumbs = [
 
 const showAddModal = ref(false);
 const showEditLogModal = ref(false);
-const selectedLog = ref<TrainingLog | null>(null);
+const selectedLog = ref<LogLatihan | null>(null);
 
 const startDate = ref(props.filters.start_date || '');
 const endDate = ref(props.filters.end_date || '');
@@ -881,7 +881,7 @@ const completionOptions = [
                         </div>
                     </div>
 
-                    <!-- Category Management Tool -->
+                    <!-- Kategori Management Tool -->
                     <div
                         class="rounded-[2.5rem] border border-border bg-card p-10 shadow-xl"
                     >

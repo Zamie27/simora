@@ -9,7 +9,7 @@ import { useConfirm } from '@/composables/useConfirm';
 import { useSnackbar } from '@/composables/useSnackbar';
 import AppLayout from '@/layouts/AppLayout.vue';
 
-interface ExerciseType {
+interface JenisLatihan {
     id: number;
     name: string;
     description: string;
@@ -25,7 +25,7 @@ const breadcrumbs = [
 ];
 
 const showModal = ref(false);
-const editingType = ref<ExerciseType | null>(null);
+const editingType = ref<JenisLatihan | null>(null);
 
 const confirmDialog = useConfirm();
 const snackbar = useSnackbar();

@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\TrainingAttachment;
-use App\Models\TrainingLog;
+use App\Models\LampiranLatihan;
+use App\Models\LogLatihan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<TrainingAttachment>
+ * @extends Factory<LampiranLatihan>
  */
 class TrainingAttachmentFactory extends Factory
 {
@@ -19,7 +19,7 @@ class TrainingAttachmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'training_log_id' => TrainingLog::factory(),
+            'training_log_id' => LogLatihan::factory(),
             'file_path' => 'training-attachments/'.fake()->uuid().'.jpg',
             'file_name' => fake()->word().'.jpg',
             'file_type' => 'image/jpeg',

@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\ExerciseType;
+use App\Models\JenisLatihan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<ExerciseType>
+ * @extends Factory<JenisLatihan>
  */
 class ExerciseTypeFactory extends Factory
 {

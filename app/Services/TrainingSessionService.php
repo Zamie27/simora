@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\TrainingLog;
-use App\Models\TrainingSession;
+use App\Models\LogLatihan;
+use App\Models\SesiLatihan;
 use App\Models\User;
 use App\Notifications\NewTrainingSessionNotification;
 use Illuminate\Support\Facades\DB;
@@ -17,12 +17,12 @@ class TrainingSessionService
     public function createSession(array $data, array $athleteIds): TrainingSession
     {
         return DB::transaction(function () use ($data, $athleteIds) {
-            $session = TrainingSession::create($data);
+            $session = SesiLatihan::create($data);
             $session->athletes()->sync($athleteIds);
 
             // Create initial logs for each athlete for the starting date
             foreach ($athleteIds as $athleteId) {
-                TrainingLog::create([
+                LogLatihan::create([
                     'training_session_id' => $session->id,
                     'athlete_id' => $athleteId,
                     'date' => $session->scheduled_date,
@@ -43,7 +43,7 @@ class TrainingSessionService
     /**
      * Update an existing session.
      */
-    public function updateSession(TrainingSession $session, array $data, array $athleteIds): TrainingSession
+    public function updateSession(SesiLatihan $session, array $data, array $athleteIds): TrainingSession
     {
         return DB::transaction(function () use ($session, $data, $athleteIds) {
             $session->update($data);
@@ -58,7 +58,7 @@ class TrainingSessionService
     /**
      * Delete a session.
      */
-    public function deleteSession(TrainingSession $session): bool
+    public function deleteSession(SesiLatihan $session): bool
     {
         return $session->delete();
     }

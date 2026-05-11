@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\TrainingLog;
-use App\Models\TrainingSession;
+use App\Models\LogLatihan;
+use App\Models\SesiLatihan;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
@@ -27,10 +27,10 @@ class GenerateRecurringTrainingLogs extends Command
         $today = now()->startOfDay();
         $todayDayOfWeek = $today->dayOfWeek;
 
-        $sessions = TrainingSession::where('repeat_weekly', true)
+        $sessions = SesiLatihan::where('repeat_weekly', true)
             ->with('athletes')
             ->get()
-            ->filter(fn (TrainingSession $session) => $session->scheduled_date->dayOfWeek === $todayDayOfWeek);
+            ->filter(fn (SesiLatihan $session) => $session->scheduled_date->dayOfWeek === $todayDayOfWeek);
 
         if ($sessions->isEmpty()) {
             $this->info('No recurring sessions match today\'s day of week.');
@@ -43,7 +43,7 @@ class GenerateRecurringTrainingLogs extends Command
         foreach ($sessions as $session) {
             foreach ($session->athletes as $athlete) {
                 // Check if a log already exists for this athlete + session + today
-                $exists = TrainingLog::where('training_session_id', $session->id)
+                $exists = LogLatihan::where('training_session_id', $session->id)
                     ->where('athlete_id', $athlete->id)
                     ->whereDate('date', $today->toDateString())
                     ->exists();
@@ -52,7 +52,7 @@ class GenerateRecurringTrainingLogs extends Command
                     continue;
                 }
 
-                TrainingLog::create([
+                LogLatihan::create([
                     'training_session_id' => $session->id,
                     'athlete_id' => $athlete->id,
                     'date' => $today->toDateString(),

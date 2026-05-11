@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
+use App\Models\DataFisik;
 use App\Models\Event;
-use App\Models\EventPoint;
-use App\Models\EventType;
-use App\Models\ExerciseType;
-use App\Models\Message;
-use App\Models\PhysicalMetric;
-use App\Models\TrainingLog;
-use App\Models\TrainingSession;
+use App\Models\JenisEvent;
+use App\Models\JenisLatihan;
+use App\Models\Kategori;
+use App\Models\LogLatihan;
+use App\Models\Pesan;
+use App\Models\PoinEvent;
+use App\Models\SesiLatihan;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -23,13 +23,13 @@ class DummyDataSeeder extends Seeder
         // 1. Categories
         $categories = ['Pemula', 'Junior', 'Senior', 'Elite', 'Master A', 'Master B'];
         foreach ($categories as $cat) {
-            Category::firstOrCreate(['name' => $cat], ['description' => "Kategori $cat"]);
+            Kategori::firstOrCreate(['name' => $cat], ['description' => "Kategori $cat"]);
         }
 
         // 2. Exercise Types
         $exerciseTypes = ['Endurance', 'Interval / VO2 Max', 'Recovery / Active Rest', 'Speed / Sprint', 'Tempo / Sweet Spot', 'Strength / Hill Climb'];
         foreach ($exerciseTypes as $type) {
-            ExerciseType::firstOrCreate(['name' => $type], ['description' => "Latihan $type"]);
+            JenisLatihan::firstOrCreate(['name' => $type], ['description' => "Latihan $type"]);
         }
 
         // Get coaches first so we can assign EventType and EventPoint to them
@@ -45,7 +45,7 @@ class DummyDataSeeder extends Seeder
         // 3. Event Types & Points
         $eventTypes = ['Road Race', 'Criterium', 'Individual Time Trial (ITT)', 'Team Time Trial (TTT)', 'Cross Country (XC)', 'Track'];
         foreach ($eventTypes as $type) {
-            EventType::firstOrCreate(['name' => $type, 'coach_id' => $baseCoach->id]);
+            JenisEvent::firstOrCreate(['name' => $type, 'coach_id' => $baseCoach->id]);
         }
 
         $eventPoints = [
@@ -56,13 +56,13 @@ class DummyDataSeeder extends Seeder
             'Finisher',
         ];
         foreach ($eventPoints as $pointStr) {
-            EventPoint::firstOrCreate(['name' => $pointStr, 'coach_id' => $baseCoach->id]);
+            PoinEvent::firstOrCreate(['name' => $pointStr, 'coach_id' => $baseCoach->id]);
         }
 
-        $allCategories = Category::all();
-        $allExerciseTypes = ExerciseType::all();
-        $allEventTypes = EventType::all();
-        $allEventPoints = EventPoint::all();
+        $allCategories = Kategori::all();
+        $allExerciseTypes = JenisLatihan::all();
+        $allEventTypes = JenisEvent::all();
+        $allEventPoints = PoinEvent::all();
 
         // 4. Update Athletes (Assign Coach and Category, DOB, Gender, etc.)
 
@@ -89,7 +89,7 @@ class DummyDataSeeder extends Seeder
             $currentDate = Carbon::now()->subMonths(3);
 
             while ($currentDate <= Carbon::now()) {
-                PhysicalMetric::create([
+                DataFisik::create([
                     'user_id' => $athlete->id,
                     'recorded_at' => $currentDate->copy(),
                     'weight' => $baseWeight + (rand(-10, 10) / 10), // Fluctuate slightly
@@ -116,7 +116,7 @@ class DummyDataSeeder extends Seeder
                 $intensity = ['low', 'medium', 'high', 'very_high'][rand(0, 3)];
                 $duration = rand(45, 180);
 
-                $session = TrainingSession::create([
+                $session = SesiLatihan::create([
                     'coach_id' => $coach->id,
                     'exercise_type_id' => $allExerciseTypes->random()->id,
                     'title' => 'Sesi Latihan '.$sessionDate->format('M d'),
@@ -135,7 +135,7 @@ class DummyDataSeeder extends Seeder
                         $actualDuration = $session->target_duration_minutes + rand(-15, 15);
                         $actualDistance = $session->target_distance_km + rand(-5, 5);
 
-                        TrainingLog::create([
+                        LogLatihan::create([
                             'athlete_id' => $athlete->id,
                             'training_session_id' => $session->id,
                             'date' => $session->scheduled_date,
@@ -161,7 +161,7 @@ class DummyDataSeeder extends Seeder
             // Upcoming sessions
             for ($i = 0; $i < 5; $i++) {
                 $sessionDate = Carbon::now()->addDays(rand(1, 14));
-                TrainingSession::create([
+                SesiLatihan::create([
                     'coach_id' => $coach->id,
                     'exercise_type_id' => $allExerciseTypes->random()->id,
                     'title' => 'Sesi Mendatang '.$sessionDate->format('M d'),
@@ -183,7 +183,7 @@ class DummyDataSeeder extends Seeder
                 $duration = rand(30, 90);
                 $distance = round($duration * (rand(15, 25) / 60), 2);
 
-                TrainingLog::create([
+                LogLatihan::create([
                     'athlete_id' => $athlete->id,
                     'date' => $logDate,
                     'title' => 'Latihan Mandiri '.$logDate->format('d/m'),
@@ -234,7 +234,7 @@ class DummyDataSeeder extends Seeder
             $coachAthletes = User::where('coach_id', $coach->id)->get();
             foreach ($coachAthletes as $athlete) {
                 for ($i = 0; $i < rand(1, 3); $i++) {
-                    Message::create([
+                    Pesan::create([
                         'sender_id' => $coach->id,
                         'receiver_id' => $athlete->id,
                         'content' => 'Feedback sesi terakhir: '.fake()->sentence(),

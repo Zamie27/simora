@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
-use App\Models\BugReport;
+use App\Models\LaporanBug;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,7 +14,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $bugReports = BugReport::latest('created_at')->get();
+        $bugReports = LaporanBug::latest('created_at')->get();
 
         return Inertia::render('report/Dashboard', [
             'bugReports' => $bugReports,
@@ -30,7 +30,7 @@ class DashboardController extends Controller
     /**
      * Update the status of a specific bug report.
      */
-    public function updateStatus(Request $request, BugReport $bugReport)
+    public function updateStatus(Request $request, LaporanBug $bugReport)
     {
         $validated = $request->validate([
             'status' => 'required|string|in:pending,sedang dikerjakan,tuntas diperbaiki',

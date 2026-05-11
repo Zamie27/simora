@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\PhysicalMetric;
-
 class TrainingMetricsService
 {
     /**

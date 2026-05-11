@@ -38,7 +38,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $updated_at
  * @property-read Role|null $role
  * @property-read User|null $coach
- * @property-read Collection|TrainingLog[] $trainingLogs
+ * @property-read Collection|LogLatihan[] $trainingLogs
  */
 #[Fillable(['name', 'email', 'date_of_birth', 'gender', 'password', 'role_id', 'is_verified', 'coach_id', 'category_id', 'avatar'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
@@ -116,22 +116,22 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function physicalMetrics(): HasMany
     {
-        return $this->hasMany(PhysicalMetric::class, 'user_id');
+        return $this->hasMany(DataFisik::class, 'user_id');
     }
 
     public function latestPhysicalMetric(): HasOne
     {
-        return $this->hasOne(PhysicalMetric::class, 'user_id')->latestOfMany('recorded_at');
+        return $this->hasOne(DataFisik::class, 'user_id')->latestOfMany('recorded_at');
     }
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Kategori::class);
     }
 
     public function athleteProfile(): HasOne
     {
-        return $this->hasOne(AthleteProfile::class, 'user_id');
+        return $this->hasOne(ProfilAtlet::class, 'user_id');
     }
 
     /**
@@ -150,7 +150,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function coachedSessions(): HasMany
     {
-        return $this->hasMany(TrainingSession::class, 'coach_id');
+        return $this->hasMany(SesiLatihan::class, 'coach_id');
     }
 
     /**
@@ -158,7 +158,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function athleteSessions(): BelongsToMany
     {
-        return $this->belongsToMany(TrainingSession::class, 'training_session_user');
+        return $this->belongsToMany(SesiLatihan::class, 'training_session_user');
     }
 
     /**
@@ -166,7 +166,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function trainingLogs(): HasMany
     {
-        return $this->hasMany(TrainingLog::class, 'athlete_id');
+        return $this->hasMany(LogLatihan::class, 'athlete_id');
     }
 
     public function scopeWhereRole($query, string $role)
@@ -190,7 +190,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function athleteEvents(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'event_user')
-            ->using(EventUser::class)
+            ->using(PartisipanEvent::class)
             ->withPivot(['status', 'result', 'notes', 'event_point_id'])
             ->withTimestamps();
     }
@@ -200,7 +200,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function eventParticipations(): HasMany
     {
-        return $this->hasMany(EventUser::class, 'user_id');
+        return $this->hasMany(PartisipanEvent::class, 'user_id');
     }
 
     /**

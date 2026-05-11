@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\ExerciseType;
-use App\Models\TrainingSession;
+use App\Models\JenisLatihan;
+use App\Models\SesiLatihan;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<TrainingSession>
+ * @extends Factory<SesiLatihan>
  */
 class TrainingSessionFactory extends Factory
 {
@@ -21,7 +21,7 @@ class TrainingSessionFactory extends Factory
     {
         return [
             'coach_id' => User::factory(),
-            'exercise_type_id' => ExerciseType::factory(),
+            'exercise_type_id' => JenisLatihan::factory(),
             'scheduled_date' => fake()->dateTimeBetween('-1 week', '+2 weeks'),
             'scheduled_time' => fake()->time('H:i'),
             'type' => fake()->randomElement(['endurance', 'interval', 'recovery', 'time_trial']),

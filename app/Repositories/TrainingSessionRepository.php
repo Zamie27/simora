@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\TrainingSession;
+use App\Models\SesiLatihan;
 use Illuminate\Database\Eloquent\Collection;
 
 class TrainingSessionRepository
@@ -12,7 +12,7 @@ class TrainingSessionRepository
      */
     public function getUpcomingForAthlete(int $athleteId): Collection
     {
-        return TrainingSession::whereHas('athletes', function ($query) use ($athleteId) {
+        return SesiLatihan::whereHas('athletes', function ($query) use ($athleteId) {
             $query->where('users.id', $athleteId);
         })
             ->with(['exerciseType', 'coach'])
@@ -26,7 +26,7 @@ class TrainingSessionRepository
      */
     public function getCoachedSessions(int $coachId): Collection
     {
-        return TrainingSession::where('coach_id', $coachId)
+        return SesiLatihan::where('coach_id', $coachId)
             ->with(['exerciseType', 'athletes'])
             ->withCount('athletes')
             ->orderBy('scheduled_date', 'desc')
@@ -38,7 +38,7 @@ class TrainingSessionRepository
      */
     public function findWithDetails(int $id): ?TrainingSession
     {
-        return TrainingSession::with([
+        return SesiLatihan::with([
             'exerciseType',
             'coach',
             'athletes',

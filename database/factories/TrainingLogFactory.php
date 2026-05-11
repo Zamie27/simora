@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\TrainingLog;
-use App\Models\TrainingSession;
+use App\Models\LogLatihan;
+use App\Models\SesiLatihan;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<TrainingLog>
+ * @extends Factory<LogLatihan>
  */
 class TrainingLogFactory extends Factory
 {
@@ -24,7 +24,7 @@ class TrainingLogFactory extends Factory
         $avgSpeed = $durationMinutes > 0 ? round($distanceKm / ($durationMinutes / 60), 2) : null;
 
         return [
-            'training_session_id' => TrainingSession::factory(),
+            'training_session_id' => SesiLatihan::factory(),
             'athlete_id' => User::factory(),
             'date' => fake()->dateTimeBetween('-1 month', 'now'),
             'distance_km' => $distanceKm,

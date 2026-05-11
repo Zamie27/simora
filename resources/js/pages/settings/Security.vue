@@ -13,7 +13,7 @@ import { useTwoFactorAuth } from '@/composables/useTwoFactorAuth';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import type { BreadcrumbItem } from '@/types';
-import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
+import SecurityController from '@/actions/App/Http/Controllers/Auth/KeamananController';
 import { edit } from '@/routes/security';
 import { disable, enable } from '@/routes/two-factor';
 

@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\TrainingSession;
+use App\Models\SesiLatihan;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -14,7 +14,7 @@ class NewTrainingSessionNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(public TrainingSession $session) {}
+    public function __construct(public SesiLatihan $session) {}
 
     /**
      * Get the notification's delivery channels.

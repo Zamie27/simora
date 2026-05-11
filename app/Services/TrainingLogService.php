@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\PhysicalMetric;
-use App\Models\TrainingLog;
+use App\Models\DataFisik;
+use App\Models\LogLatihan;
 use App\Models\User;
 use App\Repositories\TrainingLogRepository;
 use Illuminate\Http\UploadedFile;
@@ -38,7 +38,7 @@ class TrainingLogService
 
         $data = array_merge($data, array_filter($calculatedMetrics, fn ($val) => $val !== null));
 
-        $log = TrainingLog::create($data);
+        $log = LogLatihan::create($data);
 
         if ($attachments) {
             $this->storeAttachments($log, $attachments);
@@ -53,7 +53,7 @@ class TrainingLogService
      * @param  array<string, mixed>  $data
      * @param  array<int, UploadedFile>|null  $attachments
      */
-    public function update(TrainingLog $log, array $data, ?array $attachments = null): TrainingLog
+    public function update(LogLatihan $log, array $data, ?array $attachments = null): TrainingLog
     {
         // Restriction: Only same day edit allowed for athletes through specific UI,
         // but we allow the service to perform the update if the controller passes it.
@@ -87,7 +87,7 @@ class TrainingLogService
      *
      * @param  array<string, mixed>  $data
      */
-    public function updateEvaluation(TrainingLog $log, array $data): TrainingLog
+    public function updateEvaluation(LogLatihan $log, array $data): TrainingLog
     {
         $log->update($data);
 
@@ -99,7 +99,7 @@ class TrainingLogService
      *
      * @param  array<int, UploadedFile>  $files
      */
-    private function storeAttachments(TrainingLog $log, array $files): void
+    private function storeAttachments(LogLatihan $log, array $files): void
     {
         foreach ($files as $file) {
             $path = $file->store('training-attachments', 'public');
@@ -133,7 +133,7 @@ class TrainingLogService
                     'height' => $height,
                 ]);
             } else {
-                PhysicalMetric::create([
+                DataFisik::create([
                     'user_id' => $athleteId,
                     'weight' => $weight,
                     'height' => $height,

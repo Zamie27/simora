@@ -29,7 +29,7 @@ class Event extends Model
 
     public function type(): BelongsTo
     {
-        return $this->belongsTo(EventType::class, 'event_type_id');
+        return $this->belongsTo(JenisEvent::class, 'event_type_id');
     }
 
     /**
@@ -46,7 +46,7 @@ class Event extends Model
     public function athletes(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'event_user')
-            ->using(EventUser::class)
+            ->using(PartisipanEvent::class)
             ->withPivot(['status', 'result', 'notes', 'event_point_id'])
             ->withTimestamps();
     }
@@ -56,6 +56,6 @@ class Event extends Model
      */
     public function participants(): HasMany
     {
-        return $this->hasMany(EventUser::class, 'event_id');
+        return $this->hasMany(PartisipanEvent::class, 'event_id');
     }
 }

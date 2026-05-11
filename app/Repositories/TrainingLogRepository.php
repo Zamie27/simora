@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Models\TrainingLog;
-use App\Models\TrainingSession;
+use App\Models\LogLatihan;
+use App\Models\SesiLatihan;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +15,7 @@ class TrainingLogRepository
      */
     public function getForAthlete(int $athleteId, ?string $startDate = null, ?string $endDate = null): Collection
     {
-        $query = TrainingLog::forAthlete($athleteId)
+        $query = LogLatihan::forAthlete($athleteId)
             ->with(['session.exerciseType', 'attachments'])
             ->orderBy('date', 'desc');
 
@@ -33,7 +33,7 @@ class TrainingLogRepository
      */
     public function getStatistics(int $athleteId, ?string $startDate = null, ?string $endDate = null): array
     {
-        $query = TrainingLog::forAthlete($athleteId);
+        $query = LogLatihan::forAthlete($athleteId);
 
         if ($startDate && $endDate) {
             $query->forPeriod($startDate, $endDate);
@@ -65,7 +65,7 @@ class TrainingLogRepository
      */
     public function getPerformanceTrend(int $athleteId, ?string $startDate = null, ?string $endDate = null): array
     {
-        $query = TrainingLog::forAthlete($athleteId)
+        $query = LogLatihan::forAthlete($athleteId)
             ->select('date', 'distance_km', 'duration_minutes', 'avg_speed', 'rpm', 'intensity')
             ->orderBy('date');
 
@@ -88,7 +88,7 @@ class TrainingLogRepository
      */
     public function getComparisonData(array $athleteIds, ?string $startDate = null, ?string $endDate = null): array
     {
-        $query = TrainingLog::whereIn('athlete_id', $athleteIds)
+        $query = LogLatihan::whereIn('athlete_id', $athleteIds)
             ->select('athlete_id')
             ->selectRaw('COALESCE(SUM(distance_km), 0) as total_distance_km')
             ->selectRaw('COALESCE(AVG(avg_speed), 0) as avg_speed')
@@ -116,7 +116,7 @@ class TrainingLogRepository
      */
     public function getUpcomingSessions(int $athleteId): \Illuminate\Support\Collection
     {
-        $sessions = TrainingSession::whereHas('athletes', function ($q) use ($athleteId) {
+        $sessions = SesiLatihan::whereHas('athletes', function ($q) use ($athleteId) {
             $q->where('users.id', $athleteId);
         })
             ->upcoming()
@@ -137,7 +137,7 @@ class TrainingLogRepository
             $instanceDate = $session->getActiveInstanceDate();
 
             // Check if there is already a log for this specific instance date
-            $log = TrainingLog::where('training_session_id', $session->id)
+            $log = LogLatihan::where('training_session_id', $session->id)
                 ->where('athlete_id', $athleteId)
                 ->whereDate('date', '=', $instanceDate->toDateString())
                 ->first();

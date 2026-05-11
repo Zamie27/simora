@@ -33,13 +33,13 @@ interface Event {
     location: string | null;
     event_date: string;
     event_type_id: number | null;
-    type: EventType | null;
+    type: JenisEvent | null;
     athletes: {
         id: number;
         name: string;
         pivot: {
             event_point_id: number | null;
-            point: EventPoint | null;
+            point: PoinEvent | null;
             status: string;
         };
     }[];
@@ -48,7 +48,7 @@ interface Event {
         result: string | null;
         notes: string | null;
         event_point_id: number | null;
-        point: EventPoint | null;
+        point: PoinEvent | null;
     };
 }
 

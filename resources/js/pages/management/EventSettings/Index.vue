@@ -29,8 +29,8 @@ interface EventPoint {
 }
 
 defineProps<{
-    eventTypes: EventType[];
-    eventPoints: EventPoint[];
+    eventTypes: JenisEvent[];
+    eventPoints: PoinEvent[];
 }>();
 
 const breadcrumbs = [
@@ -60,7 +60,7 @@ const openTypeCreate = () => {
     showTypeModal.value = true;
 };
 
-const openTypeEdit = (type: EventType) => {
+const openTypeEdit = (type: JenisEvent) => {
     editingType.value = type;
     typeForm.name = type.name;
     showTypeModal.value = true;
@@ -84,7 +84,7 @@ const submitType = () => {
     }
 };
 
-const deleteType = async (type: EventType) => {
+const deleteType = async (type: JenisEvent) => {
     if (
         await confirmDialog.ask(
             'Hapus Jenis Event',
@@ -110,7 +110,7 @@ const openPointCreate = () => {
     showPointModal.value = true;
 };
 
-const openPointEdit = (point: EventPoint) => {
+const openPointEdit = (point: PoinEvent) => {
     editingPoint.value = point;
     pointForm.name = point.name;
     showPointModal.value = true;
@@ -134,7 +134,7 @@ const submitPoint = () => {
     }
 };
 
-const deletePoint = async (point: EventPoint) => {
+const deletePoint = async (point: PoinEvent) => {
     if (
         await confirmDialog.ask(
             'Hapus Poin',

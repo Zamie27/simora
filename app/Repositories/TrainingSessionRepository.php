@@ -36,7 +36,7 @@ class TrainingSessionRepository
     /**
      * Find session with all needed relations.
      */
-    public function findWithDetails(int $id): ?TrainingSession
+    public function findWithDetails(int $id): ?SesiLatihan
     {
         return SesiLatihan::with([
             'exerciseType',

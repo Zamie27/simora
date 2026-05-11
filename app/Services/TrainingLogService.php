@@ -21,7 +21,7 @@ class TrainingLogService
      * @param  array<string, mixed>  $data
      * @param  array<int, UploadedFile>|null  $attachments
      */
-    public function create(int $athleteId, array $data, ?array $attachments = null): TrainingLog
+    public function create(int $athleteId, array $data, ?array $attachments = null): LogLatihan
     {
         $data['athlete_id'] = $athleteId;
 
@@ -53,7 +53,7 @@ class TrainingLogService
      * @param  array<string, mixed>  $data
      * @param  array<int, UploadedFile>|null  $attachments
      */
-    public function update(LogLatihan $log, array $data, ?array $attachments = null): TrainingLog
+    public function update(LogLatihan $log, array $data, ?array $attachments = null): LogLatihan
     {
         // Restriction: Only same day edit allowed for athletes through specific UI,
         // but we allow the service to perform the update if the controller passes it.
@@ -87,7 +87,7 @@ class TrainingLogService
      *
      * @param  array<string, mixed>  $data
      */
-    public function updateEvaluation(LogLatihan $log, array $data): TrainingLog
+    public function updateEvaluation(LogLatihan $log, array $data): LogLatihan
     {
         $log->update($data);
 

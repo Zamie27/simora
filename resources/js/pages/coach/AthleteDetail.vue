@@ -79,8 +79,8 @@ interface TrainingLog {
     coach_rating: number | string | null;
     coach_evaluation: string | null;
     coach_comments: string | null;
-    session: TrainingSession | null;
-    attachments: TrainingAttachment[];
+    session: SesiLatihan | null;
+    attachments: LampiranLatihan[];
     is_editable?: boolean;
 }
 
@@ -100,8 +100,8 @@ interface Athlete {
     gender: string | null;
     date_of_birth: string | null;
     category_id: number | null;
-    category: Category | null;
-    physical_metrics: PhysicalMetric[];
+    category: Kategori | null;
+    physical_metrics: DataFisik[];
     avatar?: string | null;
     athlete_profile?: {
         profile_photo_path?: string;
@@ -110,8 +110,8 @@ interface Athlete {
 
 const props = defineProps<{
     athlete: Athlete;
-    categories: Category[];
-    trainingLogs: TrainingLog[];
+    categories: Kategori[];
+    trainingLogs: LogLatihan[];
     statistics: Statistics;
     performanceTrend: any[];
     filters: {
@@ -182,7 +182,7 @@ const updateCategory = () => {
     });
 };
 
-const openEditLog = (log: TrainingLog) => {
+const openEditLog = (log: LogLatihan) => {
     selectedLog.value = log;
     logForm.title = log.title || '';
     logForm.distance_km = log.distance_km ?? 0;

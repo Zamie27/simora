@@ -16,7 +16,7 @@ interface ExerciseType {
 }
 
 defineProps<{
-    exerciseTypes: ExerciseType[];
+    exerciseTypes: JenisLatihan[];
 }>();
 
 const breadcrumbs = [
@@ -41,7 +41,7 @@ const openCreate = () => {
     showModal.value = true;
 };
 
-const openEdit = (type: ExerciseType) => {
+const openEdit = (type: JenisLatihan) => {
     editingType.value = type;
     form.name = type.name;
     form.description = type.description || '';
@@ -66,7 +66,7 @@ const submit = () => {
     }
 };
 
-const deleteType = async (type: ExerciseType) => {
+const deleteType = async (type: JenisLatihan) => {
     if (
         await confirmDialog.ask(
             'Hapus Jenis Latihan',

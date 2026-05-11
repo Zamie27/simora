@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends Factory<LampiranLatihan>
  */
-class TrainingAttachmentFactory extends Factory
+class LampiranLatihanFactory extends Factory
 {
     /**
      * Define the model's default state.

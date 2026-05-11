@@ -36,8 +36,8 @@ interface Category {
 }
 
 const props = defineProps<{
-    metrics: PhysicalMetric[];
-    categories: Category[];
+    metrics: DataFisik[];
+    categories: Kategori[];
 }>();
 
 const { props: pageProps } = usePage<any>();

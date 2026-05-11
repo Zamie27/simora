@@ -44,7 +44,7 @@ interface Session {
     scheduled_date: string;
     scheduled_time: string | null;
     repeat_weekly: boolean;
-    exercise_type: ExerciseType;
+    exercise_type: JenisLatihan;
     athletes_count: number;
     athletes: Athlete[];
     target_distance_km: number | null;
@@ -56,7 +56,7 @@ interface Session {
 const props = defineProps<{
     sessions: Session[];
     athletes: Athlete[];
-    exerciseTypes: ExerciseType[];
+    exerciseTypes: JenisLatihan[];
 }>();
 
 const breadcrumbs = [

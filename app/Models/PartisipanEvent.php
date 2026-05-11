@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class EventUser extends Pivot
+class PartisipanEvent extends Pivot
 {
     protected $table = 'event_user';
 

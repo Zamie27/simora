@@ -52,7 +52,7 @@ const getImages = (imagePath: string[] | string | null): string[] => {
 };
 
 defineProps<{
-    bugReports: BugReport[];
+    bugReports: LaporanBug[];
     stats: {
         total: number;
         pending: number;

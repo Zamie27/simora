@@ -86,7 +86,7 @@ interface TrainingLog {
         id: number;
         exercise_type: { name: string };
     } | null;
-    attachments: TrainingAttachment[];
+    attachments: LampiranLatihan[];
 }
 
 interface Statistics {
@@ -109,8 +109,8 @@ interface User {
     created_at: string;
     athlete_profile?: Profile;
     category_id: number | null;
-    category: Category | null;
-    physical_metrics: PhysicalMetric[];
+    category: Kategori | null;
+    physical_metrics: DataFisik[];
     avatar?: string | null;
 }
 
@@ -122,10 +122,10 @@ interface Coach {
 const props = defineProps<{
     athlete: User;
     coaches: Coach[];
-    trainingLogs: TrainingLog[];
+    trainingLogs: LogLatihan[];
     statistics: Statistics;
     performanceTrend: any[];
-    categories: Category[];
+    categories: Kategori[];
     filters: {
         start_date: string | null;
         end_date: string | null;

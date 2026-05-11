@@ -14,7 +14,7 @@ interface Athlete {
     id: number;
     name: string;
     email: string;
-    latest_physical_metric?: PhysicalMetric | null;
+    latest_physical_metric?: DataFisik | null;
     athlete_profile?: {
         profile_photo_path?: string;
     } | null;

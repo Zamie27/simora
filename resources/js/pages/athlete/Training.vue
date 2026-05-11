@@ -91,7 +91,7 @@ const props = defineProps<{
     statistics: Statistics;
     performanceTrend: any[];
     upcomingSessions: any[];
-    exerciseTypes: ExerciseType[];
+    exerciseTypes: JenisLatihan[];
     filters: {
         start_date: string | null;
         end_date: string | null;

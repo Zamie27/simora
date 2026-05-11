@@ -49,7 +49,7 @@ interface Event {
     event_date: string;
     requires_license: boolean;
     event_type_id: number | null;
-    type: EventType | null;
+    type: JenisEvent | null;
     athletes_count: number;
     athletes: (Athlete & {
         pivot: {
@@ -64,8 +64,8 @@ interface Event {
 const props = defineProps<{
     events: Event[];
     athletes: Athlete[];
-    eventTypes: EventType[];
-    eventPoints: EventPoint[];
+    eventTypes: JenisEvent[];
+    eventPoints: PoinEvent[];
 }>();
 
 const breadcrumbs = [

@@ -14,7 +14,7 @@ class TrainingSessionService
     /**
      * Create a new training session with many athletes.
      */
-    public function createSession(array $data, array $athleteIds): TrainingSession
+    public function createSession(array $data, array $athleteIds): SesiLatihan
     {
         return DB::transaction(function () use ($data, $athleteIds) {
             $session = SesiLatihan::create($data);
@@ -43,7 +43,7 @@ class TrainingSessionService
     /**
      * Update an existing session.
      */
-    public function updateSession(SesiLatihan $session, array $data, array $athleteIds): TrainingSession
+    public function updateSession(SesiLatihan $session, array $data, array $athleteIds): SesiLatihan
     {
         return DB::transaction(function () use ($session, $data, $athleteIds) {
             $session->update($data);

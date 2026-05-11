@@ -16,7 +16,7 @@ interface Category {
 }
 
 defineProps<{
-    categories: Category[];
+    categories: Kategori[];
 }>();
 
 const breadcrumbs = [
@@ -41,7 +41,7 @@ const openCreate = () => {
     showModal.value = true;
 };
 
-const openEdit = (category: Category) => {
+const openEdit = (category: Kategori) => {
     editingCategory.value = category;
     form.name = category.name;
     form.description = category.description || '';
@@ -66,7 +66,7 @@ const submit = () => {
     }
 };
 
-const deleteCategory = async (category: Category) => {
+const deleteCategory = async (category: Kategori) => {
     if (
         await confirmDialog.ask(
             'Hapus Kategori',

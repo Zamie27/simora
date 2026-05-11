@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\Models\DataFisik;
+
 class TrainingMetricsService
 {
     /**
      * Calculate all estimated training metrics based on inputs and physical profile.
      */
-    public function calculateMetrics(array $inputs, ?PhysicalMetric $physicalMetric): array
+    public function calculateMetrics(array $inputs, ?DataFisik $physicalMetric): array
     {
         $durationMinutes = (float) ($inputs['duration_minutes'] ?? 0);
         $distanceKm = (float) ($inputs['distance_km'] ?? 0);

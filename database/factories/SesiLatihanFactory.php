@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends Factory<TrainingPlan>
  */
-class TrainingPlanFactory extends Factory
+class SesiLatihanFactory extends Factory
 {
     /**
      * Define the model's default state.

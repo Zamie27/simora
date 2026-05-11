@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\ExerciseType;
+use App\Models\JenisLatihan;
 use App\Models\Role;
-use App\Models\TrainingLog;
-use App\Models\TrainingSession;
+use App\Models\LogLatihan;
+use App\Models\SesiLatihan;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -53,17 +53,17 @@ class CoachDashboardTest extends TestCase
             'is_verified' => true,
         ]);
 
-        $exerciseType = ExerciseType::factory()->create();
+        $exerciseType = JenisLatihan::factory()->create();
 
         // Create a session
-        TrainingSession::factory()->create([
+        SesiLatihan::factory()->create([
             'coach_id' => $coach->id,
             'exercise_type_id' => $exerciseType->id,
             'scheduled_date' => now()->addDay(),
         ]);
 
         // Create a log
-        TrainingLog::factory()->create([
+        LogLatihan::factory()->create([
             'athlete_id' => $athlete->id,
             'date' => now(),
             'distance_km' => 15.5,

@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\Category;
-use App\Models\ExerciseType;
+use App\Models\Kategori;
+use App\Models\JenisLatihan;
 use App\Models\Role;
-use App\Models\TrainingLog;
+use App\Models\LogLatihan;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,8 +20,8 @@ class AthleteDashboardTest extends TestCase
         parent::setUp();
 
         $this->seed([DatabaseSeeder::class]);
-        Category::firstOrCreate(['name' => 'Junior'], ['description' => 'Junior category']);
-        ExerciseType::firstOrCreate(['name' => 'Cycling'], ['description' => 'Cycling exercise']);
+        Kategori::firstOrCreate(['name' => 'Junior'], ['description' => 'Junior category']);
+        JenisLatihan::firstOrCreate(['name' => 'Cycling'], ['description' => 'Cycling exercise']);
     }
 
     public function test_athlete_can_access_dashboard(): void
@@ -29,12 +29,12 @@ class AthleteDashboardTest extends TestCase
         $athleteRole = Role::where('name', 'Atlet')->first();
         $user = User::factory()->create([
             'role_id' => $athleteRole->id,
-            'category_id' => Category::first()->id,
+            'category_id' => Kategori::first()->id,
             'email_verified_at' => now(),
         ]);
 
         // Need at least one training log for performance trend to avoid null issues if any
-        TrainingLog::factory()->create(['athlete_id' => $user->id, 'date' => now()]);
+        LogLatihan::factory()->create(['athlete_id' => $user->id, 'date' => now()]);
 
         // Debug: what is the role?
         // dd($user->role->name);
@@ -66,7 +66,7 @@ class AthleteDashboardTest extends TestCase
             'email_verified_at' => now(),
         ]);
 
-        $exerciseType = ExerciseType::first();
+        $exerciseType = JenisLatihan::first();
 
         // Perform request
         $response = $this->actingAs($user)

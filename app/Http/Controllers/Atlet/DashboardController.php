@@ -135,6 +135,7 @@ class DashboardController extends Controller
                     $logData = [
                         'title' => $validated['title'] ?? 'Latihan Mandiri (Quick Update)',
                         'exercise_type_id' => $validated['exercise_type_id'] ?? 1,
+                        'date' => now(),
                         'distance_km' => $validated['distance_km'] ?? 0,
                         'duration_minutes' => $validated['duration_minutes'] ?? 0,
                         'avg_speed' => $validated['avg_speed'] ?? null,

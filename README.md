@@ -5,19 +5,19 @@
   <br>
   <br>
   
-  ![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?style=for-the-badge&logo=php)
-  ![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?style=for-the-badge&logo=laravel)
-  ![MySQL](https://img.shields.io/badge/MySQL-8.4-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+  [![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?style=for-the-badge&logo=php)](https://www.php.net/)
+  [![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?style=for-the-badge&logo=laravel)](https://laravel.com/)
+  [![MySQL](https://img.shields.io/badge/MySQL-8.4-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
   <br>
-  ![Vue.js](https://img.shields.io/badge/Vue.js-3-4FC08D?style=for-the-badge&logo=vue.js)
-  ![Inertia.js](https://img.shields.io/badge/Inertia.js-2-9553E9?style=for-the-badge&logo=inertia)
-  ![Vuetify](https://img.shields.io/badge/Vuetify-3-1867C0?style=for-the-badge&logo=vuetify)
-  ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?style=for-the-badge&logo=tailwind-css)
-  ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+  [![Vue.js](https://img.shields.io/badge/Vue.js-3-4FC08D?style=for-the-badge&logo=vue.js)](https://vuejs.org/)
+  [![Inertia.js](https://img.shields.io/badge/Inertia.js-2-9553E9?style=for-the-badge&logo=inertia)](https://inertiajs.com/)
+  [![Vuetify](https://img.shields.io/badge/Vuetify-3-1867C0?style=for-the-badge&logo=vuetify)](https://vuetifyjs.com/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
   <br>
-  ![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite)
-  ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-  ![License](https://img.shields.io/badge/License-MIT-black?style=for-the-badge)
+  [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
+  [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+  [![License](https://img.shields.io/badge/License-MIT-black?style=for-the-badge)](https://opensource.org/licenses/MIT)
 </div>
 
 SIMORA adalah sistem informasi berbasis web yang dirancang untuk memfasilitasi pemantauan dan analisis performa latihan atlet sepeda secara sistematis. Sistem ini berfungsi untuk mencatat data latihan individu, menyajikan analitik performa melalui visualisasi grafis (rata-rata kecepatan, detak jantung, cadence, dsb.), serta memungkinkan pelatih untuk memberikan evaluasi dan rekomendasi latihan yang terstruktur.

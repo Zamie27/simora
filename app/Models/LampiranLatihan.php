@@ -29,6 +29,6 @@ class LampiranLatihan extends Model
      */
     public function trainingLog(): BelongsTo
     {
-        return $this->belongsTo(LogLatihan::class);
+        return $this->belongsTo(LogLatihan::class, 'training_log_id');
     }
 }

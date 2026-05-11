@@ -70,7 +70,7 @@ class SesiLatihan extends Model
 
     public function exerciseType(): BelongsTo
     {
-        return $this->belongsTo(JenisLatihan::class);
+        return $this->belongsTo(JenisLatihan::class, 'exercise_type_id');
     }
 
     public function athletes(): BelongsToMany
@@ -80,7 +80,7 @@ class SesiLatihan extends Model
 
     public function logs(): HasMany
     {
-        return $this->hasMany(LogLatihan::class);
+        return $this->hasMany(LogLatihan::class, 'training_session_id');
     }
 
     /**

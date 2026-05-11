@@ -16,6 +16,6 @@ class JenisLatihan extends Model
 
     public function sessions(): HasMany
     {
-        return $this->hasMany(SesiLatihan::class);
+        return $this->hasMany(SesiLatihan::class, 'exercise_type_id');
     }
 }

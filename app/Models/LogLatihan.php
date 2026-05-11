@@ -81,7 +81,7 @@ class LogLatihan extends Model
 
     public function attachments(): HasMany
     {
-        return $this->hasMany(LampiranLatihan::class);
+        return $this->hasMany(LampiranLatihan::class, 'training_log_id');
     }
 
     /**

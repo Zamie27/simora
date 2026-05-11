@@ -24,6 +24,7 @@ class SesiLatihanFactory extends Factory
             'exercise_type_id' => JenisLatihan::factory(),
             'title' => fake()->sentence(3),
             'description' => fake()->paragraph(),
+            'type' => fake()->randomElement(['endurance', 'interval', 'recovery', 'time_trial']),
             'scheduled_date' => fake()->dateTimeBetween('-1 month', '+1 month')->format('Y-m-d'),
             'scheduled_time' => fake()->time('H:i'),
             'repeat_weekly' => fake()->boolean(20),

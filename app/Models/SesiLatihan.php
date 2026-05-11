@@ -25,6 +25,7 @@ class SesiLatihan extends Model
         'exercise_type_id',
         'title',
         'description',
+        'type',
         'scheduled_date',
         'scheduled_time',
         'repeat_weekly',

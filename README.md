@@ -1,12 +1,20 @@
 # SIMORA - Sistem Informasi Monitoring Atlet Sepeda
 
+<div align="center">
+  <img src="public/images/simora_logo.png" alt="Logo SIMORA" width="250">
+  <br>
+  <br>
+  
+  ![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?style=for-the-badge&logo=laravel)
+  ![Inertia](https://img.shields.io/badge/Inertia-2-9553E9?style=for-the-badge&logo=inertia)
+  ![Tailwind](https://img.shields.io/badge/Tailwind-4-38B2AC?style=for-the-badge&logo=tailwind-css)
+  ![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite)
+  ![License](https://img.shields.io/badge/License-MIT-black?style=for-the-badge)
+</div>
+
 SIMORA adalah sistem informasi berbasis web yang dirancang untuk memfasilitasi pemantauan dan analisis performa latihan atlet sepeda secara sistematis. Sistem ini berfungsi untuk mencatat data latihan individu, menyajikan analitik performa melalui visualisasi grafis (rata-rata kecepatan, detak jantung, cadence, dsb.), serta memungkinkan pelatih untuk memberikan evaluasi dan rekomendasi latihan yang terstruktur.
 
 Proyek ini menggunakan arsitektur modern (Vue SPA + Laravel API) dan dijalankan sepenuhnya menggunakan kontainer Docker. Hal ini dilakukan untuk memastikan lingkungan pengembangan yang terisolasi, menjamin konsistensi di seluruh platform, dan menghindari konflik dependensi antar sistem operasi.
-
-<div align="center">
-  <img src="public/images/simora_logo.png" alt="Logo SIMORA" width="250">
-</div>
 
 ---
 

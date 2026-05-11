@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\JenisLatihan;
-use App\Models\Role;
 use App\Models\LogLatihan;
+use App\Models\Role;
 use App\Models\SesiLatihan;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;

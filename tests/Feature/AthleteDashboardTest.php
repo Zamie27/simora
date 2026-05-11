@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\Kategori;
 use App\Models\JenisLatihan;
-use App\Models\Role;
+use App\Models\Kategori;
 use App\Models\LogLatihan;
+use App\Models\Role;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;

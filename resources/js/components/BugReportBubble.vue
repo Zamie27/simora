@@ -305,6 +305,24 @@ const removeImage = (index: number) => {
                         >
                             {{ errors.images }}
                         </p>
+
+                        <div class="mt-4 border-t border-white/5 pt-4">
+                            <p
+                                style="color: #94a3b8"
+                                class="text-[10px] leading-relaxed font-medium"
+                            >
+                                Jika ada hal lain yang ingin dilaporkan atau
+                                dikonsultasikan, silakan hubungi Instagram
+                                <a
+                                    href="https://instagram.com/kuukok.id"
+                                    target="_blank"
+                                    style="color: #ff6120"
+                                    class="font-black hover:underline"
+                                    >@kuukok.id</a
+                                >
+                                untuk informasi lebih lanjut.
+                            </p>
+                        </div>
                     </div>
 
                     <div class="pt-2">

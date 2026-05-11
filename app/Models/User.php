@@ -158,7 +158,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function athleteSessions(): BelongsToMany
     {
-        return $this->belongsToMany(SesiLatihan::class, 'training_session_user');
+        return $this->belongsToMany(SesiLatihan::class, 'training_session_user', 'user_id', 'training_session_id');
     }
 
     /**

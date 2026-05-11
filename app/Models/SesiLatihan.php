@@ -75,7 +75,7 @@ class SesiLatihan extends Model
 
     public function athletes(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'training_session_user');
+        return $this->belongsToMany(User::class, 'training_session_user', 'training_session_id', 'user_id');
     }
 
     public function logs(): HasMany

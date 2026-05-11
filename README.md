@@ -5,10 +5,18 @@
   <br>
   <br>
   
+  ![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?style=for-the-badge&logo=php)
   ![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?style=for-the-badge&logo=laravel)
-  ![Inertia](https://img.shields.io/badge/Inertia-2-9553E9?style=for-the-badge&logo=inertia)
-  ![Tailwind](https://img.shields.io/badge/Tailwind-4-38B2AC?style=for-the-badge&logo=tailwind-css)
+  ![MySQL](https://img.shields.io/badge/MySQL-8.4-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+  <br>
+  ![Vue.js](https://img.shields.io/badge/Vue.js-3-4FC08D?style=for-the-badge&logo=vue.js)
+  ![Inertia.js](https://img.shields.io/badge/Inertia.js-2-9553E9?style=for-the-badge&logo=inertia)
+  ![Vuetify](https://img.shields.io/badge/Vuetify-3-1867C0?style=for-the-badge&logo=vuetify)
+  ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?style=for-the-badge&logo=tailwind-css)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+  <br>
   ![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite)
+  ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
   ![License](https://img.shields.io/badge/License-MIT-black?style=for-the-badge)
 </div>
 

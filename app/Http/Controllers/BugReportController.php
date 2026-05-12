@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Report;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\LaporanBug;
 use Illuminate\Http\Request;
 use Inertia\Inertia;

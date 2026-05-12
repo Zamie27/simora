@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Manajer;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\JenisLatihan;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

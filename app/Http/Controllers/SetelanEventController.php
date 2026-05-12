@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Pelatih;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\JenisEvent;
 use App\Models\PoinEvent;
 use Illuminate\Http\Request;

@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Atlet;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTrainingLogRequest;
 use App\Models\JenisLatihan;
 use App\Models\LogLatihan;
@@ -22,9 +21,113 @@ class StatistikLatihanController extends Controller
     ) {}
 
     /**
-     * Display the athlete's training dashboard.
+     * Display the training statistics.
      */
     public function index(Request $request): Response
+    {
+        $role = $request->user()->role->name ?? '';
+
+        if ($role === 'Atlet') {
+            return $this->athleteIndex($request);
+        }
+
+        if ($role === 'Manajemen') {
+            return $this->managementIndex($request);
+        }
+
+        if ($role === 'Pelatih') {
+            return $this->coachIndex($request);
+        }
+
+        abort(403, 'Akses ditolak.');
+    }
+
+    /**
+     * Store or update a training log entry (Atlet only).
+     */
+    public function storeLog(StoreTrainingLogRequest $request): RedirectResponse
+    {
+        if ($request->user()->role->name !== 'Atlet') {
+            abort(403);
+        }
+
+        $athleteId = $request->user()->id;
+        $validated = $request->validated();
+        $attachments = $request->file('attachments');
+
+        // Athlete specifies a session
+        if (! empty($validated['training_session_id'])) {
+            $session = SesiLatihan::where('id', $validated['training_session_id'])
+                ->whereHas('athletes', fn ($q) => $q->where('users.id', $athleteId))
+                ->first();
+
+            if (! $session) {
+                abort(403, 'Anda tidak terdaftar dalam sesi latihan ini.');
+            }
+
+            $instanceDate = $session->getActiveInstanceDate();
+            if (! $instanceDate->isToday()) {
+                abort(403, 'Sesi ini hanya dapat diisi pada hari jadwal latihan.');
+            }
+
+            $log = LogLatihan::where('training_session_id', $session->id)
+                ->where('athlete_id', $athleteId)
+                ->whereDate('date', now()->toDateString())
+                ->first();
+
+            if ($log) {
+                $this->logService->update($log, $validated, $attachments);
+
+                return back()->with('success', 'Data latihan sesi berhasil diperbarui.');
+            }
+
+            $this->logService->create($athleteId, $validated, $attachments);
+
+            return back()->with('success', 'Data latihan sesi berhasil dicatat.');
+        }
+
+        // Independent/Manual log
+        if (! empty($validated['id'])) {
+            $log = LogLatihan::where('id', $validated['id'])
+                ->where('athlete_id', $athleteId)
+                ->first();
+
+            if ($log) {
+                $this->logService->update($log, $validated, $attachments);
+
+                return back()->with('success', 'Data latihan manual berhasil diperbarui.');
+            }
+        }
+
+        $this->logService->create($athleteId, $validated, $attachments);
+
+        return back()->with('success', 'Data latihan manual berhasil dicatat.');
+    }
+
+    /**
+     * Remove the specified training log from storage (Atlet only).
+     */
+    public function destroy(LogLatihan $log): RedirectResponse
+    {
+        if (auth()->user()->role->name !== 'Atlet') {
+            abort(403);
+        }
+
+        if ($log->athlete_id !== auth()->id()) {
+            abort(403, 'Anda tidak memiliki akses untuk menghapus log ini.');
+        }
+
+        $log->delete();
+
+        return back()->with('success', 'Log latihan berhasil dihapus.');
+    }
+
+    /**
+     * -----------------------------------------------------------------
+     * ATLET METHODS
+     * -----------------------------------------------------------------
+     */
+    private function athleteIndex(Request $request): Response
     {
         $athlete = $request->user();
         $startDate = $request->input('start_date');
@@ -50,77 +153,22 @@ class StatistikLatihanController extends Controller
     }
 
     /**
-     * Store or update a training log entry.
+     * -----------------------------------------------------------------
+     * MANAJEMEN METHODS
+     * -----------------------------------------------------------------
      */
-    public function storeLog(StoreTrainingLogRequest $request): RedirectResponse
+    private function managementIndex(Request $request): Response
     {
-        $athleteId = $request->user()->id;
-        $validated = $request->validated();
-        $attachments = $request->file('attachments');
-
-        // Athlete specifies a session
-        if (! empty($validated['training_session_id'])) {
-            $session = SesiLatihan::where('id', $validated['training_session_id'])
-                ->whereHas('athletes', fn ($q) => $q->where('users.id', $athleteId))
-                ->first();
-
-            if (! $session) {
-                abort(403, 'Anda tidak terdaftar dalam sesi latihan ini.');
-            }
-
-            // Strict instance check: ensure they are logging for the current active instance
-            $instanceDate = $session->getActiveInstanceDate();
-            if (! $instanceDate->isToday()) {
-                abort(403, 'Sesi ini hanya dapat diisi pada hari jadwal latihan.');
-            }
-
-            // Check if log already exists for TODAY for this session
-            $log = LogLatihan::where('training_session_id', $session->id)
-                ->where('athlete_id', $athleteId)
-                ->whereDate('date', now()->toDateString())
-                ->first();
-
-            if ($log) {
-                $this->logService->update($log, $validated, $attachments);
-
-                return back()->with('success', 'Data latihan sesi berhasil diperbarui.');
-            }
-
-            $this->logService->create($athleteId, $validated, $attachments);
-
-            return back()->with('success', 'Data latihan sesi berhasil dicatat.');
-        }
-
-        // Independent/Manual log (no session_id)
-        if (! empty($validated['id'])) {
-            $log = LogLatihan::where('id', $validated['id'])
-                ->where('athlete_id', $athleteId)
-                ->first();
-
-            if ($log) {
-                $this->logService->update($log, $validated, $attachments);
-
-                return back()->with('success', 'Data latihan manual berhasil diperbarui.');
-            }
-        }
-
-        $this->logService->create($athleteId, $validated, $attachments);
-
-        return back()->with('success', 'Data latihan manual berhasil dicatat.');
+        return Inertia::render('management/GlobalStatistics');
     }
 
     /**
-     * Remove the specified training log from storage.
+     * -----------------------------------------------------------------
+     * COACH (PELATIH) METHODS
+     * -----------------------------------------------------------------
      */
-    public function destroy(LogLatihan $log): RedirectResponse
+    private function coachIndex(Request $request): Response
     {
-        // Ensure the log belongs to the authenticated athlete
-        if ($log->athlete_id !== auth()->id()) {
-            abort(403, 'Anda tidak memiliki akses untuk menghapus log ini.');
-        }
-
-        $log->delete();
-
-        return back()->with('success', 'Log latihan berhasil dihapus.');
+        return Inertia::render('coach/StatisticsAnalysis');
     }
 }

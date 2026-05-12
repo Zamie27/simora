@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Pelatih;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Pesan;
 use Illuminate\Http\Request;
 
 class PesanNotifikasiController extends Controller
 {
+    /**
+     * Store a new message/notification.
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -25,6 +27,9 @@ class PesanNotifikasiController extends Controller
         return back()->with('success', 'Catatan/pesan berhasil dikirim.');
     }
 
+    /**
+     * Mark a message as read.
+     */
     public function markAsRead(Pesan $message)
     {
         if ($message->receiver_id !== auth()->id()) {
@@ -36,6 +41,9 @@ class PesanNotifikasiController extends Controller
         return back()->with('success', 'Pesan ditandai telah dibaca.');
     }
 
+    /**
+     * Delete a message (sender only).
+     */
     public function destroy(Pesan $message)
     {
         if ($message->sender_id !== auth()->id()) {

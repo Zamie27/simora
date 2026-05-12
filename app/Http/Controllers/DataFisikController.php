@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Atlet;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Kategori;
+use App\Models\User;
+use App\Repositories\TrainingLogRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,7 +12,58 @@ use Inertia\Response;
 
 class DataFisikController extends Controller
 {
-    public function index(Request $request): Response
+    public function __construct(
+        private TrainingLogRepository $logRepository
+    ) {}
+
+    /**
+     * Display the index view based on role.
+     */
+    public function index(Request $request)
+    {
+        $role = $request->user()->role->name ?? '';
+
+        if ($role === 'Atlet') {
+            return $this->athleteIndex($request);
+        }
+
+        abort(403, 'Akses ditolak.');
+    }
+
+    /**
+     * Store data based on role.
+     */
+    public function store(Request $request)
+    {
+        $role = $request->user()->role->name ?? '';
+
+        if ($role === 'Atlet') {
+            return $this->athleteStore($request);
+        }
+
+        abort(403, 'Akses ditolak.');
+    }
+
+    /**
+     * Show detailed physical metrics.
+     */
+    public function show(Request $request, User $athlete)
+    {
+        $role = $request->user()->role->name ?? '';
+
+        if ($role === 'Manajemen') {
+            return $this->managementShow($request, $athlete);
+        }
+
+        abort(403, 'Akses ditolak.');
+    }
+
+    /**
+     * -----------------------------------------------------------------
+     * ATLET METHODS
+     * -----------------------------------------------------------------
+     */
+    private function athleteIndex(Request $request): Response
     {
         $user = $request->user();
 
@@ -27,7 +79,7 @@ class DataFisikController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    private function athleteStore(Request $request)
     {
         $user = $request->user();
 
@@ -55,8 +107,6 @@ class DataFisikController extends Controller
             'recorded_at' => 'required|date',
         ]);
 
-        // Calculate age at the time of recording using explicit year/month/day comparison
-        // to avoid Carbon timezone off-by-one errors with diffInYears
         $recordedAt = Carbon::parse($validated['recorded_at'])->startOfDay();
         $dob = $user->date_of_birth;
 
@@ -70,5 +120,21 @@ class DataFisikController extends Controller
         $user->physicalMetrics()->create($validated);
 
         return back()->with('success', 'Data fisik berhasil disimpan.');
+    }
+
+    /**
+     * -----------------------------------------------------------------
+     * MANAJEMEN METHODS
+     * -----------------------------------------------------------------
+     */
+    private function managementShow(Request $request, User $athlete)
+    {
+        $athlete->load(['physicalMetrics' => function ($query) {
+            $query->orderBy('recorded_at', 'desc');
+        }]);
+
+        return Inertia::render('management/AthletePhysicalReview', [
+            'athlete' => $athlete,
+        ]);
     }
 }

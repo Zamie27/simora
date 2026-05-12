@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Pelatih;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTrainingSessionRequest;
 use App\Http\Requests\UpdateEvaluationRequest;
 use App\Models\JenisLatihan;

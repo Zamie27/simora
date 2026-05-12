@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Pelatih;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\TrainingLogRepository;
 use Illuminate\Http\Request;
@@ -17,15 +16,141 @@ class LaporanPerformaController extends Controller
     ) {}
 
     /**
-     * Display the reports page for the coach.
+     * Display the reports page based on role.
      */
     public function index(Request $request): Response
+    {
+        $role = $request->user()->role->name ?? '';
+
+        if ($role === 'Manajemen') {
+            return $this->managementIndex($request);
+        }
+
+        if ($role === 'Pelatih') {
+            return $this->coachIndex($request);
+        }
+
+        abort(403, 'Akses ditolak.');
+    }
+
+    /**
+     * Export report data.
+     */
+    public function export(Request $request)
+    {
+        $role = $request->user()->role->name ?? '';
+
+        if ($role === 'Manajemen') {
+            return $this->managementExport($request);
+        }
+
+        if ($role === 'Pelatih') {
+            return $this->coachExport($request);
+        }
+
+        abort(403, 'Akses ditolak.');
+    }
+
+    /**
+     * -----------------------------------------------------------------
+     * MANAJEMEN METHODS
+     * -----------------------------------------------------------------
+     */
+    private function managementIndex(Request $request): Response
+    {
+        $period = $request->input('period', 'this_month');
+        [$startDate, $endDate] = $this->getRangeFromPreset($period);
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $startDate = Carbon::parse($request->input('start_date'))->startOfDay();
+            $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
+        }
+
+        $athletes = User::whereRole('Atlet')
+            ->with(['coach:id,name', 'athleteProfile'])
+            ->select('id', 'name', 'email', 'coach_id', 'avatar')
+            ->get();
+
+        $coaches = User::whereRole('Pelatih')
+            ->select('id', 'name')
+            ->get();
+
+        $reportData = [];
+        foreach ($athletes as $athlete) {
+            $stats = $this->logRepository->getStatistics(
+                $athlete->id,
+                $startDate?->toDateString(),
+                $endDate?->toDateString()
+            );
+            $reportData[] = [
+                'athlete' => $athlete,
+                'statistics' => $stats,
+            ];
+        }
+
+        return Inertia::render('management/Reports', [
+            'athletes' => $athletes,
+            'coaches' => $coaches,
+            'reportData' => $reportData,
+            'filters' => [
+                'period' => $period,
+                'start_date' => $startDate?->toDateString(),
+                'end_date' => $endDate?->toDateString(),
+            ],
+        ]);
+    }
+
+    private function managementExport(Request $request)
+    {
+        $request->validate([
+            'athlete_id' => ['nullable', 'exists:users,id'],
+            'period' => ['nullable', 'string'],
+            'start_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date'],
+            'format' => ['required', 'in:csv'],
+        ]);
+
+        $athleteId = $request->input('athlete_id');
+        $period = $request->input('period', 'custom');
+        [$startDate, $endDate] = $this->getRangeFromPreset($period);
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $startDate = Carbon::parse($request->input('start_date'))->startOfDay();
+            $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
+        }
+
+        $startStr = $startDate?->toDateString();
+        $endStr = $endDate?->toDateString();
+
+        if ($athleteId) {
+            $athlete = User::findOrFail($athleteId);
+            $logs = $this->logRepository->getForAthlete($athleteId, $startStr, $endStr);
+
+            return $this->exportCsv($logs, $athlete->name);
+        }
+
+        $athletes = User::whereRole('Atlet')->get();
+        $allLogs = collect();
+
+        foreach ($athletes as $athlete) {
+            $logs = $this->logRepository->getForAthlete($athlete->id, $startStr, $endStr);
+            $allLogs = $allLogs->merge($logs);
+        }
+
+        return $this->exportCsv($allLogs, 'Laporan_Seluruh_Atlet');
+    }
+
+    /**
+     * -----------------------------------------------------------------
+     * COACH (PELATIH) METHODS
+     * -----------------------------------------------------------------
+     */
+    private function coachIndex(Request $request): Response
     {
         $coach = $request->user();
         $period = $request->input('period', 'this_month');
         [$startDate, $endDate] = $this->getRangeFromPreset($period);
 
-        // If custom dates are provided, override preset
         if ($request->filled('start_date') && $request->filled('end_date')) {
             $startDate = Carbon::parse($request->input('start_date'))->startOfDay();
             $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
@@ -60,10 +185,7 @@ class LaporanPerformaController extends Controller
         ]);
     }
 
-    /**
-     * Export report data.
-     */
-    public function export(Request $request)
+    private function coachExport(Request $request)
     {
         $request->validate([
             'athlete_id' => ['nullable', 'exists:users,id'],
@@ -112,7 +234,9 @@ class LaporanPerformaController extends Controller
     }
 
     /**
-     * Get date range from preset.
+     * -----------------------------------------------------------------
+     * SHARED METHODS
+     * -----------------------------------------------------------------
      */
     private function getRangeFromPreset(string $preset): array
     {
@@ -126,9 +250,6 @@ class LaporanPerformaController extends Controller
         };
     }
 
-    /**
-     * Generate CSV export.
-     */
     private function exportCsv($logs, string $name)
     {
         $fileName = 'Laporan_Performance_'.str_replace(' ', '_', $name).'_'.now()->format('Y-m-d').'.csv';
@@ -166,7 +287,7 @@ class LaporanPerformaController extends Controller
                     $log->avg_speed,
                     $log->rpm,
                     $log->intensity,
-                    $log->completion_status,
+                    $log->completion_status ?? $log->attendance_status,
                     $log->coach_rating,
                     $log->coach_evaluation,
                 ]);

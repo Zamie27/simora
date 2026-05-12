@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\DashboardController as DashboardDispatcher;
+use App\Http\Controllers\Auth\DocumentAccessController;
+use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\BugReportController;
 use App\Http\Controllers\DaftarAtletController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFisikController;
 use App\Http\Controllers\EvaluasiLatihanController;
 use App\Http\Controllers\EventController;
@@ -15,10 +19,6 @@ use App\Http\Controllers\ManajemenAkunController;
 use App\Http\Controllers\PesanNotifikasiController;
 use App\Http\Controllers\SetelanEventController;
 use App\Http\Controllers\StatistikLatihanController;
-use App\Http\Controllers\Auth\DashboardController as DashboardDispatcher;
-use App\Http\Controllers\Auth\DocumentAccessController;
-use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 

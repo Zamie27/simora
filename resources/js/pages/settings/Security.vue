@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form, Head } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
 import { ShieldCheck } from 'lucide-vue-next';
 import { onUnmounted, ref } from 'vue';
 import Heading from '@/components/Heading.vue';
@@ -14,9 +14,9 @@ import { useTwoFactorAuth } from '@/composables/useTwoFactorAuth';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import type { BreadcrumbItem } from '@/types';
-import SecurityController from '@/actions/App/Http/Controllers/Auth/KeamananController';
 import { edit } from '@/routes/security';
 import { disable, enable } from '@/routes/two-factor';
+import { update } from '@/routes/user-password';
 
 type Props = {
     canManageTwoFactor?: boolean;
@@ -24,7 +24,7 @@ type Props = {
     twoFactorEnabled?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
     canManageTwoFactor: false,
     requiresConfirmation: false,
     twoFactorEnabled: false,
@@ -39,6 +39,49 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const { hasSetupData, clearTwoFactorAuthData } = useTwoFactorAuth();
 const showSetupModal = ref<boolean>(false);
+const processing2FA = ref<boolean>(false);
+
+const passwordForm = useForm({
+    current_password: '',
+    password: '',
+    password_confirmation: '',
+});
+
+const submitPassword = () => {
+    passwordForm.put(update.url(), {
+        preserveScroll: true,
+        onSuccess: () => passwordForm.reset(),
+        onError: () => {
+            if (passwordForm.errors.password) {
+                passwordForm.reset('password', 'password_confirmation');
+            }
+            if (passwordForm.errors.current_password) {
+                passwordForm.reset('current_password');
+            }
+        },
+    });
+};
+
+const enableTwoFactor = () => {
+    processing2FA.value = true;
+    router.post(enable.url(), {}, {
+        preserveScroll: true,
+        onSuccess: () => {
+            showSetupModal.value = true;
+            processing2FA.value = false;
+        },
+        onFinish: () => (processing2FA.value = false),
+    });
+};
+
+const disableTwoFactor = () => {
+    processing2FA.value = true;
+    router.delete(disable.url(), {
+        preserveScroll: true,
+        onSuccess: () => (processing2FA.value = false),
+        onFinish: () => (processing2FA.value = false),
+    });
+};
 
 onUnmounted(() => clearTwoFactorAuthData());
 </script>
@@ -57,45 +100,36 @@ onUnmounted(() => clearTwoFactorAuthData());
                     description="Pastikan akun Anda menggunakan kata sandi yang panjang dan acak agar tetap aman"
                 />
 
-                <Form
-                    v-bind="SecurityController.update.form()"
-                    :options="{
-                        preserveScroll: true,
-                    }"
-                    reset-on-success
-                    :reset-on-error="[
-                        'password',
-                        'password_confirmation',
-                        'current_password',
-                    ]"
-                    class="space-y-6"
-                    v-slot="{ errors, processing, recentlySuccessful, data }"
-                >
+                <form @submit.prevent="submitPassword" class="space-y-6">
                     <div class="grid gap-2">
                         <Label for="current_password"
                             >Kata sandi saat ini</Label
                         >
                         <PasswordInput
                             id="current_password"
-                            name="current_password"
+                            v-model="passwordForm.current_password"
                             class="mt-1 block w-full"
                             autocomplete="current-password"
                             placeholder="Kata sandi saat ini"
                         />
-                        <InputError :message="errors.current_password" />
+                        <InputError
+                            :message="passwordForm.errors.current_password"
+                        />
                     </div>
 
                     <div class="grid gap-2">
                         <Label for="password">Kata sandi baru</Label>
                         <PasswordInput
                             id="password"
-                            name="password"
+                            v-model="passwordForm.password"
                             class="mt-1 block w-full"
                             autocomplete="new-password"
                             placeholder="Kata sandi baru"
                         />
-                        <PasswordRequirement :password="data.password" />
-                        <InputError :message="errors.password" />
+                        <PasswordRequirement
+                            :password="passwordForm.password"
+                        />
+                        <InputError :message="passwordForm.errors.password" />
                     </div>
 
                     <div class="grid gap-2">
@@ -104,17 +138,19 @@ onUnmounted(() => clearTwoFactorAuthData());
                         >
                         <PasswordInput
                             id="password_confirmation"
-                            name="password_confirmation"
+                            v-model="passwordForm.password_confirmation"
                             class="mt-1 block w-full"
                             autocomplete="new-password"
                             placeholder="Konfirmasi kata sandi"
                         />
-                        <InputError :message="errors.password_confirmation" />
+                        <InputError
+                            :message="passwordForm.errors.password_confirmation"
+                        />
                     </div>
 
                     <div class="flex items-center gap-4">
                         <Button
-                            :disabled="processing"
+                            :disabled="passwordForm.processing"
                             data-test="update-password-button"
                         >
                             Simpan kata sandi
@@ -127,14 +163,14 @@ onUnmounted(() => clearTwoFactorAuthData());
                             leave-to-class="opacity-0"
                         >
                             <p
-                                v-show="recentlySuccessful"
+                                v-show="passwordForm.recentlySuccessful"
                                 class="text-sm text-neutral-600"
                             >
                                 Tersimpan.
                             </p>
                         </Transition>
                     </div>
-                </Form>
+                </form>
             </div>
 
             <div v-if="canManageTwoFactor" class="space-y-6">
@@ -161,16 +197,13 @@ onUnmounted(() => clearTwoFactorAuthData());
                         >
                             <ShieldCheck />Lanjutkan pengaturan
                         </Button>
-                        <Form
+                        <Button
                             v-else
-                            v-bind="enable.form()"
-                            @success="showSetupModal = true"
-                            #default="{ processing }"
+                            @click="enableTwoFactor"
+                            :disabled="processing2FA"
                         >
-                            <Button type="submit" :disabled="processing">
-                                Aktifkan 2FA
-                            </Button>
-                        </Form>
+                            Aktifkan 2FA
+                        </Button>
                     </div>
                 </div>
 
@@ -185,15 +218,13 @@ onUnmounted(() => clearTwoFactorAuthData());
                     </p>
 
                     <div class="relative inline">
-                        <Form v-bind="disable.form()" #default="{ processing }">
-                            <Button
-                                variant="destructive"
-                                type="submit"
-                                :disabled="processing"
-                            >
-                                Matikan 2FA
-                            </Button>
-                        </Form>
+                        <Button
+                            variant="destructive"
+                            @click="disableTwoFactor"
+                            :disabled="processing2FA"
+                        >
+                            Matikan 2FA
+                        </Button>
                     </div>
 
                     <TwoFactorRecoveryCodes />

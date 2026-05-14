@@ -13,7 +13,7 @@ return new class extends Migration
     {
         // Fix training_sessions
         Schema::table('training_sessions', function (Blueprint $table) {
-            if (!Schema::hasColumn('training_sessions', 'location')) {
+            if (! Schema::hasColumn('training_sessions', 'location')) {
                 $table->string('location')->nullable()->after('scheduled_time');
             }
             $table->string('type')->nullable()->change();
@@ -22,7 +22,7 @@ return new class extends Migration
         // Fix event_types
         Schema::table('event_types', function (Blueprint $table) {
             $table->foreignId('coach_id')->nullable()->change();
-            if (!Schema::hasColumn('event_types', 'description')) {
+            if (! Schema::hasColumn('event_types', 'description')) {
                 $table->text('description')->nullable()->after('name');
             }
         });

@@ -55,6 +55,7 @@ const submitPassword = () => {
             if (passwordForm.errors.password) {
                 passwordForm.reset('password', 'password_confirmation');
             }
+
             if (passwordForm.errors.current_password) {
                 passwordForm.reset('current_password');
             }
@@ -64,14 +65,18 @@ const submitPassword = () => {
 
 const enableTwoFactor = () => {
     processing2FA.value = true;
-    router.post(enable.url(), {}, {
-        preserveScroll: true,
-        onSuccess: () => {
-            showSetupModal.value = true;
-            processing2FA.value = false;
+    router.post(
+        enable.url(),
+        {},
+        {
+            preserveScroll: true,
+            onSuccess: () => {
+                showSetupModal.value = true;
+                processing2FA.value = false;
+            },
+            onFinish: () => (processing2FA.value = false),
         },
-        onFinish: () => (processing2FA.value = false),
-    });
+    );
 };
 
 const disableTwoFactor = () => {

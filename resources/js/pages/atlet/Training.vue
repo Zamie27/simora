@@ -148,7 +148,7 @@ const openLogModal = (session: any = null, log: Log | null = null) => {
     if (log) {
         form.id = log.id;
         form.training_session_id = log.training_session_id || null;
-        form.title = log.session ? log.session.title : (log.title || '');
+        form.title = log.session ? log.session.title : log.title || '';
         form.date = log.date;
         form.distance_km = log.distance_km || '';
         form.duration_minutes = log.duration_minutes || '';
@@ -1233,7 +1233,9 @@ const chartSeries = computed(() => [
                                             v-model="form.title"
                                             class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
                                             placeholder="E.g. Morning Sprint"
-                                            :disabled="!!form.training_session_id"
+                                            :disabled="
+                                                !!form.training_session_id
+                                            "
                                         />
                                     </div>
                                     <div class="flex flex-col gap-2">

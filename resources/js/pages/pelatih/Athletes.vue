@@ -71,7 +71,7 @@ const breadcrumbs = [
             >
                 <div
                     v-for="athlete in athletes"
-                    :key="atlet.id"
+                    :key="athlete.id"
                     class="group flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-xl transition-all hover:border-accent hover:shadow-accent/5"
                 >
                     <div class="mb-6 flex items-center gap-4">
@@ -80,13 +80,13 @@ const breadcrumbs = [
                         >
                             <img
                                 v-if="
-                                    atlet.athlete_profile?.profil_photo_path
+                                    athlete.athlete_profile?.profil_photo_path
                                 "
-                                :src="`/documents/${atlet.id}/profile_photo`"
+                                :src="`/documents/${athlete.id}/profile_photo`"
                                 class="h-full w-full object-cover"
                             />
                             <span v-else>{{
-                                atlet.name
+                                athlete.name
                                     .split(' ')
                                     .map((n) => n[0])
                                     .slice(0, 2)
@@ -97,12 +97,12 @@ const breadcrumbs = [
                             <h3
                                 class="truncate text-sm font-black tracking-tight text-foreground uppercase"
                             >
-                                {{ atlet.name }}
+                                {{ athlete.name }}
                             </h3>
                             <p
                                 class="truncate text-[10px] font-bold text-muted-foreground opacity-70"
                             >
-                                {{ atlet.email }}
+                                {{ athlete.email }}
                             </p>
                         </div>
                     </div>
@@ -118,7 +118,7 @@ const breadcrumbs = [
                             </p>
                             <p class="text-lg font-black text-foreground">
                                 {{
-                                    atlet.latest_physical_metric?.weight ||
+                                    athlete.latest_physical_metric?.weight ||
                                     '--'
                                 }}
                                 <span class="text-[10px] text-muted-foreground"
@@ -134,7 +134,7 @@ const breadcrumbs = [
                             </p>
                             <p class="text-lg font-black text-foreground">
                                 {{
-                                    atlet.latest_physical_metric?.height ||
+                                    athlete.latest_physical_metric?.height ||
                                     '--'
                                 }}
                                 <span class="text-[10px] text-muted-foreground"
@@ -150,7 +150,7 @@ const breadcrumbs = [
                             </p>
                             <p class="text-xs font-black text-accent uppercase">
                                 {{
-                                    atlet.latest_physical_metric?.category ||
+                                    athlete.latest_physical_metric?.category ||
                                     'Belum Ada Kategori'
                                 }}
                             </p>
@@ -158,7 +158,7 @@ const breadcrumbs = [
                     </div>
 
                     <Link
-                        :href="`/pelatih/athletes/${atlet.id}`"
+                        :href="`/pelatih/athletes/${athlete.id}`"
                         class="w-full rounded-xl bg-accent py-3 text-center text-[10px] font-black tracking-widest text-white uppercase shadow-lg shadow-accent/20 transition-all hover:bg-accent/90 focus:outline-none"
                     >
                         Detail & Update Fisik

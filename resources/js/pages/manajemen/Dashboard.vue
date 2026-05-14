@@ -157,7 +157,7 @@ const getTypeColor = (id: number | null) => {
                 </div>
                 <div class="flex gap-2">
                     <Link
-                        :href="manajemen.pengguna.index().url"
+                        :href="management.pengguna.index().url"
                         class="flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-bold text-white shadow-lg shadow-accent/20 transition-all hover:scale-105 active:scale-95"
                     >
                         <ShieldCheck class="h-4 w-4" />
@@ -268,7 +268,7 @@ const getTypeColor = (id: number | null) => {
                 >
                     <div
                         v-for="(athlete, index) in athleteRanking.slice(0, 6)"
-                        :key="atlet.id"
+                        :key="athlete.id"
                         class="group relative flex items-center gap-4 rounded-2xl bg-white/5 p-4 transition-all hover:bg-white/10"
                     >
                         <!-- Rank Number -->
@@ -277,26 +277,26 @@ const getTypeColor = (id: number | null) => {
                         >
                             #{{ index + 1 }}
                         </div>
-
+ 
                         <!-- Avatar -->
                         <div
                             class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-secondary"
                         >
                             <img
                                 v-if="
-                                    atlet.athlete_profile?.profil_photo_path
+                                    athlete.athlete_profile?.profil_photo_path
                                 "
-                                :src="`/documents/${atlet.id}/profile_photo`"
+                                :src="`/documents/${athlete.id}/profile_photo`"
                                 class="h-full w-full object-cover"
                             />
                             <img
-                                v-else-if="atlet.avatar"
-                                :src="atlet.avatar"
+                                v-else-if="athlete.avatar"
+                                :src="athlete.avatar"
                                 class="h-full w-full object-cover"
                             />
                             <span v-else class="text-xs font-black text-accent">
                                 {{
-                                    atlet.name
+                                    athlete.name
                                         .split(' ')
                                         .map((n: string) => n[0])
                                         .slice(0, 2)
@@ -304,18 +304,18 @@ const getTypeColor = (id: number | null) => {
                                 }}
                             </span>
                         </div>
-
+ 
                         <div class="flex-1">
                             <h4 class="text-sm font-black text-foreground">
-                                {{ atlet.name }}
+                                {{ athlete.name }}
                             </h4>
                             <p class="text-[10px] font-bold text-accent">
-                                {{ atlet.category_name || 'Umum' }}
+                                {{ athlete.category_name || 'Umum' }}
                             </p>
                             <div class="mt-1 flex items-center gap-3">
                                 <span
                                     class="text-[10px] font-bold text-muted-foreground"
-                                    >{{ atlet.performance_score }} KPH</span
+                                    >{{ athlete.performance_score }} KPH</span
                                 >
                                 <span
                                     class="text-[8px] text-muted-foreground/30"
@@ -324,7 +324,7 @@ const getTypeColor = (id: number | null) => {
                                 <span
                                     class="text-[10px] font-bold text-muted-foreground"
                                     >{{
-                                        Math.round(atlet.total_distance)
+                                        Math.round(athlete.total_distance)
                                     }}
                                     KM</span
                                 >
@@ -403,29 +403,29 @@ const getTypeColor = (id: number | null) => {
                                 </p>
                                 <div class="flex -space-x-2">
                                     <div
-                                        v-for="athlete in session.atlet.slice(
+                                        v-for="athlete in session.athletes.slice(
                                             0,
                                             4,
                                         )"
-                                        :key="atlet.id"
+                                        :key="athlete.id"
                                         class="border-surface flex h-6 w-6 items-center justify-center overflow-hidden rounded-full border-2 bg-secondary text-[8px] font-black"
                                     >
                                         <img
                                             v-if="
-                                                atlet.athlete_profile
+                                                athlete.athlete_profile
                                                     ?.profil_photo_path
                                             "
-                                            :src="`/documents/${atlet.id}/profile_photo`"
+                                            :src="`/documents/${athlete.id}/profile_photo`"
                                             class="h-full w-full object-cover"
                                         />
                                         <img
-                                            v-else-if="atlet.avatar"
-                                            :src="atlet.avatar"
+                                            v-else-if="athlete.avatar"
+                                            :src="athlete.avatar"
                                             class="h-full w-full object-cover"
                                         />
                                         <span v-else>
                                             {{
-                                                atlet.name
+                                                athlete.name
                                                     .split(' ')
                                                     .map((n: string) => n[0])
                                                     .slice(0, 2)
@@ -434,10 +434,10 @@ const getTypeColor = (id: number | null) => {
                                         </span>
                                     </div>
                                     <div
-                                        v-if="session.atlet.length > 4"
+                                        v-if="session.athletes.length > 4"
                                         class="border-surface flex h-6 w-6 items-center justify-center rounded-full border-2 bg-muted text-[8px] font-black text-muted-foreground"
                                     >
-                                        +{{ session.atlet.length - 4 }}
+                                        +{{ session.athletes.length - 4 }}
                                     </div>
                                 </div>
                             </div>
@@ -586,12 +586,12 @@ const getTypeColor = (id: number | null) => {
                                         log.athlete?.athlete_profile
                                             ?.profil_photo_path
                                     "
-                                    :src="`/documents/${log.atlet.id}/profile_photo`"
+                                    :src="`/documents/${log.athlete.id}/profile_photo`"
                                     class="h-full w-full object-cover"
                                 />
                                 <img
                                     v-else-if="log.athlete?.avatar"
-                                    :src="log.atlet.avatar"
+                                    :src="log.athlete.avatar"
                                     class="h-full w-full object-cover"
                                 />
                                 <span

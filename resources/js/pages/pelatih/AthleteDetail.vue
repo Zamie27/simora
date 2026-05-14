@@ -123,7 +123,7 @@ const props = defineProps<{
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
     { title: 'Atlet Saya', href: '/pelatih/athletes' },
-    { title: props.atlet.name, href: `/pelatih/athletes/${props.atlet.id}` },
+    { title: props.athlete.name, href: `/pelatih/athletes/${props.athlete.id}` },
 ];
 
 const showAddModal = ref(false);
@@ -137,13 +137,13 @@ const confirmDialog = useConfirm();
 const snackbar = useSnackbar();
 
 const form = useForm({
-    height: props.atlet.physical_metrics[0]?.height || '',
-    weight: props.atlet.physical_metrics[0]?.weight || '',
+    height: props.athlete.physical_metrics[0]?.height || '',
+    weight: props.athlete.physical_metrics[0]?.weight || '',
     recorded_at: new Date().toISOString().split('T')[0],
 });
 
 const categoryForm = useForm({
-    category_id: props.atlet.category_id?.toString() || '',
+    category_id: props.athlete.category_id?.toString() || '',
 });
 
 const logForm = useForm({
@@ -166,7 +166,7 @@ const logForm = useForm({
 });
 
 const submit = () => {
-    form.post(`/pelatih/athletes/${props.atlet.id}/metrics`, {
+    form.post(`/pelatih/athletes/${props.athlete.id}/metrics`, {
         onSuccess: () => {
             showAddModal.value = false;
             form.reset('recorded_at');
@@ -176,7 +176,7 @@ const submit = () => {
 };
 
 const updateCategory = () => {
-    categoryForm.patch(`/pelatih/athletes/${props.atlet.id}/category`, {
+    categoryForm.patch(`/pelatih/athletes/${props.athlete.id}/category`, {
         preserveScroll: true,
         onSuccess: () => snackbar.success('Kategori berhasil diperbarui'),
     });
@@ -231,7 +231,7 @@ const submitLogUpdate = () => {
 
 const applyFilters = () => {
     router.get(
-        `/pelatih/athletes/${props.atlet.id}`,
+        `/pelatih/athletes/${props.athlete.id}`,
         {
             start_date: startDate.value,
             end_date: endDate.value,
@@ -260,7 +260,7 @@ const physicalChartOptions = computed<ApexOptions>(() => ({
     colors: ['#FF6120', '#102844'],
     stroke: { curve: 'smooth', width: 3 },
     xaxis: {
-        categories: [...props.atlet.physical_metrics]
+        categories: [...props.athlete.physical_metrics]
             .reverse()
             .map((m) => formatDate(m.recorded_at)),
         labels: { style: { colors: '#94a3b8' } },
@@ -276,13 +276,13 @@ const physicalChartOptions = computed<ApexOptions>(() => ({
 const physicalChartSeries = computed(() => [
     {
         name: 'Berat (kg)',
-        data: [...props.atlet.physical_metrics]
+        data: [...props.athlete.physical_metrics]
             .reverse()
             .map((m) => Number(m.weight)),
     },
     {
         name: 'Tinggi (cm)',
-        data: [...props.atlet.physical_metrics]
+        data: [...props.athlete.physical_metrics]
             .reverse()
             .map((m) => Number(m.height)),
     },
@@ -354,7 +354,7 @@ const completionOptions = [
 </script>
 
 <template>
-    <Head :title="`Detail Atlet | ${atlet.name}`" />
+    <Head :title="`Detail Atlet | ${athlete.name}`" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div
@@ -369,13 +369,13 @@ const completionOptions = [
                         class="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-accent/20 bg-accent/20 text-2xl font-black text-accent shadow-2xl shadow-accent/10"
                     >
                         <img
-                            v-if="atlet.athlete_profile?.profil_photo_path"
-                            :src="`/documents/${atlet.id}/profile_photo`"
+                            v-if="athlete.athlete_profile?.profil_photo_path"
+                            :src="`/documents/${athlete.id}/profile_photo`"
                             class="h-full w-full object-cover"
                         />
                         <span v-else>
                             {{
-                                atlet.name
+                                athlete.name
                                     .split(' ')
                                     .map((n) => n[0])
                                     .slice(0, 2)
@@ -387,12 +387,12 @@ const completionOptions = [
                         <h1
                             class="text-4xl font-black tracking-tighter text-foreground uppercase"
                         >
-                            {{ atlet.name }}
+                            {{ athlete.name }}
                         </h1>
                         <p
                             class="mt-1 text-xs font-bold tracking-widest text-muted-foreground uppercase opacity-60"
                         >
-                            {{ atlet.email }}
+                            {{ athlete.email }}
                         </p>
                     </div>
                 </div>
@@ -408,7 +408,7 @@ const completionOptions = [
 
             <!-- Profile Completion Warning -->
             <div
-                v-if="!atlet.date_of_birth || !atlet.gender"
+                v-if="!athlete.date_of_birth || !athlete.gender"
                 class="group flex items-center justify-between gap-6 rounded-3xl border border-destructive/20 bg-destructive/10 p-6"
             >
                 <div class="flex items-center gap-6">
@@ -678,14 +678,14 @@ const completionOptions = [
                                                                 .athlete_profile
                                                                 ?.profil_photo_path
                                                         "
-                                                        :src="`/documents/${atlet.id}/profile_photo`"
+                                                        :src="`/documents/${athlete.id}/profile_photo`"
                                                         class="h-full w-full object-cover"
                                                     />
                                                     <img
                                                         v-else-if="
-                                                            atlet.avatar
+                                                            athlete.avatar
                                                         "
-                                                        :src="atlet.avatar"
+                                                        :src="athlete.avatar"
                                                         class="h-full w-full object-cover"
                                                     />
                                                     <span
@@ -693,7 +693,7 @@ const completionOptions = [
                                                         class="text-[10px] font-black text-accent"
                                                     >
                                                         {{
-                                                            atlet.name
+                                                            athlete.name
                                                                 .split(' ')
                                                                 .map(
                                                                     (n) => n[0],
@@ -705,7 +705,7 @@ const completionOptions = [
                                                 </div>
                                                 <span
                                                     class="text-xs font-bold text-foreground"
-                                                    >{{ atlet.name }}</span
+                                                    >{{ athlete.name }}</span
                                                 >
                                             </div>
                                         </td>
@@ -847,11 +847,11 @@ const completionOptions = [
                                 >
                                 <p class="text-xl font-black italic">
                                     {{
-                                        atlet.physical_metrics[0]?.weight ||
+                                        athlete.physical_metrics[0]?.weight ||
                                         '?'
                                     }}kg /
                                     {{
-                                        atlet.physical_metrics[0]?.height ||
+                                        athlete.physical_metrics[0]?.height ||
                                         '?'
                                     }}cm
                                 </p>
@@ -865,7 +865,7 @@ const completionOptions = [
                                     class="text-xl font-black text-accent italic"
                                 >
                                     {{
-                                        atlet.physical_metrics[0]?.bmi || '?'
+                                        athlete.physical_metrics[0]?.bmi || '?'
                                     }}
                                 </p>
                             </div>
@@ -873,7 +873,7 @@ const completionOptions = [
                                 <span
                                     class="text-[9px] font-bold tracking-[0.2em] text-accent uppercase"
                                     >{{
-                                        atlet.physical_metrics[0]
+                                        athlete.physical_metrics[0]
                                             ?.bmi_status || 'Waiting Data'
                                     }}</span
                                 >
@@ -897,7 +897,7 @@ const completionOptions = [
                             <CustomSelect
                                 v-model="categoryForm.category_id"
                                 :options="
-                                    props.kategori.map((c) => ({
+                                    props.categories.map((c) => ({
                                         value: c.id.toString(),
                                         label: c.name,
                                     }))
@@ -931,7 +931,7 @@ const completionOptions = [
                             >
                             <span class="text-xs font-black text-foreground"
                                 >{{
-                                    atlet.physical_metrics[0]?.age || '-'
+                                    athlete.physical_metrics[0]?.age || '-'
                                 }}
                                 Thn</span
                             >
@@ -945,7 +945,7 @@ const completionOptions = [
                             >
                             <span
                                 class="text-xs font-black text-foreground uppercase"
-                                >{{ atlet.gender || '-' }}</span
+                                >{{ athlete.gender || '-' }}</span
                             >
                         </div>
                         <div class="flex items-center justify-between">

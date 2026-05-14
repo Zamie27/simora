@@ -76,7 +76,7 @@ const deleteMessage = async (id: number) => {
 };
 
 const athleteOptions = computed(() =>
-    props.atletList.map((a) => ({
+    props.athletesList.map((a) => ({
         value: String(a.id),
         label: a.name,
     })),
@@ -331,7 +331,7 @@ const formatTime = (minutes: number) => {
                 >
                     <div
                         v-for="(athlete, index) in athleteRanking"
-                        :key="atlet.id"
+                        :key="athlete.id"
                         class="group relative flex items-center gap-4 rounded-2xl bg-white/5 p-4 transition-all hover:bg-white/10"
                     >
                         <!-- Rank Number -->
@@ -340,14 +340,14 @@ const formatTime = (minutes: number) => {
                         >
                             #{{ index + 1 }}
                         </div>
-
+ 
                         <!-- Avatar -->
                         <div
                             class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-secondary"
                         >
                             <img
-                                v-if="atlet.avatar"
-                                :src="atlet.avatar"
+                                v-if="athlete.avatar"
+                                :src="athlete.avatar"
                                 class="h-full w-full object-cover"
                             />
                             <span
@@ -355,7 +355,7 @@ const formatTime = (minutes: number) => {
                                 class="text-[10px] font-black text-accent"
                             >
                                 {{
-                                    atlet.name
+                                    athlete.name
                                         .split(' ')
                                         .map((n: string) => n[0])
                                         .slice(0, 2)
@@ -363,17 +363,17 @@ const formatTime = (minutes: number) => {
                                 }}
                             </span>
                         </div>
-
+ 
                         <div class="flex-1">
                             <h4
                                 class="truncate text-xs font-black text-foreground"
                             >
-                                {{ atlet.name }}
+                                {{ athlete.name }}
                             </h4>
                             <div class="mt-1 flex items-center gap-2">
                                 <span
                                     class="text-[9px] font-bold text-accent uppercase"
-                                    >{{ atlet.performance_score }} KPH</span
+                                    >{{ athlete.performance_score }} KPH</span
                                 >
                                 <span
                                     class="text-[8px] text-muted-foreground/30"
@@ -382,7 +382,7 @@ const formatTime = (minutes: number) => {
                                 <span
                                     class="text-[9px] font-bold text-muted-foreground"
                                     >{{
-                                        Math.round(atlet.total_distance)
+                                        Math.round(athlete.total_distance)
                                     }}
                                     KM</span
                                 >

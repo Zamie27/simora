@@ -62,7 +62,7 @@ const form = useForm({
 });
 
 const submitQuickUpdate = () => {
-    form.post(atlet.dashboard.quickUpdate().url, {
+    form.post(athlete.dashboard.quickUpdate().url, {
         onSuccess: () => {
             showQuickUpdate.value = false;
             form.reset(
@@ -84,7 +84,7 @@ const submitQuickUpdate = () => {
 
 const markMessageRead = (id: number) => {
     router.patch(
-        atlet.pesan.read({ message: id }).url,
+        athlete.pesan.read({ message: id }).url,
         {},
         {
             preserveScroll: true,
@@ -153,7 +153,7 @@ const chartSeries = [
 const breadcrumbs = [{ title: 'Dashboard', href: atlet.dashboard().url }];
 
 const exerciseTypeOptions = computed(() =>
-    props.jenisLatihan.map((type) => ({
+    props.exerciseTypes.map((type) => ({
         value: type.id.toString(),
         label: type.name,
     })),

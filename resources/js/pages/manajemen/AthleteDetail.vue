@@ -136,8 +136,8 @@ const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
     { title: 'Daftar Atlet Terverifikasi', href: '/manajemen/athletes' },
     {
-        title: `Detail: ${props.atlet.name}`,
-        href: `/manajemen/athletes/${props.atlet.id}`,
+        title: `Detail: ${props.athlete.name}`,
+        href: `/manajemen/athletes/${props.athlete.id}`,
     },
 ];
 
@@ -145,13 +145,13 @@ const startDate = ref(props.filters.start_date || '');
 const endDate = ref(props.filters.end_date || '');
 
 const coachForm = useForm({
-    coach_id: props.atlet.coach_id || null,
+    coach_id: props.athlete.coach_id || null,
 });
 
 const form = useForm({
-    uci_id: props.atlet.athlete_profile?.uci_id || '',
-    license_valid_until: props.atlet.athlete_profile?.license_valid_until
-        ? props.atlet.athlete_profile.license_valid_until.split('T')[0]
+    uci_id: props.athlete.athlete_profile?.uci_id || '',
+    license_valid_until: props.athlete.athlete_profile?.license_valid_until
+        ? props.athlete.athlete_profile.license_valid_until.split('T')[0]
         : '',
     license_file: null as File | null,
 });
@@ -163,7 +163,7 @@ const toggleEditCoach = () => {
 };
 
 const updateCoach = () => {
-    coachForm.patch(`/manajemen/users/${props.atlet.id}`, {
+    coachForm.patch(`/manajemen/users/${props.athlete.id}`, {
         preserveScroll: true,
         onSuccess: () => {
             isEditingCoach.value = false;
@@ -180,7 +180,7 @@ const handleFileUpload = (e: Event) => {
 };
 
 const submitLicense = () => {
-    form.post(`/manajemen/athletes/${props.atlet.id}/license`, {
+    form.post(`/manajemen/athletes/${props.athlete.id}/license`, {
         preserveScroll: true,
         forceFormData: true,
         onSuccess: () => {
@@ -199,7 +199,7 @@ const submitLicense = () => {
 
 const applyFilters = () => {
     router.get(
-        `/manajemen/athletes/${props.atlet.id}`,
+        `/manajemen/athletes/${props.athlete.id}`,
         {
             start_date: startDate.value,
             end_date: endDate.value,
@@ -244,7 +244,7 @@ const physicalChartOptions = computed<ApexOptions>(() => ({
     colors: ['#FF6120', '#102844'],
     stroke: { curve: 'smooth', width: 3 },
     xaxis: {
-        categories: [...props.atlet.physical_metrics]
+        categories: [...props.athlete.physical_metrics]
             .reverse()
             .map((m) => formatDate(m.recorded_at)),
         labels: { style: { colors: '#94a3b8' } },
@@ -260,13 +260,13 @@ const physicalChartOptions = computed<ApexOptions>(() => ({
 const physicalChartSeries = computed(() => [
     {
         name: 'Weight (kg)',
-        data: [...props.atlet.physical_metrics]
+        data: [...props.athlete.physical_metrics]
             .reverse()
             .map((m) => Number(m.weight)),
     },
     {
         name: 'Height (cm)',
-        data: [...props.atlet.physical_metrics]
+        data: [...props.athlete.physical_metrics]
             .reverse()
             .map((m) => Number(m.height)),
     },
@@ -311,7 +311,7 @@ const trainingChartSeries = computed(() => [
 </script>
 
 <template>
-    <Head :title="`Detail Atlet | ${atlet.name}`" />
+    <Head :title="`Detail Atlet | ${athlete.name}`" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div
@@ -326,13 +326,13 @@ const trainingChartSeries = computed(() => [
                         class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-accent/20 bg-accent/20 text-2xl font-black text-accent shadow-2xl shadow-accent/10"
                     >
                         <img
-                            v-if="atlet.athlete_profile?.profil_photo_path"
-                            :src="`/documents/${atlet.id}/profile_photo`"
+                            v-if="athlete.athlete_profile?.profil_photo_path"
+                            :src="`/documents/${athlete.id}/profile_photo`"
                             class="h-full w-full object-cover"
                         />
                         <span v-else>
                             {{
-                                atlet.name
+                                athlete.name
                                     .split(' ')
                                     .map((n) => n[0])
                                     .slice(0, 2)
@@ -344,12 +344,12 @@ const trainingChartSeries = computed(() => [
                         <h1
                             class="text-4xl font-black tracking-tighter text-foreground uppercase"
                         >
-                            {{ atlet.name }}
+                            {{ athlete.name }}
                         </h1>
                         <p
                             class="mt-1 text-xs font-bold tracking-widest text-muted-foreground uppercase opacity-60"
                         >
-                            {{ atlet.email }}
+                            {{ athlete.email }}
                         </p>
                     </div>
                 </div>
@@ -401,7 +401,7 @@ const trainingChartSeries = computed(() => [
                             >
                                 <p class="text-sm font-black uppercase">
                                     {{
-                                        atlet.coach?.name ||
+                                        athlete.coach?.name ||
                                         'BELUM ADA PELATIH'
                                     }}
                                 </p>
@@ -419,7 +419,7 @@ const trainingChartSeries = computed(() => [
 
             <!-- Profile Completion Warning -->
             <div
-                v-if="!atlet.date_of_birth || !atlet.gender"
+                v-if="!athlete.date_of_birth || !athlete.gender"
                 class="group flex items-center justify-between gap-6 rounded-3xl border border-destructive/20 bg-destructive/10 p-6"
             >
                 <div class="flex items-center gap-6">
@@ -687,14 +687,14 @@ const trainingChartSeries = computed(() => [
                                                                 .athlete_profile
                                                                 ?.profil_photo_path
                                                         "
-                                                        :src="`/documents/${atlet.id}/profile_photo`"
+                                                        :src="`/documents/${athlete.id}/profile_photo`"
                                                         class="h-full w-full object-cover"
                                                     />
                                                     <img
                                                         v-else-if="
-                                                            atlet.avatar
+                                                            athlete.avatar
                                                         "
-                                                        :src="atlet.avatar"
+                                                        :src="athlete.avatar"
                                                         class="h-full w-full object-cover"
                                                     />
                                                     <span
@@ -702,7 +702,7 @@ const trainingChartSeries = computed(() => [
                                                         class="text-[10px] font-black text-accent"
                                                     >
                                                         {{
-                                                            atlet.name
+                                                            athlete.name
                                                                 .split(' ')
                                                                 .map(
                                                                     (n) => n[0],
@@ -714,7 +714,7 @@ const trainingChartSeries = computed(() => [
                                                 </div>
                                                 <span
                                                     class="text-xs font-bold text-foreground"
-                                                    >{{ atlet.name }}</span
+                                                    >{{ athlete.name }}</span
                                                 >
                                             </div>
                                         </td>
@@ -835,11 +835,11 @@ const trainingChartSeries = computed(() => [
                                 >
                                 <p class="text-xl font-black italic">
                                     {{
-                                        atlet.physical_metrics[0]?.weight ||
+                                        athlete.physical_metrics[0]?.weight ||
                                         '?'
                                     }}kg /
                                     {{
-                                        atlet.physical_metrics[0]?.height ||
+                                        athlete.physical_metrics[0]?.height ||
                                         '?'
                                     }}cm
                                 </p>
@@ -853,7 +853,7 @@ const trainingChartSeries = computed(() => [
                                     class="text-xl font-black text-accent italic"
                                 >
                                     {{
-                                        atlet.physical_metrics[0]?.bmi || '?'
+                                        athlete.physical_metrics[0]?.bmi || '?'
                                     }}
                                 </p>
                             </div>
@@ -861,7 +861,7 @@ const trainingChartSeries = computed(() => [
                                 <span
                                     class="text-[9px] font-bold tracking-[0.2em] text-accent uppercase"
                                     >{{
-                                        atlet.physical_metrics[0]
+                                        athlete.physical_metrics[0]
                                             ?.bmi_status || 'Data Fisik Kosong'
                                     }}</span
                                 >
@@ -881,7 +881,7 @@ const trainingChartSeries = computed(() => [
                         </h3>
                         <div class="flex flex-col gap-4">
                             <div
-                                v-if="atlet.athlete_profile?.uci_id"
+                                v-if="athlete.athlete_profile?.uci_id"
                                 class="rounded-2xl bg-card p-4 shadow-inner"
                             >
                                 <p
@@ -890,7 +890,7 @@ const trainingChartSeries = computed(() => [
                                     UCI ID
                                 </p>
                                 <p class="font-mono text-sm font-black italic">
-                                    {{ atlet.athlete_profile.uci_id }}
+                                    {{ athlete.athlete_profile.uci_id }}
                                 </p>
                                 <div
                                     class="mt-2 flex items-center justify-between"
@@ -898,7 +898,7 @@ const trainingChartSeries = computed(() => [
                                     <span
                                         :class="
                                             isLicenseValid(
-                                                atlet.athlete_profile
+                                                athlete.athlete_profile
                                                     .license_valid_until,
                                             )
                                                 ? 'text-emerald-500'
@@ -908,7 +908,7 @@ const trainingChartSeries = computed(() => [
                                     >
                                         {{
                                             isLicenseValid(
-                                                atlet.athlete_profile
+                                                athlete.athlete_profile
                                                     .license_valid_until,
                                             )
                                                 ? 'Active'
@@ -917,12 +917,12 @@ const trainingChartSeries = computed(() => [
                                     </span>
                                     <button
                                         v-if="
-                                            atlet.athlete_profile
+                                            athlete.athlete_profile
                                                 ?.license_path
                                         "
                                         @click="
                                             showPreview(
-                                                `/documents/${atlet.id}/license`,
+                                                `/documents/${athlete.id}/license`,
                                             )
                                         "
                                         class="text-[8px] font-black text-accent uppercase hover:underline"
@@ -1018,13 +1018,13 @@ const trainingChartSeries = computed(() => [
                                 </div>
                                 <button
                                     v-if="
-                                        atlet.athlete_profile?.[
-                                            `${doc.path}_path` as keyof typeof atlet.athlete_profile
+                                        athlete.athlete_profile?.[
+                                            `${doc.path}_path` as keyof typeof athlete.athlete_profile
                                         ]
                                     "
                                     @click="
                                         showPreview(
-                                            `/documents/${atlet.id}/${doc.path}`,
+                                            `/documents/${athlete.id}/${doc.path}`,
                                         )
                                     "
                                     class="rounded-full bg-accent/10 px-3 py-1 text-[9px] font-black text-accent uppercase hover:bg-accent hover:text-white"

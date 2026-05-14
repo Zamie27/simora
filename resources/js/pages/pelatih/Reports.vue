@@ -251,7 +251,7 @@ const exportCsv = (athleteId?: number) => {
                             <tbody class="divide-y divide-border/50">
                                 <tr
                                     v-for="item in reportData"
-                                    :key="item.atlet.id"
+                                    :key="item.athlete.id"
                                     class="group transition-colors hover:bg-muted/10"
                                 >
                                     <td class="px-8 py-6">
@@ -265,12 +265,12 @@ const exportCsv = (athleteId?: number) => {
                                                             .athlete_profile
                                                             ?.profil_photo_path
                                                     "
-                                                    :src="`/documents/${item.atlet.id}/profile_photo`"
+                                                    :src="`/documents/${item.athlete.id}/profile_photo`"
                                                     class="h-full w-full object-cover"
                                                 />
                                                 <span v-else>
                                                     {{
-                                                        item.atlet.name
+                                                        item.athlete.name
                                                             .split(' ')
                                                             .map((n) => n[0])
                                                             .slice(0, 2)
@@ -280,18 +280,18 @@ const exportCsv = (athleteId?: number) => {
                                             </div>
                                             <div>
                                                 <Link
-                                                    :href="`/pelatih/athletes/${item.atlet.id}`"
+                                                    :href="`/pelatih/athletes/${item.athlete.id}`"
                                                     class="group/link"
                                                 >
                                                     <h4
                                                         class="font-black text-foreground uppercase transition-colors group-hover/link:text-accent"
                                                     >
-                                                        {{ item.atlet.name }}
+                                                        {{ item.athlete.name }}
                                                     </h4>
                                                     <p
                                                         class="text-[10px] font-bold text-muted-foreground opacity-50"
                                                     >
-                                                        {{ item.atlet.email }}
+                                                        {{ item.athlete.email }}
                                                     </p>
                                                 </Link>
                                             </div>
@@ -419,7 +419,7 @@ const exportCsv = (athleteId?: number) => {
                                     </td>
                                     <td class="px-8 py-6 text-right">
                                         <button
-                                            @click="exportCsv(item.atlet.id)"
+                                            @click="exportCsv(item.athlete.id)"
                                             class="rounded-xl border border-border bg-card px-4 py-2 text-[10px] font-black tracking-widest text-muted-foreground uppercase transition-all hover:border-accent hover:text-accent hover:shadow-lg active:scale-95"
                                         >
                                             <Download

@@ -144,7 +144,7 @@ const updateStatus = (reportId: number, newStatus: string) => {
                     </CardHeader>
                     <CardContent>
                         <div class="text-2xl font-bold text-red-500">
-                            {{ stats.tertunda }}
+                            {{ stats.pending }}
                         </div>
                     </CardContent>
                 </Card>

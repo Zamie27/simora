@@ -142,7 +142,7 @@ const completionColor = (s: string) =>
                         >{{ session.exercise_type.name }}</span
                     >
                     <span class="text-xs text-muted-foreground"
-                        >• {{ session.atlet.length }} Atlet</span
+                        >• {{ session.athletes.length }} Atlet</span
                     >
                 </div>
                 <h1
@@ -274,20 +274,20 @@ const completionColor = (s: string) =>
                             >
                                 <img
                                     v-if="
-                                        log.atlet.athlete_profile
+                                        log.athlete.athlete_profile
                                             ?.profil_photo_path
                                     "
-                                    :src="`/documents/${log.atlet.id}/profile_photo`"
+                                    :src="`/documents/${log.athlete.id}/profile_photo`"
                                     class="h-full w-full object-cover"
                                 />
                                 <img
-                                    v-else-if="log.atlet.avatar"
-                                    :src="log.atlet.avatar"
+                                    v-else-if="log.athlete.avatar"
+                                    :src="log.athlete.avatar"
                                     class="h-full w-full object-cover"
                                 />
                                 <span v-else>
                                     {{
-                                        log.atlet.name
+                                        log.athlete.name
                                             .split(' ')
                                             .map((n) => n[0])
                                             .slice(0, 2)
@@ -297,7 +297,7 @@ const completionColor = (s: string) =>
                             </div>
                             <div>
                                 <h4 class="font-bold text-foreground">
-                                    {{ log.atlet.name }}
+                                    {{ log.athlete.name }}
                                 </h4>
                                 <p class="text-[10px] text-muted-foreground">
                                     {{ formatDate(log.date) }}

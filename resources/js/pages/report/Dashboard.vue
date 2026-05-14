@@ -18,6 +18,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
+import report from '@/routes/report';
 
 interface LaporanBug {
     id: number;
@@ -103,7 +104,7 @@ const getStatusIcon = (status: string) => {
 
 const updateStatus = (reportId: number, newStatus: string) => {
     form.status = newStatus;
-    form.patch(`/report/bug-reports/${reportId}/status`, {
+    form.patch(report.bugReports.status({ laporanBug: reportId }).url, {
         preserveScroll: true,
         onSuccess: () => {
             if (selectedReport.value?.id === reportId) {

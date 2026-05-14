@@ -52,7 +52,7 @@ const confirmDialog = useConfirm();
 const snackbar = useSnackbar();
 
 const sendMessage = () => {
-    messageForm.post(pelatih.pesan.store().url, {
+    messageForm.post(coach.pesan.store().url, {
         preserveScroll: true,
         onSuccess: () => {
             messageForm.reset();
@@ -210,14 +210,14 @@ const formatTime = (minutes: number) => {
 
                 <div class="flex gap-2">
                     <Link
-                        :href="pelatih.sesiLatihan.index().url"
+                        :href="coach.sesiLatihan.index().url"
                         class="bg-surface hover:bg-surface/80 flex items-center gap-2 rounded-lg border border-white/5 px-4 py-2 text-sm font-bold text-foreground transition-all"
                     >
                         <Calendar class="h-4 w-4 text-accent" />
                         Jadwal Sesi
                     </Link>
                     <Link
-                        :href="pelatih.atlet.index().url"
+                        :href="coach.atlet.index().url"
                         class="flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-bold text-white shadow-lg shadow-accent/20 transition-all hover:scale-105 active:scale-95"
                     >
                         <Users class="h-4 w-4" />
@@ -445,7 +445,7 @@ const formatTime = (minutes: number) => {
                                 Riwayat Latihan Terbaru
                             </h3>
                             <Link
-                                :href="pelatih.atlet.index().url"
+                                :href="coach.atlet.index().url"
                                 class="text-xs font-black text-accent uppercase hover:underline"
                             >
                                 Lihat Semua
@@ -587,7 +587,7 @@ const formatTime = (minutes: number) => {
                             </div>
 
                             <Link
-                                :href="pelatih.sesiLatihan.index().url"
+                                :href="coach.sesiLatihan.index().url"
                                 class="flex w-full items-center justify-center gap-2 rounded-xl border border-white/5 bg-white/5 py-3 text-xs font-black text-foreground uppercase transition-all hover:bg-white/10 active:scale-95"
                             >
                                 Atur Jadwal Baru

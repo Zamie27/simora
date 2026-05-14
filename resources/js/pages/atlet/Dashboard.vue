@@ -150,7 +150,7 @@ const chartSeries = [
     },
 ];
 
-const breadcrumbs = [{ title: 'Dashboard', href: atlet.dashboard().url }];
+const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
 
 const exerciseTypeOptions = computed(() =>
     props.exerciseTypes.map((type) => ({

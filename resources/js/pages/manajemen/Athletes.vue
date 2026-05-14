@@ -37,7 +37,7 @@ const props = defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Daftar Atlet Terverifikasi', href: '/manajemen/athletes' },
+    { title: 'Daftar Atlet Terverifikasi', href: '/manajemen/atlet' },
 ];
 
 const selectedCoach = ref(props.filters.coach_id || '');
@@ -46,7 +46,7 @@ const sortDirection = ref(props.filters.direction || 'asc');
 
 const updateFilters = () => {
     router.get(
-        '/manajemen/athletes',
+        '/manajemen/atlet',
         {
             coach_id: selectedCoach.value,
             sort: sortField.value,
@@ -111,10 +111,10 @@ const formatDate = (date: string) => {
                         <option value="">Semua Pelatih</option>
                         <option
                             v-for="coach in coaches"
-                            :key="pelatih.id"
-                            :value="pelatih.id"
+                            :key="coach.id"
+                            :value="coach.id"
                         >
-                            {{ pelatih.name }}
+                            {{ coach.name }}
                         </option>
                     </select>
                 </div>
@@ -194,8 +194,8 @@ const formatDate = (date: string) => {
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <Link
                     v-for="athlete in athletes"
-                    :key="atlet.id"
-                    :href="`/manajemen/athletes/${atlet.id}`"
+                    :key="athlete.id"
+                    :href="`/manajemen/atlet/${athlete.id}`"
                     class="group relative flex cursor-pointer items-center justify-between overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-lg transition-all hover:border-accent/40 hover:shadow-accent/5"
                 >
                     <div
@@ -207,19 +207,19 @@ const formatDate = (date: string) => {
                             class="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-secondary-foreground/10 bg-secondary text-xs font-black text-secondary-foreground uppercase shadow-inner"
                         >
                             <img
-                                v-if="atlet.avatar"
-                                :src="atlet.avatar"
+                                v-if="athlete.avatar"
+                                :src="athlete.avatar"
                                 class="h-full w-full object-cover"
                             />
                             <img
                                 v-else-if="
-                                    atlet.athlete_profile?.profil_photo_path
+                                    athlete.athlete_profile?.profile_photo_path
                                 "
-                                :src="`/documents/${atlet.id}/profile_photo`"
+                                :src="`/documents/${athlete.id}/profile_photo`"
                                 class="h-full w-full object-cover"
                             />
                             <span v-else>{{
-                                atlet.name
+                                athlete.name
                                     .split(' ')
                                     .map((n) => n[0])
                                     .slice(0, 2)
@@ -230,12 +230,12 @@ const formatDate = (date: string) => {
                             <h3
                                 class="text-sm font-black tracking-tight text-foreground uppercase"
                             >
-                                {{ atlet.name }}
+                                {{ athlete.name }}
                             </h3>
                             <p
                                 class="max-w-[150px] truncate text-[11px] font-bold text-muted-foreground"
                             >
-                                {{ atlet.email }}
+                                {{ athlete.email }}
                             </p>
                             <div class="mt-2 flex items-center gap-2">
                                 <span
@@ -244,9 +244,9 @@ const formatDate = (date: string) => {
                                 >
                                 <span
                                     v-if="
-                                        atlet.athlete_profile?.uci_id &&
+                                        athlete.athlete_profile?.uci_id &&
                                         new Date(
-                                            atlet.athlete_profile
+                                            athlete.athlete_profile
                                                 ?.license_valid_until || '',
                                         ) >= new Date()
                                     "
@@ -261,7 +261,7 @@ const formatDate = (date: string) => {
                                 <span
                                     class="text-[10px] font-semibold text-muted-foreground"
                                     >Tgl. Terdaftar:
-                                    {{ formatDate(atlet.created_at) }}</span
+                                    {{ formatDate(athlete.created_at) }}</span
                                 >
                             </div>
                         </div>
@@ -274,12 +274,12 @@ const formatDate = (date: string) => {
                             DILATIH OLEH
                         </p>
                         <div
-                            v-if="atlet.coach"
+                            v-if="athlete.coach"
                             class="flex flex-col items-end"
                         >
                             <span
                                 class="text-xs font-black text-foreground uppercase"
-                                >{{ atlet.pelatih.name }}</span
+                                >{{ athlete.coach.name }}</span
                             >
                             <span
                                 class="text-[9px] font-black tracking-tighter text-accent/80 uppercase italic"

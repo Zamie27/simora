@@ -24,7 +24,7 @@ import CustomSelect from '@/components/ui/CustomSelect.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
-import athlete from '@/routes/atlet';
+import atlet from '@/routes/atlet';
 
 interface Props {
     user: any;
@@ -62,7 +62,7 @@ const form = useForm({
 });
 
 const submitQuickUpdate = () => {
-    form.post(athlete.dashboard.quickUpdate().url, {
+    form.post(atlet.dashboard.quickUpdate().url, {
         onSuccess: () => {
             showQuickUpdate.value = false;
             form.reset(
@@ -84,7 +84,7 @@ const submitQuickUpdate = () => {
 
 const markMessageRead = (id: number) => {
     router.patch(
-        athlete.pesan.read({ message: id }).url,
+        atlet.pesan.read({ pesan: id }).url,
         {},
         {
             preserveScroll: true,
@@ -150,7 +150,7 @@ const chartSeries = [
     },
 ];
 
-const breadcrumbs = [{ title: 'Dashboard', href: athlete.dashboard().url }];
+const breadcrumbs = [{ title: 'Dashboard', href: atlet.dashboard().url }];
 
 const exerciseTypeOptions = computed(() =>
     props.exerciseTypes.map((type) => ({

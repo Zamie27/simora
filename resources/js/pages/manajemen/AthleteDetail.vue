@@ -134,10 +134,10 @@ const props = defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Daftar Atlet Terverifikasi', href: '/manajemen/athletes' },
+    { title: 'Daftar Atlet Terverifikasi', href: '/manajemen/atlet' },
     {
         title: `Detail: ${props.athlete.name}`,
-        href: `/manajemen/athletes/${props.athlete.id}`,
+        href: `/manajemen/atlet/${props.athlete.id}`,
     },
 ];
 
@@ -180,7 +180,7 @@ const handleFileUpload = (e: Event) => {
 };
 
 const submitLicense = () => {
-    form.post(`/manajemen/athletes/${props.athlete.id}/license`, {
+    form.post(`/manajemen/atlet/${props.athlete.id}/license`, {
         preserveScroll: true,
         forceFormData: true,
         onSuccess: () => {
@@ -199,7 +199,7 @@ const submitLicense = () => {
 
 const applyFilters = () => {
     router.get(
-        `/manajemen/athletes/${props.athlete.id}`,
+        `/manajemen/atlet/${props.athlete.id}`,
         {
             start_date: startDate.value,
             end_date: endDate.value,
@@ -326,7 +326,7 @@ const trainingChartSeries = computed(() => [
                         class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-accent/20 bg-accent/20 text-2xl font-black text-accent shadow-2xl shadow-accent/10"
                     >
                         <img
-                            v-if="athlete.athlete_profile?.profil_photo_path"
+                            v-if="athlete.athlete_profile?.profile_photo_path"
                             :src="`/documents/${athlete.id}/profile_photo`"
                             class="h-full w-full object-cover"
                         />
@@ -685,7 +685,7 @@ const trainingChartSeries = computed(() => [
                                                         v-if="
                                                             athlete
                                                                 .athlete_profile
-                                                                ?.profil_photo_path
+                                                                ?.profile_photo_path
                                                         "
                                                         :src="`/documents/${athlete.id}/profile_photo`"
                                                         class="h-full w-full object-cover"

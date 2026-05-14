@@ -2,96 +2,103 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTrainingPlanRequest;
-use App\Http\Requests\UpdateTrainingPlanRequest;
 use App\Models\JenisLatihan;
-use App\Models\TrainingPlan;
+use App\Models\SesiLatihan;
 use App\Models\User;
-use App\Repositories\TrainingPlanRepository;
-use App\Services\TrainingPlanService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class KelolaJadwalSesiLatihanController extends Controller
 {
-    public function __construct(
-        private TrainingPlanService $service,
-        private TrainingPlanRepository $repository
-    ) {}
 
     /**
-     * Display the list of training plans for the coach.
+     * UC-07: Kelola Jadwal Sesi Latihan
+     * Turunan: Menampilkan daftar sesi latihan
      */
-    public function tampilData(Request $permintaan): Response
+    public function tampilDaftar(Request $permintaan): Response
     {
-        $pelatih = $permintaan->user();
-        $plans = $this->repository->getForCoach($pelatih->id);
+        $pelatihId = $permintaan->user()->id;
 
-        $daftarAtlet = User::whereRole('Atlet')
-            ->where('coach_id', $pelatih->id)
-            ->select('id', 'name', 'email')
-            ->get();
-
-        return Inertia::render('pelatih/TrainingPlans', [
-            'plans' => $plans,
-            'athletes' => $daftarAtlet,
+        return Inertia::render('pelatih/TrainingSessions', [
+            'sessions' => SesiLatihan::where('coach_id', $pelatihId)
+                ->with(['exerciseType', 'athletes' => fn ($q) => $q->with('athleteProfile')])
+                ->withCount('athletes')
+                ->orderBy('scheduled_date', 'desc')
+                ->get(),
+            'exerciseTypes' => JenisLatihan::all(),
+            'athletes' => User::whereRole('Atlet')
+                ->where('coach_id', $pelatihId)
+                ->where('is_verified', true)
+                ->with(['athleteProfile'])
+                ->get(['id', 'name', 'avatar']),
         ]);
     }
 
     /**
-     * Store a new training plan.
+     * UC-07: Kelola Jadwal Sesi Latihan
+     * Turunan: Menyimpan sesi latihan baru
      */
-    public function simpanData(StoreTrainingPlanRequest $permintaan)
+    public function simpan(Request $permintaan)
     {
-        $pelatih = $permintaan->user();
-        $atlet = User::findOrFail($permintaan->validated('athlete_id'));
+        $dataTervalidasi = $permintaan->validate([
+            'title' => 'required|string|max:255',
+            'exercise_type_id' => 'required|exists:exercise_types,id',
+            'scheduled_date' => 'required|date',
+            'scheduled_time' => 'required',
+            'location' => 'nullable|string|max:255',
+            'repeat_weekly' => 'boolean',
+            'athlete_ids' => 'required|array',
+            'athlete_ids.*' => 'exists:users,id',
+        ]);
 
-        // Verify the athlete belongs to this coach
-        if ($atlet->coach_id !== $pelatih->id) {
-            abort(403, 'Atlet ini bukan binaan Anda.');
+        $atletIds = $dataTervalidasi['athlete_ids'];
+        unset($dataTervalidasi['athlete_ids']);
+
+        $dataTervalidasi['coach_id'] = $permintaan->user()->id;
+
+        $sesi = SesiLatihan::create($dataTervalidasi);
+        $sesi->athletes()->sync($atletIds);
+
+        return back()->with('success', 'Sesi latihan berhasil ditambahkan.');
+    }
+
+    /**
+     * UC-07: Kelola Jadwal Sesi Latihan
+     * Turunan: Menampilkan detail sesi latihan
+     */
+    public function tampilDetail(SesiLatihan $sesiLatihan): Response
+    {
+        if ($sesiLatihan->coach_id !== auth()->id()) {
+            abort(403, 'Anda tidak memiliki akses ke sesi latihan ini.');
         }
 
-        $this->service->create($pelatih->id, $permintaan->validated());
+        $sesiLatihan->load([
+            'exerciseType',
+            'athletes:id,name,email,avatar',
+            'logs' => fn ($q) => $q->with(['athlete:id,name,email,avatar', 'attachments'])->orderBy('date', 'desc'),
+        ]);
+        $sesiLatihan->athletes->load('athleteProfile');
+        $sesiLatihan->logs->pluck('athlete')->each->load('athleteProfile');
 
-        return back()->with('success', 'Rencana latihan berhasil dibuat.');
-    }
-
-    /**
-     * Display the detail of a training plan.
-     */
-    public function show(TrainingPlan $trainingPlan): Response
-    {
-        $this->service->authorizeCoach($trainingPlan, auth()->id());
-
-        $plan = $this->repository->getWithDetails($trainingPlan->id);
-
-        return Inertia::render('pelatih/TrainingPlanDetail', [
-            'plan' => $plan,
+        return Inertia::render('pelatih/TrainingSessionDetail', [
+            'session' => $sesiLatihan,
         ]);
     }
 
     /**
-     * Update a training plan.
+     * UC-07: Kelola Jadwal Sesi Latihan
+     * Turunan: Menghapus sesi latihan
      */
-    public function perbaruiData(UpdateTrainingPlanRequest $permintaan, TrainingPlan $trainingPlan)
+    public function hapus(SesiLatihan $sesiLatihan)
     {
-        $this->service->authorizeCoach($trainingPlan, $permintaan->user()->id);
-        $this->service->update($trainingPlan, $permintaan->validated());
+        if ($sesiLatihan->coach_id !== auth()->id()) {
+            abort(403);
+        }
 
-        return back()->with('success', 'Rencana latihan berhasil diperbarui.');
-    }
+        $sesiLatihan->delete();
 
-    /**
-     * Delete a training plan.
-     */
-    public function hapusData(TrainingPlan $trainingPlan)
-    {
-        $this->service->authorizeCoach($trainingPlan, auth()->id());
-        $this->service->delete($trainingPlan);
-
-        return redirect()->route('pelatih.training-plans.index')
-            ->with('success', 'Rencana latihan berhasil dihapus.');
+        return back()->with('success', 'Sesi latihan berhasil dihapus.');
     }
 
     /**

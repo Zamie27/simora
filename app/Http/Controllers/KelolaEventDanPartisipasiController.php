@@ -211,7 +211,7 @@ class KelolaEventDanPartisipasiController extends Controller
             $acara->athletes_count = $acara->participants->count();
         });
 
-        $daftarAtlet = User::whereRole('atlet')
+        $daftarAtlet = User::whereRole('Atlet')
             ->where('coach_id', auth()->id())
             ->with('athleteProfile')
             ->get(['id', 'name'])
@@ -235,6 +235,7 @@ class KelolaEventDanPartisipasiController extends Controller
             'athletes' => $daftarAtlet,
             'eventTypes' => $acaraTypes,
             'eventPoints' => $acaraPoints,
+            'categories' => \App\Models\Kategori::orderBy('name')->get(),
         ]);
     }
 
@@ -361,7 +362,11 @@ class KelolaEventDanPartisipasiController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        JenisEvent::create($dataTervalidasi);
+        JenisEvent::create([
+            'coach_id' => auth()->id(),
+            'name' => $dataTervalidasi['name'],
+            'description' => $dataTervalidasi['description'] ?? null,
+        ]);
 
         return back()->with('success', 'Tipe Event berhasil ditambahkan.');
     }
@@ -400,14 +405,13 @@ class KelolaEventDanPartisipasiController extends Controller
     public function simpanPoinEvent(Request $permintaan)
     {
         $dataTervalidasi = $permintaan->validate([
-            'rank' => 'required|integer|min:1',
-            'points' => 'required|integer|min:0',
+            'name' => 'required|string|max:255',
         ]);
 
-        PoinEvent::updateOrCreate(
-            ['rank' => $dataTervalidasi['rank']],
-            ['points' => $dataTervalidasi['points']]
-        );
+        PoinEvent::create([
+            'coach_id' => auth()->id(),
+            'name' => $dataTervalidasi['name'],
+        ]);
 
         return back()->with('success', 'Poin Event berhasil disimpan.');
     }
@@ -419,8 +423,7 @@ class KelolaEventDanPartisipasiController extends Controller
     public function perbaruiPoinEvent(Request $permintaan, PoinEvent $poin)
     {
         $dataTervalidasi = $permintaan->validate([
-            'rank' => 'required|integer|min:1',
-            'points' => 'required|integer|min:0',
+            'name' => 'required|string|max:255',
         ]);
 
         $poin->update($dataTervalidasi);

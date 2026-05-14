@@ -122,8 +122,8 @@ const props = defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Atlet Saya', href: '/pelatih/athletes' },
-    { title: props.athlete.name, href: `/pelatih/athletes/${props.athlete.id}` },
+    { title: 'Atlet Saya', href: '/pelatih/atlet' },
+    { title: props.athlete.name, href: `/pelatih/atlet/${props.athlete.id}` },
 ];
 
 const showAddModal = ref(false);
@@ -166,7 +166,7 @@ const logForm = useForm({
 });
 
 const submit = () => {
-    form.post(`/pelatih/athletes/${props.athlete.id}/metrics`, {
+    form.post(`/pelatih/atlet/${props.athlete.id}/metrics`, {
         onSuccess: () => {
             showAddModal.value = false;
             form.reset('recorded_at');
@@ -176,7 +176,7 @@ const submit = () => {
 };
 
 const updateCategory = () => {
-    categoryForm.patch(`/pelatih/athletes/${props.athlete.id}/category`, {
+    categoryForm.patch(`/pelatih/atlet/${props.athlete.id}/category`, {
         preserveScroll: true,
         onSuccess: () => snackbar.success('Kategori berhasil diperbarui'),
     });
@@ -210,7 +210,7 @@ const deleteLog = async (logId: number) => {
             'Apakah Anda yakin ingin menghapus log latihan ini?',
         )
     ) {
-        router.delete(`/pelatih/training-logs/${logId}`, {
+        router.delete(`/pelatih/latihan-logs/${logId}`, {
             onSuccess: () => snackbar.success('Log latihan berhasil dihapus'),
         });
     }
@@ -221,7 +221,7 @@ const submitLogUpdate = () => {
         return;
     }
 
-    logForm.patch(`/pelatih/training-logs/${selectedLog.value.id}`, {
+    logForm.patch(`/pelatih/latihan-logs/${selectedLog.value.id}`, {
         onSuccess: () => {
             showEditLogModal.value = false;
             snackbar.success('Log latihan berhasil diperbarui');
@@ -231,7 +231,7 @@ const submitLogUpdate = () => {
 
 const applyFilters = () => {
     router.get(
-        `/pelatih/athletes/${props.athlete.id}`,
+        `/pelatih/atlet/${props.athlete.id}`,
         {
             start_date: startDate.value,
             end_date: endDate.value,
@@ -369,7 +369,7 @@ const completionOptions = [
                         class="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-accent/20 bg-accent/20 text-2xl font-black text-accent shadow-2xl shadow-accent/10"
                     >
                         <img
-                            v-if="athlete.athlete_profile?.profil_photo_path"
+                            v-if="athlete.athlete_profile?.profile_photo_path"
                             :src="`/documents/${athlete.id}/profile_photo`"
                             class="h-full w-full object-cover"
                         />
@@ -676,7 +676,7 @@ const completionOptions = [
                                                         v-if="
                                                             athlete
                                                                 .athlete_profile
-                                                                ?.profil_photo_path
+                                                                ?.profile_photo_path
                                                         "
                                                         :src="`/documents/${athlete.id}/profile_photo`"
                                                         class="h-full w-full object-cover"
@@ -727,11 +727,8 @@ const completionOptions = [
                                             >
                                                 {{
                                                     log.title ||
-                                                    (log.session
-                                                        ? log.session
-                                                              .exercise_type
-                                                              .name
-                                                        : log.type) ||
+                                                    log.session?.exercise_type?.name ||
+                                                    log.type ||
                                                     'General Session'
                                                 }}
                                             </p>

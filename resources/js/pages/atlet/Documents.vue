@@ -33,7 +33,7 @@ defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/atlet/dashboard' },
-    { title: 'Dokumen Pribadi', href: '/atlet/documents' },
+    { title: 'Dokumen Pribadi', href: '/atlet/dokumen' },
 ];
 
 const form = useForm({
@@ -54,7 +54,7 @@ const handleFileUpload = (e: Event, field: keyof typeof form) => {
 const showSuccessMessage = ref(false);
 const submit = () => {
     // We send via POST with multipart/form-data rules in Inertia
-    form.post('/atlet/documents', {
+    form.post('/atlet/dokumen', {
         preserveScroll: true,
         forceFormData: true,
         onSuccess: () => {
@@ -301,7 +301,7 @@ const closePreview = () => {
                                 class="text-xs font-medium file:mr-4 file:rounded-full file:border-none file:bg-orange-500/10 file:px-4 file:py-2 file:text-[10px] file:font-black file:text-orange-500 file:uppercase hover:file:bg-orange-500/20"
                             />
                             <div
-                                v-if="profile?.profil_photo_path"
+                                v-if="profile?.profile_photo_path"
                                 class="mt-2 flex items-center justify-between rounded-xl border border-border bg-card p-3 shadow-sm"
                             >
                                 <div class="flex items-center gap-2">

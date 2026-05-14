@@ -77,7 +77,7 @@ class LihatLaporanRiwayatPerformaController extends Controller
 
         $reportData = [];
         foreach ($daftarAtlet as $atlet) {
-            $stats = $this->logRepository->getStatistics(
+            $stats = $this->catatanRepository->getStatistics(
                 $atlet->id,
                 $tanggalMulai?->toDateString(),
                 $tanggalSelesai?->toDateString()
@@ -124,7 +124,7 @@ class LihatLaporanRiwayatPerformaController extends Controller
 
         if ($atletId) {
             $atlet = User::findOrFail($atletId);
-            $daftarCatatan = $this->logRepository->getForAthlete($atletId, $startStr, $endStr);
+            $daftarCatatan = $this->catatanRepository->getForAthlete($atletId, $startStr, $endStr);
 
             return $this->exportCsv($daftarCatatan, $atlet->name);
         }
@@ -133,7 +133,7 @@ class LihatLaporanRiwayatPerformaController extends Controller
         $allLogs = collect();
 
         foreach ($daftarAtlet as $atlet) {
-            $daftarCatatan = $this->logRepository->getForAthlete($atlet->id, $startStr, $endStr);
+            $daftarCatatan = $this->catatanRepository->getForAthlete($atlet->id, $startStr, $endStr);
             $allLogs = $allLogs->merge($daftarCatatan);
         }
 
@@ -163,7 +163,7 @@ class LihatLaporanRiwayatPerformaController extends Controller
 
         $reportData = [];
         foreach ($daftarAtlet as $atlet) {
-            $stats = $this->logRepository->getStatistics(
+            $stats = $this->catatanRepository->getStatistics(
                 $atlet->id,
                 $tanggalMulai?->toDateString(),
                 $tanggalSelesai?->toDateString()
@@ -215,7 +215,7 @@ class LihatLaporanRiwayatPerformaController extends Controller
                 abort(403, 'Atlet ini bukan binaan Anda.');
             }
 
-            $daftarCatatan = $this->logRepository->getForAthlete($atletId, $startStr, $endStr);
+            $daftarCatatan = $this->catatanRepository->getForAthlete($atletId, $startStr, $endStr);
 
             return $this->exportCsv($daftarCatatan, $atlet->name);
         }
@@ -226,7 +226,7 @@ class LihatLaporanRiwayatPerformaController extends Controller
 
         $allLogs = collect();
         foreach ($daftarAtlet as $atlet) {
-            $daftarCatatan = $this->logRepository->getForAthlete($atlet->id, $startStr, $endStr);
+            $daftarCatatan = $this->catatanRepository->getForAthlete($atlet->id, $startStr, $endStr);
             $allLogs = $allLogs->merge($daftarCatatan);
         }
 

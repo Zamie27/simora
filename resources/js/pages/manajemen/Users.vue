@@ -192,7 +192,7 @@ const route = (name: string, params?: any) => {
                                             <img
                                                 v-else-if="
                                                     user.athlete_profile
-                                                        ?.profil_photo_path
+                                                        ?.profile_photo_path
                                                 "
                                                 :src="`/documents/${user.id}/profile_photo`"
                                                 class="h-full w-full object-cover"

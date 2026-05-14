@@ -21,7 +21,7 @@ defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Managemen Kategori', href: '/manajemen/categories' },
+    { title: 'Managemen Kategori', href: '/manajemen/kategori' },
 ];
 
 const showModal = ref(false);
@@ -50,14 +50,14 @@ const openEdit = (category: Kategori) => {
 
 const submit = () => {
     if (editingCategory.value) {
-        form.put(`/manajemen/categories/${editingCategory.value.id}`, {
+        form.put(`/manajemen/kategori/${editingCategory.value.id}`, {
             onSuccess: () => {
                 closeModal();
                 snackbar.success('Kategori berhasil diperbarui');
             },
         });
     } else {
-        form.post('/manajemen/categories', {
+        form.post('/manajemen/kategori', {
             onSuccess: () => {
                 closeModal();
                 snackbar.success('Kategori berhasil ditambahkan');
@@ -73,7 +73,7 @@ const deleteCategory = async (category: Kategori) => {
             `Apakah Anda yakin ingin menghapus kategori "${category.name}"?`,
         )
     ) {
-        form.delete(`/manajemen/categories/${category.id}`, {
+        form.delete(`/manajemen/kategori/${category.id}`, {
             onSuccess: () => snackbar.success('Kategori berhasil dihapus'),
         });
     }

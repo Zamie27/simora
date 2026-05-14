@@ -35,7 +35,7 @@ defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Pengaturan Event', href: '/manajemen/event-settings' },
+    { title: 'Pengaturan Event', href: '/manajemen/pengaturan-acara' },
 ];
 
 const showTypeModal = ref(false);
@@ -68,14 +68,14 @@ const openTypeEdit = (type: JenisEvent) => {
 
 const submitType = () => {
     if (editingType.value) {
-        typeForm.patch(`/manajemen/event-types/${editingType.value.id}`, {
+        typeForm.patch(`/manajemen/tipe-acara/${editingType.value.id}`, {
             onSuccess: () => {
                 closeTypeModal();
                 snackbar.success('Jenis event berhasil diperbarui');
             },
         });
     } else {
-        typeForm.post('/manajemen/event-types', {
+        typeForm.post('/manajemen/tipe-acara', {
             onSuccess: () => {
                 closeTypeModal();
                 snackbar.success('Jenis event berhasil ditambahkan');
@@ -91,7 +91,7 @@ const deleteType = async (type: JenisEvent) => {
             `Apakah Anda yakin ingin menghapus jenis event "${type.name}"?`,
         )
     ) {
-        typeForm.delete(`/manajemen/event-types/${type.id}`, {
+        typeForm.delete(`/manajemen/tipe-acara/${type.id}`, {
             onSuccess: () => snackbar.success('Jenis event berhasil dihapus'),
         });
     }
@@ -118,14 +118,14 @@ const openPointEdit = (point: PoinEvent) => {
 
 const submitPoint = () => {
     if (editingPoint.value) {
-        pointForm.patch(`/manajemen/event-points/${editingPoint.value.id}`, {
+        pointForm.patch(`/manajemen/poin-acara/${editingPoint.value.id}`, {
             onSuccess: () => {
                 closePointModal();
                 snackbar.success('Poin kejuaraan berhasil diperbarui');
             },
         });
     } else {
-        pointForm.post('/manajemen/event-points', {
+        pointForm.post('/manajemen/poin-acara', {
             onSuccess: () => {
                 closePointModal();
                 snackbar.success('Poin kejuaraan berhasil ditambahkan');
@@ -141,7 +141,7 @@ const deletePoint = async (point: PoinEvent) => {
             `Apakah Anda yakin ingin menghapus poin kejuaraan "${point.name}"?`,
         )
     ) {
-        pointForm.delete(`/manajemen/event-points/${point.id}`, {
+        pointForm.delete(`/manajemen/poin-acara/${point.id}`, {
             onSuccess: () =>
                 snackbar.success('Poin kejuaraan berhasil dihapus'),
         });

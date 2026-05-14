@@ -70,7 +70,7 @@ const props = defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Manajemen Event', href: '/pelatih/events' },
+    { title: 'Manajemen Event', href: '/pelatih/acara' },
 ];
 
 const showModal = ref(false);
@@ -103,7 +103,7 @@ const pointForm = useForm({
 const openCreateModal = () => {
     editingEvent.value = null;
     form.reset();
-    form.atlet = [];
+    form.athletes = [];
     showModal.value = true;
 };
 
@@ -115,7 +115,7 @@ const openEditModal = (event: Event) => {
     form.event_date = event.event_date;
     form.requires_license = event.requires_license;
     form.event_type_id = event.event_type_id;
-    form.atlet = event.atlet.map((a) => ({
+    form.athletes = event.athletes.map((a) => ({
         id: a.id,
         event_point_id: a.pivot.event_point_id,
     }));
@@ -129,7 +129,7 @@ const openDetail = (event: Event) => {
 
 const submit = () => {
     if (editingEvent.value) {
-        form.patch(`/pelatih/events/${editingEvent.value.id}`, {
+        form.patch(`/pelatih/acara/${editingEvent.value.id}`, {
             onSuccess: () => {
                 showModal.value = false;
                 form.reset();
@@ -137,7 +137,7 @@ const submit = () => {
             },
         });
     } else {
-        form.post('/pelatih/events', {
+        form.post('/pelatih/acara', {
             onSuccess: () => {
                 showModal.value = false;
                 form.reset();
@@ -154,7 +154,7 @@ const deleteEvent = async (event: Event) => {
             `Apakah Anda yakin ingin menghapus event "${event.title}"?`,
         )
     ) {
-        router.delete(`/pelatih/events/${event.id}`, {
+        router.delete(`/pelatih/acara/${event.id}`, {
             onSuccess: () => snackbar.success('Agenda event berhasil dihapus'),
         });
     }
@@ -172,34 +172,34 @@ const formatDate = (date: string) => {
 
 const toggleAthlete = (athlete: Athlete) => {
     // If requires license and this athlete doesn't have it, ignore click
-    if (form.requires_license && !atlet.has_valid_license) {
+    if (form.requires_license && !athlete.has_valid_license) {
         return;
     }
 
-    const index = form.atlet.findIndex((a) => a.id === atlet.id);
+    const index = form.athletes.findIndex((a) => a.id === athlete.id);
 
     if (index === -1) {
-        form.atlet.push({ id: atlet.id, event_point_id: null });
+        form.athletes.push({ id: athlete.id, event_point_id: null });
     } else {
-        form.atlet.splice(index, 1);
+        form.athletes.splice(index, 1);
     }
 };
 
 const isAthleteSelected = (athleteId: number) => {
-    return form.atlet.some((a) => a.id === athleteId);
+    return form.athletes.some((a) => a.id === athleteId);
 };
 
 const getSelectedAthletePoint = (athleteId: number) => {
-    const athlete = form.atlet.find((a) => a.id === athleteId);
+    const athlete = form.athletes.find((a) => a.id === athleteId);
 
-    return athlete?.event_point_id ? String(atlet.event_point_id) : '';
+    return athlete?.event_point_id ? String(athlete.event_point_id) : '';
 };
 
 const updateAthletePoint = (athleteId: number, pointId: any) => {
-    const athlete = form.atlet.find((a) => a.id === athleteId);
+    const athlete = form.athletes.find((a) => a.id === athleteId);
 
     if (athlete) {
-        atlet.event_point_id = pointId === 'null' ? null : Number(pointId);
+        athlete.event_point_id = pointId === 'null' ? null : Number(pointId);
     }
 };
 
@@ -265,7 +265,7 @@ const getPointName = (id: number | null) => {
         return 'General';
     }
 
-    return props.poinAcara.find((p) => p.id === id)?.name || 'General';
+    return props.eventPoints.find((p) => p.id === id)?.name || 'General';
 };
 
 const getStatusColor = (status: string) => {
@@ -283,19 +283,19 @@ const getStatusColor = (status: string) => {
 
 const typeOptions = computed(() => [
     { value: '', label: 'Pilih Jenis Event' },
-    ...props.tipeAcara.map((t) => ({ value: String(t.id), label: t.name })),
+    ...props.eventTypes.map((t) => ({ value: String(t.id), label: t.name })),
 ]);
 
 watch(
     () => form.requires_license,
     (newVal) => {
         if (newVal) {
-            // Find athletes in form.atlet who don't have a valid license
-            const invalidAthleteIds = props.atlet
+            // Find athletes in form.athletes who don't have a valid license
+            const invalidAthleteIds = props.athletes
                 .filter((a) => !a.has_valid_license)
                 .map((a) => a.id);
 
-            form.atlet = form.atlet.filter(
+            form.athletes = form.athletes.filter(
                 (a) => !invalidAthleteIds.includes(a.id),
             );
         }
@@ -466,7 +466,7 @@ watch(
                                 <div class="flex items-center gap-2">
                                     <Users class="h-3.5 w-3.5 text-accent" />
                                     <span class="text-sm font-black"
-                                        >{{ event.atlet_count }}
+                                        >{{ event.athletes_count }}
                                         <small class="text-[9px] opacity-40"
                                             >Atlet</small
                                         ></span
@@ -642,13 +642,13 @@ watch(
                                 >
                                     <div
                                         v-for="athlete in athletes"
-                                        :key="atlet.id"
+                                        :key="athlete.id"
                                         :class="[
-                                            isAthleteSelected(atlet.id)
+                                            isAthleteSelected(athlete.id)
                                                 ? 'border-2 border-accent bg-accent/10'
                                                 : 'border-border bg-card',
                                             form.requires_license &&
-                                            !atlet.has_valid_license
+                                            !athlete.has_valid_license
                                                 ? 'cursor-not-allowed opacity-50 grayscale'
                                                 : '',
                                         ]"
@@ -664,7 +664,7 @@ watch(
                                                 <div
                                                     :class="
                                                         isAthleteSelected(
-                                                            atlet.id,
+                                                            athlete.id,
                                                         )
                                                             ? 'bg-accent text-white'
                                                             : 'bg-secondary text-muted-foreground'
@@ -672,18 +672,18 @@ watch(
                                                     class="flex h-8 w-8 items-center justify-center rounded-full text-[10px] font-black"
                                                 >
                                                     {{
-                                                        atlet.name
+                                                        athlete.name
                                                             .substring(0, 2)
                                                             .toUpperCase()
                                                     }}
                                                 </div>
                                                 <span
                                                     class="truncate text-xs font-black uppercase"
-                                                    >{{ atlet.name }}</span
+                                                    >{{ athlete.name }}</span
                                                 >
                                                 <span
                                                     v-if="
-                                                        !atlet.has_valid_license
+                                                        !athlete.has_valid_license
                                                     "
                                                     class="rounded bg-destructive/10 px-2 py-0.5 text-[8px] font-black tracking-widest text-destructive uppercase"
                                                     >Non Lisensi</span
@@ -692,7 +692,7 @@ watch(
                                             <div
                                                 v-if="
                                                     isAthleteSelected(
-                                                        atlet.id,
+                                                        athlete.id,
                                                     )
                                                 "
                                                 class="rounded-full bg-accent p-1 text-white"
@@ -715,7 +715,7 @@ watch(
                                         </div>
 
                                         <div
-                                            v-if="isAthleteSelected(atlet.id)"
+                                            v-if="isAthleteSelected(athlete.id)"
                                             class="animate-in duration-200 slide-in-from-top-2"
                                         >
                                             <Label
@@ -726,13 +726,13 @@ watch(
                                             <select
                                                 :value="
                                                     getSelectedAthletePoint(
-                                                        atlet.id,
+                                                        athlete.id,
                                                     )
                                                 "
                                                 @change="
                                                     (e: any) =>
                                                         updateAthletePoint(
-                                                            atlet.id,
+                                                            athlete.id,
                                                             e.target.value,
                                                         )
                                                 "
@@ -1027,13 +1027,13 @@ watch(
                             >
                                 <Users class="h-4 w-4 text-orange-500" /> Daftar
                                 Atlet Berpartisipasi ({{
-                                    selectedEvent.atlet.length
+                                    selectedEvent.athletes.length
                                 }})
                             </h4>
                             <div class="grid grid-cols-1 gap-3">
                                 <div
-                                    v-for="athlete in selectedEvent.atlet"
-                                    :key="atlet.id"
+                                    v-for="athlete in selectedEvent.athletes"
+                                    :key="athlete.id"
                                     class="flex items-center justify-between rounded-2xl border border-border/50 bg-muted/20 p-6 transition-all hover:bg-muted/40"
                                 >
                                     <div class="flex items-center gap-4">
@@ -1041,7 +1041,7 @@ watch(
                                             class="flex h-12 w-12 items-center justify-center rounded-xl bg-card text-xs font-black shadow-sm"
                                         >
                                             {{
-                                                atlet.name
+                                                athlete.name
                                                     .substring(0, 2)
                                                     .toUpperCase()
                                             }}
@@ -1050,7 +1050,7 @@ watch(
                                             <p
                                                 class="text-sm font-black uppercase"
                                             >
-                                                {{ atlet.name }}
+                                                {{ athlete.name }}
                                             </p>
                                             <p
                                                 class="text-[10px] font-bold text-muted-foreground uppercase opacity-60"
@@ -1058,7 +1058,7 @@ watch(
                                                 Kategori:
                                                 <span class="text-accent">{{
                                                     getPointName(
-                                                        atlet.pivot
+                                                        athlete.pivot
                                                             .event_point_id,
                                                     )
                                                 }}</span>
@@ -1069,23 +1069,23 @@ watch(
                                         <div
                                             :class="
                                                 getStatusColor(
-                                                    atlet.pivot.status,
+                                                    athlete.pivot.status,
                                                 )
                                             "
                                             class="text-[10px] font-black tracking-widest uppercase"
                                         >
-                                            {{ atlet.pivot.status }}
+                                            {{ athlete.pivot.status }}
                                         </div>
                                         <div
-                                            v-if="atlet.pivot.result"
+                                            v-if="athlete.pivot.result"
                                             class="text-[9px] font-bold italic opacity-60"
                                         >
-                                            Result: {{ atlet.pivot.result }}
+                                            Result: {{ athlete.pivot.result }}
                                         </div>
                                     </div>
                                 </div>
                                 <div
-                                    v-if="selectedEvent.atlet.length === 0"
+                                    v-if="selectedEvent.athletes.length === 0"
                                     class="flex flex-col items-center justify-center rounded-3xl border border-dashed border-border p-10 opacity-40"
                                 >
                                     <Users class="mb-2 h-8 w-8" />

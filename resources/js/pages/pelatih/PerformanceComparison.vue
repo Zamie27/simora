@@ -23,7 +23,7 @@ defineProps<{ athletes: Athlete[] }>();
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Perbandingan Performa', href: '/pelatih/performance-comparison' },
+    { title: 'Perbandingan Performa', href: '/pelatih/komparasi-performa' },
 ];
 
 const selectedAthletes = ref<number[]>([]);
@@ -49,12 +49,12 @@ const fetchComparison = async () => {
     loading.value = true;
 
     try {
-        const res = await axios.get('/pelatih/performance-comparison/data', {
+        const res = await axios.get('/pelatih/komparasi-performa/data', {
             params: { athlete_ids: selectedAthletes.value },
         });
-        comparisonData.value = res.data.komparasi;
+        comparisonData.value = res.data.comparison;
         const athletes: Record<number, string> = {};
-        Object.entries(res.data.atlet).forEach(([id, a]: [string, any]) => {
+        Object.entries(res.data.athletes).forEach(([id, a]: [string, any]) => {
             athletes[Number(id)] = a.name;
         });
         athleteMap.value = athletes;
@@ -70,7 +70,7 @@ const maxVal = (field: string) => {
         return 1;
     }
 
-    return Math.max(...komparasiData.value.map((d: any) => d[field] || 1));
+    return Math.max(...comparisonData.value.map((d: any) => d[field] || 1));
 };
 </script>
 
@@ -109,16 +109,16 @@ const maxVal = (field: string) => {
                 <div class="flex flex-wrap gap-3">
                     <button
                         v-for="athlete in athletes"
-                        :key="atlet.id"
-                        @click="toggleAthlete(atlet.id)"
+                        :key="athlete.id"
+                        @click="toggleAthlete(athlete.id)"
                         class="rounded-xl border px-5 py-3 text-xs font-bold transition-all"
                         :class="
-                            selectedAthletes.includes(atlet.id)
+                            selectedAthletes.includes(athlete.id)
                                 ? 'border-accent bg-accent/10 text-accent'
                                 : 'border-border bg-muted/20 text-muted-foreground hover:border-accent/30'
                         "
                     >
-                        {{ atlet.name }}
+                        {{ athlete.name }}
                     </button>
                 </div>
                 <button

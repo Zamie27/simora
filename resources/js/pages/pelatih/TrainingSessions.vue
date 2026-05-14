@@ -61,7 +61,7 @@ const props = defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Jadwal Latihan', href: '/pelatih/training-sessions' },
+    { title: 'Jadwal Latihan', href: '/pelatih/sesi-latihan' },
 ];
 
 const showCreateModal = ref(false);
@@ -84,7 +84,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/pelatih/training-sessions', {
+    form.post('/pelatih/sesi-latihan', {
         onSuccess: () => {
             showCreateModal.value = false;
             form.reset();
@@ -120,7 +120,7 @@ const deleteSession = async (session: Session) => {
             `Apakah Anda yakin ingin menghapus sesi "${session.title}"?`,
         )
     ) {
-        router.delete(`/pelatih/training-sessions/${session.id}`, {
+        router.delete(`/pelatih/sesi-latihan/${session.id}`, {
             onSuccess: () =>
                 snackbar.success('Jadwal latihan berhasil dihapus'),
         });
@@ -202,7 +202,7 @@ const deleteSession = async (session: Session) => {
                     :key="session.id"
                     class="group relative flex cursor-pointer flex-col gap-6 overflow-hidden rounded-3xl border border-border bg-card p-8 shadow-xl transition-all hover:border-accent/30 hover:shadow-2xl"
                     @click="
-                        router.visit(`/pelatih/training-sessions/${session.id}`)
+                        router.visit(`/pelatih/sesi-latihan/${session.id}`)
                     "
                 >
                     <!-- Top: Date + Time -->
@@ -236,7 +236,7 @@ const deleteSession = async (session: Session) => {
                             <span
                                 class="rounded bg-secondary px-2 py-0.5 text-[8px] font-black tracking-wider text-accent uppercase"
                             >
-                                {{ session.exercise_type.name }}
+                                {{ session.exercise_type?.name || 'Umum' }}
                             </span>
                             <span
                                 v-if="session.repeat_weekly"
@@ -256,26 +256,26 @@ const deleteSession = async (session: Session) => {
                     <div class="flex items-center gap-2 overflow-hidden">
                         <div class="flex -space-x-2">
                             <div
-                                v-for="athlete in session.atlet.slice(0, 3)"
-                                :key="atlet.id"
+                                v-for="athlete in session.athletes.slice(0, 3)"
+                                :key="athlete.id"
                                 class="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full border-2 border-card bg-secondary text-[8px] font-black text-foreground"
                             >
                                 <img
                                     v-if="
-                                        atlet.athlete_profile
-                                            ?.profil_photo_path
+                                        athlete.athlete_profile
+                                            ?.profile_photo_path
                                     "
-                                    :src="`/documents/${atlet.id}/profile_photo`"
+                                    :src="`/documents/${athlete.id}/profile_photo`"
                                     class="h-full w-full object-cover"
                                 />
                                 <img
-                                    v-else-if="atlet.avatar"
-                                    :src="atlet.avatar"
+                                    v-else-if="athlete.avatar"
+                                    :src="athlete.avatar"
                                     class="h-full w-full object-cover"
                                 />
                                 <span v-else>
                                     {{
-                                        atlet.name
+                                        athlete.name
                                             .split(' ')
                                             .map((n) => n[0])
                                             .slice(0, 2)
@@ -284,15 +284,15 @@ const deleteSession = async (session: Session) => {
                                 </span>
                             </div>
                             <div
-                                v-if="session.atlet_count > 3"
+                                v-if="session.athletes_count > 3"
                                 class="flex h-7 w-7 items-center justify-center rounded-full border-2 border-card bg-accent text-[8px] font-black text-white"
                             >
-                                +{{ session.atlet_count - 3 }}
+                                +{{ session.athletes_count - 3 }}
                             </div>
                         </div>
                         <span
                             class="text-[10px] font-bold text-muted-foreground"
-                            >{{ session.atlet_count }} Atlet</span
+                            >{{ session.athletes_count }} Atlet</span
                         >
                     </div>
 
@@ -392,7 +392,7 @@ const deleteSession = async (session: Session) => {
                                     <CustomSelect
                                         v-model="form.exercise_type_id"
                                         :options="
-                                            props.jenisLatihan.map((t) => ({
+                                            props.exerciseTypes.map((t) => ({
                                                 value: t.id.toString(),
                                                 label: t.name,
                                             }))
@@ -416,11 +416,11 @@ const deleteSession = async (session: Session) => {
                                 >
                                     <div
                                         v-for="athlete in athletes"
-                                        :key="atlet.id"
-                                        @click="toggleAthlete(atlet.id)"
+                                        :key="athlete.id"
+                                        @click="toggleAthlete(athlete.id)"
                                         :class="
                                             form.athlete_ids.includes(
-                                                atlet.id,
+                                                athlete.id,
                                             )
                                                 ? 'border-accent bg-accent text-white'
                                                 : 'border-border bg-background text-foreground'
@@ -430,7 +430,7 @@ const deleteSession = async (session: Session) => {
                                         <div
                                             :class="
                                                 form.athlete_ids.includes(
-                                                    atlet.id,
+                                                    athlete.id,
                                                 )
                                                     ? 'bg-white/20'
                                                     : 'bg-secondary'
@@ -439,20 +439,20 @@ const deleteSession = async (session: Session) => {
                                         >
                                             <img
                                                 v-if="
-                                                    atlet.athlete_profile
-                                                        ?.profil_photo_path
+                                                    athlete.athlete_profile
+                                                        ?.profile_photo_path
                                                 "
-                                                :src="`/documents/${atlet.id}/profile_photo`"
+                                                :src="`/documents/${athlete.id}/profile_photo`"
                                                 class="h-full w-full object-cover"
                                             />
                                             <img
-                                                v-else-if="atlet.avatar"
-                                                :src="atlet.avatar"
+                                                v-else-if="athlete.avatar"
+                                                :src="athlete.avatar"
                                                 class="h-full w-full object-cover"
                                             />
                                             <span v-else>
                                                 {{
-                                                    atlet.name
+                                                    athlete.name
                                                         .substring(0, 2)
                                                         .toUpperCase()
                                                 }}
@@ -460,7 +460,7 @@ const deleteSession = async (session: Session) => {
                                         </div>
                                         <span
                                             class="truncate text-[11px] font-black uppercase"
-                                            >{{ atlet.name }}</span
+                                            >{{ athlete.name }}</span
                                         >
                                     </div>
                                 </div>

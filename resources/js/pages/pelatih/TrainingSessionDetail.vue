@@ -65,7 +65,7 @@ const props = defineProps<{ session: Session }>();
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Jadwal Latihan', href: '/pelatih/training-sessions' },
+    { title: 'Jadwal Latihan', href: '/pelatih/sesi-latihan' },
     { title: props.session.title, href: '#' },
 ];
 
@@ -88,7 +88,7 @@ const startEvaluating = (log: Log) => {
 };
 
 const submitEvaluation = (logId: number) => {
-    evalForm.patch(`/pelatih/training-logs/${logId}/evaluation`, {
+    evalForm.patch(`/pelatih/riwayat-latihan/${logId}/evaluation`, {
         onSuccess: () => {
             editingLogId.value = null;
         },
@@ -139,7 +139,7 @@ const completionColor = (s: string) =>
                 <div class="mb-2 flex items-center gap-2">
                     <span
                         class="rounded-md bg-accent/10 px-2 py-0.5 text-[9px] font-black text-accent uppercase"
-                        >{{ session.exercise_type.name }}</span
+                        >{{ session.exercise_type?.name || 'Umum' }}</span
                     >
                     <span class="text-xs text-muted-foreground"
                         >• {{ session.athletes.length }} Atlet</span
@@ -275,7 +275,7 @@ const completionColor = (s: string) =>
                                 <img
                                     v-if="
                                         log.athlete.athlete_profile
-                                            ?.profil_photo_path
+                                            ?.profile_photo_path
                                     "
                                     :src="`/documents/${log.athlete.id}/profile_photo`"
                                     class="h-full w-full object-cover"

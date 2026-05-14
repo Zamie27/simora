@@ -60,27 +60,27 @@ const mainNavItems = computed<NavItem[]>(() => {
             },
             {
                 title: 'Daftar Atlet',
-                href: '/manajemen/athletes',
+                href: '/manajemen/atlet',
                 icon: UserCheck,
             },
             {
                 title: 'Managemen Kategori',
-                href: '/manajemen/categories',
+                href: '/manajemen/kategori',
                 icon: BookOpen,
             },
             {
                 title: 'Jenis Latihan',
-                href: '/manajemen/exercise-types',
+                href: '/manajemen/jenis-latihan',
                 icon: Activity,
             },
             {
                 title: 'Laporan Performa',
-                href: '/manajemen/reports',
+                href: '/manajemen/laporan',
                 icon: FileText,
             },
             {
                 title: 'Setting Event',
-                href: '/manajemen/event-settings',
+                href: '/manajemen/pengaturan-acara',
                 icon: Trophy,
             },
         );
@@ -90,12 +90,12 @@ const mainNavItems = computed<NavItem[]>(() => {
         items.push(
             {
                 title: 'Atlet Saya',
-                href: '/pelatih/athletes',
+                href: '/pelatih/atlet',
                 icon: Users,
             },
             {
                 title: 'Jadwal Latihan',
-                href: '/pelatih/training-sessions',
+                href: '/pelatih/sesi-latihan',
                 icon: ClipboardList,
             },
             {
@@ -105,17 +105,17 @@ const mainNavItems = computed<NavItem[]>(() => {
             },
             {
                 title: 'Perbandingan Performa',
-                href: '/pelatih/performance-comparison',
+                href: '/pelatih/komparasi-performa',
                 icon: BarChart3,
             },
             {
                 title: 'Laporan',
-                href: '/pelatih/reports',
+                href: '/pelatih/laporan',
                 icon: FileText,
             },
             {
                 title: 'Target & Event',
-                href: '/pelatih/events',
+                href: '/pelatih/acara',
                 icon: Trophy,
             },
         );
@@ -125,12 +125,12 @@ const mainNavItems = computed<NavItem[]>(() => {
         items.push(
             {
                 title: 'Update Fisik',
-                href: '/atlet/physical',
+                href: '/atlet/fisik',
                 icon: Activity,
             },
             {
                 title: 'Latihan Saya',
-                href: '/atlet/training',
+                href: '/atlet/latihan',
                 icon: Bike,
             },
             {
@@ -140,12 +140,12 @@ const mainNavItems = computed<NavItem[]>(() => {
             },
             {
                 title: 'Agenda Event',
-                href: '/atlet/events',
+                href: '/atlet/acara',
                 icon: Trophy,
             },
             {
                 title: 'Dokumen Pribadi',
-                href: '/atlet/documents',
+                href: '/atlet/dokumen',
                 icon: FileText,
             },
         );
@@ -169,7 +169,7 @@ const formatClock = (date: Date) => {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
 
-    return `${hours}/${minutes}/${seconds}/, ${day}/${month}/${year}`;
+    return `${hours}:${minutes}:${seconds}, ${day}/${month}/${year}`;
 };
 
 const clockString = computed(() => formatClock(currentTime.value));

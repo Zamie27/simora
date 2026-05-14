@@ -130,7 +130,7 @@ class TrainingLogRepository
 
         foreach ($sessions as $session) {
             // Ensure we have a model instance
-            if (! $session instanceof TrainingSession) {
+            if (! $session instanceof SesiLatihan) {
                 continue;
             }
 

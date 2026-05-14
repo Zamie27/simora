@@ -149,13 +149,13 @@ const reloadPage = () => {
                     class="flex flex-col items-center justify-center gap-6 sm:flex-row"
                 >
                     <Link
-                        href="/"
+                        href="/dashboard"
                         class="group flex items-center gap-3 rounded-sm border border-accent/30 bg-accent/5 px-8 py-4 text-xs font-black tracking-[0.3em] text-accent uppercase transition-all hover:bg-accent hover:text-white"
                     >
                         <MoveLeft
                             class="h-4 w-4 transition-transform group-hover:-translate-x-1"
                         />
-                        Kembali Ke Beranda
+                        Kembali Ke Dashboard
                     </Link>
 
                     <button

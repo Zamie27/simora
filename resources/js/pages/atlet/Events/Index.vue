@@ -61,7 +61,7 @@ const { props: pageProps } = usePage();
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Agenda Event', href: '/atlet/events' },
+    { title: 'Agenda Event', href: '/atlet/acara' },
 ];
 
 const selectedEvent = ref<Event | null>(null);

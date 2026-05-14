@@ -16,7 +16,7 @@ import { computed, ref } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
 
 import AppLayout from '@/layouts/AppLayout.vue';
-import management from '@/routes/manajemen';
+import manajemen from '@/routes/manajemen';
 
 interface Props {
     stats: {
@@ -157,7 +157,7 @@ const getTypeColor = (id: number | null) => {
                 </div>
                 <div class="flex gap-2">
                     <Link
-                        :href="management.pengguna.index().url"
+                        :href="manajemen.pengguna.index().url"
                         class="flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-bold text-white shadow-lg shadow-accent/20 transition-all hover:scale-105 active:scale-95"
                     >
                         <ShieldCheck class="h-4 w-4" />
@@ -284,7 +284,7 @@ const getTypeColor = (id: number | null) => {
                         >
                             <img
                                 v-if="
-                                    athlete.athlete_profile?.profil_photo_path
+                                    athlete.athlete_profile?.profile_photo_path
                                 "
                                 :src="`/documents/${athlete.id}/profile_photo`"
                                 class="h-full w-full object-cover"
@@ -413,7 +413,7 @@ const getTypeColor = (id: number | null) => {
                                         <img
                                             v-if="
                                                 athlete.athlete_profile
-                                                    ?.profil_photo_path
+                                                    ?.profile_photo_path
                                             "
                                             :src="`/documents/${athlete.id}/profile_photo`"
                                             class="h-full w-full object-cover"
@@ -575,7 +575,7 @@ const getTypeColor = (id: number | null) => {
                         <Link
                             v-for="log in recentLogs"
                             :key="log.id"
-                            :href="`/manajemen/athletes/${log.athlete_id}`"
+                            :href="`/manajemen/atlet/${log.athlete_id}`"
                             class="group flex items-center gap-4 rounded-2xl bg-white/5 p-4 transition-all hover:bg-white/10"
                         >
                             <div
@@ -584,7 +584,7 @@ const getTypeColor = (id: number | null) => {
                                 <img
                                     v-if="
                                         log.athlete?.athlete_profile
-                                            ?.profil_photo_path
+                                            ?.profile_photo_path
                                     "
                                     :src="`/documents/${log.athlete.id}/profile_photo`"
                                     class="h-full w-full object-cover"

@@ -21,7 +21,7 @@ defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Jenis Latihan', href: '/manajemen/exercise-types' },
+    { title: 'Jenis Latihan', href: '/manajemen/jenis-latihan' },
 ];
 
 const showModal = ref(false);
@@ -50,14 +50,14 @@ const openEdit = (type: JenisLatihan) => {
 
 const submit = () => {
     if (editingType.value) {
-        form.put(`/manajemen/exercise-types/${editingType.value.id}`, {
+        form.put(`/manajemen/jenis-latihan/${editingType.value.id}`, {
             onSuccess: () => {
                 closeModal();
                 snackbar.success('Jenis latihan berhasil diperbarui');
             },
         });
     } else {
-        form.post('/manajemen/exercise-types', {
+        form.post('/manajemen/jenis-latihan', {
             onSuccess: () => {
                 closeModal();
                 snackbar.success('Jenis latihan berhasil ditambahkan');
@@ -73,7 +73,7 @@ const deleteType = async (type: JenisLatihan) => {
             `Apakah Anda yakin ingin menghapus jenis latihan "${type.name}"?`,
         )
     ) {
-        form.delete(`/manajemen/exercise-types/${type.id}`, {
+        form.delete(`/manajemen/jenis-latihan/${type.id}`, {
             onSuccess: () => snackbar.success('Jenis latihan berhasil dihapus'),
         });
     }

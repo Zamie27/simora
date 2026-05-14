@@ -7,6 +7,7 @@ import {
     RotateCcw,
     TrendingUp,
     Milestone,
+    Info,
 } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 
@@ -48,7 +49,7 @@ const props = defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Laporan', href: '/pelatih/reports' },
+    { title: 'Laporan', href: '/pelatih/laporan' },
 ];
 
 const periods = [
@@ -72,7 +73,7 @@ watch(period, (newVal) => {
 
 const applyFilters = () => {
     router.get(
-        '/pelatih/reports',
+        '/pelatih/laporan',
         {
             period: period.value,
             start_date: period.value === 'custom' ? startDate.value : null,
@@ -85,7 +86,7 @@ const applyFilters = () => {
 const exportCsv = (athleteId?: number) => {
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = '/pelatih/reports/export';
+    form.action = '/pelatih/laporan/export';
 
     const csrfInput = document.createElement('input');
     csrfInput.name = '_token';
@@ -263,7 +264,7 @@ const exportCsv = (athleteId?: number) => {
                                                     v-if="
                                                         item.athlete
                                                             .athlete_profile
-                                                            ?.profil_photo_path
+                                                            ?.profile_photo_path
                                                     "
                                                     :src="`/documents/${item.athlete.id}/profile_photo`"
                                                     class="h-full w-full object-cover"
@@ -280,7 +281,7 @@ const exportCsv = (athleteId?: number) => {
                                             </div>
                                             <div>
                                                 <Link
-                                                    :href="`/pelatih/athletes/${item.athlete.id}`"
+                                                    :href="`/pelatih/atlet/${item.athlete.id}`"
                                                     class="group/link"
                                                 >
                                                     <h4

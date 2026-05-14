@@ -26,7 +26,7 @@ defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Atlet Saya', href: '/pelatih/athletes' },
+    { title: 'Atlet Saya', href: '/pelatih/atlet' },
 ];
 </script>
 
@@ -80,7 +80,7 @@ const breadcrumbs = [
                         >
                             <img
                                 v-if="
-                                    athlete.athlete_profile?.profil_photo_path
+                                    athlete.athlete_profile?.profile_photo_path
                                 "
                                 :src="`/documents/${athlete.id}/profile_photo`"
                                 class="h-full w-full object-cover"
@@ -158,7 +158,7 @@ const breadcrumbs = [
                     </div>
 
                     <Link
-                        :href="`/pelatih/athletes/${athlete.id}`"
+                        :href="`/pelatih/atlet/${athlete.id}`"
                         class="w-full rounded-xl bg-accent py-3 text-center text-[10px] font-black tracking-widest text-white uppercase shadow-lg shadow-accent/20 transition-all hover:bg-accent/90 focus:outline-none"
                     >
                         Detail & Update Fisik

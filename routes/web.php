@@ -90,12 +90,11 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::patch('atlet/{atlet}/category', [LihatRingkasanDaftarAtletController::class, 'perbaruiKategori'])->name('atlet.category.update');
         Route::post('atlet/{atlet}/metrics', [LihatRingkasanDaftarAtletController::class, 'simpanMetrikFisik'])->name('atlet.metrics.store');
 
-        // Training Sessions (Evaluasi Latihan)
-        Route::get('sesi-latihan', [KelolaEvaluasiDanUmpanBalikLatihanController::class, 'tampilData'])->name('sesi-latihan.index');
-        Route::post('sesi-latihan', [KelolaEvaluasiDanUmpanBalikLatihanController::class, 'simpanData'])->name('sesi-latihan.store');
-        Route::get('sesi-latihan/{sesi}', [KelolaEvaluasiDanUmpanBalikLatihanController::class, 'tampilDetail'])->name('sesi-latihan.show');
-        Route::patch('sesi-latihan/{sesi}', [KelolaEvaluasiDanUmpanBalikLatihanController::class, 'perbaruiData'])->name('sesi-latihan.update');
-        Route::delete('sesi-latihan/{sesi}', [KelolaEvaluasiDanUmpanBalikLatihanController::class, 'hapusData'])->name('sesi-latihan.destroy');
+        // Training Sessions (UC-07: Kelola Jadwal Sesi Latihan)
+        Route::get('sesi-latihan', [KelolaJadwalSesiLatihanController::class, 'tampilDaftar'])->name('sesi-latihan.index');
+        Route::post('sesi-latihan', [KelolaJadwalSesiLatihanController::class, 'simpan'])->name('sesi-latihan.store');
+        Route::get('sesi-latihan/{sesiLatihan}', [KelolaJadwalSesiLatihanController::class, 'tampilDetail'])->name('sesi-latihan.show');
+        Route::delete('sesi-latihan/{sesiLatihan}', [KelolaJadwalSesiLatihanController::class, 'hapus'])->name('sesi-latihan.destroy');
 
         Route::patch('riwayat-latihan/{catatan}/evaluation', [KelolaEvaluasiDanUmpanBalikLatihanController::class, 'perbaruiEvaluasi'])->name('riwayat-latihan.evaluation');
         Route::patch('riwayat-latihan/{catatan}', [LihatRingkasanDaftarAtletController::class, 'perbaruiLogLatihan'])->name('riwayat-latihan.update');
@@ -125,7 +124,7 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::delete('poin-acara/{poin}', [KelolaEventDanPartisipasiController::class, 'hapusPoinEvent'])->name('poin-acara.destroy');
 
         // Jadwal Latihan
-        Route::get('jadwal-latihan', [KelolaJadwalSesiLatihanController::class, 'tampilData'])->name('jadwal-latihan.index'); // Added from plan
+
 
         // Messages
         Route::post('pesan', [KelolaPesanController::class, 'simpanPesan'])->name('pesan.store');

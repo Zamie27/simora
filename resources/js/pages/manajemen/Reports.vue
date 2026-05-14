@@ -51,7 +51,7 @@ const props = defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Laporan Performa', href: '/manajemen/reports' },
+    { title: 'Laporan Performa', href: '/manajemen/laporan' },
 ];
 
 const periods = [
@@ -75,7 +75,7 @@ watch(period, (newVal) => {
 
 const applyFilters = () => {
     router.get(
-        '/manajemen/reports',
+        '/manajemen/laporan',
         {
             period: period.value,
             start_date: period.value === 'custom' ? startDate.value : null,
@@ -88,7 +88,7 @@ const applyFilters = () => {
 const exportCsv = (athleteId?: number) => {
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = '/manajemen/reports/export';
+    form.action = '/manajemen/laporan/export';
 
     const csrfInput = document.createElement('input');
     csrfInput.name = '_token';
@@ -253,7 +253,7 @@ const exportCsv = (athleteId?: number) => {
                         <tbody class="divide-y divide-border/50">
                             <tr
                                 v-for="item in reportData"
-                                :key="item.atlet.id"
+                                :key="item.athlete.id"
                                 class="group transition-colors hover:bg-muted/10"
                             >
                                 <td class="px-8 py-6">
@@ -263,20 +263,20 @@ const exportCsv = (athleteId?: number) => {
                                         >
                                             <img
                                                 v-if="
-                                                    item.atlet.athlete_profile
-                                                        ?.profil_photo_path
+                                                    item.athlete.athlete_profile
+                                                        ?.profile_photo_path
                                                 "
-                                                :src="`/documents/${item.atlet.id}/profile_photo`"
+                                                :src="`/documents/${item.athlete.id}/profile_photo`"
                                                 class="h-full w-full object-cover"
                                             />
                                             <img
-                                                v-else-if="item.atlet.avatar"
-                                                :src="item.atlet.avatar"
+                                                v-else-if="item.athlete.avatar"
+                                                :src="item.athlete.avatar"
                                                 class="h-full w-full object-cover"
                                             />
                                             <span v-else>
                                                 {{
-                                                    item.atlet.name
+                                                    item.athlete.name
                                                         .split(' ')
                                                         .map(
                                                             (n: string) => n[0],
@@ -288,25 +288,25 @@ const exportCsv = (athleteId?: number) => {
                                         </div>
                                         <div>
                                             <Link
-                                                :href="`/manajemen/athletes/${item.atlet.id}`"
+                                                :href="`/manajemen/atlet/${item.athlete.id}`"
                                                 class="group/link"
                                             >
                                                 <h4
                                                     class="font-black text-foreground uppercase transition-colors group-hover/link:text-accent"
                                                 >
-                                                    {{ item.atlet.name }}
+                                                    {{ item.athlete.name }}
                                                 </h4>
                                                 <p
                                                     class="text-[10px] font-bold text-muted-foreground opacity-50"
                                                 >
-                                                    {{ item.atlet.email }}
+                                                    {{ item.athlete.email }}
                                                 </p>
                                                 <p
                                                     class="mt-0.5 text-[8px] font-black tracking-widest text-accent uppercase opacity-60"
                                                 >
                                                     Pelatih:
                                                     {{
-                                                        item.atlet.coach
+                                                        item.athlete.coach
                                                             ?.name || '-'
                                                     }}
                                                 </p>
@@ -417,7 +417,7 @@ const exportCsv = (athleteId?: number) => {
                                 </td>
                                 <td class="px-8 py-6 text-right">
                                     <button
-                                        @click="exportCsv(item.atlet.id)"
+                                        @click="exportCsv(item.athlete.id)"
                                         class="rounded-xl border border-border bg-card px-4 py-2 text-[10px] font-black text-muted-foreground uppercase transition-all hover:border-accent hover:text-accent"
                                     >
                                         <Download class="h-3 w-3" />

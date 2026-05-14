@@ -100,7 +100,7 @@ const props = defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Latihan Saya', href: '/atlet/training' },
+    { title: 'Latihan Saya', href: '/atlet/latihan' },
 ];
 
 const showLogModal = ref(false);
@@ -234,7 +234,7 @@ const handleFileChange = (e: Event) => {
 };
 
 const submitLog = () => {
-    form.post('/atlet/training/log', {
+    form.post('/atlet/latihan/log', {
         onSuccess: () => {
             showLogModal.value = false;
             form.reset();
@@ -251,7 +251,7 @@ const deleteLog = async (logId: number) => {
             'Apakah Anda yakin ingin menghapus log latihan ini?',
         )
     ) {
-        router.delete(`/atlet/training/log/${logId}`, {
+        router.delete(`/atlet/latihan/log/${logId}`, {
             onSuccess: () => snackbar.success('Log latihan berhasil dihapus'),
         });
     }
@@ -259,7 +259,7 @@ const deleteLog = async (logId: number) => {
 
 const applyFilters = () => {
     router.get(
-        '/atlet/training',
+        '/atlet/latihan',
         {
             start_date: startDate.value,
             end_date: endDate.value,

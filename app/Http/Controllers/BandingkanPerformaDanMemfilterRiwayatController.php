@@ -72,7 +72,7 @@ class BandingkanPerformaDanMemfilterRiwayatController extends Controller
 
         $atletIds = $permintaan->input('athlete_ids');
 
-        $comparison = $this->logRepository->getComparisonData(
+        $comparison = $this->catatanRepository->getComparisonData(
             $atletIds,
             $permintaan->input('start_date'),
             $permintaan->input('end_date')
@@ -80,7 +80,7 @@ class BandingkanPerformaDanMemfilterRiwayatController extends Controller
 
         $trends = [];
         foreach ($atletIds as $atletId) {
-            $trends[$atletId] = $this->logRepository->getPerformanceTrend(
+            $trends[$atletId] = $this->catatanRepository->getPerformanceTrend(
                 $atletId,
                 $permintaan->input('start_date'),
                 $permintaan->input('end_date')
@@ -136,7 +136,7 @@ class BandingkanPerformaDanMemfilterRiwayatController extends Controller
             abort(403, 'Beberapa atlet bukan binaan Anda.');
         }
 
-        $comparison = $this->logRepository->getComparisonData(
+        $comparison = $this->catatanRepository->getComparisonData(
             $atletIds,
             $permintaan->input('start_date'),
             $permintaan->input('end_date')
@@ -144,7 +144,7 @@ class BandingkanPerformaDanMemfilterRiwayatController extends Controller
 
         $trends = [];
         foreach ($atletIds as $atletId) {
-            $trends[$atletId] = $this->logRepository->getPerformanceTrend(
+            $trends[$atletId] = $this->catatanRepository->getPerformanceTrend(
                 $atletId,
                 $permintaan->input('start_date'),
                 $permintaan->input('end_date')

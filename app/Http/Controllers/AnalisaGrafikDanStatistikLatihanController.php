@@ -76,12 +76,12 @@ class AnalisaGrafikDanStatistikLatihanController extends Controller
                 ->first();
 
             if ($catatan) {
-                $this->logService->update($catatan, $dataTervalidasi, $attachments);
+                $this->catatanService->update($catatan, $dataTervalidasi, $attachments);
 
                 return back()->with('success', 'Data latihan sesi berhasil diperbarui.');
             }
 
-            $this->logService->create($atletId, $dataTervalidasi, $attachments);
+            $this->catatanService->create($atletId, $dataTervalidasi, $attachments);
 
             return back()->with('success', 'Data latihan sesi berhasil dicatat.');
         }
@@ -93,13 +93,13 @@ class AnalisaGrafikDanStatistikLatihanController extends Controller
                 ->first();
 
             if ($catatan) {
-                $this->logService->update($catatan, $dataTervalidasi, $attachments);
+                $this->catatanService->update($catatan, $dataTervalidasi, $attachments);
 
                 return back()->with('success', 'Data latihan manual berhasil diperbarui.');
             }
         }
 
-        $this->logService->create($atletId, $dataTervalidasi, $attachments);
+        $this->catatanService->create($atletId, $dataTervalidasi, $attachments);
 
         return back()->with('success', 'Data latihan manual berhasil dicatat.');
     }
@@ -133,10 +133,10 @@ class AnalisaGrafikDanStatistikLatihanController extends Controller
         $tanggalMulai = $permintaan->input('start_date');
         $tanggalSelesai = $permintaan->input('end_date');
 
-        $daftarCatatan = $this->logRepository->getForAthlete($atlet->id, $tanggalMulai, $tanggalSelesai);
-        $statistik = $this->logRepository->getStatistics($atlet->id, $tanggalMulai, $tanggalSelesai);
-        $trenPerforma = $this->logRepository->getPerformanceTrend($atlet->id, $tanggalMulai, $tanggalSelesai);
-        $upcomingSessions = $this->logRepository->getUpcomingSessions($atlet->id);
+        $daftarCatatan = $this->catatanRepository->getForAthlete($atlet->id, $tanggalMulai, $tanggalSelesai);
+        $statistik = $this->catatanRepository->getStatistics($atlet->id, $tanggalMulai, $tanggalSelesai);
+        $trenPerforma = $this->catatanRepository->getPerformanceTrend($atlet->id, $tanggalMulai, $tanggalSelesai);
+        $upcomingSessions = $this->catatanRepository->getUpcomingSessions($atlet->id);
         $daftarJenisLatihan = JenisLatihan::all();
 
         return Inertia::render('atlet/Training', [

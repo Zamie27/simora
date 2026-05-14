@@ -45,7 +45,7 @@ const user = computed(() => pageProps.auth.user);
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Update Profil Fisik', href: '/atlet/physical' },
+    { title: 'Update Profil Fisik', href: '/atlet/fisik' },
 ];
 
 const form = useForm({
@@ -57,7 +57,7 @@ const form = useForm({
 const showAddModal = ref(false);
 
 const submit = () => {
-    form.post('/atlet/physical', {
+    form.post('/atlet/fisik', {
         onSuccess: () => {
             showAddModal.value = false;
             form.reset('recorded_at');

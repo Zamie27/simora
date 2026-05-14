@@ -28,6 +28,7 @@ class SesiLatihan extends Model
         'type',
         'scheduled_date',
         'scheduled_time',
+        'location',
         'repeat_weekly',
         'target_distance_km',
         'target_duration_minutes',

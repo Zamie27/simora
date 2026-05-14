@@ -13,6 +13,7 @@ class JenisEvent extends Model
     protected $fillable = [
         'coach_id',
         'name',
+        'description',
     ];
 
     public function coach(): BelongsTo

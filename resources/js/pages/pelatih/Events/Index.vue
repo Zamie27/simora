@@ -86,7 +86,7 @@ const form = useForm({
     title: '',
     description: '',
     location: '',
-    event_date: new Date().toISOString().split('T')[0],
+    event_date: new Date().toLocaleDateString('en-CA'),
     requires_license: false,
     event_type_id: null as number | null,
     athletes: [] as { id: number; event_point_id: number | null }[],
@@ -204,7 +204,7 @@ const updateAthletePoint = (athleteId: number, pointId: any) => {
 };
 
 const addType = () => {
-    typeForm.post('/pelatih/event-types', {
+    typeForm.post('/pelatih/tipe-acara', {
         onSuccess: () => {
             typeForm.reset();
             snackbar.success('Jenis event berhasil ditambahkan');
@@ -216,14 +216,14 @@ const deleteType = async (id: number) => {
     if (
         await confirmDialog.ask('Hapus Jenis Event', 'Hapus jenis event ini?')
     ) {
-        router.delete(`/pelatih/event-types/${id}`, {
+        router.delete(`/pelatih/tipe-acara/${id}`, {
             onSuccess: () => snackbar.success('Jenis event berhasil dihapus'),
         });
     }
 };
 
 const addPoint = () => {
-    pointForm.post('/pelatih/event-points', {
+    pointForm.post('/pelatih/poin-acara', {
         onSuccess: () => {
             pointForm.reset();
             snackbar.success('Poin kejuaraan berhasil ditambahkan');
@@ -238,7 +238,7 @@ const deletePoint = async (id: number) => {
             'Hapus poin kejuaraan ini?',
         )
     ) {
-        router.delete(`/pelatih/event-points/${id}`, {
+        router.delete(`/pelatih/poin-acara/${id}`, {
             onSuccess: () =>
                 snackbar.success('Poin kejuaraan berhasil dihapus'),
         });

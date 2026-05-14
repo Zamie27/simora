@@ -118,7 +118,7 @@ const form = useForm({
     id: null as number | null,
     training_session_id: null as number | null,
     title: '',
-    date: new Date().toISOString().split('T')[0],
+    date: new Date().toLocaleDateString('en-CA'),
     distance_km: '' as string | number,
     duration_minutes: '' as string | number,
     avg_speed: '' as string | number,
@@ -135,7 +135,7 @@ const form = useForm({
 });
 
 const isToday = (dateString: string) => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toLocaleDateString('en-CA');
 
     return dateString === today;
 };
@@ -148,7 +148,7 @@ const openLogModal = (session: any = null, log: Log | null = null) => {
     if (log) {
         form.id = log.id;
         form.training_session_id = log.training_session_id || null;
-        form.title = log.title || '';
+        form.title = log.session ? log.session.title : (log.title || '');
         form.date = log.date;
         form.distance_km = log.distance_km || '';
         form.duration_minutes = log.duration_minutes || '';
@@ -172,7 +172,7 @@ const openLogModal = (session: any = null, log: Log | null = null) => {
 
         if (existingLog) {
             form.id = existingLog.id;
-            form.title = existingLog.title || '';
+            form.title = session.title;
             form.date = existingLog.date;
             form.distance_km = existingLog.distance_km || '';
             form.duration_minutes = existingLog.duration_minutes || '';
@@ -186,6 +186,7 @@ const openLogModal = (session: any = null, log: Log | null = null) => {
             form.athlete_notes = existingLog.athlete_notes || '';
             form.completion_status = existingLog.completion_status;
         } else {
+            form.title = session.title;
             form.distance_km = session.target_distance_km || '';
             form.duration_minutes = session.target_duration_minutes || '';
             form.avg_speed = session.target_avg_speed || '';
@@ -234,7 +235,7 @@ const handleFileChange = (e: Event) => {
 };
 
 const submitLog = () => {
-    form.post('/atlet/latihan/log', {
+    form.post('/atlet/latihan/riwayat', {
         onSuccess: () => {
             showLogModal.value = false;
             form.reset();
@@ -251,7 +252,7 @@ const deleteLog = async (logId: number) => {
             'Apakah Anda yakin ingin menghapus log latihan ini?',
         )
     ) {
-        router.delete(`/atlet/latihan/log/${logId}`, {
+        router.delete(`/atlet/latihan/riwayat/${logId}`, {
             onSuccess: () => snackbar.success('Log latihan berhasil dihapus'),
         });
     }
@@ -1232,6 +1233,7 @@ const chartSeries = computed(() => [
                                             v-model="form.title"
                                             class="h-14 rounded-2xl border-none bg-muted/30 px-6 font-black"
                                             placeholder="E.g. Morning Sprint"
+                                            :disabled="!!form.training_session_id"
                                         />
                                     </div>
                                     <div class="flex flex-col gap-2">

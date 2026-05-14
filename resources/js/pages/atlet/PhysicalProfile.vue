@@ -51,7 +51,7 @@ const breadcrumbs = [
 const form = useForm({
     height: props.metrics[0]?.height || '',
     weight: props.metrics[0]?.weight || '',
-    recorded_at: new Date().toISOString().split('T')[0],
+    recorded_at: new Date().toLocaleDateString('en-CA'),
 });
 
 const showAddModal = ref(false);

@@ -73,7 +73,7 @@ const form = useForm({
     exercise_type_id: '',
     title: '',
     description: '',
-    scheduled_date: new Date().toISOString().split('T')[0],
+    scheduled_date: new Date().toLocaleDateString('en-CA'),
     scheduled_time: '08:00',
     repeat_weekly: false,
     athlete_ids: [] as number[],

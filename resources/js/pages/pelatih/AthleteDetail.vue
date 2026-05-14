@@ -139,7 +139,7 @@ const snackbar = useSnackbar();
 const form = useForm({
     height: props.athlete.physical_metrics[0]?.height || '',
     weight: props.athlete.physical_metrics[0]?.weight || '',
-    recorded_at: new Date().toISOString().split('T')[0],
+    recorded_at: new Date().toLocaleDateString('en-CA'),
 });
 
 const categoryForm = useForm({
@@ -210,7 +210,7 @@ const deleteLog = async (logId: number) => {
             'Apakah Anda yakin ingin menghapus log latihan ini?',
         )
     ) {
-        router.delete(`/pelatih/latihan-logs/${logId}`, {
+        router.delete(`/pelatih/riwayat-latihan/${logId}`, {
             onSuccess: () => snackbar.success('Log latihan berhasil dihapus'),
         });
     }
@@ -221,7 +221,7 @@ const submitLogUpdate = () => {
         return;
     }
 
-    logForm.patch(`/pelatih/latihan-logs/${selectedLog.value.id}`, {
+    logForm.patch(`/pelatih/riwayat-latihan/${selectedLog.value.id}`, {
         onSuccess: () => {
             showEditLogModal.value = false;
             snackbar.success('Log latihan berhasil diperbarui');

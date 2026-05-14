@@ -19,8 +19,8 @@ use Inertia\Response;
 class LihatRingkasanDaftarAtletController extends Controller
 {
     public function __construct(
-        private TrainingLogRepository $catatanRepository,
-        private TrainingLogService $catatanService
+        private TrainingLogRepository $logRepository,
+        private TrainingLogService $logService
     ) {}
 
     /**

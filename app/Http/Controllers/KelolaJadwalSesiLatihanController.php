@@ -42,11 +42,16 @@ class KelolaJadwalSesiLatihanController extends Controller
     {
         $dataTervalidasi = $permintaan->validate([
             'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
             'exercise_type_id' => 'required|exists:exercise_types,id',
             'scheduled_date' => 'required|date',
             'scheduled_time' => 'required',
             'location' => 'nullable|string|max:255',
             'repeat_weekly' => 'boolean',
+            'target_distance_km' => 'nullable|numeric|min:0',
+            'target_duration_minutes' => 'nullable|integer|min:0',
+            'target_avg_speed' => 'nullable|numeric|min:0',
+            'target_rpm' => 'nullable|numeric|min:0',
             'athlete_ids' => 'required|array',
             'athlete_ids.*' => 'exists:users,id',
         ]);

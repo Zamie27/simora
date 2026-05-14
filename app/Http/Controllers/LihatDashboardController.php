@@ -20,8 +20,8 @@ use Inertia\Inertia;
 class LihatDashboardController extends Controller
 {
     public function __construct(
-        private TrainingLogRepository $catatanRepository,
-        private TrainingLogService $catatanService
+        private TrainingLogRepository $logRepository,
+        private TrainingLogService $logService
     ) {}
 
     /**

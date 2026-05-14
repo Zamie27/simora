@@ -34,7 +34,7 @@ class CoachDashboardTest extends TestCase
 
         $response = $this->actingAs($coach)->get('/dashboard');
 
-        $response->assertRedirect(route('coach.dashboard'));
+        $response->assertRedirect(route('pelatih.dashboard'));
     }
 
     public function test_coach_can_access_dashboard_with_data()
@@ -69,11 +69,11 @@ class CoachDashboardTest extends TestCase
             'distance_km' => 15.5,
         ]);
 
-        $response = $this->actingAs($coach)->get(route('coach.dashboard'));
+        $response = $this->actingAs($coach)->get(route('pelatih.dashboard'));
 
         $response->assertStatus(200);
         $response->assertInertia(fn ($page) => $page
-            ->component('coach/Dashboard')
+            ->component('pelatih/Dashboard')
             ->has('stats.total_athletes')
             ->where('stats.total_athletes', 1)
             ->has('upcomingSessions')

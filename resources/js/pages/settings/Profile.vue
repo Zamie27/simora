@@ -23,7 +23,7 @@ import type { BreadcrumbItem } from '@/types';
 import ProfileController from '@/actions/App/Http/Controllers/KelolaProfilPenggunaController';
 import OtpController from '@/actions/App/Http/Controllers/Auth/KelolaOtpController';
 import { edit } from '@/routes/profile';
-import { send } from '@/routes/verification';
+import { send } from '@/routes/verifikasi';
 
 type Props = {
     mustVerifyEmail: boolean;

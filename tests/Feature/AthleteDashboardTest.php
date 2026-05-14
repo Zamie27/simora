@@ -48,12 +48,12 @@ class AthleteDashboardTest extends TestCase
             dump('Rendered component: '.($response->original->getData()['page']['component'] ?? 'Unknown'));
         }
 
-        $response->assertRedirect(route('athlete.dashboard'));
+        $response->assertRedirect(route('atlet.dashboard'));
 
-        $response = $this->actingAs($user)->get(route('athlete.dashboard'));
+        $response = $this->actingAs($user)->get(route('atlet.dashboard'));
         $response->assertStatus(200);
         $response->assertInertia(fn ($page) => $page
-            ->component('athlete/Dashboard')
+            ->component('atlet/Dashboard')
         );
     }
 
@@ -71,7 +71,7 @@ class AthleteDashboardTest extends TestCase
         // Perform request
         $response = $this->actingAs($user)
             ->withoutMiddleware()
-            ->post(route('athlete.dashboard.quick-update'), [
+            ->post(route('atlet.dashboard.quick-update'), [
                 'weight' => 75.5,
                 'height' => 180,
                 'title' => 'Quick endurance ride',
@@ -88,7 +88,7 @@ class AthleteDashboardTest extends TestCase
             $response->assertSessionHasNoErrors();
         }
 
-        $response->assertRedirect(route('athlete.dashboard'));
+        $response->assertRedirect(route('atlet.dashboard'));
 
         // Verify Physical Metric
         $this->assertDatabaseHas('physical_metrics', [

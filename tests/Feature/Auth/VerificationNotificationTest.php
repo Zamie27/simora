@@ -27,7 +27,7 @@ class VerificationNotificationTest extends TestCase
         $user = User::factory()->unverified()->create();
 
         $this->actingAs($user)
-            ->post(route('verification.send'))
+            ->post(route('verifikasi.send'))
             ->assertRedirect(); // Controller redirects 'back()' which might be to home, but focus on custom notification class.
 
         Notification::assertSentTo($user, CustomVerifyEmail::class);
@@ -40,7 +40,7 @@ class VerificationNotificationTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->post(route('verification.send'))
+            ->post(route('verifikasi.send'))
             ->assertRedirect(route('dashboard', absolute: false));
 
         Notification::assertNothingSent();

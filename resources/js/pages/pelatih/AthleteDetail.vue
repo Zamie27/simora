@@ -727,7 +727,8 @@ const completionOptions = [
                                             >
                                                 {{
                                                     log.title ||
-                                                    log.session?.exercise_type?.name ||
+                                                    log.session?.exercise_type
+                                                        ?.name ||
                                                     log.type ||
                                                     'General Session'
                                                 }}

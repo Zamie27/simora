@@ -36,7 +36,11 @@ const requirements = computed(() => {
             v-for="(req, index) in requirements"
             :key="index"
             class="flex items-center gap-2 text-xs transition-colors duration-200"
-            :class="req.met ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground'"
+            :class="
+                req.met
+                    ? 'text-green-600 dark:text-green-400'
+                    : 'text-muted-foreground'
+            "
         >
             <div
                 class="flex size-4 items-center justify-center rounded-full border transition-all duration-300"
@@ -47,7 +51,10 @@ const requirements = computed(() => {
                 "
             >
                 <Check v-if="req.met" class="size-2.5 stroke-[3]" />
-                <div v-else class="size-1 rounded-full bg-muted-foreground/30" />
+                <div
+                    v-else
+                    class="size-1 rounded-full bg-muted-foreground/30"
+                />
             </div>
             <span :class="{ 'font-medium': req.met }">{{ req.label }}</span>
         </div>

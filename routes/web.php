@@ -125,7 +125,6 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
 
         // Jadwal Latihan
 
-
         // Messages
         Route::post('pesan', [KelolaPesanController::class, 'simpanPesan'])->name('pesan.store');
         Route::delete('pesan/{pesan}', [KelolaPesanController::class, 'hapusPesan'])->name('pesan.destroy');

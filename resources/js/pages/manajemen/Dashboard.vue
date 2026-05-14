@@ -277,7 +277,7 @@ const getTypeColor = (id: number | null) => {
                         >
                             #{{ index + 1 }}
                         </div>
- 
+
                         <!-- Avatar -->
                         <div
                             class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-secondary"
@@ -304,7 +304,7 @@ const getTypeColor = (id: number | null) => {
                                 }}
                             </span>
                         </div>
- 
+
                         <div class="flex-1">
                             <h4 class="text-sm font-black text-foreground">
                                 {{ athlete.name }}

@@ -201,9 +201,7 @@ const deleteSession = async (session: Session) => {
                     v-for="session in sessions"
                     :key="session.id"
                     class="group relative flex cursor-pointer flex-col gap-6 overflow-hidden rounded-3xl border border-border bg-card p-8 shadow-xl transition-all hover:border-accent/30 hover:shadow-2xl"
-                    @click="
-                        router.visit(`/pelatih/sesi-latihan/${session.id}`)
-                    "
+                    @click="router.visit(`/pelatih/sesi-latihan/${session.id}`)"
                 >
                     <!-- Top: Date + Time -->
                     <div class="flex items-center justify-between">

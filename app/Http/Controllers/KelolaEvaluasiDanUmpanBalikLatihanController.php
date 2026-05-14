@@ -2,18 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTrainingSessionRequest;
 use App\Http\Requests\UpdateEvaluationRequest;
-use App\Models\JenisLatihan;
 use App\Models\LogLatihan;
-use App\Models\SesiLatihan;
-use App\Models\User;
 use App\Services\TrainingLogService;
 use App\Services\TrainingSessionService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Inertia\Response;
 
 class KelolaEvaluasiDanUmpanBalikLatihanController extends Controller
 {
@@ -41,5 +34,4 @@ class KelolaEvaluasiDanUmpanBalikLatihanController extends Controller
 
         return back()->with('success', 'Evaluasi berhasil disimpan.');
     }
-
 }

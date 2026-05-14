@@ -340,7 +340,7 @@ const formatTime = (minutes: number) => {
                         >
                             #{{ index + 1 }}
                         </div>
- 
+
                         <!-- Avatar -->
                         <div
                             class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-secondary"
@@ -363,7 +363,7 @@ const formatTime = (minutes: number) => {
                                 }}
                             </span>
                         </div>
- 
+
                         <div class="flex-1">
                             <h4
                                 class="truncate text-xs font-black text-foreground"

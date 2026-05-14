@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-
 use App\Models\JenisEvent;
+use App\Models\Kategori;
 use App\Models\PoinEvent;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -235,7 +235,7 @@ class KelolaEventDanPartisipasiController extends Controller
             'athletes' => $daftarAtlet,
             'eventTypes' => $acaraTypes,
             'eventPoints' => $acaraPoints,
-            'categories' => \App\Models\Kategori::orderBy('name')->get(),
+            'categories' => Kategori::orderBy('name')->get(),
         ]);
     }
 

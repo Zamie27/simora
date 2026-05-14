@@ -544,9 +544,7 @@ const getStatusColor = (status: string) => {
                                 class="flex items-center gap-2 text-xs font-black tracking-widest uppercase"
                             >
                                 <Users class="h-4 w-4 text-orange-500" /> Daftar
-                                Atlet Peserta ({{
-                                    selectedEvent.atlet.length
-                                }})
+                                Atlet Peserta ({{ selectedEvent.atlet.length }})
                             </h4>
                             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <div
@@ -576,9 +574,7 @@ const getStatusColor = (status: string) => {
                                         <span
                                             v-if="atlet.pivot.point"
                                             class="text-[8px] font-bold text-accent uppercase"
-                                            >{{
-                                                atlet.pivot.point.name
-                                            }}</span
+                                            >{{ atlet.pivot.point.name }}</span
                                         >
                                         <span
                                             v-else
@@ -588,8 +584,7 @@ const getStatusColor = (status: string) => {
                                     </div>
                                     <div
                                         v-if="
-                                            atlet.id ===
-                                            pageProps.auth.user.id
+                                            atlet.id === pageProps.auth.user.id
                                         "
                                         class="ml-auto"
                                     >

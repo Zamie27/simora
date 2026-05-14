@@ -11,7 +11,6 @@ use Inertia\Response;
 
 class KelolaJadwalSesiLatihanController extends Controller
 {
-
     /**
      * UC-07: Kelola Jadwal Sesi Latihan
      * Turunan: Menampilkan daftar sesi latihan

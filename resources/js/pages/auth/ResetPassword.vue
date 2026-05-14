@@ -3,6 +3,7 @@ import { Form, Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
+import PasswordRequirement from '@/components/PasswordRequirement.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -29,7 +30,7 @@ const inputEmail = ref(props.email);
             v-bind="update.form()"
             :transform="(data) => ({ ...data, token, email })"
             :reset-on-success="['password', 'password_confirmation']"
-            v-slot="{ errors, processing }"
+            v-slot="{ errors, processing, data }"
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
@@ -56,6 +57,7 @@ const inputEmail = ref(props.email);
                         autofocus
                         placeholder="Password"
                     />
+                    <PasswordRequirement :password="data.password" />
                     <InputError :message="errors.password" />
                 </div>
 

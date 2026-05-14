@@ -1,20 +1,21 @@
 <?php
 
 use App\Http\Controllers\Auth\KeamananController;
-use App\Http\Controllers\Auth\ProfilController;
+use App\Http\Controllers\Auth\KelolaOtpController;
+use App\Http\Controllers\KelolaProfilPenggunaController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', '/settings/profile');
 
-    Route::get('settings/profile', [ProfilController::class, 'edit'])->name('profile.edit');
-    Route::post('settings/profile/send-otp', [ProfilController::class, 'sendEmailOTP'])->name('profile.send-otp');
-    Route::post('settings/profile/verify-otp', [ProfilController::class, 'verifyEmailOTP'])->name('profile.verify-otp');
-    Route::patch('settings/profile', [ProfilController::class, 'update'])->name('profile.update');
+    Route::get('settings/profile', [KelolaProfilPenggunaController::class, 'tampilFormUbah'])->name('profile.edit');
+    Route::post('settings/profile/send-otp', [KelolaOtpController::class, 'kirimOtpEmail'])->name('profile.send-otp');
+    Route::post('settings/profile/verify-otp', [KelolaOtpController::class, 'verifikasiOtpEmail'])->name('profile.verify-otp');
+    Route::patch('settings/profile', [KelolaProfilPenggunaController::class, 'perbaruiData'])->name('profile.update');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::delete('settings/profile', [ProfilController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('settings/profile', [KelolaProfilPenggunaController::class, 'hapusData'])->name('profile.destroy');
 
     Route::get('settings/security', [KeamananController::class, 'edit'])->name('security.edit');
 

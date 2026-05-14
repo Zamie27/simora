@@ -3,6 +3,7 @@ import { Form, Head } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import TextLink from '@/components/TextLink.vue';
+import PasswordRequirement from '@/components/PasswordRequirement.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -22,7 +23,7 @@ import { store } from '@/routes/register';
         <Form
             v-bind="store.form()"
             :reset-on-success="['password', 'password_confirmation']"
-            v-slot="{ errors, processing }"
+            v-slot="{ errors, processing, data }"
             class="flex flex-col gap-6"
         >
             <div class="grid gap-6">
@@ -65,6 +66,7 @@ import { store } from '@/routes/register';
                         name="password"
                         placeholder="Password"
                     />
+                    <PasswordRequirement :password="data.password" />
                     <InputError :message="errors.password" />
                 </div>
 

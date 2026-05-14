@@ -28,16 +28,16 @@ class KeamananController extends Controller implements HasMiddleware
     /**
      * Show the user's security settings page.
      */
-    public function edit(TwoFactorAuthenticationRequest $request): Response
+    public function edit(TwoFactorAuthenticationRequest $permintaan): Response
     {
         $props = [
             'canManageTwoFactor' => Features::canManageTwoFactorAuthentication(),
         ];
 
         if (Features::canManageTwoFactorAuthentication()) {
-            $request->ensureStateIsValid();
+            $permintaan->ensureStateIsValid();
 
-            $props['twoFactorEnabled'] = $request->user()->hasEnabledTwoFactorAuthentication();
+            $props['twoFactorEnabled'] = $permintaan->user()->hasEnabledTwoFactorAuthentication();
             $props['requiresConfirmation'] = Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm');
         }
 
@@ -47,10 +47,10 @@ class KeamananController extends Controller implements HasMiddleware
     /**
      * Update the user's password.
      */
-    public function update(PasswordUpdateRequest $request): RedirectResponse
+    public function update(PasswordUpdateRequest $permintaan): RedirectResponse
     {
-        $request->user()->update([
-            'password' => $request->password,
+        $permintaan->user()->update([
+            'password' => $permintaan->password,
         ]);
 
         return back();

@@ -16,7 +16,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import ProfileController from '@/actions/App/Http/Controllers/Auth/ProfilController';
+import ProfileController from '@/actions/App/Http/Controllers/KelolaProfilPenggunaController';
 
 const passwordInput = useTemplateRef('passwordInput');
 </script>
@@ -45,7 +45,7 @@ const passwordInput = useTemplateRef('passwordInput');
                 </DialogTrigger>
                 <DialogContent>
                     <Form
-                        v-bind="ProfileController.destroy.form()"
+                        v-bind="ProfileController.hapusData.form()"
                         reset-on-success
                         @error="() => passwordInput?.focus()"
                         :options="{

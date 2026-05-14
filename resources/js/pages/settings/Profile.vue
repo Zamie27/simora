@@ -20,7 +20,8 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import type { BreadcrumbItem } from '@/types';
-import ProfileController from '@/actions/App/Http/Controllers/Auth/ProfilController';
+import ProfileController from '@/actions/App/Http/Controllers/KelolaProfilPenggunaController';
+import OtpController from '@/actions/App/Http/Controllers/Auth/KelolaOtpController';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
 
@@ -77,7 +78,7 @@ const handleAvatarChange = (e: Event) => {
 
 const sendOtp = () => {
     router.post(
-        ProfileController.sendEmailOTP().url,
+        OtpController.kirimOtpEmail().url,
         {},
         {
             preserveScroll: true,
@@ -89,7 +90,7 @@ const sendOtp = () => {
 };
 
 const verifyOtp = () => {
-    otpForm.post(ProfileController.verifyEmailOTP().url, {
+    otpForm.post(OtpController.verifikasiOtpEmail().url, {
         preserveScroll: true,
         onSuccess: () => {
             emailStep.value = 'otp_verified';

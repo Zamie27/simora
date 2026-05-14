@@ -5,6 +5,7 @@ import { onUnmounted, ref } from 'vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
+import PasswordRequirement from '@/components/PasswordRequirement.vue';
 import TwoFactorRecoveryCodes from '@/components/TwoFactorRecoveryCodes.vue';
 import TwoFactorSetupModal from '@/components/TwoFactorSetupModal.vue';
 import { Button } from '@/components/ui/button';
@@ -68,7 +69,7 @@ onUnmounted(() => clearTwoFactorAuthData());
                         'current_password',
                     ]"
                     class="space-y-6"
-                    v-slot="{ errors, processing, recentlySuccessful }"
+                    v-slot="{ errors, processing, recentlySuccessful, data }"
                 >
                     <div class="grid gap-2">
                         <Label for="current_password"
@@ -93,6 +94,7 @@ onUnmounted(() => clearTwoFactorAuthData());
                             autocomplete="new-password"
                             placeholder="Kata sandi baru"
                         />
+                        <PasswordRequirement :password="data.password" />
                         <InputError :message="errors.password" />
                     </div>
 

@@ -13,15 +13,15 @@ class BugReportController extends Controller
      */
     public function index()
     {
-        $bugReports = LaporanBug::latest('created_at')->get();
+        $daftarLaporanBug = LaporanBug::latest('created_at')->get();
 
         return Inertia::render('report/Dashboard', [
-            'bugReports' => $bugReports,
+            'bugReports' => $daftarLaporanBug,
             'stats' => [
-                'total' => $bugReports->count(),
-                'pending' => $bugReports->where('status', 'pending')->count(),
-                'in_progress' => $bugReports->where('status', 'sedang dikerjakan')->count(),
-                'resolved' => $bugReports->where('status', 'tuntas diperbaiki')->count(),
+                'total' => $daftarLaporanBug->count(),
+                'pending' => $daftarLaporanBug->where('status', 'pending')->count(),
+                'in_progress' => $daftarLaporanBug->where('status', 'sedang dikerjakan')->count(),
+                'resolved' => $daftarLaporanBug->where('status', 'tuntas diperbaiki')->count(),
             ],
         ]);
     }
@@ -29,9 +29,9 @@ class BugReportController extends Controller
     /**
      * Store a new bug report (Public/Global).
      */
-    public function store(Request $request)
+    public function store(Request $permintaan)
     {
-        $validated = $request->validate([
+        $dataTervalidasi = $permintaan->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'reporter_name' => 'required|string|max:255',
@@ -42,37 +42,37 @@ class BugReportController extends Controller
         ]);
 
         $imagePaths = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
+        if ($permintaan->hasFile('images')) {
+            foreach ($permintaan->file('images') as $image) {
                 $imagePaths[] = $image->store('bug-reports', 'public');
             }
         }
 
         LaporanBug::create([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
+            'title' => $dataTervalidasi['title'],
+            'description' => $dataTervalidasi['description'],
             'image_path' => $imagePaths,
-            'reporter_name' => $validated['reporter_name'],
-            'reporter_contact' => $validated['reporter_contact'],
-            'url' => $validated['url'] ?? null,
-            'user_id' => $request->user()?->id,
+            'reporter_name' => $dataTervalidasi['reporter_name'],
+            'reporter_contact' => $dataTervalidasi['reporter_contact'],
+            'url' => $dataTervalidasi['url'] ?? null,
+            'user_id' => $permintaan->user()?->id,
             'status' => 'pending',
         ]);
 
-        return back()->with('success', 'Bug report submitted successfully! If it is fatal, we will contact you via '.$validated['reporter_contact']);
+        return back()->with('success', 'Bug report submitted successfully! If it is fatal, we will contact you via '.$dataTervalidasi['reporter_contact']);
     }
 
     /**
      * Update the status of a specific bug report (Admin/Report Role).
      */
-    public function updateStatus(Request $request, LaporanBug $bugReport)
+    public function updateStatus(Request $permintaan, LaporanBug $laporanBug)
     {
-        $validated = $request->validate([
+        $dataTervalidasi = $permintaan->validate([
             'status' => 'required|string|in:pending,sedang dikerjakan,tuntas diperbaiki',
         ]);
 
-        $bugReport->update([
-            'status' => $validated['status'],
+        $laporanBug->update([
+            'status' => $dataTervalidasi['status'],
         ]);
 
         return back()->with('success', 'Status laporan bug berhasil diperbarui.');

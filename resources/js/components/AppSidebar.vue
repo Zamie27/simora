@@ -50,37 +50,37 @@ const mainNavItems = computed<NavItem[]>(() => {
         items.push(
             {
                 title: 'Managemen User',
-                href: '/management/users',
+                href: '/manajemen/users',
                 icon: Users,
             },
             {
                 title: 'Aktivasi User',
-                href: '/management/pending',
+                href: '/manajemen/pending',
                 icon: ShieldCheck,
             },
             {
                 title: 'Daftar Atlet',
-                href: '/management/athletes',
+                href: '/manajemen/athletes',
                 icon: UserCheck,
             },
             {
                 title: 'Managemen Kategori',
-                href: '/management/categories',
+                href: '/manajemen/categories',
                 icon: BookOpen,
             },
             {
                 title: 'Jenis Latihan',
-                href: '/management/exercise-types',
+                href: '/manajemen/exercise-types',
                 icon: Activity,
             },
             {
                 title: 'Laporan Performa',
-                href: '/management/reports',
+                href: '/manajemen/reports',
                 icon: FileText,
             },
             {
                 title: 'Setting Event',
-                href: '/management/event-settings',
+                href: '/manajemen/event-settings',
                 icon: Trophy,
             },
         );
@@ -90,12 +90,12 @@ const mainNavItems = computed<NavItem[]>(() => {
         items.push(
             {
                 title: 'Atlet Saya',
-                href: '/coach/athletes',
+                href: '/pelatih/athletes',
                 icon: Users,
             },
             {
                 title: 'Jadwal Latihan',
-                href: '/coach/training-sessions',
+                href: '/pelatih/training-sessions',
                 icon: ClipboardList,
             },
             {
@@ -105,17 +105,17 @@ const mainNavItems = computed<NavItem[]>(() => {
             },
             {
                 title: 'Perbandingan Performa',
-                href: '/coach/performance-comparison',
+                href: '/pelatih/performance-comparison',
                 icon: BarChart3,
             },
             {
                 title: 'Laporan',
-                href: '/coach/reports',
+                href: '/pelatih/reports',
                 icon: FileText,
             },
             {
                 title: 'Target & Event',
-                href: '/coach/events',
+                href: '/pelatih/events',
                 icon: Trophy,
             },
         );
@@ -125,12 +125,12 @@ const mainNavItems = computed<NavItem[]>(() => {
         items.push(
             {
                 title: 'Update Fisik',
-                href: '/athlete/physical',
+                href: '/atlet/physical',
                 icon: Activity,
             },
             {
                 title: 'Latihan Saya',
-                href: '/athlete/training',
+                href: '/atlet/training',
                 icon: Bike,
             },
             {
@@ -140,12 +140,12 @@ const mainNavItems = computed<NavItem[]>(() => {
             },
             {
                 title: 'Agenda Event',
-                href: '/athlete/events',
+                href: '/atlet/events',
                 icon: Trophy,
             },
             {
                 title: 'Dokumen Pribadi',
-                href: '/athlete/documents',
+                href: '/atlet/documents',
                 icon: FileText,
             },
         );

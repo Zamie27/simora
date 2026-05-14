@@ -64,6 +64,24 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::saved(function (User $user) {
+            if ($user->isDirty('date_of_birth') && $user->date_of_birth) {
+                foreach ($user->physicalMetrics as $metric) {
+                    $recordedAt = $metric->recorded_at ?? $metric->created_at;
+                    if ($recordedAt) {
+                        $age = (int) $user->date_of_birth->diffInYears($recordedAt, false);
+                        $metric->update(['age' => max(0, $age)]);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
      * Get the user's age.
      */
     public function getAgeAttribute(): ?int

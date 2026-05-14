@@ -319,7 +319,8 @@ class LihatDashboardController extends Controller
                 // 1. Create or Update Physical Metric
                 if (! empty($dataTervalidasi['weight']) || ! empty($dataTervalidasi['height'])) {
                     $waktuPencatatan = Carbon::now();
-                    $usia = $pengguna->date_of_birth ? $waktuPencatatan->diffInYears($pengguna->date_of_birth) : 0;
+                    $usia = $pengguna->date_of_birth ? (int) $waktuPencatatan->diffInYears($pengguna->date_of_birth, false) : 0;
+                    $usia = max(0, $usia);
 
                     $latestMetric = $pengguna->physicalMetrics()
                         ->whereDate('recorded_at', Carbon::today())

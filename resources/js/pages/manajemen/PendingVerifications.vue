@@ -244,7 +244,7 @@ const formatDate = (date: string) => {
                                     class="w-full appearance-none rounded-xl border border-muted bg-background px-3 py-3 text-sm font-bold text-foreground focus:ring-accent focus:outline-none"
                                 >
                                     <option
-                                        v-for="coach in coaches"
+                                        v-for="pelatih in coaches"
                                         :key="pelatih.id"
                                         :value="pelatih.id"
                                     >

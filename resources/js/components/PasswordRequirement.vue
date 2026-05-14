@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { Check } from 'lucide-vue-next';
 import { computed } from 'vue';
-import { Check, X } from 'lucide-vue-next';
 
 const props = defineProps<{
     password: string | null | undefined;
@@ -8,6 +8,7 @@ const props = defineProps<{
 
 const requirements = computed(() => {
     const p = props.password || '';
+
     return [
         {
             label: 'Minimal 6 karakter',

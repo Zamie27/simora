@@ -550,7 +550,7 @@ const getStatusColor = (status: string) => {
                             </h4>
                             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <div
-                                    v-for="athlete in selectedEvent.atlet"
+                                    v-for="atlet in selectedEvent.atlet"
                                     :key="atlet.id"
                                     :class="
                                         atlet.id === pageProps.auth.user.id

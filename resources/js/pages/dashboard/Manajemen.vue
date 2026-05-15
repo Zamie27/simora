@@ -266,9 +266,10 @@ const getTypeColor = (id: number | null) => {
                 <div
                     class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
                 >
-                    <div
+                    <Link
                         v-for="(athlete, index) in athleteRanking.slice(0, 6)"
                         :key="athlete.id"
+                        :href="`/manajemen/atlet/${athlete.id}`"
                         class="group relative flex items-center gap-4 rounded-2xl bg-white/5 p-4 transition-all hover:bg-white/10"
                     >
                         <!-- Rank Number -->
@@ -336,7 +337,7 @@ const getTypeColor = (id: number | null) => {
                                 class="h-4 w-4 text-emerald-500 opacity-50"
                             />
                         </div>
-                    </div>
+                    </Link>
                 </div>
 
                 <div

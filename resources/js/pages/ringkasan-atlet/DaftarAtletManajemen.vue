@@ -37,7 +37,7 @@ const props = defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Daftar Atlet Terverifikasi', href: '/manajemen/atlet' },
+    { title: 'Daftar Atlet', href: '/manajemen/atlet' },
 ];
 
 const selectedCoach = ref(props.filters.coach_id || '');
@@ -73,7 +73,7 @@ const formatDate = (date: string) => {
 </script>
 
 <template>
-    <Head title="Monitoring Atlet" />
+    <Head title="Daftar Atlet" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div
@@ -86,7 +86,7 @@ const formatDate = (date: string) => {
                     <h1
                         class="text-3xl font-black tracking-tight text-foreground uppercase"
                     >
-                        Monitoring Atlet & Pelatih
+                        Daftar Atlet
                     </h1>
                     <p class="mt-2 font-medium text-muted-foreground">
                         Pantau profil dan daftar atlet beserta coach yang
@@ -293,9 +293,9 @@ const formatDate = (date: string) => {
                         >
                         <div class="mt-4 flex justify-end">
                             <span
-                                class="rounded-xl border border-accent/20 bg-accent/5 px-4 py-2 text-[10px] font-black tracking-widest text-accent uppercase transition-all hover:bg-accent hover:text-white"
+                                class="rounded-xl border border-accent/20 bg-accent/5 px-4 py-2 text-[10px] font-black tracking-widest text-accent uppercase transition-all group-hover:bg-accent group-hover:!text-white dark:group-hover:!text-black"
                             >
-                                DETAIL & LISENSI →
+                                DETAIL ATLET →
                             </span>
                         </div>
                     </div>

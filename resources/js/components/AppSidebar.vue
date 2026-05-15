@@ -59,7 +59,7 @@ const mainNavItems = computed<NavItem[]>(() => {
                 icon: ShieldCheck,
             },
             {
-                title: 'Ringkasan Daftar Atlet',
+                title: 'Daftar Atlet',
                 href: '/manajemen/atlet',
                 icon: UserCheck,
             },

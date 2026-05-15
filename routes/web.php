@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::post('users/{pengguna}/verify', [MemverifikasiPendaftaranDanMenetapkanPelatihController::class, 'verifikasiPendaftaran'])->name('pengguna.verifikasi');
         Route::get('atlet', [MemverifikasiPendaftaranDanMenetapkanPelatihController::class, 'tampilDaftarAtlet'])->name('atlet.index');
         Route::get('atlet/{atlet}', [LihatRingkasanDaftarAtletController::class, 'tampilDetail'])->name('atlet.show');
+        Route::patch('atlet/{atlet}/coach', [LihatRingkasanDaftarAtletController::class, 'perbaruiPelatih'])->name('atlet.coach.update');
         Route::post('atlet/{atlet}/license', [LihatRingkasanDaftarAtletController::class, 'unggahLisensi'])->name('atlet.license.upload');
 
         // Category Management

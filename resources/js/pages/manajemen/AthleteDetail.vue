@@ -163,7 +163,7 @@ const toggleEditCoach = () => {
 };
 
 const updateCoach = () => {
-    coachForm.patch(`/manajemen/users/${props.athlete.id}`, {
+    coachForm.patch(`/manajemen/atlet/${props.athlete.id}/coach`, {
         preserveScroll: true,
         onSuccess: () => {
             isEditingCoach.value = false;
@@ -355,20 +355,20 @@ const trainingChartSeries = computed(() => [
                 </div>
                 <div class="flex flex-wrap gap-4">
                     <div
-                        class="flex shrink-0 items-center gap-4 rounded-2xl border border-border bg-secondary/50 p-4"
+                        class="flex shrink-0 items-center gap-4 rounded-2xl border border-accent/20 bg-accent/5 p-4 shadow-sm backdrop-blur-sm"
                     >
-                        <div class="flex flex-col">
+                        <div class="flex flex-col min-w-[150px]">
                             <span
-                                class="text-[9px] font-black tracking-widest text-muted-foreground uppercase opacity-60"
+                                class="text-[9px] font-black tracking-widest text-accent uppercase opacity-80"
                                 >Pelatih Pembina</span
                             >
                             <div
                                 v-if="isEditingCoach"
-                                class="mt-1 flex items-center gap-2"
+                                class="mt-2 flex items-center gap-2"
                             >
                                 <select
                                     v-model="coachForm.coach_id"
-                                    class="rounded-lg border border-border bg-background px-2 py-1 text-xs font-bold text-foreground focus:ring-accent focus:outline-none dark:[color-scheme:dark]"
+                                    class="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-bold text-foreground focus:ring-2 focus:ring-accent focus:outline-none dark:[color-scheme:dark] w-full"
                                 >
                                     <option :value="null">
                                         Belum Ada Pelatih
@@ -381,25 +381,32 @@ const trainingChartSeries = computed(() => [
                                         {{ c.name }}
                                     </option>
                                 </select>
-                                <button
-                                    @click="updateCoach"
-                                    :disabled="coachForm.processing"
-                                    class="rounded-lg bg-emerald-500 p-1.5 text-white transition-all hover:bg-emerald-600 disabled:opacity-50"
-                                >
-                                    <Save class="h-3 w-3" />
-                                </button>
-                                <button
-                                    @click="toggleEditCoach"
-                                    class="rounded-lg bg-muted p-1.5 text-muted-foreground transition-all hover:bg-muted-foreground hover:text-white"
-                                >
-                                    <X class="h-3 w-3" />
-                                </button>
+                                <div class="flex items-center gap-1">
+                                    <button
+                                        @click="updateCoach"
+                                        :disabled="coachForm.processing"
+                                        class="rounded-lg bg-emerald-500 p-2 text-white transition-all hover:bg-emerald-600 disabled:opacity-50"
+                                        title="Simpan"
+                                    >
+                                        <Save class="h-3.5 w-3.5" />
+                                    </button>
+                                    <button
+                                        @click="toggleEditCoach"
+                                        class="rounded-lg bg-muted p-2 text-muted-foreground transition-all hover:bg-destructive hover:text-white"
+                                        title="Batal"
+                                    >
+                                        <X class="h-3.5 w-3.5" />
+                                    </button>
+                                </div>
                             </div>
                             <div
                                 v-else
-                                class="flex items-center justify-between gap-4"
+                                class="mt-1 flex items-center justify-between gap-6"
                             >
-                                <p class="text-sm font-black uppercase">
+                                <p :class="[
+                                    'text-sm font-black uppercase tracking-tight',
+                                    athlete.coach?.name ? 'text-foreground' : 'text-muted-foreground/60'
+                                ]">
                                     {{
                                         athlete.coach?.name ||
                                         'BELUM ADA PELATIH'
@@ -407,7 +414,7 @@ const trainingChartSeries = computed(() => [
                                 </p>
                                 <button
                                     @click="toggleEditCoach"
-                                    class="text-[9px] font-bold text-accent transition-all hover:underline"
+                                    class="text-[10px] font-black text-accent transition-all hover:scale-105 active:scale-95 bg-accent/10 px-2 py-1 rounded-md"
                                 >
                                     GANTI
                                 </button>

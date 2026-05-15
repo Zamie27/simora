@@ -81,7 +81,7 @@ class LihatRingkasanDaftarAtletController extends Controller
         $tanggalMulai = $permintaan->input('start_date');
         $tanggalSelesai = $permintaan->input('end_date');
 
-        $atlet->load(['category', 'athleteProfile', 'physicalMetrics' => function ($kueri) {
+        $atlet->load(['category', 'coach', 'athleteProfile', 'physicalMetrics' => function ($kueri) {
             $kueri->orderBy('recorded_at', 'desc');
         }]);
 
@@ -140,6 +140,26 @@ class LihatRingkasanDaftarAtletController extends Controller
         $profil->save();
 
         return back()->with('success', 'Lisensi dan UCI ID berhasil diperbarui.');
+    }
+
+    /**
+     * Update the assigned coach for an athlete (Manajemen only).
+     */
+    public function perbaruiPelatih(Request $permintaan, User $atlet): RedirectResponse
+    {
+        if ($permintaan->user()->role->name !== 'Manajemen') {
+            abort(403);
+        }
+
+        $dataTervalidasi = $permintaan->validate([
+            'coach_id' => 'nullable|exists:users,id',
+        ]);
+
+        $atlet->update([
+            'coach_id' => $dataTervalidasi['coach_id'],
+        ]);
+
+        return back()->with('success', 'Pelatih pembina berhasil diperbarui.');
     }
 
     /**

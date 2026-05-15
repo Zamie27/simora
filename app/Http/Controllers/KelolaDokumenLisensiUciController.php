@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class KelolaDokumenLisensiUciController extends Controller
 {
@@ -119,19 +120,19 @@ class KelolaDokumenLisensiUciController extends Controller
     /**
      * Download all documents for an athlete as ZIP.
      */
-    public function unduhSemuaDokumen(User $atlet): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    public function unduhSemuaDokumen(User $atlet): BinaryFileResponse
     {
         if (auth()->user()->role->name !== 'Manajemen') {
             abort(403);
         }
 
         $profil = $atlet->athleteProfile;
-        
-        $zip = new \ZipArchive();
-        $zipFileName = str_replace(' ', '_', strtolower($atlet->name)) . '_dokumen.zip';
-        $tempPath = storage_path('app/' . $zipFileName);
 
-        if ($zip->open($tempPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+        $zip = new \ZipArchive;
+        $zipFileName = str_replace(' ', '_', strtolower($atlet->name)).'_dokumen.zip';
+        $tempPath = storage_path('app/'.$zipFileName);
+
+        if ($zip->open($tempPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
             $filesToZip = [];
 
             // Athlete Profile Documents
@@ -140,7 +141,7 @@ class KelolaDokumenLisensiUciController extends Controller
                 if ($profil->profile_photo_path) {
                     $filesToZip['foto_profil'] = ['disk' => 'local', 'path' => $profil->profile_photo_path];
                 }
-                
+
                 if ($profil->birth_certificate_path) {
                     $filesToZip['akte_kelahiran'] = ['disk' => 'local', 'path' => $profil->birth_certificate_path];
                 }
@@ -154,14 +155,16 @@ class KelolaDokumenLisensiUciController extends Controller
 
             if (empty($filesToZip)) {
                 $zip->close();
-                if (file_exists($tempPath)) unlink($tempPath);
+                if (file_exists($tempPath)) {
+                    unlink($tempPath);
+                }
                 abort(404, 'Tidak ada dokumen untuk diunduh.');
             }
 
             foreach ($filesToZip as $name => $fileInfo) {
                 if (Storage::disk($fileInfo['disk'])->exists($fileInfo['path'])) {
                     $extension = pathinfo($fileInfo['path'], PATHINFO_EXTENSION);
-                    $zip->addFile(Storage::disk($fileInfo['disk'])->path($fileInfo['path']), $name . '.' . $extension);
+                    $zip->addFile(Storage::disk($fileInfo['disk'])->path($fileInfo['path']), $name.'.'.$extension);
                 }
             }
 

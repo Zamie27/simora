@@ -79,6 +79,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 icon: FileText,
             },
             {
+                title: 'Bandingkan Performa',
+                href: '/manajemen/komparasi-performa',
+                icon: BarChart3,
+            },
+            {
                 title: 'Dokumen Lisensi UCI',
                 href: '/lisensi-uci',
                 icon: ShieldCheck,
@@ -109,7 +114,7 @@ const mainNavItems = computed<NavItem[]>(() => {
                 icon: Calculator,
             },
             {
-                title: 'Perbandingan Performa',
+                title: 'Bandingkan Performa',
                 href: '/pelatih/komparasi-performa',
                 icon: BarChart3,
             },

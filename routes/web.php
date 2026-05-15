@@ -90,6 +90,11 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         // Messages
         Route::post('pesan', [KelolaPesanController::class, 'simpanPesan'])->name('pesan.store');
         Route::delete('pesan/{pesan}', [KelolaPesanController::class, 'hapusPesan'])->name('pesan.destroy');
+
+        // Performance Comparison
+        Route::get('komparasi-performa', [BandingkanPerformaDanMemfilterRiwayatController::class, 'tampilHalaman'])->name('komparasi.comparison');
+        Route::get('komparasi-performa/data', [BandingkanPerformaDanMemfilterRiwayatController::class, 'ambilDataKomparasi'])->name('komparasi.comparison.data');
+
     });
 
     // Coach specific routes

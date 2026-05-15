@@ -58,7 +58,13 @@ class BandingkanPerformaDanMemfilterRiwayatController extends Controller
      */
     private function managementIndex(Request $permintaan): Response
     {
-        return Inertia::render('komparasi-performa/Index');
+        $daftarAtlet = User::whereRole('Atlet')
+            ->select('id', 'name', 'email')
+            ->get();
+
+        return Inertia::render('komparasi-performa/Index', [
+            'athletes' => $daftarAtlet,
+        ]);
     }
 
     private function managementGetComparisonData(Request $permintaan): JsonResponse

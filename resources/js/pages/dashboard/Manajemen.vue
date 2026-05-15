@@ -161,7 +161,7 @@ const getTypeColor = (id: number | null) => {
                         class="flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-bold text-white shadow-lg shadow-accent/20 transition-all hover:scale-105 active:scale-95"
                     >
                         <ShieldCheck class="h-4 w-4" />
-                        Kelola Pengguna
+                        Manajemen User
                     </Link>
                 </div>
             </div>

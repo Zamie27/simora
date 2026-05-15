@@ -31,7 +31,21 @@ interface LaporanBug {
     status: string;
     url: string | null;
     created_at: string;
+    in_progress_at: string | null;
+    resolved_at: string | null;
 }
+
+const formatDateTime = (dateStr: string | null) => {
+    if (!dateStr) return '-';
+    const date = new Date(dateStr);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${hours}:${minutes}:${seconds} / ${day}/${month}/${year}`;
+};
 
 const getImages = (imagePath: string[] | string | null): string[] => {
     if (!imagePath) {
@@ -205,7 +219,10 @@ const updateStatus = (reportId: number, newStatus: string) => {
                                     </th>
                                     <th class="px-4 py-3 font-medium">Judul</th>
                                     <th class="px-4 py-3 font-medium">
-                                        Deskripsi
+                                        Sedang Dikerjakan
+                                    </th>
+                                    <th class="px-4 py-3 font-medium">
+                                        Tuntas Diperbaiki
                                     </th>
                                     <th class="px-4 py-3 font-medium">
                                         Status
@@ -246,10 +263,11 @@ const updateStatus = (reportId: number, newStatus: string) => {
                                     >
                                         {{ report.title }}
                                     </td>
-                                    <td
-                                        class="max-w-[300px] truncate px-4 py-3 text-muted-foreground"
-                                    >
-                                        {{ report.description }}
+                                    <td class="px-4 py-3 text-xs">
+                                        {{ formatDateTime(report.in_progress_at) }}
+                                    </td>
+                                    <td class="px-4 py-3 text-xs">
+                                        {{ formatDateTime(report.resolved_at) }}
                                     </td>
                                     <td class="px-4 py-3">
                                         <Badge
@@ -281,7 +299,7 @@ const updateStatus = (reportId: number, newStatus: string) => {
                                 </tr>
                                 <tr v-if="bugReports.length === 0">
                                     <td
-                                        colspan="6"
+                                        colspan="7"
                                         class="px-4 py-8 text-center text-muted-foreground"
                                     >
                                         Belum ada laporan bug.
@@ -440,6 +458,25 @@ const updateStatus = (reportId: number, newStatus: string) => {
                             >
                                 {{ selectedReport.url }}
                             </a>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="rounded-lg bg-blue-50/50 p-4 border border-blue-100">
+                            <div
+                                class="mb-1 text-xs font-semibold text-blue-600 uppercase"
+                            >
+                                Mulai Dikerjakan
+                            </div>
+                            <div class="text-sm font-medium">{{ formatDateTime(selectedReport.in_progress_at) }}</div>
+                        </div>
+                        <div class="rounded-lg bg-green-50/50 p-4 border border-green-100">
+                            <div
+                                class="mb-1 text-xs font-semibold text-green-600 uppercase"
+                            >
+                                Selesai Diperbaiki
+                            </div>
+                            <div class="text-sm font-medium">{{ formatDateTime(selectedReport.resolved_at) }}</div>
                         </div>
                     </div>
 

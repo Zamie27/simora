@@ -26,6 +26,8 @@ class LaporanBug extends Model
         'url',
         'user_id',
         'status',
+        'in_progress_at',
+        'resolved_at',
     ];
 
     /**
@@ -37,6 +39,8 @@ class LaporanBug extends Model
     {
         return [
             'image_path' => 'array',
+            'in_progress_at' => 'datetime',
+            'resolved_at' => 'datetime',
         ];
     }
 

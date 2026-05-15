@@ -71,9 +71,17 @@ class BugReportController extends Controller
             'status' => 'required|string|in:pending,sedang dikerjakan,tuntas diperbaiki',
         ]);
 
-        $laporanBug->update([
-            'status' => $dataTervalidasi['status'],
-        ]);
+        $updateData = ['status' => $dataTervalidasi['status']];
+
+        if ($dataTervalidasi['status'] === 'sedang dikerjakan' && ! $laporanBug->in_progress_at) {
+            $updateData['in_progress_at'] = now();
+        }
+
+        if ($dataTervalidasi['status'] === 'tuntas diperbaiki' && ! $laporanBug->resolved_at) {
+            $updateData['resolved_at'] = now();
+        }
+
+        $laporanBug->update($updateData);
 
         return back()->with('success', 'Status laporan bug berhasil diperbarui.');
     }

@@ -1,0 +1,1 @@
+import{st as e}from"./app-D3Jy1s0C.js";var t=e(`PlusIcon`,[[`path`,{d:`M5 12h14`,key:`1ays0h`}],[`path`,{d:`M12 5v14`,key:`s699le`}]]);export{t};

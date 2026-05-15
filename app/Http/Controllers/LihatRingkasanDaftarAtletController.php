@@ -70,7 +70,7 @@ class LihatRingkasanDaftarAtletController extends Controller
             ->with(['latestPhysicalMetric', 'coach', 'athleteProfile'])
             ->get();
 
-        return Inertia::render('manajemen/Athletes', [
+        return Inertia::render('ringkasan-atlet/DaftarAtletManajemen', [
             'athletes' => $daftarAtlet,
             'categories' => Kategori::orderBy('name')->get(),
         ]);
@@ -91,7 +91,7 @@ class LihatRingkasanDaftarAtletController extends Controller
         $statistik = $this->logRepository->getStatistics($atlet->id, $tanggalMulai, $tanggalSelesai);
         $trenPerforma = $this->logRepository->getPerformanceTrend($atlet->id, $tanggalMulai, $tanggalSelesai);
 
-        return Inertia::render('manajemen/AthleteDetail', [
+        return Inertia::render('ringkasan-atlet/DetailAtletManajemen', [
             'athlete' => $atlet,
             'coaches' => User::where('role_id', $pelatihRole?->id)->get(),
             'trainingLogs' => $daftarCatatan,
@@ -139,7 +139,7 @@ class LihatRingkasanDaftarAtletController extends Controller
             ->with(['latestPhysicalMetric', 'athleteProfile'])
             ->get();
 
-        return Inertia::render('pelatih/Athletes', [
+        return Inertia::render('ringkasan-atlet/DaftarAtletPelatih', [
             'athletes' => $daftarAtlet,
             'categories' => Kategori::orderBy('name')->get(),
         ]);
@@ -160,7 +160,7 @@ class LihatRingkasanDaftarAtletController extends Controller
         $statistik = $this->logRepository->getStatistics($atlet->id, $tanggalMulai, $tanggalSelesai);
         $trenPerforma = $this->logRepository->getPerformanceTrend($atlet->id, $tanggalMulai, $tanggalSelesai);
 
-        return Inertia::render('pelatih/AthleteDetail', [
+        return Inertia::render('ringkasan-atlet/DetailAtletPelatih', [
             'athlete' => $atlet,
             'categories' => Kategori::orderBy('name')->get(),
             'trainingLogs' => $daftarCatatan,
@@ -279,7 +279,7 @@ class LihatRingkasanDaftarAtletController extends Controller
      */
     public function tampilDaftarKategori(): Response
     {
-        return Inertia::render('manajemen/Categories', [
+        return Inertia::render('ringkasan-atlet/Kategori', [
             'categories' => Kategori::orderBy('name')->get(),
         ]);
     }

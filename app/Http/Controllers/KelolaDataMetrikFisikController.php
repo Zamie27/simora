@@ -73,7 +73,7 @@ class KelolaDataMetrikFisikController extends Controller
 
         $pengguna->load('category');
 
-        return Inertia::render('atlet/PhysicalProfile', [
+        return Inertia::render('metrik-fisik/Index', [
             'metrics' => $metrik,
             'categories' => Kategori::orderBy('name')->get(),
         ]);

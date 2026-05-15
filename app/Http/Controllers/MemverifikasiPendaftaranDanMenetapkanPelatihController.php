@@ -16,7 +16,7 @@ class MemverifikasiPendaftaranDanMenetapkanPelatihController extends Controller
 {
     public function tampilDaftar(): Response
     {
-        return Inertia::render('manajemen/Users', [
+        return Inertia::render('verifikasi-pendaftaran/DaftarPengguna', [
             'users' => User::with(['role', 'athleteProfile'])->get(),
             'roles' => Role::all(),
         ]);
@@ -47,7 +47,7 @@ class MemverifikasiPendaftaranDanMenetapkanPelatihController extends Controller
             $kueri->orderBy($sort, $direction === 'desc' ? 'desc' : 'asc');
         }
 
-        return Inertia::render('manajemen/Athletes', [
+        return Inertia::render('ringkasan-atlet/DaftarAtletManajemen', [
             'athletes' => $kueri->get(),
             'coaches' => User::where('role_id', $pelatihRole?->id)->get(),
             'filters' => $permintaan->only(['coach_id', 'sort', 'direction']),
@@ -59,7 +59,7 @@ class MemverifikasiPendaftaranDanMenetapkanPelatihController extends Controller
      */
     public function tampilDaftarTertunda(): Response
     {
-        return Inertia::render('manajemen/PendingVerifications', [
+        return Inertia::render('verifikasi-pendaftaran/MenungguVerifikasi', [
             'pendingUsers' => User::where('is_verified', false)
                 ->whereRole('Atlet')
                 ->with('role')

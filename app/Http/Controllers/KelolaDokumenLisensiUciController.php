@@ -21,7 +21,7 @@ class KelolaDokumenLisensiUciController extends Controller
         $role = $pengguna->role->name;
 
         if ($role === 'Atlet') {
-            return Inertia::render('dokumen/Index', [
+            return Inertia::render('dokumen-lisensi-uci/Index', [
                 'athlete' => $pengguna->load('athleteProfile'),
                 'role' => $role,
             ]);
@@ -34,7 +34,7 @@ class KelolaDokumenLisensiUciController extends Controller
                 $atletKueri->where('coach_id', $pengguna->id);
             }
 
-            return Inertia::render('dokumen/Index', [
+            return Inertia::render('dokumen-lisensi-uci/Index', [
                 'athletes' => $atletKueri->get(),
                 'role' => $role,
             ]);

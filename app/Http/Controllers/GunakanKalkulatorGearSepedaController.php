@@ -14,6 +14,6 @@ class GunakanKalkulatorGearSepedaController extends Controller
      */
     public function tampilHalamanKalkulator(Request $permintaan): Response
     {
-        return Inertia::render('tools/GearCalculator');
+        return Inertia::render('kalkulator-gear/Index');
     }
 }

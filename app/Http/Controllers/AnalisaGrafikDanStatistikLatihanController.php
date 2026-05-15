@@ -139,7 +139,7 @@ class AnalisaGrafikDanStatistikLatihanController extends Controller
         $upcomingSessions = $this->catatanRepository->getUpcomingSessions($atlet->id);
         $daftarJenisLatihan = JenisLatihan::all();
 
-        return Inertia::render('atlet/Training', [
+        return Inertia::render('grafik-statistik-latihan/Index', [
             'logs' => $daftarCatatan,
             'statistics' => $statistik,
             'performanceTrend' => $trenPerforma,

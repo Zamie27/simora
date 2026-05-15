@@ -41,7 +41,7 @@ class KeamananController extends Controller implements HasMiddleware
             $props['requiresConfirmation'] = Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm');
         }
 
-        return Inertia::render('settings/Security', $props);
+        return Inertia::render('pengaturan/Keamanan', $props);
     }
 
     /**

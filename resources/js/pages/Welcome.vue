@@ -568,7 +568,7 @@ withDefaults(
                                     class="bg-surface-container-low relative mb-10 aspect-[4/5] overflow-hidden rounded-sm shadow-2xl"
                                 >
                                     <v-img
-                                        src="/images/role-atlet.png"
+                                        src="/images/role-athlete.png"
                                         cover
                                         class="grayscale transition-all duration-1000 group-hover:scale-105 group-hover:grayscale-0"
                                     />
@@ -601,7 +601,7 @@ withDefaults(
                                     class="bg-surface-container-low relative mb-10 aspect-[4/5] overflow-hidden rounded-sm shadow-2xl"
                                 >
                                     <v-img
-                                        src="/images/role-pelatih.png"
+                                        src="/images/role-coach.png"
                                         cover
                                         class="grayscale transition-all duration-1000 group-hover:scale-105 group-hover:grayscale-0"
                                     />

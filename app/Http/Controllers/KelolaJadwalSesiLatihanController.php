@@ -19,7 +19,7 @@ class KelolaJadwalSesiLatihanController extends Controller
     {
         $pelatihId = $permintaan->user()->id;
 
-        return Inertia::render('pelatih/TrainingSessions', [
+        return Inertia::render('jadwal-sesi-latihan/Index', [
             'sessions' => SesiLatihan::where('coach_id', $pelatihId)
                 ->with(['exerciseType', 'athletes' => fn ($q) => $q->with('athleteProfile')])
                 ->withCount('athletes')
@@ -85,7 +85,7 @@ class KelolaJadwalSesiLatihanController extends Controller
         $sesiLatihan->athletes->load('athleteProfile');
         $sesiLatihan->logs->pluck('athlete')->each->load('athleteProfile');
 
-        return Inertia::render('pelatih/TrainingSessionDetail', [
+        return Inertia::render('jadwal-sesi-latihan/Detail', [
             'session' => $sesiLatihan,
         ]);
     }
@@ -111,7 +111,7 @@ class KelolaJadwalSesiLatihanController extends Controller
      */
     public function tampilDaftarJenisLatihan(): Response
     {
-        return Inertia::render('manajemen/ExerciseTypes', [
+        return Inertia::render('jadwal-sesi-latihan/JenisLatihan', [
             'exerciseTypes' => JenisLatihan::orderBy('name')->get(),
         ]);
     }

@@ -39,6 +39,6 @@ class LihatDashboardController extends Controller
             return redirect()->route('report.dashboard');
         }
 
-        return Inertia::render('Dashboard');
+        return Inertia::render('dashboard/Index');
     }
 }

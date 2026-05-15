@@ -50,7 +50,7 @@ class LihatDashboardController extends Controller
         }
 
         // Default fallback if no role matches
-        return Inertia::render('Dashboard');
+        return Inertia::render('dashboard/Index');
     }
 
     /**
@@ -111,7 +111,7 @@ class LihatDashboardController extends Controller
             ->take(5)
             ->get();
 
-        return Inertia::render('manajemen/Dashboard', [
+        return Inertia::render('dashboard/Manajemen', [
             'stats' => [
                 'total_athletes' => $totalAthletes,
                 'total_coaches' => $totalCoaches,
@@ -189,7 +189,7 @@ class LihatDashboardController extends Controller
         // 8. Athlete Ranking (Coach specific)
         $atletRanking = $this->logRepository->getAthleteRanking($atletIds->toArray());
 
-        return Inertia::render('pelatih/Dashboard', [
+        return Inertia::render('dashboard/Pelatih', [
             'stats' => [
                 'total_athletes' => $daftarAtlet->count(),
                 'upcoming_sessions_count' => SesiLatihan::where('coach_id', $pelatih->id)
@@ -252,7 +252,7 @@ class LihatDashboardController extends Controller
             ->reverse()
             ->values();
 
-        return Inertia::render('atlet/Dashboard', [
+        return Inertia::render('dashboard/Atlet', [
             'user' => $pengguna,
             'weeklyStats' => $weeklyStats,
             'upcomingEvents' => $upcomingEvents,

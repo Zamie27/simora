@@ -83,7 +83,7 @@ class KelolaEventDanPartisipasiController extends Controller
         $upcomingEvents->transform($hydrate);
         $pastEvents->transform($hydrate);
 
-        return Inertia::render('atlet/Events/Index', [
+        return Inertia::render('kelola-event/Atlet', [
             'upcomingEvents' => $upcomingEvents,
             'pastEvents' => $pastEvents,
         ]);
@@ -96,7 +96,7 @@ class KelolaEventDanPartisipasiController extends Controller
      */
     private function managementIndex(Request $permintaan): Response
     {
-        return Inertia::render('manajemen/EventSettings/Index', [
+        return Inertia::render('kelola-event/PengaturanEvent', [
             'eventTypes' => JenisEvent::with('coach')->latest()->get(),
             'eventPoints' => PoinEvent::with('coach')->latest()->get(),
         ]);
@@ -235,7 +235,7 @@ class KelolaEventDanPartisipasiController extends Controller
             ->orWhereNull('coach_id')
             ->get();
 
-        return Inertia::render('pelatih/Events/Index', [
+        return Inertia::render('kelola-event/Pelatih', [
             'events' => $daftarAcara,
             'athletes' => $daftarAtlet,
             'eventTypes' => $acaraTypes,

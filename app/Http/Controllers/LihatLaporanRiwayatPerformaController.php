@@ -88,7 +88,7 @@ class LihatLaporanRiwayatPerformaController extends Controller
             ];
         }
 
-        return Inertia::render('manajemen/Reports', [
+        return Inertia::render('laporan-performa/Manajemen', [
             'athletes' => $daftarAtlet,
             'coaches' => $daftarPelatih,
             'reportData' => $reportData,
@@ -174,7 +174,7 @@ class LihatLaporanRiwayatPerformaController extends Controller
             ];
         }
 
-        return Inertia::render('pelatih/Reports', [
+        return Inertia::render('laporan-performa/Pelatih', [
             'athletes' => $daftarAtlet,
             'reportData' => $reportData,
             'filters' => [

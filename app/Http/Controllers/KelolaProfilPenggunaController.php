@@ -21,7 +21,7 @@ class KelolaProfilPenggunaController extends Controller
      */
     public function tampilFormUbah(Request $permintaan): Response
     {
-        return Inertia::render('settings/Profile', [
+        return Inertia::render('pengaturan/Profil', [
             'mustVerifyEmail' => $permintaan->user() instanceof MustVerifyEmail,
             'status' => $permintaan->session()->get('status'),
         ]);

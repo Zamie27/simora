@@ -49,7 +49,7 @@ const mainNavItems = computed<NavItem[]>(() => {
     if (roleName.value === 'Manajemen') {
         items.push(
             {
-                title: 'Manajemen Pengguna',
+                title: 'Manajemen User',
                 href: '/manajemen/users',
                 icon: Users,
             },

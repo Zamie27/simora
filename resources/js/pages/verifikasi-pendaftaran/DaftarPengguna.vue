@@ -32,7 +32,7 @@ const props = defineProps<{
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Managemen User', href: '/manajemen/users' },
+    { title: 'Manajemen User', href: '/manajemen/users' },
 ];
 
 const isEditing = ref(false);
@@ -118,7 +118,7 @@ const route = (name: string, params?: any) => {
 </script>
 
 <template>
-    <Head title="Managemen User" />
+    <Head title="Manajemen User" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div
@@ -131,7 +131,7 @@ const route = (name: string, params?: any) => {
                     <h1
                         class="text-3xl font-black tracking-tight text-foreground uppercase"
                     >
-                        Managemen User
+                        Manajemen User
                     </h1>
                     <p class="mt-2 font-medium text-muted-foreground">
                         Kelola akses atlet, pelatih, dan tim manajemen.

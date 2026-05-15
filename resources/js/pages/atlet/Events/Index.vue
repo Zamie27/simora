@@ -544,7 +544,9 @@ const getStatusColor = (status: string) => {
                                 class="flex items-center gap-2 text-xs font-black tracking-widest uppercase"
                             >
                                 <Users class="h-4 w-4 text-orange-500" /> Daftar
-                                Atlet Peserta ({{ selectedEvent.athletes.length }})
+                                Atlet Peserta ({{
+                                    selectedEvent.athletes.length
+                                }})
                             </h4>
                             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <div

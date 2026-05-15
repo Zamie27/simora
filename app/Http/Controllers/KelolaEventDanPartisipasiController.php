@@ -7,6 +7,7 @@ use App\Models\JenisEvent;
 use App\Models\Kategori;
 use App\Models\PoinEvent;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -62,13 +63,13 @@ class KelolaEventDanPartisipasiController extends Controller
             ->get();
 
         $hydrate = function ($acara) use ($pengguna) {
-            if ($acara instanceof \Illuminate\Database\Eloquent\Model) {
+            if ($acara instanceof Model) {
                 $myParticipation = $acara->participants->filter(fn ($p) => $p->user_id === $pengguna->id)->first();
                 $acara->setRelation('pivot', $myParticipation);
 
                 $acara->setRelation('athletes', $acara->participants->map(function ($p) {
                     $u = $p->user;
-                    if ($u instanceof \Illuminate\Database\Eloquent\Model) {
+                    if ($u instanceof Model) {
                         $u->setRelation('pivot', $p);
                     }
 
@@ -202,10 +203,10 @@ class KelolaEventDanPartisipasiController extends Controller
             ->get();
 
         $daftarAcara->each(function ($acara) {
-            if ($acara instanceof \Illuminate\Database\Eloquent\Model) {
+            if ($acara instanceof Model) {
                 $acara->setRelation('athletes', $acara->participants->map(function ($p) {
                     $pengguna = $p->user;
-                    if ($pengguna instanceof \Illuminate\Database\Eloquent\Model) {
+                    if ($pengguna instanceof Model) {
                         $pengguna->setRelation('pivot', $p);
                     }
 

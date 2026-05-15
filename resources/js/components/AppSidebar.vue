@@ -79,6 +79,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 icon: FileText,
             },
             {
+                title: 'Lisensi UCI',
+                href: '/lisensi-uci',
+                icon: ShieldCheck,
+            },
+            {
                 title: 'Setting Event',
                 href: '/manajemen/pengaturan-acara',
                 icon: Trophy,
@@ -114,6 +119,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 icon: FileText,
             },
             {
+                title: 'Lisensi UCI',
+                href: '/lisensi-uci',
+                icon: ShieldCheck,
+            },
+            {
                 title: 'Target & Event',
                 href: '/pelatih/acara',
                 icon: Trophy,
@@ -144,8 +154,8 @@ const mainNavItems = computed<NavItem[]>(() => {
                 icon: Trophy,
             },
             {
-                title: 'Dokumen Pribadi',
-                href: '/atlet/dokumen',
+                title: 'Lisensi UCI',
+                href: '/lisensi-uci',
                 icon: FileText,
             },
         );

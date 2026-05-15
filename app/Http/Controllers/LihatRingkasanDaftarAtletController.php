@@ -106,43 +106,6 @@ class LihatRingkasanDaftarAtletController extends Controller
     }
 
     /**
-     * Upload license and update UCI ID (Manajemen only).
-     */
-    public function unggahLisensi(Request $permintaan, User $atlet)
-    {
-        if ($permintaan->user()->role->name !== 'Manajemen') {
-            abort(403);
-        }
-
-        $permintaan->validate([
-            'uci_id' => 'required|string|max:50',
-            'license_valid_until' => 'required|date',
-            'license_file' => 'nullable|mimes:pdf,jpg,jpeg,png|max:5120',
-        ]);
-
-        $profil = $atlet->athleteProfile ?? new ProfilAtlet(['user_id' => $atlet->id]);
-
-        $profil->uci_id = $permintaan->uci_id;
-        $profil->license_valid_until = $permintaan->license_valid_until;
-
-        if ($permintaan->hasFile('license_file')) {
-            if ($profil->license_path) {
-                Storage::disk('local')->delete($profil->license_path);
-            }
-
-            $ekstensi = $permintaan->file('license_file')->getClientOriginalExtension();
-            $namaFile = 'UCI_'.$permintaan->uci_id.'_'.time().'.'.$ekstensi;
-
-            $jalur = $permintaan->file('license_file')->storeAs('private_documents/'.$atlet->id, $namaFile, 'local');
-            $profil->license_path = $jalur;
-        }
-
-        $profil->save();
-
-        return back()->with('success', 'Lisensi dan UCI ID berhasil diperbarui.');
-    }
-
-    /**
      * Update the assigned coach for an athlete (Manajemen only).
      */
     public function perbaruiPelatih(Request $permintaan, User $atlet): RedirectResponse

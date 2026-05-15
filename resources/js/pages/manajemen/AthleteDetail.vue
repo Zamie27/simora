@@ -6,16 +6,10 @@ import {
     AlertCircle,
     Calendar,
     Clock,
-    CreditCard,
-    FileImage,
-    FileText,
     Milestone,
     RotateCcw,
     Save,
-    Shield,
     TrendingUp,
-    UserCircle,
-    Users,
     X,
 } from 'lucide-vue-next';
 
@@ -148,13 +142,6 @@ const coachForm = useForm({
     coach_id: props.athlete.coach_id || null,
 });
 
-const form = useForm({
-    uci_id: props.athlete.athlete_profile?.uci_id || '',
-    license_valid_until: props.athlete.athlete_profile?.license_valid_until
-        ? props.athlete.athlete_profile.license_valid_until.split('T')[0]
-        : '',
-    license_file: null as File | null,
-});
 
 const isEditingCoach = ref(false);
 
@@ -171,31 +158,6 @@ const updateCoach = () => {
     });
 };
 
-const handleFileUpload = (e: Event) => {
-    const target = e.target as HTMLInputElement;
-
-    if (target.files && target.files.length > 0) {
-        form.license_file = target.files[0];
-    }
-};
-
-const submitLicense = () => {
-    form.post(`/manajemen/atlet/${props.athlete.id}/license`, {
-        preserveScroll: true,
-        forceFormData: true,
-        onSuccess: () => {
-            // Reset file input only
-            form.license_file = null;
-            const fileInput = document.getElementById(
-                'license_file',
-            ) as HTMLInputElement;
-
-            if (fileInput) {
-                fileInput.value = '';
-            }
-        },
-    });
-};
 
 const applyFilters = () => {
     router.get(
@@ -217,21 +179,6 @@ const formatDate = (date: string) => {
     return `${day}/${month}/${year}`;
 };
 
-const isLicenseValid = (validUntil?: string) => {
-    if (!validUntil) {
-        return false;
-    }
-
-    return new Date(validUntil) >= new Date();
-};
-
-const previewUrl = ref<string | null>(null);
-const showPreview = (url: string) => {
-    previewUrl.value = url;
-};
-const closePreview = () => {
-    previewUrl.value = null;
-};
 
 // Physical Chart Options (Adapted from coach view)
 const physicalChartOptions = computed<ApexOptions>(() => ({
@@ -875,214 +822,6 @@ const trainingChartSeries = computed(() => [
                             </div>
                         </div>
                     </div>
-
-                    <!-- License Section -->
-                    <div
-                        class="relative overflow-hidden rounded-[2.5rem] border border-accent/20 bg-accent/5 p-8 shadow-2xl"
-                    >
-                        <h3
-                            class="mb-6 flex items-center gap-2 text-[12px] font-black tracking-widest text-foreground uppercase"
-                        >
-                            <Shield class="h-4 w-4 text-accent" /> Manajemen
-                            Lisensi
-                        </h3>
-                        <div class="flex flex-col gap-4">
-                            <div
-                                v-if="athlete.athlete_profile?.uci_id"
-                                class="rounded-2xl bg-card p-4 shadow-inner"
-                            >
-                                <p
-                                    class="text-[8px] font-black text-muted-foreground uppercase opacity-60"
-                                >
-                                    UCI ID
-                                </p>
-                                <p class="font-mono text-sm font-black italic">
-                                    {{ athlete.athlete_profile.uci_id }}
-                                </p>
-                                <div
-                                    class="mt-2 flex items-center justify-between"
-                                >
-                                    <span
-                                        :class="
-                                            isLicenseValid(
-                                                athlete.athlete_profile
-                                                    .license_valid_until,
-                                            )
-                                                ? 'text-emerald-500'
-                                                : 'text-destructive'
-                                        "
-                                        class="text-[8px] font-black uppercase"
-                                    >
-                                        {{
-                                            isLicenseValid(
-                                                athlete.athlete_profile
-                                                    .license_valid_until,
-                                            )
-                                                ? 'Active'
-                                                : 'Expired'
-                                        }}
-                                    </span>
-                                    <button
-                                        v-if="
-                                            athlete.athlete_profile
-                                                ?.license_path
-                                        "
-                                        @click="
-                                            showPreview(
-                                                `/documents/${athlete.id}/license`,
-                                            )
-                                        "
-                                        class="text-[8px] font-black text-accent uppercase hover:underline"
-                                    >
-                                        Lihat File
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- License Update Form -->
-                            <form
-                                @submit.prevent="submitLicense"
-                                class="flex flex-col gap-3"
-                            >
-                                <Input
-                                    v-model="form.uci_id"
-                                    placeholder="Update UCI ID"
-                                    class="h-10 text-xs font-bold"
-                                />
-                                <Input
-                                    type="date"
-                                    v-model="form.license_valid_until"
-                                    class="h-10 text-xs font-bold"
-                                />
-                                <input
-                                    id="license_file"
-                                    type="file"
-                                    @change="handleFileUpload"
-                                    class="text-[9px] font-bold"
-                                />
-                                <button
-                                    type="submit"
-                                    :disabled="form.processing"
-                                    class="rounded-xl bg-accent py-3 text-[10px] font-black text-white uppercase"
-                                >
-                                    {{
-                                        form.processing
-                                            ? 'Saving...'
-                                            : 'Update Lisensi'
-                                    }}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Personal Documents Viewer -->
-                    <div
-                        class="rounded-[2.5rem] border border-border bg-card p-8 shadow-xl"
-                    >
-                        <h3
-                            class="mb-6 flex items-center gap-2 text-[12px] font-black tracking-widest text-foreground uppercase"
-                        >
-                            <FileText class="h-4 w-4 text-orange-500" /> Dokumen
-                            Legal
-                        </h3>
-
-                        <div class="flex flex-col gap-3">
-                            <div
-                                v-for="doc in [
-                                    {
-                                        label: 'Foto Profil',
-                                        path: 'profile_photo',
-                                        icon: UserCircle,
-                                    },
-                                    {
-                                        label: 'Akte Kelahiran',
-                                        path: 'birth_certificate',
-                                        icon: FileImage,
-                                    },
-                                    {
-                                        label: 'Kartu Keluarga',
-                                        path: 'family_card',
-                                        icon: Users,
-                                    },
-                                    {
-                                        label: 'KTP',
-                                        path: 'id_card',
-                                        icon: CreditCard,
-                                    },
-                                ]"
-                                :key="doc.path"
-                                class="flex items-center justify-between rounded-xl border border-border bg-muted/20 p-3"
-                            >
-                                <div class="flex items-center gap-3">
-                                    <component
-                                        :is="doc.icon"
-                                        class="h-4 w-4 text-muted-foreground"
-                                    />
-                                    <span
-                                        class="text-[10px] font-black tracking-widest text-foreground uppercase"
-                                        >{{ doc.label }}</span
-                                    >
-                                </div>
-                                <button
-                                    v-if="
-                                        athlete.athlete_profile?.[
-                                            `${doc.path}_path` as keyof typeof athlete.athlete_profile
-                                        ]
-                                    "
-                                    @click="
-                                        showPreview(
-                                            `/documents/${athlete.id}/${doc.path}`,
-                                        )
-                                    "
-                                    class="rounded-full bg-accent/10 px-3 py-1 text-[9px] font-black text-accent uppercase hover:bg-accent hover:text-white"
-                                >
-                                    Lihat
-                                </button>
-                                <span
-                                    v-else
-                                    class="text-[9px] font-black text-destructive uppercase opacity-50"
-                                    >Kosong</span
-                                >
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Document Preview Modal -->
-        <div
-            v-if="previewUrl"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4 backdrop-blur-md sm:p-8"
-            @click="closePreview"
-        >
-            <div
-                class="relative flex h-[90vh] w-full max-w-6xl flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-2xl"
-                @click.stop
-            >
-                <div
-                    class="flex shrink-0 items-center justify-between border-b border-border bg-muted/20 p-4 md:p-6"
-                >
-                    <h3
-                        class="truncate text-sm font-black tracking-widest text-muted-foreground uppercase"
-                    >
-                        Pratinjau Dokumen
-                    </h3>
-                    <button
-                        @click="closePreview"
-                        class="rounded-full px-4 py-2 text-xs font-black text-muted-foreground uppercase transition-all hover:bg-destructive/10 hover:text-destructive"
-                    >
-                        Tutup (X)
-                    </button>
-                </div>
-                <div
-                    class="relative flex-1 overflow-hidden bg-muted/30 p-2 md:p-6"
-                >
-                    <iframe
-                        :src="previewUrl"
-                        class="h-full w-full rounded-xl border border-border bg-white shadow-inner"
-                        title="Document Preview"
-                    ></iframe>
                 </div>
             </div>
         </div>

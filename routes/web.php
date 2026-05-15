@@ -38,8 +38,14 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
     // Tools
     Route::get('tools/gear-calculator', [GunakanKalkulatorGearSepedaController::class, 'tampilHalamanKalkulator'])->name('tools.gear-calculator');
 
-    // Secure Document Access
+    // Shared Document Access
     Route::get('documents/{atlet}/{tipe}', [DocumentAccessController::class, 'show'])->name('dokumen.show');
+
+    // Consolidated Document & License Management
+    Route::get('lisensi-uci', [KelolaDokumenLisensiUciController::class, 'tampilHalamanLisensi'])->name('lisensi-uci.index');
+    Route::post('lisensi-uci/upload', [KelolaDokumenLisensiUciController::class, 'simpanDokumenPribadi'])->name('lisensi-uci.upload');
+    Route::post('lisensi-uci/update/{atlet}', [KelolaDokumenLisensiUciController::class, 'perbaruiLisensiUci'])->name('lisensi-uci.update');
+    Route::get('lisensi-uci/download-all/{atlet}', [KelolaDokumenLisensiUciController::class, 'unduhSemuaDokumen'])->name('lisensi-uci.download-all');
 
     // Management Routes
     Route::middleware(['role:Manajemen'])->prefix('manajemen')->name('manajemen.')->group(function () {
@@ -55,7 +61,6 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::get('atlet', [MemverifikasiPendaftaranDanMenetapkanPelatihController::class, 'tampilDaftarAtlet'])->name('atlet.index');
         Route::get('atlet/{atlet}', [LihatRingkasanDaftarAtletController::class, 'tampilDetail'])->name('atlet.show');
         Route::patch('atlet/{atlet}/coach', [LihatRingkasanDaftarAtletController::class, 'perbaruiPelatih'])->name('atlet.coach.update');
-        Route::post('atlet/{atlet}/license', [LihatRingkasanDaftarAtletController::class, 'unggahLisensi'])->name('atlet.license.upload');
 
         // Category Management
         Route::get('kategori', [LihatRingkasanDaftarAtletController::class, 'tampilDaftarKategori'])->name('kategori.index');
@@ -81,6 +86,10 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::post('poin-acara', [KelolaEventDanPartisipasiController::class, 'simpanPoin'])->name('poin-acara.store');
         Route::patch('poin-acara/{poin}', [KelolaEventDanPartisipasiController::class, 'perbaruiPoin'])->name('poin-acara.update');
         Route::delete('poin-acara/{poin}', [KelolaEventDanPartisipasiController::class, 'hapusPoin'])->name('poin-acara.destroy');
+
+        // Messages
+        Route::post('pesan', [KelolaPesanController::class, 'simpanPesan'])->name('pesan.store');
+        Route::delete('pesan/{pesan}', [KelolaPesanController::class, 'hapusPesan'])->name('pesan.destroy');
     });
 
     // Coach specific routes
@@ -123,8 +132,6 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::post('poin-acara', [KelolaEventDanPartisipasiController::class, 'simpanPoinEvent'])->name('poin-acara.store');
         Route::patch('poin-acara/{poin}', [KelolaEventDanPartisipasiController::class, 'perbaruiPoinEvent'])->name('poin-acara.update');
         Route::delete('poin-acara/{poin}', [KelolaEventDanPartisipasiController::class, 'hapusPoinEvent'])->name('poin-acara.destroy');
-
-        // Jadwal Latihan
 
         // Messages
         Route::post('pesan', [KelolaPesanController::class, 'simpanPesan'])->name('pesan.store');

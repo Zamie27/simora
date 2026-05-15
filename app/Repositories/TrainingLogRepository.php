@@ -139,7 +139,7 @@ class TrainingLogRepository
             // Check if there is already a log for this specific instance date
             $log = LogLatihan::where('training_session_id', $session->id)
                 ->where('athlete_id', $athleteId)
-                ->whereDate('date', '=', $instanceDate->toDateString())
+                ->where('date', $instanceDate->toDateString())
                 ->first();
 
             // Hide if already completed for this instance

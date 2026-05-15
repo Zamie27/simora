@@ -72,7 +72,7 @@ class AnalisaGrafikDanStatistikLatihanController extends Controller
 
             $catatan = LogLatihan::where('training_session_id', $sesi->id)
                 ->where('athlete_id', $atletId)
-                ->whereDate('date', now()->toDateString())
+                ->where('date', now()->toDateString())
                 ->first();
 
             if ($catatan) {

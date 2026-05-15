@@ -62,17 +62,19 @@ class KelolaEventDanPartisipasiController extends Controller
             ->get();
 
         $hydrate = function ($acara) use ($pengguna) {
-            $myParticipation = $acara->participants->filter(fn ($p) => $p->user_id === $pengguna->id)->first();
-            $acara->setRelation('pivot', $myParticipation);
+            if ($acara instanceof \Illuminate\Database\Eloquent\Model) {
+                $myParticipation = $acara->participants->filter(fn ($p) => $p->user_id === $pengguna->id)->first();
+                $acara->setRelation('pivot', $myParticipation);
 
-            $acara->setRelation('athletes', $acara->participants->map(function ($p) {
-                $u = $p->user;
-                if ($u) {
-                    $u->setRelation('pivot', $p);
-                }
+                $acara->setRelation('athletes', $acara->participants->map(function ($p) {
+                    $u = $p->user;
+                    if ($u instanceof \Illuminate\Database\Eloquent\Model) {
+                        $u->setRelation('pivot', $p);
+                    }
 
-                return $u;
-            })->filter());
+                    return $u;
+                })->filter());
+            }
 
             return $acara;
         };
@@ -200,14 +202,16 @@ class KelolaEventDanPartisipasiController extends Controller
             ->get();
 
         $daftarAcara->each(function ($acara) {
-            $acara->setRelation('athletes', $acara->participants->map(function ($p) {
-                $pengguna = $p->user;
-                if ($pengguna) {
-                    $pengguna->setRelation('pivot', $p);
-                }
+            if ($acara instanceof \Illuminate\Database\Eloquent\Model) {
+                $acara->setRelation('athletes', $acara->participants->map(function ($p) {
+                    $pengguna = $p->user;
+                    if ($pengguna instanceof \Illuminate\Database\Eloquent\Model) {
+                        $pengguna->setRelation('pivot', $p);
+                    }
 
-                return $pengguna;
-            })->filter());
+                    return $pengguna;
+                })->filter());
+            }
             $acara->athletes_count = $acara->participants->count();
         });
 

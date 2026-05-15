@@ -327,10 +327,10 @@ const closePreview = () => {
                             </div>
                         </div>
                         <p
-                            v-if="form.errors.profil_photo"
+                            v-if="form.errors.profile_photo"
                             class="text-[10px] font-black text-destructive uppercase"
                         >
-                            {{ form.errors.profil_photo }}
+                            {{ form.errors.profile_photo }}
                         </p>
                     </div>
 

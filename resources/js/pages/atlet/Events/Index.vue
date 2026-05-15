@@ -537,18 +537,18 @@ const getStatusColor = (status: string) => {
 
                         <!-- Participant List for Athletes -->
                         <div
-                            v-if="selectedEvent?.atlet?.length"
+                            v-if="selectedEvent?.athletes?.length"
                             class="flex flex-col gap-6 border-t border-border pt-10"
                         >
                             <h4
                                 class="flex items-center gap-2 text-xs font-black tracking-widest uppercase"
                             >
                                 <Users class="h-4 w-4 text-orange-500" /> Daftar
-                                Atlet Peserta ({{ selectedEvent.atlet.length }})
+                                Atlet Peserta ({{ selectedEvent.athletes.length }})
                             </h4>
                             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <div
-                                    v-for="atlet in selectedEvent.atlet"
+                                    v-for="atlet in selectedEvent.athletes"
                                     :key="atlet.id"
                                     :class="
                                         atlet.id === pageProps.auth.user.id

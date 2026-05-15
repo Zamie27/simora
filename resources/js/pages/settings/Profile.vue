@@ -3,6 +3,7 @@ import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
 import { CheckCircle2 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
+import OtpController from '@/actions/App/Http/Controllers/Auth/KelolaOtpController';
 import DeleteUser from '@/components/DeleteUser.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
@@ -19,10 +20,9 @@ import {
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import type { BreadcrumbItem } from '@/types';
-import OtpController from '@/actions/App/Http/Controllers/Auth/KelolaOtpController';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verifikasi';
+import type { BreadcrumbItem } from '@/types';
 
 type Props = {
     mustVerifyEmail: boolean;

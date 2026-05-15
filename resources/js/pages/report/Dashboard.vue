@@ -216,17 +216,17 @@ const updateStatus = (reportId: number, newStatus: string) => {
                             >
                                 <tr>
                                     <th class="px-4 py-3 font-medium">
-                                        Tanggal
-                                    </th>
-                                    <th class="px-4 py-3 font-medium">
-                                        Pelapor
+                                        Tanggal Laporan
                                     </th>
                                     <th class="px-4 py-3 font-medium">Judul</th>
+                                    <th class="px-4 py-3 font-medium">
+                                        Keterangan Bug
+                                    </th>
                                     <th class="px-4 py-3 font-medium">
                                         Sedang Dikerjakan
                                     </th>
                                     <th class="px-4 py-3 font-medium">
-                                        Tuntas Diperbaiki
+                                        Tuntas Dikerjakan
                                     </th>
                                     <th class="px-4 py-3 font-medium">
                                         Status
@@ -257,15 +257,15 @@ const updateStatus = (reportId: number, newStatus: string) => {
                                             })
                                         }}
                                     </td>
-                                    <td class="px-4 py-3">
-                                        <div class="font-medium">
-                                            {{ report.reporter_name }}
-                                        </div>
-                                    </td>
                                     <td
-                                        class="max-w-[200px] truncate px-4 py-3"
+                                        class="max-w-[150px] truncate px-4 py-3"
                                     >
                                         {{ report.title }}
+                                    </td>
+                                    <td
+                                        class="max-w-[200px] truncate px-4 py-3 text-muted-foreground"
+                                    >
+                                        {{ report.description }}
                                     </td>
                                     <td class="px-4 py-3 text-xs">
                                         {{
@@ -470,33 +470,21 @@ const updateStatus = (reportId: number, newStatus: string) => {
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
-                        <div
-                            class="rounded-lg border border-blue-100 bg-blue-50/50 p-4"
-                        >
+                        <div class="rounded-lg bg-blue-50 p-4 border border-blue-100 dark:bg-blue-500/10 dark:border-blue-500/20">
                             <div
-                                class="mb-1 text-xs font-semibold text-blue-600 uppercase"
+                                class="mb-1 text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider"
                             >
                                 Mulai Dikerjakan
                             </div>
-                            <div class="text-sm font-medium">
-                                {{
-                                    formatDateTime(
-                                        selectedReport.in_progress_at,
-                                    )
-                                }}
-                            </div>
+                            <div class="text-sm font-semibold">{{ formatDateTime(selectedReport.in_progress_at) }}</div>
                         </div>
-                        <div
-                            class="rounded-lg border border-green-100 bg-green-50/50 p-4"
-                        >
+                        <div class="rounded-lg bg-green-50 p-4 border border-green-100 dark:bg-green-500/10 dark:border-green-500/20">
                             <div
-                                class="mb-1 text-xs font-semibold text-green-600 uppercase"
+                                class="mb-1 text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-wider"
                             >
                                 Selesai Diperbaiki
                             </div>
-                            <div class="text-sm font-medium">
-                                {{ formatDateTime(selectedReport.resolved_at) }}
-                            </div>
+                            <div class="text-sm font-semibold">{{ formatDateTime(selectedReport.resolved_at) }}</div>
                         </div>
                     </div>
 

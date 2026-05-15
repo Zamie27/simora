@@ -37,8 +37,8 @@ interface LaporanBug {
 
 const formatDateTime = (dateStr: string | null) => {
     if (!dateStr) {
-return '-';
-}
+        return '-';
+    }
 
     const date = new Date(dateStr);
     const hours = String(date.getHours()).padStart(2, '0');
@@ -470,21 +470,33 @@ const updateStatus = (reportId: number, newStatus: string) => {
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="rounded-lg bg-blue-50 p-4 border border-blue-100 dark:bg-blue-500/10 dark:border-blue-500/20">
+                        <div
+                            class="rounded-lg border border-blue-100 bg-blue-50 p-4 dark:border-blue-500/20 dark:bg-blue-500/10"
+                        >
                             <div
-                                class="mb-1 text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider"
+                                class="mb-1 text-xs font-bold tracking-wider text-blue-600 uppercase dark:text-blue-400"
                             >
                                 Mulai Dikerjakan
                             </div>
-                            <div class="text-sm font-semibold">{{ formatDateTime(selectedReport.in_progress_at) }}</div>
+                            <div class="text-sm font-semibold">
+                                {{
+                                    formatDateTime(
+                                        selectedReport.in_progress_at,
+                                    )
+                                }}
+                            </div>
                         </div>
-                        <div class="rounded-lg bg-green-50 p-4 border border-green-100 dark:bg-green-500/10 dark:border-green-500/20">
+                        <div
+                            class="rounded-lg border border-green-100 bg-green-50 p-4 dark:border-green-500/20 dark:bg-green-500/10"
+                        >
                             <div
-                                class="mb-1 text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-wider"
+                                class="mb-1 text-xs font-bold tracking-wider text-green-600 uppercase dark:text-green-400"
                             >
                                 Selesai Diperbaiki
                             </div>
-                            <div class="text-sm font-semibold">{{ formatDateTime(selectedReport.resolved_at) }}</div>
+                            <div class="text-sm font-semibold">
+                                {{ formatDateTime(selectedReport.resolved_at) }}
+                            </div>
                         </div>
                     </div>
 

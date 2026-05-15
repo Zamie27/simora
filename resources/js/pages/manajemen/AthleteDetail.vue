@@ -141,7 +141,6 @@ const coachForm = useForm({
     coach_id: props.athlete.coach_id || null,
 });
 
-
 const isEditingCoach = ref(false);
 
 const toggleEditCoach = () => {
@@ -156,7 +155,6 @@ const updateCoach = () => {
         },
     });
 };
-
 
 const applyFilters = () => {
     router.get(
@@ -177,7 +175,6 @@ const formatDate = (date: string) => {
 
     return `${day}/${month}/${year}`;
 };
-
 
 // Physical Chart Options (Adapted from coach view)
 const physicalChartOptions = computed<ApexOptions>(() => ({
@@ -303,7 +300,7 @@ const trainingChartSeries = computed(() => [
                     <div
                         class="flex shrink-0 items-center gap-4 rounded-2xl border border-accent/20 bg-accent/5 p-4 shadow-sm backdrop-blur-sm"
                     >
-                        <div class="flex flex-col min-w-[150px]">
+                        <div class="flex min-w-[150px] flex-col">
                             <span
                                 class="text-[9px] font-black tracking-widest text-accent uppercase opacity-80"
                                 >Pelatih Pembina</span
@@ -314,7 +311,7 @@ const trainingChartSeries = computed(() => [
                             >
                                 <select
                                     v-model="coachForm.coach_id"
-                                    class="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-bold text-foreground focus:ring-2 focus:ring-accent focus:outline-none dark:[color-scheme:dark] w-full"
+                                    class="w-full rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-bold text-foreground focus:ring-2 focus:ring-accent focus:outline-none dark:[color-scheme:dark]"
                                 >
                                     <option :value="null">
                                         Belum Ada Pelatih
@@ -349,10 +346,14 @@ const trainingChartSeries = computed(() => [
                                 v-else
                                 class="mt-1 flex items-center justify-between gap-6"
                             >
-                                <p :class="[
-                                    'text-sm font-black uppercase tracking-tight',
-                                    athlete.coach?.name ? 'text-foreground' : 'text-muted-foreground/60'
-                                ]">
+                                <p
+                                    :class="[
+                                        'text-sm font-black tracking-tight uppercase',
+                                        athlete.coach?.name
+                                            ? 'text-foreground'
+                                            : 'text-muted-foreground/60',
+                                    ]"
+                                >
                                     {{
                                         athlete.coach?.name ||
                                         'BELUM ADA PELATIH'
@@ -360,7 +361,7 @@ const trainingChartSeries = computed(() => [
                                 </p>
                                 <button
                                     @click="toggleEditCoach"
-                                    class="text-[10px] font-black text-accent transition-all hover:scale-105 active:scale-95 bg-accent/10 px-2 py-1 rounded-md"
+                                    class="rounded-md bg-accent/10 px-2 py-1 text-[10px] font-black text-accent transition-all hover:scale-105 active:scale-95"
                                 >
                                     GANTI
                                 </button>

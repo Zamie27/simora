@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Kategori;
 use App\Models\LogLatihan;
-use App\Models\ProfilAtlet;
 use App\Models\Role;
 use App\Models\User;
 use App\Repositories\TrainingLogRepository;
@@ -12,7 +11,6 @@ use App\Services\TrainingLogService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 

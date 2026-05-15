@@ -73,7 +73,7 @@ class CoachDashboardTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertInertia(fn ($page) => $page
-            ->component('pelatih/Dashboard')
+            ->component('dashboard/Pelatih')
             ->has('stats.total_athletes')
             ->where('stats.total_athletes', 1)
             ->has('upcomingSessions')

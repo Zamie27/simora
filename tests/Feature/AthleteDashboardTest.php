@@ -53,7 +53,7 @@ class AthleteDashboardTest extends TestCase
         $response = $this->actingAs($user)->get(route('atlet.dashboard'));
         $response->assertStatus(200);
         $response->assertInertia(fn ($page) => $page
-            ->component('atlet/Dashboard')
+            ->component('dashboard/Atlet')
         );
     }
 

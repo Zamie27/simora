@@ -421,8 +421,11 @@ watch(
                         </div>
 
                         <!-- Coach Info -->
-                        <div class="flex items-center gap-2 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40">
-                             <UserCircle class="h-3 w-3" /> Pelatih: {{ event.coach?.name || 'Unknown' }}
+                        <div
+                            class="flex items-center gap-2 text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                        >
+                            <UserCircle class="h-3 w-3" /> Pelatih:
+                            {{ event.coach?.name || 'Unknown' }}
                         </div>
 
                         <!-- Date & Title -->
@@ -597,7 +600,9 @@ watch(
                                             >
                                             <span
                                                 class="text-[10px] font-medium text-muted-foreground"
-                                                >Jika dicentang, hanya atlet dengan lisensi aktif yang dapat berpartisipasi.</span
+                                                >Jika dicentang, hanya atlet
+                                                dengan lisensi aktif yang dapat
+                                                berpartisipasi.</span
                                             >
                                         </div>
                                     </div>
@@ -620,7 +625,8 @@ watch(
                                 <p
                                     class="flex items-center gap-2 text-[10px] font-black tracking-[0.3em] text-orange-500 uppercase italic opacity-80"
                                 >
-                                    <Users class="h-3.5 w-3.5" /> Daftar Atlet & Poin Kejuaraan
+                                    <Users class="h-3.5 w-3.5" /> Daftar Atlet &
+                                    Poin Kejuaraan
                                 </p>
                                 <div
                                     class="grid max-h-64 grid-cols-1 gap-3 overflow-y-auto rounded-3xl border border-border bg-muted/10 p-6"
@@ -668,11 +674,26 @@ watch(
                                                 >
                                             </div>
                                             <div
-                                                v-if="isAthleteSelected(athlete.id)"
+                                                v-if="
+                                                    isAthleteSelected(
+                                                        athlete.id,
+                                                    )
+                                                "
                                                 class="rounded-full bg-accent p-1 text-white"
                                             >
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7" />
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-3 w-3"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="4"
+                                                        d="M5 13l4 4L19 7"
+                                                    />
                                                 </svg>
                                             </div>
                                         </div>
@@ -683,11 +704,22 @@ watch(
                                         >
                                             <Label
                                                 class="mb-2 block text-[8px] font-black uppercase opacity-40"
-                                                >Pilih Poin Kejuaraan / Kategori</Label
+                                                >Pilih Poin Kejuaraan /
+                                                Kategori</Label
                                             >
                                             <select
-                                                :value="getSelectedAthletePoint(athlete.id)"
-                                                @change="(e: any) => updateAthletePoint(athlete.id, e.target.value)"
+                                                :value="
+                                                    getSelectedAthletePoint(
+                                                        athlete.id,
+                                                    )
+                                                "
+                                                @change="
+                                                    (e: any) =>
+                                                        updateAthletePoint(
+                                                            athlete.id,
+                                                            e.target.value,
+                                                        )
+                                                "
                                                 class="h-10 w-full rounded-xl border border-border bg-card px-4 text-[10px] font-bold uppercase focus:ring-accent focus:outline-none"
                                             >
                                                 <option value="null">
@@ -711,7 +743,13 @@ watch(
                                 :disabled="form.processing"
                                 class="mt-4 rounded-[2rem] bg-accent py-6 text-xs font-black tracking-[0.3em] text-white uppercase shadow-2xl shadow-accent/40 transition-all hover:scale-[1.02] hover:bg-accent/90 active:scale-[0.98] disabled:opacity-50"
                             >
-                                {{ form.processing ? 'Menyimpan...' : (editingEvent ? 'Perbarui Agenda Event' : 'Simpan Agenda Event') }}
+                                {{
+                                    form.processing
+                                        ? 'Menyimpan...'
+                                        : editingEvent
+                                          ? 'Perbarui Agenda Event'
+                                          : 'Simpan Agenda Event'
+                                }}
                             </button>
                         </form>
                     </div>
@@ -754,22 +792,49 @@ watch(
                     >
                         <!-- Event Types -->
                         <div class="space-y-6">
-                            <h3 class="flex items-center gap-2 text-xs font-black tracking-widest uppercase">
-                                <Flag class="h-4 w-4 text-orange-500" /> Jenis Event
+                            <h3
+                                class="flex items-center gap-2 text-xs font-black tracking-widest uppercase"
+                            >
+                                <Flag class="h-4 w-4 text-orange-500" /> Jenis
+                                Event
                             </h3>
                             <form @submit.prevent="addType" class="flex gap-2">
-                                <Input v-model="typeForm.name" class="h-12 rounded-xl border-none bg-muted/30 px-4 text-xs font-bold" placeholder="Tambah Jenis Event..." />
-                                <button type="submit" :disabled="typeForm.processing" class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-white transition-all hover:bg-accent/80">
+                                <Input
+                                    v-model="typeForm.name"
+                                    class="h-12 rounded-xl border-none bg-muted/30 px-4 text-xs font-bold"
+                                    placeholder="Tambah Jenis Event..."
+                                />
+                                <button
+                                    type="submit"
+                                    :disabled="typeForm.processing"
+                                    class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-white transition-all hover:bg-accent/80"
+                                >
                                     <Plus class="h-5 w-5" />
                                 </button>
                             </form>
                             <div class="space-y-2">
-                                <div v-for="type in eventTypes" :key="type.id" class="flex items-center justify-between rounded-xl border border-border bg-card p-4">
+                                <div
+                                    v-for="type in eventTypes"
+                                    :key="type.id"
+                                    class="flex items-center justify-between rounded-xl border border-border bg-card p-4"
+                                >
                                     <div class="flex flex-col gap-1">
-                                        <span class="text-xs font-bold uppercase">{{ type.name }}</span>
-                                        <span class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-40">Oleh: {{ type.coach?.name || 'System' }}</span>
+                                        <span
+                                            class="text-xs font-bold uppercase"
+                                            >{{ type.name }}</span
+                                        >
+                                        <span
+                                            class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                            >Oleh:
+                                            {{
+                                                type.coach?.name || 'System'
+                                            }}</span
+                                        >
                                     </div>
-                                    <button @click="deleteType(type.id)" class="text-destructive opacity-40 transition-opacity hover:opacity-100">
+                                    <button
+                                        @click="deleteType(type.id)"
+                                        class="text-destructive opacity-40 transition-opacity hover:opacity-100"
+                                    >
                                         <Trash2 class="h-4 w-4" />
                                     </button>
                                 </div>
@@ -778,22 +843,49 @@ watch(
 
                         <!-- Event Points -->
                         <div class="space-y-6">
-                            <h3 class="flex items-center gap-2 text-xs font-black tracking-widest uppercase">
-                                <Trophy class="h-4 w-4 text-accent" /> Poin Kejuaraan
+                            <h3
+                                class="flex items-center gap-2 text-xs font-black tracking-widest uppercase"
+                            >
+                                <Trophy class="h-4 w-4 text-accent" /> Poin
+                                Kejuaraan
                             </h3>
                             <form @submit.prevent="addPoint" class="flex gap-2">
-                                <Input v-model="pointForm.name" class="h-12 rounded-xl border-none bg-muted/30 px-4 text-xs font-bold" placeholder="Tambah Poin/Kategori..." />
-                                <button type="submit" :disabled="pointForm.processing" class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-white transition-all hover:bg-accent/80">
+                                <Input
+                                    v-model="pointForm.name"
+                                    class="h-12 rounded-xl border-none bg-muted/30 px-4 text-xs font-bold"
+                                    placeholder="Tambah Poin/Kategori..."
+                                />
+                                <button
+                                    type="submit"
+                                    :disabled="pointForm.processing"
+                                    class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-white transition-all hover:bg-accent/80"
+                                >
                                     <Plus class="h-5 w-5" />
                                 </button>
                             </form>
                             <div class="space-y-2">
-                                <div v-for="point in eventPoints" :key="point.id" class="flex items-center justify-between rounded-xl border border-border bg-card p-4">
+                                <div
+                                    v-for="point in eventPoints"
+                                    :key="point.id"
+                                    class="flex items-center justify-between rounded-xl border border-border bg-card p-4"
+                                >
                                     <div class="flex flex-col gap-1">
-                                        <span class="text-xs font-bold uppercase">{{ point.name }}</span>
-                                        <span class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-40">Oleh: {{ point.coach?.name || 'System' }}</span>
+                                        <span
+                                            class="text-xs font-bold uppercase"
+                                            >{{ point.name }}</span
+                                        >
+                                        <span
+                                            class="text-[8px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                            >Oleh:
+                                            {{
+                                                point.coach?.name || 'System'
+                                            }}</span
+                                        >
                                     </div>
-                                    <button @click="deletePoint(point.id)" class="text-destructive opacity-40 transition-opacity hover:opacity-100">
+                                    <button
+                                        @click="deletePoint(point.id)"
+                                        class="text-destructive opacity-40 transition-opacity hover:opacity-100"
+                                    >
                                         <Trash2 class="h-4 w-4" />
                                     </button>
                                 </div>
@@ -815,52 +907,130 @@ watch(
                         class="flex items-center justify-between border-b border-border bg-muted/20 p-8 md:p-10"
                     >
                         <div class="flex items-center gap-6">
-                            <div :class="getTypeColor(selectedEvent.event_type_id)" class="flex h-20 w-20 items-center justify-center rounded-3xl border shadow-xl">
-                                <Trophy v-if="selectedEvent.type?.name.toLowerCase().includes('race')" class="h-10 w-10" />
+                            <div
+                                :class="
+                                    getTypeColor(selectedEvent.event_type_id)
+                                "
+                                class="flex h-20 w-20 items-center justify-center rounded-3xl border shadow-xl"
+                            >
+                                <Trophy
+                                    v-if="
+                                        selectedEvent.type?.name
+                                            .toLowerCase()
+                                            .includes('race')
+                                    "
+                                    class="h-10 w-10"
+                                />
                                 <Users v-else class="h-10 w-10" />
                             </div>
                             <div>
-                                <h2 class="text-3xl leading-none font-black tracking-tighter text-foreground uppercase italic">{{ selectedEvent.title }}</h2>
-                                <p class="mt-2 flex items-center gap-2 text-[10px] font-black tracking-widest text-accent uppercase opacity-80">
-                                    <Calendar class="h-3 w-3" /> {{ formatDate(selectedEvent.event_date) }}
+                                <h2
+                                    class="text-3xl leading-none font-black tracking-tighter text-foreground uppercase italic"
+                                >
+                                    {{ selectedEvent.title }}
+                                </h2>
+                                <p
+                                    class="mt-2 flex items-center gap-2 text-[10px] font-black tracking-widest text-accent uppercase opacity-80"
+                                >
+                                    <Calendar class="h-3 w-3" />
+                                    {{ formatDate(selectedEvent.event_date) }}
                                     <span class="mx-2 opacity-20">|</span>
-                                    <MapPin class="h-3 w-3" /> {{ selectedEvent.location || 'No Location' }}
+                                    <MapPin class="h-3 w-3" />
+                                    {{
+                                        selectedEvent.location || 'No Location'
+                                    }}
                                 </p>
                             </div>
                         </div>
-                        <button @click="showDetailModal = false" class="rounded-full bg-white/5 p-3 text-muted-foreground transition-all hover:bg-white/10">
+                        <button
+                            @click="showDetailModal = false"
+                            class="rounded-full bg-white/5 p-3 text-muted-foreground transition-all hover:bg-white/10"
+                        >
                             <X class="h-6 w-6" />
                         </button>
                     </div>
 
-                    <div class="custom-scrollbar grid max-h-[70vh] grid-cols-1 gap-10 overflow-y-auto p-10 md:grid-cols-3">
+                    <div
+                        class="custom-scrollbar grid max-h-[70vh] grid-cols-1 gap-10 overflow-y-auto p-10 md:grid-cols-3"
+                    >
                         <div class="space-y-8 md:col-span-1">
-                            <div v-if="selectedEvent.description" class="space-y-3">
-                                <h4 class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40">Deskripsi Event</h4>
-                                <p class="text-sm leading-relaxed font-medium italic">{{ selectedEvent.description }}</p>
+                            <div
+                                v-if="selectedEvent.description"
+                                class="space-y-3"
+                            >
+                                <h4
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                >
+                                    Deskripsi Event
+                                </h4>
+                                <p
+                                    class="text-sm leading-relaxed font-medium italic"
+                                >
+                                    {{ selectedEvent.description }}
+                                </p>
                             </div>
                             <div class="space-y-3">
-                                <h4 class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40">Dibuat Oleh</h4>
-                                <p class="text-sm font-black uppercase text-accent">{{ selectedEvent.coach?.name || 'Unknown' }}</p>
+                                <h4
+                                    class="text-[10px] font-black tracking-widest text-muted-foreground uppercase opacity-40"
+                                >
+                                    Dibuat Oleh
+                                </h4>
+                                <p
+                                    class="text-sm font-black text-accent uppercase"
+                                >
+                                    {{ selectedEvent.coach?.name || 'Unknown' }}
+                                </p>
                             </div>
                         </div>
 
                         <div class="space-y-6 md:col-span-2">
-                            <h4 class="flex items-center gap-2 text-xs font-black tracking-widest uppercase">
-                                <Users class="h-4 w-4 text-orange-500" /> Daftar Atlet ({{ selectedEvent.athletes.length }})
+                            <h4
+                                class="flex items-center gap-2 text-xs font-black tracking-widest uppercase"
+                            >
+                                <Users class="h-4 w-4 text-orange-500" /> Daftar
+                                Atlet ({{ selectedEvent.athletes.length }})
                             </h4>
                             <div class="grid grid-cols-1 gap-3">
-                                <div v-for="athlete in selectedEvent.athletes" :key="athlete.id" class="flex items-center justify-between rounded-2xl border border-border/50 bg-muted/20 p-6 transition-all hover:bg-muted/40">
+                                <div
+                                    v-for="athlete in selectedEvent.athletes"
+                                    :key="athlete.id"
+                                    class="flex items-center justify-between rounded-2xl border border-border/50 bg-muted/20 p-6 transition-all hover:bg-muted/40"
+                                >
                                     <div class="flex items-center gap-4">
-                                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-card text-xs font-black shadow-sm">
-                                            {{ athlete.name.substring(0, 2).toUpperCase() }}
+                                        <div
+                                            class="flex h-12 w-12 items-center justify-center rounded-xl bg-card text-xs font-black shadow-sm"
+                                        >
+                                            {{
+                                                athlete.name
+                                                    .substring(0, 2)
+                                                    .toUpperCase()
+                                            }}
                                         </div>
                                         <div>
-                                            <p class="text-sm font-black uppercase">{{ athlete.name }}</p>
-                                            <p class="text-[10px] font-bold text-muted-foreground uppercase opacity-60">Kategori: <span class="text-accent">{{ getPointName(athlete.pivot.event_point_id) }}</span></p>
+                                            <p
+                                                class="text-sm font-black uppercase"
+                                            >
+                                                {{ athlete.name }}
+                                            </p>
+                                            <p
+                                                class="text-[10px] font-bold text-muted-foreground uppercase opacity-60"
+                                            >
+                                                Kategori:
+                                                <span class="text-accent">{{
+                                                    getPointName(
+                                                        athlete.pivot
+                                                            .event_point_id,
+                                                    )
+                                                }}</span>
+                                            </p>
                                         </div>
                                     </div>
-                                    <div class="text-[10px] font-black tracking-widest uppercase" :class="getStatusColor(athlete.pivot.status)">
+                                    <div
+                                        class="text-[10px] font-black tracking-widest uppercase"
+                                        :class="
+                                            getStatusColor(athlete.pivot.status)
+                                        "
+                                    >
                                         {{ athlete.pivot.status }}
                                     </div>
                                 </div>
@@ -874,9 +1044,24 @@ watch(
 </template>
 
 <style scoped>
-.custom-scrollbar::-webkit-scrollbar { width: 6px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
-.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.1); }
-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1rem; }
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+}
 </style>

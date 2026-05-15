@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { Head, useForm, router } from '@inertiajs/vue3';
-import { ref, computed } from 'vue';
+import { Head, useForm } from '@inertiajs/vue3';
 import { 
     Shield, 
     FileText, 
@@ -14,14 +13,14 @@ import {
     AlertCircle,
     Eye,
     Upload,
-    Calendar,
     Search,
     Download
 } from 'lucide-vue-next';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { useSnackbar } from '@/composables/useSnackbar';
-import { Label } from '@/components/ui/label';
+import { ref, computed } from 'vue';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useSnackbar } from '@/composables/useSnackbar';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 interface AthleteProfile {
     id: number;
@@ -91,6 +90,7 @@ const handleFileSelect = (key: 'profile_photo' | 'birth_certificate' | 'family_c
         if (localPreviews.value[key]) {
             URL.revokeObjectURL(localPreviews.value[key]!);
         }
+
         localPreviews.value[key] = URL.createObjectURL(file);
     }
 };
@@ -98,6 +98,7 @@ const handleFileSelect = (key: 'profile_photo' | 'birth_certificate' | 'family_c
 const submitPersonalDocs = () => {
     if (!isAnyFileSelected.value) {
         snackbar.info('Tidak ada dokumen yang diubah.');
+
         return;
     }
 
@@ -108,7 +109,9 @@ const submitPersonalDocs = () => {
             snackbar.success('Dokumen pribadi berhasil diunggah dan diperbarui.');
             // Clear local previews after successful upload
             Object.values(localPreviews.value).forEach(url => {
-                if (url) URL.revokeObjectURL(url);
+                if (url) {
+URL.revokeObjectURL(url);
+}
             });
             localPreviews.value = {
                 profile_photo: null,
@@ -126,11 +129,13 @@ const submitPersonalDocs = () => {
 
 // --- MANAJEMEN LOGIC ---
 const searchQuery = ref('');
-const selectedAthlete = ref<User | null>(null);
 const detailedAthlete = ref<User | null>(null);
 
 const filteredAthletes = computed(() => {
-    if (!props.athletes) return [];
+    if (!props.athletes) {
+return [];
+}
+
     return props.athletes.filter(a => 
         a.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
         a.email.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -143,30 +148,16 @@ const licenseForm = useForm({
     license_file: null as File | null,
 });
 
-const openLicenseModal = (athlete: User) => {
-    selectedAthlete.value = athlete;
-    licenseForm.uci_id = athlete.athlete_profile?.uci_id || '';
-    licenseForm.license_valid_until = athlete.athlete_profile?.license_valid_until || '';
-    licenseForm.license_file = null;
-};
-
 const submitLicense = () => {
-    const targetId = detailedAthlete.value?.id || selectedAthlete.value?.id;
-    if (!targetId) return;
+    if (!detailedAthlete.value) {
+return;
+}
     
-    licenseForm.post(`/lisensi-uci/update/${targetId}`, {
+    licenseForm.post(`/lisensi-uci/update/${detailedAthlete.value.id}`, {
         forceFormData: true,
         preserveScroll: true,
         onSuccess: () => {
             snackbar.success(`Lisensi UCI berhasil diperbarui.`);
-            selectedAthlete.value = null;
-            // Update detailedAthlete with new data if it's the one being edited
-            if (detailedAthlete.value && detailedAthlete.value.id === targetId) {
-                // Since props are updated, Inertia will refresh the data. 
-                // However, detailedAthlete is a local ref. 
-                // We should probably rely on the props update.
-                // For simplicity, let's just close the modal if it's from modal.
-            }
             licenseForm.reset();
         },
         onError: () => {
@@ -193,7 +184,10 @@ const viewAthleteDetail = (athlete: User) => {
 };
 
 const formatDate = (dateString: string | null) => {
-    if (!dateString) return '-';
+    if (!dateString) {
+return '-';
+}
+
     return new Date(dateString).toLocaleDateString('id-ID', {
         day: 'numeric',
         month: 'long',
@@ -202,7 +196,10 @@ const formatDate = (dateString: string | null) => {
 };
 
 const isLicenseValid = (dateString: string | null) => {
-    if (!dateString) return false;
+    if (!dateString) {
+return false;
+}
+
     return new Date(dateString) >= new Date();
 };
 
@@ -661,62 +658,6 @@ const getThumbnailUrl = (athleteId: number, type: string) => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MODAL: MANAJEMEN UPDATE LICENSE -->
-            <div v-if="selectedAthlete" class="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-xl">
-                <div class="w-full max-w-xl animate-in fade-in zoom-in duration-300 rounded-[3rem] border border-border bg-card shadow-[0_100px_150px_-50px_rgba(0,0,0,0.5)] overflow-hidden">
-                    <div class="flex items-center justify-between border-b border-border p-10 bg-muted/20">
-                        <div>
-                            <p class="text-[10px] font-black text-accent uppercase tracking-widest mb-1">Manajemen Lisensi</p>
-                            <h2 class="text-2xl font-black tracking-tight uppercase truncate max-w-[300px]">{{ selectedAthlete.name }}</h2>
-                        </div>
-                        <button @click="selectedAthlete = null" class="p-4 rounded-full bg-white/5 hover:bg-destructive/10 hover:text-destructive transition-all">
-                            <X class="h-6 w-6" />
-                        </button>
-                    </div>
-
-                    <div class="p-10 space-y-8">
-                        <div v-if="Object.keys(licenseForm.errors).length > 0" class="p-4 rounded-2xl bg-destructive/10 border border-destructive/20 mb-6">
-                            <div class="flex items-center gap-3 text-destructive mb-2">
-                                <AlertCircle class="h-5 w-5" />
-                                <span class="text-xs font-black uppercase">Terjadi Kesalahan</span>
-                            </div>
-                            <ul class="list-disc list-inside space-y-1">
-                                <li v-for="(error, key) in licenseForm.errors" :key="key" class="text-[10px] font-bold text-destructive/80 uppercase">
-                                    {{ error }}
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="space-y-3">
-                            <Label class="text-[10px] font-black uppercase opacity-60">UCI ID</Label>
-                            <Input v-model="licenseForm.uci_id" placeholder="Masukkan UCI ID..." class="h-14 rounded-2xl border-border bg-muted/30 px-6 font-black" required />
-                        </div>
-
-                        <div class="space-y-3">
-                            <Label class="text-[10px] font-black uppercase opacity-60">Tanggal Berlaku</Label>
-                            <Input v-model="licenseForm.license_valid_until" type="date" class="h-14 rounded-2xl border-border bg-muted/30 px-6 font-black" required />
-                        </div>
-
-                        <div class="space-y-3">
-                            <Label class="text-[10px] font-black uppercase opacity-60">Dokumen Lisensi (PDF/Image)</Label>
-                            <div class="p-6 rounded-2xl border border-dashed border-border bg-muted/10 flex flex-col items-center gap-4 text-center">
-                                <Upload class="h-8 w-8 text-muted-foreground opacity-40" />
-                                <div class="space-y-1">
-                                    <input type="file" @input="licenseForm.license_file = ($event.target as HTMLInputElement).files?.[0] || null" class="text-[10px] font-black" />
-                                    <p class="text-[9px] text-muted-foreground font-medium">Unggah salinan sertifikat lisensi UCI.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-4 pt-4">
-                            <button type="button" @click="selectedAthlete = null" class="flex-1 py-5 rounded-2xl bg-muted/40 text-[10px] font-black uppercase hover:bg-muted/60">Batal</button>
-                            <button type="button" @click="submitLicense" :disabled="licenseForm.processing" class="flex-[2] py-5 rounded-2xl bg-accent text-[10px] font-black text-white uppercase shadow-xl shadow-accent/30 hover:bg-accent/90">
-                                {{ licenseForm.processing ? 'Menyimpan...' : 'Simpan Lisensi' }}
-                            </button>
                         </div>
                     </div>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -17,23 +18,23 @@ class BandingkanPerformaDanMemfilterRiwayatControllerTest extends TestCase
         parent::setUp();
         // Clear users to have a clean slate for each test
         User::query()->delete();
-        
+
         // Ensure roles exist
         $roles = ['Manajemen', 'Pelatih', 'Atlet', 'Report'];
         foreach ($roles as $name) {
-            \App\Models\Role::firstOrCreate(['name' => $name]);
+            Role::firstOrCreate(['name' => $name]);
         }
     }
 
     public function test_management_can_view_all_athletes(): void
     {
-        $managementRole = \App\Models\Role::where('name', 'Manajemen')->first();
+        $managementRole = Role::where('name', 'Manajemen')->first();
         $management = User::factory()->create(['role_id' => $managementRole->id]);
 
-        $coachRole = \App\Models\Role::where('name', 'Pelatih')->first();
+        $coachRole = Role::where('name', 'Pelatih')->first();
         $coach = User::factory()->create(['role_id' => $coachRole->id]);
 
-        $atletRole = \App\Models\Role::where('name', 'Atlet')->first();
+        $atletRole = Role::where('name', 'Atlet')->first();
         $atlet1 = User::factory()->create(['role_id' => $atletRole->id, 'coach_id' => $coach->id]);
         $atlet2 = User::factory()->create(['role_id' => $atletRole->id]);
 
@@ -49,11 +50,11 @@ class BandingkanPerformaDanMemfilterRiwayatControllerTest extends TestCase
 
     public function test_coach_can_only_view_their_athletes(): void
     {
-        $coachRole = \App\Models\Role::where('name', 'Pelatih')->first();
+        $coachRole = Role::where('name', 'Pelatih')->first();
         $coach1 = User::factory()->create(['role_id' => $coachRole->id]);
         $coach2 = User::factory()->create(['role_id' => $coachRole->id]);
 
-        $atletRole = \App\Models\Role::where('name', 'Atlet')->first();
+        $atletRole = Role::where('name', 'Atlet')->first();
         User::factory()->count(2)->create(['role_id' => $atletRole->id, 'coach_id' => $coach1->id]);
         User::factory()->count(3)->create(['role_id' => $atletRole->id, 'coach_id' => $coach2->id]);
 
@@ -69,16 +70,16 @@ class BandingkanPerformaDanMemfilterRiwayatControllerTest extends TestCase
 
     public function test_coach_cannot_get_comparison_data_for_unassigned_athletes(): void
     {
-        $coachRole = \App\Models\Role::where('name', 'Pelatih')->first();
+        $coachRole = Role::where('name', 'Pelatih')->first();
         $coach = User::factory()->create(['role_id' => $coachRole->id]);
 
-        $atletRole = \App\Models\Role::where('name', 'Atlet')->first();
+        $atletRole = Role::where('name', 'Atlet')->first();
         $atlet1 = User::factory()->create(['role_id' => $atletRole->id, 'coach_id' => $coach->id]);
         $atlet2 = User::factory()->create(['role_id' => $atletRole->id]); // Unassigned
 
         $response = $this->actingAs($coach)
             ->getJson(route('pelatih.komparasi.comparison.data', [
-                'athlete_ids' => [$atlet1->id, $atlet2->id]
+                'athlete_ids' => [$atlet1->id, $atlet2->id],
             ]));
 
         $response->assertStatus(403);

@@ -89,8 +89,8 @@ const mainNavItems = computed<NavItem[]>(() => {
                 icon: ShieldCheck,
             },
             {
-                title: 'Pengaturan Event',
-                href: '/manajemen/pengaturan-acara',
+                title: 'Event & Target',
+                href: '/manajemen/acara',
                 icon: Trophy,
             },
         );

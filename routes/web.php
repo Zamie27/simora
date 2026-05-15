@@ -78,8 +78,11 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
         Route::get('laporan', [LihatLaporanRiwayatPerformaController::class, 'tampilData'])->name('laporan.index');
         Route::post('laporan/export', [LihatLaporanRiwayatPerformaController::class, 'eksporData'])->name('laporan.export');
 
-        // Event Settings
-        Route::get('pengaturan-acara', [KelolaEventDanPartisipasiController::class, 'tampilData'])->name('pengaturan-acara.index');
+        // Event Management
+        Route::get('acara', [KelolaEventDanPartisipasiController::class, 'tampilData'])->name('acara.index');
+        Route::post('acara', [KelolaEventDanPartisipasiController::class, 'simpanData'])->name('acara.store');
+        Route::patch('acara/{acara}', [KelolaEventDanPartisipasiController::class, 'perbaruiData'])->name('acara.update');
+        Route::delete('acara/{acara}', [KelolaEventDanPartisipasiController::class, 'hapusData'])->name('acara.destroy');
         Route::post('tipe-acara', [KelolaEventDanPartisipasiController::class, 'simpanTipe'])->name('tipe-acara.store');
         Route::patch('tipe-acara/{tipe}', [KelolaEventDanPartisipasiController::class, 'perbaruiTipe'])->name('tipe-acara.update');
         Route::delete('tipe-acara/{tipe}', [KelolaEventDanPartisipasiController::class, 'hapusTipe'])->name('tipe-acara.destroy');

@@ -96,9 +96,41 @@ class KelolaEventDanPartisipasiController extends Controller
      */
     private function managementIndex(Request $permintaan): Response
     {
-        return Inertia::render('kelola-event/PengaturanEvent', [
-            'eventTypes' => JenisEvent::with('coach')->latest()->get(),
-            'eventPoints' => PoinEvent::with('coach')->latest()->get(),
+        $daftarAcara = Event::with(['type', 'participants.user', 'participants.point', 'coach'])
+            ->orderBy('event_date', 'desc')
+            ->get();
+
+        $daftarAcara->each(function ($acara) {
+            if ($acara instanceof Model) {
+                $acara->setRelation('athletes', $acara->participants->map(function ($p) {
+                    $pengguna = $p->user;
+                    if ($pengguna instanceof Model) {
+                        $pengguna->setRelation('pivot', $p);
+                    }
+
+                    return $pengguna;
+                })->filter());
+            }
+            $acara->athletes_count = $acara->participants->count();
+        });
+
+        $daftarAtlet = User::whereRole('Atlet')
+            ->with('athleteProfile')
+            ->get(['id', 'name'])
+            ->map(function ($atlet) {
+                return [
+                    'id' => $atlet->id,
+                    'name' => $atlet->name,
+                    'has_valid_license' => $atlet->hasValidLicense(),
+                ];
+            });
+
+        return Inertia::render('kelola-event/Manajemen', [
+            'events' => $daftarAcara,
+            'athletes' => $daftarAtlet,
+            'eventTypes' => JenisEvent::with('coach')->get(),
+            'eventPoints' => PoinEvent::with('coach')->get(),
+            'categories' => Kategori::orderBy('name')->get(),
         ]);
     }
 
@@ -246,7 +278,8 @@ class KelolaEventDanPartisipasiController extends Controller
 
     public function simpanData(Request $permintaan)
     {
-        if ($permintaan->user()->role->name !== 'Pelatih') {
+        $role = $permintaan->user()->role->name;
+        if (! in_array($role, ['Pelatih', 'Manajemen'])) {
             abort(403);
         }
 
@@ -285,11 +318,14 @@ class KelolaEventDanPartisipasiController extends Controller
 
     public function perbaruiData(Request $permintaan, Event $acara)
     {
-        if ($permintaan->user()->role->name !== 'Pelatih') {
+        $role = $permintaan->user()->role->name;
+        if (! in_array($role, ['Pelatih', 'Manajemen'])) {
             abort(403);
         }
 
-        Gate::authorize('update', $acara);
+        if ($role === 'Pelatih') {
+            Gate::authorize('update', $acara);
+        }
 
         $dataTervalidasi = $permintaan->validate([
             'title' => 'required|string|max:255',
@@ -327,11 +363,14 @@ class KelolaEventDanPartisipasiController extends Controller
 
     public function hapusData(Request $permintaan, Event $acara)
     {
-        if ($permintaan->user()->role->name !== 'Pelatih') {
+        $role = $permintaan->user()->role->name;
+        if (! in_array($role, ['Pelatih', 'Manajemen'])) {
             abort(403);
         }
 
-        Gate::authorize('delete', $acara);
+        if ($role === 'Pelatih') {
+            Gate::authorize('delete', $acara);
+        }
         $acara->delete();
 
         return back()->with('success', 'Event berhasil dihapus');
@@ -339,11 +378,14 @@ class KelolaEventDanPartisipasiController extends Controller
 
     public function perbaruiPartisipasi(Request $permintaan, Event $acara, User $atlet)
     {
-        if ($permintaan->user()->role->name !== 'Pelatih') {
+        $role = $permintaan->user()->role->name;
+        if (! in_array($role, ['Pelatih', 'Manajemen'])) {
             abort(403);
         }
 
-        Gate::authorize('update', $acara);
+        if ($role === 'Pelatih') {
+            Gate::authorize('update', $acara);
+        }
 
         $dataTervalidasi = $permintaan->validate([
             'status' => 'required|string|in:planned,participated,cancelled',

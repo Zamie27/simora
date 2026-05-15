@@ -1,1 +1,0 @@
-import{st as e}from"./app-BkdX2rIP.js";var t=e(`ClockIcon`,[[`circle`,{cx:`12`,cy:`12`,r:`10`,key:`1mglay`}],[`polyline`,{points:`12 6 12 12 16 14`,key:`68esgv`}]]);export{t};

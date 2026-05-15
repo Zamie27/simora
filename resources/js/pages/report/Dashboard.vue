@@ -36,7 +36,10 @@ interface LaporanBug {
 }
 
 const formatDateTime = (dateStr: string | null) => {
-    if (!dateStr) return '-';
+    if (!dateStr) {
+return '-';
+}
+
     const date = new Date(dateStr);
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -44,6 +47,7 @@ const formatDateTime = (dateStr: string | null) => {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
+
     return `${hours}:${minutes}:${seconds} / ${day}/${month}/${year}`;
 };
 
@@ -264,7 +268,11 @@ const updateStatus = (reportId: number, newStatus: string) => {
                                         {{ report.title }}
                                     </td>
                                     <td class="px-4 py-3 text-xs">
-                                        {{ formatDateTime(report.in_progress_at) }}
+                                        {{
+                                            formatDateTime(
+                                                report.in_progress_at,
+                                            )
+                                        }}
                                     </td>
                                     <td class="px-4 py-3 text-xs">
                                         {{ formatDateTime(report.resolved_at) }}
@@ -462,21 +470,33 @@ const updateStatus = (reportId: number, newStatus: string) => {
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="rounded-lg bg-blue-50/50 p-4 border border-blue-100">
+                        <div
+                            class="rounded-lg border border-blue-100 bg-blue-50/50 p-4"
+                        >
                             <div
                                 class="mb-1 text-xs font-semibold text-blue-600 uppercase"
                             >
                                 Mulai Dikerjakan
                             </div>
-                            <div class="text-sm font-medium">{{ formatDateTime(selectedReport.in_progress_at) }}</div>
+                            <div class="text-sm font-medium">
+                                {{
+                                    formatDateTime(
+                                        selectedReport.in_progress_at,
+                                    )
+                                }}
+                            </div>
                         </div>
-                        <div class="rounded-lg bg-green-50/50 p-4 border border-green-100">
+                        <div
+                            class="rounded-lg border border-green-100 bg-green-50/50 p-4"
+                        >
                             <div
                                 class="mb-1 text-xs font-semibold text-green-600 uppercase"
                             >
                                 Selesai Diperbaiki
                             </div>
-                            <div class="text-sm font-medium">{{ formatDateTime(selectedReport.resolved_at) }}</div>
+                            <div class="text-sm font-medium">
+                                {{ formatDateTime(selectedReport.resolved_at) }}
+                            </div>
                         </div>
                     </div>
 

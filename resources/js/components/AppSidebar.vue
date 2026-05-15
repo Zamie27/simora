@@ -49,22 +49,22 @@ const mainNavItems = computed<NavItem[]>(() => {
     if (roleName.value === 'Manajemen') {
         items.push(
             {
-                title: 'Managemen User',
+                title: 'Manajemen Pengguna',
                 href: '/manajemen/users',
                 icon: Users,
             },
             {
-                title: 'Aktivasi User',
+                title: 'Verifikasi Pendaftaran',
                 href: '/manajemen/pending',
                 icon: ShieldCheck,
             },
             {
-                title: 'Daftar Atlet',
+                title: 'Ringkasan Daftar Atlet',
                 href: '/manajemen/atlet',
                 icon: UserCheck,
             },
             {
-                title: 'Managemen Kategori',
+                title: 'Kategori Atlet',
                 href: '/manajemen/kategori',
                 icon: BookOpen,
             },
@@ -79,12 +79,12 @@ const mainNavItems = computed<NavItem[]>(() => {
                 icon: FileText,
             },
             {
-                title: 'Lisensi UCI',
+                title: 'Dokumen Lisensi UCI',
                 href: '/lisensi-uci',
                 icon: ShieldCheck,
             },
             {
-                title: 'Setting Event',
+                title: 'Pengaturan Event',
                 href: '/manajemen/pengaturan-acara',
                 icon: Trophy,
             },

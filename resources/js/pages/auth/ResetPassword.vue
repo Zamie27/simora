@@ -31,10 +31,10 @@ const submit = () => {
 
 <template>
     <AuthBase
-        title="Reset password"
-        description="Please enter your new password below"
+        title="Reset kata sandi"
+        description="Silakan masukkan kata sandi baru Anda di bawah ini"
     >
-        <Head title="Reset password" />
+        <Head title="Reset kata sandi" />
 
         <form @submit.prevent="submit" class="grid gap-6">
             <div class="grid gap-2">
@@ -51,27 +51,27 @@ const submit = () => {
             </div>
 
             <div class="grid gap-2">
-                <Label for="password">Password</Label>
+                <Label for="password">Kata Sandi Baru</Label>
                 <PasswordInput
                     id="password"
                     v-model="form.password"
                     autocomplete="new-password"
                     class="mt-1 block w-full"
                     autofocus
-                    placeholder="Password"
+                    placeholder="Kata Sandi Baru"
                 />
                 <PasswordRequirement :password="form.password" />
                 <InputError :message="form.errors.password" />
             </div>
 
             <div class="grid gap-2">
-                <Label for="password_confirmation">Confirm password</Label>
+                <Label for="password_confirmation">Konfirmasi Kata Sandi</Label>
                 <PasswordInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
                     autocomplete="new-password"
                     class="mt-1 block w-full"
-                    placeholder="Confirm password"
+                    placeholder="Konfirmasi Kata Sandi"
                 />
                 <InputError :message="form.errors.password_confirmation" />
             </div>
@@ -83,7 +83,7 @@ const submit = () => {
                 data-test="reset-password-button"
             >
                 <Spinner v-if="form.processing" />
-                Reset password
+                Reset kata sandi
             </Button>
         </form>
     </AuthBase>

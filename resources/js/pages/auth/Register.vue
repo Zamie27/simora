@@ -28,15 +28,15 @@ const submit = () => {
 
 <template>
     <AuthBase
-        title="Create an account"
-        description="Enter your details below to create your account"
+        title="Buat akun baru"
+        description="Masukkan detail Anda di bawah ini untuk membuat akun"
     >
-        <Head title="Register" />
+        <Head title="Daftar" />
 
         <form @submit.prevent="submit" class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="name">Name</Label>
+                    <Label for="name">Nama Lengkap</Label>
                     <Input
                         id="name"
                         type="text"
@@ -45,13 +45,13 @@ const submit = () => {
                         autofocus
                         :tabindex="1"
                         autocomplete="name"
-                        placeholder="Full name"
+                        placeholder="Nama lengkap"
                     />
                     <InputError :message="form.errors.name" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label for="email">Alamat Email</Label>
                     <Input
                         id="email"
                         type="email"
@@ -59,34 +59,34 @@ const submit = () => {
                         required
                         :tabindex="2"
                         autocomplete="email"
-                        placeholder="email@example.com"
+                        placeholder="email@contoh.com"
                     />
                     <InputError :message="form.errors.email" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password">Password</Label>
+                    <Label for="password">Kata Sandi</Label>
                     <PasswordInput
                         id="password"
                         v-model="form.password"
                         required
                         :tabindex="3"
                         autocomplete="new-password"
-                        placeholder="Password"
+                        placeholder="Kata Sandi"
                     />
                     <PasswordRequirement :password="form.password" />
                     <InputError :message="form.errors.password" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password_confirmation">Confirm password</Label>
+                    <Label for="password_confirmation">Konfirmasi Kata Sandi</Label>
                     <PasswordInput
                         id="password_confirmation"
                         v-model="form.password_confirmation"
                         required
                         :tabindex="4"
                         autocomplete="new-password"
-                        placeholder="Confirm password"
+                        placeholder="Konfirmasi Kata Sandi"
                     />
                     <InputError :message="form.errors.password_confirmation" />
                 </div>
@@ -99,17 +99,17 @@ const submit = () => {
                     data-test="register-user-button"
                 >
                     <Spinner v-if="form.processing" />
-                    Create account
+                    Daftar
                 </Button>
             </div>
 
             <div class="text-center text-sm text-muted-foreground">
-                Already have an account?
+                Sudah punya akun?
                 <TextLink
                     :href="login()"
-                    class="underline underline-offset-4"
+                    class="ml-1 underline underline-offset-4"
                     :tabindex="6"
-                    >Log in</TextLink
+                    >Masuk</TextLink
                 >
             </div>
         </form>

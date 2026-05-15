@@ -17,7 +17,7 @@ defineProps<{
         title="Verifikasi Email"
         description="Terima kasih telah mendaftar! Silakan verifikasi alamat email Anda dengan mengklik tombol di bawah ini untuk mengirimkan tautan verifikasi ke email Anda."
     >
-        <Head title="Email verification" />
+        <Head title="Verifikasi email" />
 
         <div
             v-if="status === 'verification-link-sent'"

@@ -103,7 +103,12 @@ defineProps<{
                 v-if="canRegister"
             >
                 Belum punya akun?
-                <TextLink :href="register()" class="ml-1 underline underline-offset-4" :tabindex="6">Daftar</TextLink>
+                <TextLink
+                    :href="register()"
+                    class="ml-1 underline underline-offset-4"
+                    :tabindex="6"
+                    >Daftar</TextLink
+                >
             </div>
         </Form>
     </AuthBase>

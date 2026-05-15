@@ -79,7 +79,9 @@ const submit = () => {
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password_confirmation">Konfirmasi Kata Sandi</Label>
+                    <Label for="password_confirmation"
+                        >Konfirmasi Kata Sandi</Label
+                    >
                     <PasswordInput
                         id="password_confirmation"
                         v-model="form.password_confirmation"

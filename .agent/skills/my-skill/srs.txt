@@ -1,0 +1,23 @@
+Nomor SRS	Deskripsi Kebutuhan
+Pelatih & Atlet	
+SRS-F-01	Sistem buat jadwal sesi latihan untuk atlet.
+SRS-F-02	Sistem sediakan tool kalkulator perhitungan gear sepeda mandiri.
+SRS-F-03	Sistem dapat mengirim dan menerima pesan serta notifikasi ke atlet.
+SRS-F-04	Sistem menyediakan fitur evaluasi dan umpan balik latihan.
+Manajer, Pelatih &Atlet	
+SRS-F-05	sistem menyajikan dashboard visual yang sesuai dengan role
+SRS-F-06	Sistem tunjukkan grafik progres, riwayat histori, dan statistik hasil keseluruhan latihan.
+SRS-F-07	Sistem dapat perbarui profil pengguna.
+SRS-F-08	Sistem dapat melakukan autentikasi pengguna.
+SRS-F-09	Sistem kelola event dan tentukan atlet yang ikut berpartisipasi.
+SRS-F-10	Sistem dapat kelola dokumen pribadi untuk lisensi UCI.
+SRS-F-11	Sistem simpan detail metrik fisik atlet secara berkala seperti tinggi dan berat badan untuk hitung BMI.
+SRS-F-12	Sistem perlihatkan seluruh rekam jejak turnamen dan event yang diikuti atlet.
+Manajer	
+SRS-F-13	Sistem verifikasi pendaftaran akun atlet baru.
+SRS-F-14	Sistem pilih dan tetapkan pelatih untuk masing-masing atlet.
+Manajer & Pelatih	
+SRS-F-15	Sistem bandingkan grafik performa antara satu atlet dengan atlet lainnya.
+SRS-F-16	Sistem saring atau filter pencarian riwayat data latihan pakai fitur rentang tanggal tertentu.
+SRS-F-17	Sistem tampilkan ringkasan semua atlet yang terdaftar.
+SRS-F-18	Sistem hasilkan dan laporan riwayat performa atlet.

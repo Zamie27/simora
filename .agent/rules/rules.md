@@ -290,3 +290,14 @@ Contoh:
 - `docker exec -it simora-app npm run dev`
 
 Jangan menjalankan perintah `php`, `artisan`, `composer`, atau `npm` secara langsung di sistem host.
+
+---
+
+# Commit & Work Summary Rules
+
+Setiap kali agen selesai melakukan tugas atau diminta memberikan ringkasan perbaikan, agen WAJIB mengikuti panduan di [.agent/skills/my-skill/COMMIT_GUIDELINES.md](file:///home/zamie/Coding/simora/.agent/skills/my-skill/COMMIT_GUIDELINES.md).
+
+Aturan utama:
+1. Jalankan `git status` untuk verifikasi file.
+2. Berikan ringkasan terstruktur dalam Bahasa Indonesia (Frontend, Backend, dll).
+3. Berikan usulan pesan commit dalam format **Conventional Commits** yang ringkas.

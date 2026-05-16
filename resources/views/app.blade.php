@@ -46,11 +46,22 @@
 
     <!-- SEO & Icons -->
     <meta name="theme-color" content="#f97316">
-    <link rel="manifest" href="/manifest.webmanifest">
     <meta name="description"
         content="Sistem Informasi Monitoring Atlet Sepeda - SIMORA. Precision Performance Redefined.">
-    <link rel="icon" type="image/png" href="/images/simora_icon.png">
-    <link rel="apple-touch-icon" href="/images/simora_icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/pwa-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/images/pwa-512x512.png">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.webmanifest">
+
+    <!-- iOS PWA Support -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="SIMORA">
+
+    <!-- Android PWA Support -->
+    <meta name="mobile-web-app-capable" content="yes">
 
     <!-- Open Graph -->
     <meta property="og:title" content="SIMORA | Performance Management Systems">

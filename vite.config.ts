@@ -34,35 +34,92 @@ export default defineConfig({
             scope: '/',
             outDir: 'public',
             registerType: 'autoUpdate',
-            includeAssets: ['images/simora_icon.png', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
-            manifest: {
-                id: '/?source=pwa',
-                name: 'SIMORA',
-                short_name: 'SIMORA',
-                description: 'Sistem Informasi Monitoring Atlet Sepeda',
-                start_url: '/?source=pwa',
-                display: 'standalone',
-                background_color: '#ffffff',
-                theme_color: '#f97316',
-                icons: [
-                    {
-                        src: '/images/simora_icon.png',
-                        sizes: '192x192',
-                        type: 'image/png',
-                        purpose: 'any',
-                    },
-                    {
-                        src: '/images/simora_icon.png',
-                        sizes: '512x512',
-                        type: 'image/png',
-                        purpose: 'maskable',
-                    },
-                ],
-            },
+            injectRegister: false, // We manually register in app.ts
+            includeAssets: [
+                'favicon.ico',
+                'apple-touch-icon-180x180.png',
+                'images/simora_icon.png',
+                'images/pwa-192x192.png',
+                'images/pwa-512x512.png',
+                'images/pwa-maskable-192x192.png',
+                'images/pwa-maskable-512x512.png',
+                'robots.txt',
+            ],
+            manifest: false,
             workbox: {
                 navigateFallback: null,
-                globDirectory: 'public/build',
-                globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,eot}'],
+                globDirectory: 'public',
+                globPatterns: [
+                    'build/assets/**/*.{js,css,woff,woff2,ttf,eot}',
+                    'images/**/*.png',
+                ],
+                modifyURLPrefix: {
+                    'build/': '/build/',
+                },
+                runtimeCaching: [
+                    {
+                        // Cache page navigations (HTML) with Network First strategy
+                        urlPattern: ({ request }) => request.mode === 'navigate',
+                        handler: 'NetworkFirst',
+                        options: {
+                            cacheName: 'pages-cache',
+                            expiration: {
+                                maxEntries: 50,
+                                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+                            },
+                            networkTimeoutSeconds: 3,
+                        },
+                    },
+                    {
+                        // Cache API requests with Network First
+                        urlPattern: ({ url }) => url.pathname.startsWith('/api/'),
+                        handler: 'NetworkFirst',
+                        options: {
+                            cacheName: 'api-cache',
+                            expiration: {
+                                maxEntries: 100,
+                                maxAgeSeconds: 24 * 60 * 60, // 24 hours
+                            },
+                            networkTimeoutSeconds: 5,
+                        },
+                    },
+                    {
+                        // Cache images with Cache First
+                        urlPattern: ({ request }) => request.destination === 'image',
+                        handler: 'CacheFirst',
+                        options: {
+                            cacheName: 'images-cache',
+                            expiration: {
+                                maxEntries: 60,
+                                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+                            },
+                        },
+                    },
+                    {
+                        // Cache fonts with Cache First
+                        urlPattern: ({ request }) => request.destination === 'font',
+                        handler: 'CacheFirst',
+                        options: {
+                            cacheName: 'fonts-cache',
+                            expiration: {
+                                maxEntries: 20,
+                                maxAgeSeconds: 365 * 24 * 60 * 60, // 1 year
+                            },
+                        },
+                    },
+                    {
+                        // Cache Google Fonts stylesheets
+                        urlPattern: /^https:\/\/fonts\.bunny\.net\/.*/i,
+                        handler: 'CacheFirst',
+                        options: {
+                            cacheName: 'google-fonts-cache',
+                            expiration: {
+                                maxEntries: 10,
+                                maxAgeSeconds: 365 * 24 * 60 * 60, // 1 year
+                            },
+                        },
+                    },
+                ],
             },
             devOptions: {
                 enabled: true,

@@ -1,0 +1,56 @@
+{
+    "id": "/",
+    "name": "SIMORA - Monitoring Atlet Sepeda",
+    "short_name": "SIMORA",
+    "description": "Sistem Informasi Monitoring Atlet Sepeda. Precision Performance Redefined.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#f97316",
+    "orientation": "any",
+    "lang": "id-ID",
+    "dir": "ltr",
+    "categories": ["productivity", "sports", "utilities"],
+    "icons": [
+        {
+            "src": "/images/pwa-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/images/pwa-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/images/pwa-maskable-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/images/pwa-maskable-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/images/hero-bg.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Dashboard SIMORA"
+        },
+        {
+            "src": "/images/cycling-bg.png",
+            "sizes": "640x1280",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Monitoring Atlet"
+        }
+    ]
+}

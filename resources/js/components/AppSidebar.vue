@@ -14,6 +14,7 @@ import {
     Users,
     Trophy,
     Info,
+    Download
 } from 'lucide-vue-next';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
@@ -29,13 +30,18 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarGroup,
+    SidebarGroupContent
 } from '@/components/ui/sidebar';
 import type { NavItem, SharedData } from '@/types';
 import { dashboard } from '@/routes';
+import { usePWA } from '@/composables/usePWA';
 
 const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user);
 const roleName = computed(() => user.value?.role?.name);
+
+const { isInstallable, isStandalone, installApp } = usePWA();
 
 const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
@@ -166,10 +172,6 @@ const mainNavItems = computed<NavItem[]>(() => {
         );
     }
 
-    if (roleName.value === 'Report') {
-        // No additional items needed since 'Dashboard' now points to bug reports
-    }
-
     return items;
 });
 
@@ -234,6 +236,23 @@ const footerNavItems: NavItem[] = [
             >
                 {{ clockString }}
             </div>
+            
+            <SidebarGroup v-if="!isStandalone" class="group-data-[collapsible=icon]:p-0">
+                <SidebarGroupContent>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton
+                                @click="installApp"
+                                class="cursor-pointer font-bold text-orange-500 hover:text-orange-600 dark:text-orange-400 dark:hover:text-orange-300"
+                            >
+                                <Download class="animate-bounce" />
+                                <span>Install App</span>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarGroupContent>
+            </SidebarGroup>
+
             <NavFooter :items="footerNavItems" />
             <NavUser />
         </SidebarFooter>

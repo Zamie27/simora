@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { LayoutGrid, Menu, Search, Info } from 'lucide-vue-next';
+import { LayoutGrid, Menu, Search, Info, Download } from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
@@ -37,6 +37,7 @@ import { getInitials } from '@/composables/useInitials';
 import { toUrl } from '@/lib/utils';
 import type { BreadcrumbItem, NavItem } from '@/types';
 import { dashboard } from '@/routes';
+import { usePWA } from '@/composables/usePWA';
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];
@@ -49,6 +50,7 @@ const props = withDefaults(defineProps<Props>(), {
 const page = usePage();
 const auth = computed(() => page.props.auth);
 const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
+const { isInstallable, isStandalone, installApp } = usePWA();
 
 const activeItemStyles =
     'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
@@ -120,6 +122,14 @@ const rightNavItems: NavItem[] = [
                                     </Link>
                                 </nav>
                                 <div class="flex flex-col space-y-4">
+                                    <button
+                                        v-if="!isStandalone"
+                                        @click="installApp"
+                                        class="flex items-center space-x-2 text-sm font-bold text-orange-500 hover:text-orange-600 dark:text-orange-400"
+                                    >
+                                        <Download class="h-5 w-5 animate-bounce" />
+                                        <span>Install App</span>
+                                    </button>
                                     <a
                                         v-for="item in rightNavItems"
                                         :key="item.title"
@@ -196,6 +206,25 @@ const rightNavItems: NavItem[] = [
                         </Button>
 
                         <div class="hidden space-x-1 lg:flex">
+                            <TooltipProvider v-if="!isStandalone" :delay-duration="0">
+                                <Tooltip>
+                                    <TooltipTrigger>
+                                        <Button
+                                            @click="installApp"
+                                            variant="ghost"
+                                            size="icon"
+                                            class="group h-9 w-9 cursor-pointer text-orange-500 hover:text-orange-600 dark:text-orange-400"
+                                        >
+                                            <span class="sr-only">Install App</span>
+                                            <Download class="size-5 animate-bounce" />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Install Aplikasi</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+
                             <template
                                 v-for="item in rightNavItems"
                                 :key="item.title"

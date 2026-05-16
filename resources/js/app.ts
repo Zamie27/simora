@@ -6,8 +6,15 @@ import { createApp, h, reactive } from 'vue';
 import '../css/app.css';
 import '@mdi/font/css/materialdesignicons.css';
 import BugReportBubble from '@/components/BugReportBubble.vue';
+import InstallAppBubble from '@/components/InstallAppBubble.vue';
 import { initializeTheme } from '@/composables/useAppearance';
 import vuetify from '@/plugins/vuetify';
+
+// Catch PWA install prompt globally before Vue initializes
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    (window as any)._deferredPrompt = e;
+});
 
 // PWA Service Worker Registration with auto-update
 const updateSW = registerSW({
@@ -51,18 +58,8 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const app = createApp({ render: () => h(App, props) });
 
-        // PWA Installation Logic
-        let deferredPrompt: any = null;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            app.config.globalProperties.$deferredPrompt = e;
-            console.log('PWA: beforeinstallprompt event fired');
-        });
-
         window.addEventListener('appinstalled', () => {
-            deferredPrompt = null;
-            app.config.globalProperties.$deferredPrompt = null;
+            (window as any)._deferredPrompt = null;
             console.log('PWA: Application installed successfully');
         });
 

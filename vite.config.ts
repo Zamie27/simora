@@ -34,7 +34,9 @@ export default defineConfig({
             scope: '/',
             outDir: 'public',
             registerType: 'autoUpdate',
+            includeAssets: ['images/simora_icon.png', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
             manifest: {
+                id: '/?source=pwa',
                 name: 'SIMORA',
                 short_name: 'SIMORA',
                 description: 'Sistem Informasi Monitoring Atlet Sepeda',
@@ -61,6 +63,10 @@ export default defineConfig({
                 navigateFallback: null,
                 globDirectory: 'public/build',
                 globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,eot}'],
+            },
+            devOptions: {
+                enabled: true,
+                type: 'module',
             },
         }),
     ],

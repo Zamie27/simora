@@ -25,7 +25,7 @@ class UpdateEvaluationRequest extends FormRequest
         return [
             'attendance_status' => ['sometimes', 'in:present,absent,late,excused'],
             'completion_status' => ['sometimes', 'in:not_started,in_progress,completed,incomplete'],
-            'coach_rating' => ['nullable', 'integer', 'min:1', 'max:10'],
+            'coach_rating' => ['nullable', 'integer', 'min:1', 'max:5'],
             'coach_evaluation' => ['nullable', 'string', 'max:5000'],
             'coach_comments' => ['nullable', 'string', 'max:2000'],
         ];

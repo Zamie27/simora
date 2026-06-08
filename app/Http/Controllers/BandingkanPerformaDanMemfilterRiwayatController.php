@@ -59,7 +59,8 @@ class BandingkanPerformaDanMemfilterRiwayatController extends Controller
     private function managementIndex(Request $permintaan): Response
     {
         $daftarAtlet = User::whereRole('Atlet')
-            ->select('id', 'name', 'email')
+            ->select('id', 'name', 'email', 'avatar')
+            ->with('athleteProfile')
             ->get();
 
         return Inertia::render('komparasi-performa/Index', [
@@ -93,7 +94,11 @@ class BandingkanPerformaDanMemfilterRiwayatController extends Controller
             );
         }
 
-        $daftarAtlet = User::whereIn('id', $atletIds)->select('id', 'name')->get()->keyBy('id');
+        $daftarAtlet = User::whereIn('id', $atletIds)
+            ->select('id', 'name', 'avatar')
+            ->with('athleteProfile')
+            ->get()
+            ->keyBy('id');
 
         return response()->json([
             'comparison' => $comparison,
@@ -113,7 +118,8 @@ class BandingkanPerformaDanMemfilterRiwayatController extends Controller
 
         $daftarAtlet = User::whereRole('Atlet')
             ->where('coach_id', $pelatih->id)
-            ->select('id', 'name', 'email')
+            ->select('id', 'name', 'email', 'avatar')
+            ->with('athleteProfile')
             ->get();
 
         return Inertia::render('komparasi-performa/Index', [
@@ -157,7 +163,11 @@ class BandingkanPerformaDanMemfilterRiwayatController extends Controller
             );
         }
 
-        $daftarAtlet = User::whereIn('id', $atletIds)->select('id', 'name')->get()->keyBy('id');
+        $daftarAtlet = User::whereIn('id', $atletIds)
+            ->select('id', 'name', 'avatar')
+            ->with('athleteProfile')
+            ->get()
+            ->keyBy('id');
 
         return response()->json([
             'comparison' => $comparison,

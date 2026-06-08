@@ -12,6 +12,10 @@ interface Athlete {
     id: number;
     name: string;
     email: string;
+    avatar?: string;
+    athlete_profile?: {
+        profile_photo_path: string;
+    } | null;
 }
 
 interface ComparisonItem {
@@ -57,7 +61,7 @@ const selectedAthletes = ref<number[]>([]);
 const loading = ref(false);
 const comparisonData = ref<ComparisonItem[]>([]);
 const trendData = ref<Record<number, TrendPoint[]>>({});
-const athleteMap = ref<Record<number, string>>({});
+const athleteMap = ref<Record<number, Athlete>>({});
 
 const toggleAthlete = (id: number) => {
     const idx = selectedAthletes.value.indexOf(id);
@@ -83,9 +87,9 @@ const fetchComparison = async () => {
         comparisonData.value = res.data.comparison;
         trendData.value = res.data.trends;
 
-        const athletes: Record<number, string> = {};
+        const athletes: Record<number, Athlete> = {};
         Object.entries(res.data.athletes).forEach(([id, a]: [string, any]) => {
-            athletes[Number(id)] = a.name;
+            athletes[Number(id)] = a;
         });
         athleteMap.value = athletes;
     } catch (e) {
@@ -118,7 +122,7 @@ const barChartOptions = computed(() => ({
     dataLabels: { enabled: false },
     xaxis: {
         categories: comparisonData.value.map(
-            (item) => athleteMap.value[item.athlete_id] || 'Unknown',
+            (item) => athleteMap.value[item.athlete_id]?.name || 'Unknown',
         ),
         axisBorder: { show: false },
         axisTicks: { show: false },
@@ -219,7 +223,7 @@ const trendChartOptions = computed(() => ({
 
 const speedTrendSeries = computed(() => {
     return Object.entries(trendData.value).map(([id, points]) => ({
-        name: athleteMap.value[Number(id)],
+        name: athleteMap.value[Number(id)]?.name || 'Unknown',
         data: points.map((p) => ({
             x: new Date(p.date).getTime(),
             y: p.avg_speed,
@@ -229,7 +233,7 @@ const speedTrendSeries = computed(() => {
 
 const distanceTrendSeries = computed(() => {
     return Object.entries(trendData.value).map(([id, points]) => ({
-        name: athleteMap.value[Number(id)],
+        name: athleteMap.value[Number(id)]?.name || 'Unknown',
         data: points.map((p) => ({
             x: new Date(p.date).getTime(),
             y: p.distance_km,
@@ -316,14 +320,26 @@ const initials = (name: string) => {
                             "
                         >
                             <div
-                                class="flex h-6 w-6 items-center justify-center rounded-lg text-[10px] font-black"
+                                class="flex h-6 w-6 items-center justify-center overflow-hidden rounded-lg text-[10px] font-black"
                                 :class="
                                     selectedAthletes.includes(athlete.id)
                                         ? 'bg-primary text-white'
                                         : 'bg-muted text-muted-foreground'
                                 "
                             >
-                                {{ initials(athlete.name) }}
+                                <img
+                                    v-if="athlete.athlete_profile?.profile_photo_path"
+                                    :src="`/documents/${athlete.id}/profile_photo`"
+                                    class="h-full w-full object-cover"
+                                />
+                                <img
+                                    v-else-if="athlete.avatar"
+                                    :src="athlete.avatar"
+                                    class="h-full w-full object-cover"
+                                />
+                                <span v-else>
+                                    {{ initials(athlete.name) }}
+                                </span>
                             </div>
                             <span class="text-xs font-bold">{{
                                 athlete.name
@@ -504,20 +520,32 @@ const initials = (name: string) => {
                                     <td class="px-8 py-5">
                                         <div class="flex items-center gap-3">
                                             <div
-                                                class="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-[10px] font-black text-primary"
+                                                class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-primary/10 text-[10px] font-black text-primary"
                                             >
-                                                {{
-                                                    initials(
-                                                        athleteMap[
-                                                            item.athlete_id
-                                                        ] || '',
-                                                    )
-                                                }}
+                                                <img
+                                                    v-if="athleteMap[item.athlete_id]?.athlete_profile?.profile_photo_path"
+                                                    :src="`/documents/${item.athlete_id}/profile_photo`"
+                                                    class="h-full w-full object-cover"
+                                                />
+                                                <img
+                                                    v-else-if="athleteMap[item.athlete_id]?.avatar"
+                                                    :src="athleteMap[item.athlete_id].avatar"
+                                                    class="h-full w-full object-cover"
+                                                />
+                                                <span v-else>
+                                                    {{
+                                                        initials(
+                                                            athleteMap[
+                                                                item.athlete_id
+                                                            ]?.name || '',
+                                                        )
+                                                    }}
+                                                </span>
                                             </div>
                                             <span
                                                 class="text-sm font-black text-foreground"
                                                 >{{
-                                                    athleteMap[item.athlete_id]
+                                                    athleteMap[item.athlete_id]?.name || ''
                                                 }}</span
                                             >
                                         </div>

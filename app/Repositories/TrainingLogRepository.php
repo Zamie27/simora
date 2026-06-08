@@ -178,7 +178,7 @@ class TrainingLogRepository
             })
             ->orderByDesc('performance_score');
 
-        if ($athleteIds) {
+        if (is_array($athleteIds)) {
             $query->whereIn('id', $athleteIds);
         }
 

@@ -329,9 +329,10 @@ const formatTime = (minutes: number) => {
                 <div
                     class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
                 >
-                    <div
+                    <Link
                         v-for="(athlete, index) in athleteRanking"
                         :key="athlete.id"
+                        :href="`/pelatih/atlet/${athlete.id}`"
                         class="group relative flex items-center gap-4 rounded-2xl bg-white/5 p-4 transition-all hover:bg-white/10"
                     >
                         <!-- Rank Number -->
@@ -346,7 +347,12 @@ const formatTime = (minutes: number) => {
                             class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-secondary"
                         >
                             <img
-                                v-if="athlete.avatar"
+                                v-if="athlete.athlete_profile?.profile_photo_path"
+                                :src="`/documents/${athlete.id}/profile_photo`"
+                                class="h-full w-full object-cover"
+                            />
+                            <img
+                                v-else-if="athlete.avatar"
                                 :src="athlete.avatar"
                                 class="h-full w-full object-cover"
                             />
@@ -388,7 +394,7 @@ const formatTime = (minutes: number) => {
                                 >
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 </div>
 
                 <div

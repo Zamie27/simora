@@ -12,7 +12,9 @@ class MemverifikasiPendaftaranDanMenetapkanPelatihTest extends TestCase
     use RefreshDatabase;
 
     protected User $manajer;
+
     protected User $pelatih;
+
     protected User $atlet;
 
     protected function setUp(): void

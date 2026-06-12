@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Event;
 use App\Models\JenisEvent;
 use App\Models\Kategori;
-use App\Models\PoinEvent;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,7 +15,9 @@ class KelolaEventDanPartisipasiTest extends TestCase
     use RefreshDatabase;
 
     protected User $manajer;
+
     protected User $pelatih;
+
     protected User $atlet;
 
     protected function setUp(): void

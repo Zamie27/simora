@@ -14,8 +14,11 @@ class AnalisaGrafikDanStatistikLatihanTest extends TestCase
     use RefreshDatabase;
 
     protected User $atlet;
+
     protected User $pelatih;
+
     protected User $manajer;
+
     protected JenisLatihan $jenisLatihan;
 
     protected function setUp(): void

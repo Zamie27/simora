@@ -14,8 +14,11 @@ class KelolaJadwalSesiLatihanTest extends TestCase
     use RefreshDatabase;
 
     protected User $pelatih;
+
     protected User $atlet;
+
     protected User $manajer;
+
     protected JenisLatihan $jenisLatihan;
 
     protected function setUp(): void

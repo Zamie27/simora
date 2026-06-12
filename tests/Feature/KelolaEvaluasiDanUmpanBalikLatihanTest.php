@@ -15,8 +15,11 @@ class KelolaEvaluasiDanUmpanBalikLatihanTest extends TestCase
     use RefreshDatabase;
 
     protected User $pelatih;
+
     protected User $atlet;
+
     protected User $pelatihLain;
+
     protected LogLatihan $log;
 
     protected function setUp(): void

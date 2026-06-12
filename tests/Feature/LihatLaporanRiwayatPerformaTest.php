@@ -13,8 +13,11 @@ class LihatLaporanRiwayatPerformaTest extends TestCase
     use RefreshDatabase;
 
     protected User $manajer;
+
     protected User $pelatih;
+
     protected User $atlet;
+
     protected User $atletLain;
 
     protected function setUp(): void

@@ -13,7 +13,9 @@ class KelolaPesanTest extends TestCase
     use RefreshDatabase;
 
     protected User $pelatih;
+
     protected User $atlet;
+
     protected User $manajer;
 
     protected function setUp(): void

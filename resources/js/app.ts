@@ -24,12 +24,12 @@ const updateSW = registerSW({
             setInterval(
                 async () => {
                     if (!(!registration.installing && navigator)) {
-return;
-}
+                        return;
+                    }
 
                     if ('connection' in navigator && !navigator.onLine) {
-return;
-}
+                        return;
+                    }
 
                     const resp = await fetch(swUrl, {
                         cache: 'no-store',

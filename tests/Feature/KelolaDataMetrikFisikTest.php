@@ -13,8 +13,11 @@ class KelolaDataMetrikFisikTest extends TestCase
     use RefreshDatabase;
 
     protected User $atlet;
+
     protected User $manajer;
+
     protected User $pelatih;
+
     protected Kategori $kategori;
 
     protected function setUp(): void

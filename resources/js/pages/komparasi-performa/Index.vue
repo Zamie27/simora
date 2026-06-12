@@ -328,7 +328,10 @@ const initials = (name: string) => {
                                 "
                             >
                                 <img
-                                    v-if="athlete.athlete_profile?.profile_photo_path"
+                                    v-if="
+                                        athlete.athlete_profile
+                                            ?.profile_photo_path
+                                    "
                                     :src="`/documents/${athlete.id}/profile_photo`"
                                     class="h-full w-full object-cover"
                                 />
@@ -523,13 +526,26 @@ const initials = (name: string) => {
                                                 class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-primary/10 text-[10px] font-black text-primary"
                                             >
                                                 <img
-                                                    v-if="athleteMap[item.athlete_id]?.athlete_profile?.profile_photo_path"
+                                                    v-if="
+                                                        athleteMap[
+                                                            item.athlete_id
+                                                        ]?.athlete_profile
+                                                            ?.profile_photo_path
+                                                    "
                                                     :src="`/documents/${item.athlete_id}/profile_photo`"
                                                     class="h-full w-full object-cover"
                                                 />
                                                 <img
-                                                    v-else-if="athleteMap[item.athlete_id]?.avatar"
-                                                    :src="athleteMap[item.athlete_id].avatar"
+                                                    v-else-if="
+                                                        athleteMap[
+                                                            item.athlete_id
+                                                        ]?.avatar
+                                                    "
+                                                    :src="
+                                                        athleteMap[
+                                                            item.athlete_id
+                                                        ].avatar
+                                                    "
                                                     class="h-full w-full object-cover"
                                                 />
                                                 <span v-else>
@@ -545,7 +561,8 @@ const initials = (name: string) => {
                                             <span
                                                 class="text-sm font-black text-foreground"
                                                 >{{
-                                                    athleteMap[item.athlete_id]?.name || ''
+                                                    athleteMap[item.athlete_id]
+                                                        ?.name || ''
                                                 }}</span
                                             >
                                         </div>

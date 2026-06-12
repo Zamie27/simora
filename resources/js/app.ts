@@ -21,19 +21,30 @@ const updateSW = registerSW({
     onRegisteredSW(swUrl, registration) {
         if (registration) {
             // Check for updates every hour
-            setInterval(async () => {
-                if (!(!registration.installing && navigator)) return;
-                if ('connection' in navigator && !navigator.onLine) return;
+            setInterval(
+                async () => {
+                    if (!(!registration.installing && navigator)) {
+return;
+}
 
-                const resp = await fetch(swUrl, {
-                    cache: 'no-store',
-                    headers: { 'cache': 'no-store', 'cache-control': 'no-cache' },
-                });
+                    if ('connection' in navigator && !navigator.onLine) {
+return;
+}
 
-                if (resp?.status === 200) {
-                    await registration.update();
-                }
-            }, 60 * 60 * 1000); // 1 hour
+                    const resp = await fetch(swUrl, {
+                        cache: 'no-store',
+                        headers: {
+                            cache: 'no-store',
+                            'cache-control': 'no-cache',
+                        },
+                    });
+
+                    if (resp?.status === 200) {
+                        await registration.update();
+                    }
+                },
+                60 * 60 * 1000,
+            ); // 1 hour
         }
     },
     onNeedRefresh() {
@@ -62,9 +73,7 @@ createInertiaApp({
             console.log('PWA: Application installed successfully');
         });
 
-        app.use(plugin)
-            .use(vuetify)
-            .mount(el);
+        app.use(plugin).use(vuetify).mount(el);
 
         // Mount BugReportBubble globally so it appears on ALL pages
         const bugBubbleContainer = document.createElement('div');

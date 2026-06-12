@@ -1,8 +1,8 @@
 // Script to generate a maskable PWA icon with proper safe area padding
 // Maskable icons need 10% padding on each side (80% safe area)
-import sharp from 'sharp';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import sharp from 'sharp';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
@@ -46,5 +46,6 @@ async function generateAppleTouchIcon() {
 for (const size of sizes) {
     await generateMaskableIcon(size);
 }
+
 await generateAppleTouchIcon();
 console.log('All maskable icons generated!');

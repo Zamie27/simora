@@ -41,7 +41,7 @@ const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user);
 const roleName = computed(() => user.value?.role?.name);
 
-const { isInstallable, isStandalone, installApp } = usePWA();
+const { isStandalone, installApp } = usePWA();
 
 const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Notification;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
 
-class VerificationNotificationTest extends TestCase
+class NotifikasiVerifikasiTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,7 +20,7 @@ class VerificationNotificationTest extends TestCase
         $this->skipUnlessFortifyFeature(Features::emailVerification());
     }
 
-    public function test_sends_verification_notification(): void
+    public function test_mengirimkan_notifikasi_verifikasi(): void
     {
         Notification::fake();
 
@@ -33,7 +33,7 @@ class VerificationNotificationTest extends TestCase
         Notification::assertSentTo($user, CustomVerifyEmail::class);
     }
 
-    public function test_does_not_send_verification_notification_if_email_is_verified(): void
+    public function test_tidak_mengirimkan_notifikasi_verifikasi_jika_email_sudah_diverifikasi(): void
     {
         Notification::fake();
 

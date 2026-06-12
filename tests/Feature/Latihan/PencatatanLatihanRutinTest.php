@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Latihan;
 
 use App\Models\JenisLatihan;
 use App\Models\LogLatihan;
@@ -10,11 +10,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
-class RecurringTrainingLogTest extends TestCase
+class PencatatanLatihanRutinTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_generates_logs_for_recurring_sessions_on_matching_day(): void
+    public function test_menghasilkan_log_untuk_sesi_rutin_pada_hari_yang_cocok(): void
     {
         // Freeze time to a known day (Monday)
         Carbon::setTestNow(Carbon::parse('2026-04-13 08:00:00')); // Monday
@@ -43,7 +43,7 @@ class RecurringTrainingLogTest extends TestCase
         ]);
     }
 
-    public function test_does_not_generate_logs_on_non_matching_day(): void
+    public function test_tidak_menghasilkan_log_pada_hari_yang_tidak_cocok(): void
     {
         // Freeze time to Tuesday
         Carbon::setTestNow(Carbon::parse('2026-04-14 08:00:00')); // Tuesday
@@ -71,7 +71,7 @@ class RecurringTrainingLogTest extends TestCase
         ]);
     }
 
-    public function test_does_not_duplicate_logs_if_already_exists(): void
+    public function test_tidak_menduplikasi_log_jika_sudah_ada(): void
     {
         Carbon::setTestNow(Carbon::parse('2026-04-13 08:00:00')); // Monday
 
@@ -110,7 +110,7 @@ class RecurringTrainingLogTest extends TestCase
         );
     }
 
-    public function test_does_not_generate_logs_for_non_recurring_sessions(): void
+    public function test_tidak_menghasilkan_log_untuk_sesi_non_rutin(): void
     {
         Carbon::setTestNow(Carbon::parse('2026-04-13 08:00:00'));
 
@@ -135,7 +135,7 @@ class RecurringTrainingLogTest extends TestCase
         ]);
     }
 
-    public function test_generates_logs_for_multiple_athletes(): void
+    public function test_menghasilkan_log_untuk_banyak_atlet(): void
     {
         Carbon::setTestNow(Carbon::parse('2026-04-13 08:00:00'));
 

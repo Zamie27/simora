@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Settings;
+namespace Tests\Feature\Pengaturan;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,11 +9,11 @@ use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
 
-class SecurityTest extends TestCase
+class KeamananTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_security_page_is_displayed()
+    public function test_halaman_keamanan_ditampilkan()
     {
         $this->skipUnlessFortifyFeature(Features::twoFactorAuthentication());
 
@@ -34,7 +34,7 @@ class SecurityTest extends TestCase
             );
     }
 
-    public function test_security_page_requires_password_confirmation_when_enabled()
+    public function test_halaman_keamanan_memerlukan_konfirmasi_kata_sandi_saat_diaktifkan()
     {
         $this->skipUnlessFortifyFeature(Features::twoFactorAuthentication());
 
@@ -51,7 +51,7 @@ class SecurityTest extends TestCase
         $response->assertRedirect(route('password.confirm'));
     }
 
-    public function test_security_page_does_not_require_password_confirmation_when_disabled()
+    public function test_halaman_keamanan_tidak_memerlukan_konfirmasi_kata_sandi_saat_dinonaktifkan()
     {
         $this->skipUnlessFortifyFeature(Features::twoFactorAuthentication());
 
@@ -70,7 +70,7 @@ class SecurityTest extends TestCase
             );
     }
 
-    public function test_security_page_renders_without_two_factor_when_feature_is_disabled()
+    public function test_halaman_keamanan_ditampilkan_tanpa_dua_faktor_saat_fitur_dinonaktifkan()
     {
         $this->skipUnlessFortifyFeature(Features::twoFactorAuthentication());
 
@@ -89,7 +89,7 @@ class SecurityTest extends TestCase
             );
     }
 
-    public function test_password_can_be_updated()
+    public function test_kata_sandi_dapat_diperbarui()
     {
         $user = User::factory()->create();
 
@@ -109,7 +109,7 @@ class SecurityTest extends TestCase
         $this->assertTrue(Hash::check('NewPassword123!', $user->refresh()->password));
     }
 
-    public function test_correct_password_must_be_provided_to_update_password()
+    public function test_kata_sandi_yang_benar_harus_diberikan_untuk_memperbarui_kata_sandi()
     {
         $user = User::factory()->create();
 

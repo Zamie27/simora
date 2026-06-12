@@ -8,18 +8,18 @@ use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
 
-class AuthenticationTest extends TestCase
+class AutentikasiTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_login_screen_can_be_rendered()
+    public function test_halaman_login_dapat_ditampilkan()
     {
         $response = $this->get(route('login'));
 
         $response->assertOk();
     }
 
-    public function test_users_can_authenticate_using_the_login_screen()
+    public function test_pengguna_dapat_autentikasi_menggunakan_halaman_login()
     {
         $user = User::factory()->create();
 
@@ -32,7 +32,7 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect(route('dashboard', absolute: false));
     }
 
-    public function test_users_with_two_factor_enabled_are_redirected_to_two_factor_challenge()
+    public function test_pengguna_dengan_dua_faktor_aktif_dialihkan_ke_tantangan_dua_faktor()
     {
         $this->skipUnlessFortifyFeature(Features::twoFactorAuthentication());
 
@@ -59,7 +59,7 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_users_can_not_authenticate_with_invalid_password()
+    public function test_pengguna_tidak_dapat_autentikasi_dengan_kata_sandi_salah()
     {
         $user = User::factory()->create();
 
@@ -71,7 +71,7 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_users_can_logout()
+    public function test_pengguna_dapat_logout()
     {
         $user = User::factory()->create();
 
@@ -81,7 +81,7 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect(route('home'));
     }
 
-    public function test_users_are_rate_limited()
+    public function test_pengguna_dibatasi_laju_aksesnya()
     {
         $user = User::factory()->create();
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Latihan;
 
 use App\Models\JenisLatihan;
 use App\Models\LogLatihan;

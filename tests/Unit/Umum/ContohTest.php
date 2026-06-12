@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Umum;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ExampleTest extends TestCase
+class ContohTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_that_true_is_true()
+    public function test_bahwa_benar_adalah_benar()
     {
         $this->assertTrue(true);
     }

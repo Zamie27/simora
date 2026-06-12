@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Dashboard;
 
 use App\Models\JenisLatihan;
 use App\Models\LogLatihan;
@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class CoachDashboardTest extends TestCase
+class DashboardPelatihTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -24,7 +24,7 @@ class CoachDashboardTest extends TestCase
         Role::create(['name' => 'Atlet']);
     }
 
-    public function test_coach_is_redirected_to_coach_dashboard()
+    public function test_pelatih_dialihkan_ke_dashboard_pelatih()
     {
         $coachRole = Role::where('name', 'Pelatih')->first();
         $coach = User::factory()->create([
@@ -37,7 +37,7 @@ class CoachDashboardTest extends TestCase
         $response->assertRedirect(route('pelatih.dashboard'));
     }
 
-    public function test_coach_can_access_dashboard_with_data()
+    public function test_pelatih_dapat_mengakses_dashboard_dengan_data()
     {
         $coachRole = Role::where('name', 'Pelatih')->first();
         $atletRole = Role::where('name', 'Atlet')->first();

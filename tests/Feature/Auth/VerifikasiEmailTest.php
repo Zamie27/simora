@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\URL;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
 
-class EmailVerificationTest extends TestCase
+class VerifikasiEmailTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -21,7 +21,7 @@ class EmailVerificationTest extends TestCase
         $this->skipUnlessFortifyFeature(Features::emailVerification());
     }
 
-    public function test_email_verification_screen_can_be_rendered()
+    public function test_halaman_verifikasi_email_dapat_ditampilkan()
     {
         $user = User::factory()->unverified()->create();
 
@@ -30,7 +30,7 @@ class EmailVerificationTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_email_can_be_verified()
+    public function test_email_dapat_diverifikasi()
     {
         $user = User::factory()->unverified()->create();
 
@@ -49,7 +49,7 @@ class EmailVerificationTest extends TestCase
         $response->assertRedirect(route('dashboard', absolute: false).'?verified=1');
     }
 
-    public function test_email_is_not_verified_with_invalid_hash()
+    public function test_email_tidak_diverifikasi_dengan_hash_salah()
     {
         $user = User::factory()->unverified()->create();
 
@@ -67,7 +67,7 @@ class EmailVerificationTest extends TestCase
         $this->assertFalse($user->fresh()->hasVerifiedEmail());
     }
 
-    public function test_email_is_not_verified_with_invalid_user_id(): void
+    public function test_email_tidak_diverifikasi_dengan_id_pengguna_salah(): void
     {
         $user = User::factory()->unverified()->create();
 
@@ -85,7 +85,7 @@ class EmailVerificationTest extends TestCase
         $this->assertFalse($user->fresh()->hasVerifiedEmail());
     }
 
-    public function test_verified_user_is_redirected_to_dashboard_from_verification_prompt(): void
+    public function test_pengguna_terverifikasi_dialihkan_ke_dashboard_dari_halaman_verifikasi(): void
     {
         $user = User::factory()->create();
 
@@ -97,7 +97,7 @@ class EmailVerificationTest extends TestCase
         $response->assertRedirect(route('dashboard', absolute: false));
     }
 
-    public function test_already_verified_user_visiting_verification_link_is_redirected_without_firing_event_again(): void
+    public function test_pengguna_sudah_terverifikasi_mengakses_tautan_verifikasi_dialihkan_tanpa_memicu_event_kembali(): void
     {
         $user = User::factory()->create();
 

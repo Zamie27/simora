@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Notification;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
 
-class PasswordResetTest extends TestCase
+class ResetKataSandiTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,14 +20,14 @@ class PasswordResetTest extends TestCase
         $this->skipUnlessFortifyFeature(Features::resetPasswords());
     }
 
-    public function test_reset_password_link_screen_can_be_rendered()
+    public function test_halaman_tautan_reset_kata_sandi_dapat_ditampilkan()
     {
         $response = $this->get(route('password.request'));
 
         $response->assertOk();
     }
 
-    public function test_reset_password_link_can_be_requested()
+    public function test_tautan_reset_kata_sandi_dapat_diminta()
     {
         Notification::fake();
 
@@ -38,7 +38,7 @@ class PasswordResetTest extends TestCase
         Notification::assertSentTo($user, CustomResetPassword::class);
     }
 
-    public function test_reset_password_screen_can_be_rendered()
+    public function test_halaman_reset_kata_sandi_dapat_ditampilkan()
     {
         Notification::fake();
 
@@ -55,7 +55,7 @@ class PasswordResetTest extends TestCase
         });
     }
 
-    public function test_password_can_be_reset_with_valid_token()
+    public function test_kata_sandi_dapat_direset_dengan_token_valid()
     {
         Notification::fake();
 
@@ -79,7 +79,7 @@ class PasswordResetTest extends TestCase
         });
     }
 
-    public function test_password_cannot_be_reset_with_invalid_token(): void
+    public function test_kata_sandi_tidak_dapat_direset_dengan_token_salah(): void
     {
         $user = User::factory()->create();
 

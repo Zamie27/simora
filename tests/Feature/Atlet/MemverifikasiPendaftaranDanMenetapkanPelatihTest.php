@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Atlet;
 
 use App\Models\Role;
 use App\Models\User;

@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\Feature\Settings;
+namespace Tests\Feature\Pengaturan;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
-class ProfileUpdateTest extends TestCase
+class PerbaruiProfilTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_profile_page_is_displayed()
+    public function test_halaman_profil_ditampilkan()
     {
         $user = User::factory()->create();
 
@@ -22,7 +22,7 @@ class ProfileUpdateTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_profile_information_can_be_updated()
+    public function test_informasi_profil_dapat_diperbarui()
     {
         $user = User::factory()->create();
 
@@ -46,7 +46,7 @@ class ProfileUpdateTest extends TestCase
         $this->assertNull($user->email_verified_at);
     }
 
-    public function test_email_cannot_be_updated_without_otp_verification()
+    public function test_email_tidak_dapat_diperbarui_tanpa_verifikasi_otp()
     {
         $user = User::factory()->create();
 
@@ -62,7 +62,7 @@ class ProfileUpdateTest extends TestCase
         $this->assertNotSame('test@example.com', $user->refresh()->email);
     }
 
-    public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged()
+    public function test_status_verifikasi_email_tidak_berubah_saat_alamat_email_tidak_berubah()
     {
         $user = User::factory()->create();
 
@@ -80,7 +80,7 @@ class ProfileUpdateTest extends TestCase
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
 
-    public function test_user_can_delete_their_account()
+    public function test_pengguna_dapat_menghapus_akun_mereka()
     {
         $user = User::factory()->create();
 
@@ -98,7 +98,7 @@ class ProfileUpdateTest extends TestCase
         $this->assertNull($user->fresh());
     }
 
-    public function test_correct_password_must_be_provided_to_delete_account()
+    public function test_kata_sandi_yang_benar_harus_diberikan_untuk_menghapus_akun()
     {
         $user = User::factory()->create();
 

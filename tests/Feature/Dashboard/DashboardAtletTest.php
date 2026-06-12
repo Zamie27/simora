@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Dashboard;
 
 use App\Models\JenisLatihan;
 use App\Models\Kategori;
@@ -11,7 +11,7 @@ use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class AthleteDashboardTest extends TestCase
+class DashboardAtletTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -24,7 +24,7 @@ class AthleteDashboardTest extends TestCase
         JenisLatihan::firstOrCreate(['name' => 'Cycling'], ['description' => 'Cycling exercise']);
     }
 
-    public function test_athlete_can_access_dashboard(): void
+    public function test_atlet_dapat_mengakses_dashboard(): void
     {
         $athleteRole = Role::where('name', 'Atlet')->first();
         $user = User::factory()->create([
@@ -57,7 +57,7 @@ class AthleteDashboardTest extends TestCase
         );
     }
 
-    public function test_athlete_can_perform_quick_update(): void
+    public function test_atlet_dapat_melakukan_update_cepat(): void
     {
         $athleteRole = Role::where('name', 'Atlet')->first();
         $user = User::factory()->create([

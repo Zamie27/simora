@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
 
-class RegistrationTest extends TestCase
+class PendaftaranTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -17,14 +17,14 @@ class RegistrationTest extends TestCase
         $this->skipUnlessFortifyFeature(Features::registration());
     }
 
-    public function test_registration_screen_can_be_rendered()
+    public function test_halaman_pendaftaran_dapat_ditampilkan()
     {
         $response = $this->get(route('register'));
 
         $response->assertOk();
     }
 
-    public function test_new_users_can_register()
+    public function test_pengguna_baru_dapat_mendaftar()
     {
         $response = $this->post(route('register.store'), [
             'name' => 'Test User',

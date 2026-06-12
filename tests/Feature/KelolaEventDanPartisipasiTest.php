@@ -96,6 +96,7 @@ class KelolaEventDanPartisipasiTest extends TestCase
                 'location' => 'Velodrome Manahan',
                 'event_date' => now()->addMonths(2)->toDateString(),
                 'requires_license' => true,
+                'event_type_id' => null,
                 'athletes' => [
                     ['id' => $this->atlet->id, 'event_point_id' => null],
                 ],
@@ -115,8 +116,11 @@ class KelolaEventDanPartisipasiTest extends TestCase
         $response = $this->actingAs($this->manajer)
             ->post(route('manajemen.acara.store'), [
                 'title' => 'Event Manajer 2026',
+                'description' => 'Deskripsi manajer',
+                'location' => 'Kantor',
                 'event_date' => now()->addMonths(1)->toDateString(),
                 'requires_license' => false,
+                'event_type_id' => null,
             ]);
 
         $response->assertRedirect();

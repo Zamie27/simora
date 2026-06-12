@@ -347,7 +347,9 @@ const formatTime = (minutes: number) => {
                             class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-secondary"
                         >
                             <img
-                                v-if="athlete.athlete_profile?.profile_photo_path"
+                                v-if="
+                                    athlete.athlete_profile?.profile_photo_path
+                                "
                                 :src="`/documents/${athlete.id}/profile_photo`"
                                 class="h-full w-full object-cover"
                             />

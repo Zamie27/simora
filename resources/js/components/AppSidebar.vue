@@ -14,7 +14,7 @@ import {
     Users,
     Trophy,
     Info,
-    Download
+    Download,
 } from 'lucide-vue-next';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
@@ -31,11 +31,11 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarGroup,
-    SidebarGroupContent
+    SidebarGroupContent,
 } from '@/components/ui/sidebar';
+import { usePWA } from '@/composables/usePWA';
 import type { NavItem, SharedData } from '@/types';
 import { dashboard } from '@/routes';
-import { usePWA } from '@/composables/usePWA';
 
 const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user);
@@ -236,8 +236,11 @@ const footerNavItems: NavItem[] = [
             >
                 {{ clockString }}
             </div>
-            
-            <SidebarGroup v-if="!isStandalone" class="group-data-[collapsible=icon]:p-0">
+
+            <SidebarGroup
+                v-if="!isStandalone"
+                class="group-data-[collapsible=icon]:p-0"
+            >
                 <SidebarGroupContent>
                     <SidebarMenu>
                         <SidebarMenuItem>

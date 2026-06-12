@@ -34,10 +34,10 @@ import {
 import UserMenuContent from '@/components/UserMenuContent.vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
+import { usePWA } from '@/composables/usePWA';
 import { toUrl } from '@/lib/utils';
 import type { BreadcrumbItem, NavItem } from '@/types';
 import { dashboard } from '@/routes';
-import { usePWA } from '@/composables/usePWA';
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];
@@ -127,7 +127,9 @@ const rightNavItems: NavItem[] = [
                                         @click="installApp"
                                         class="flex items-center space-x-2 text-sm font-bold text-orange-500 hover:text-orange-600 dark:text-orange-400"
                                     >
-                                        <Download class="h-5 w-5 animate-bounce" />
+                                        <Download
+                                            class="h-5 w-5 animate-bounce"
+                                        />
                                         <span>Install App</span>
                                     </button>
                                     <a
@@ -206,7 +208,10 @@ const rightNavItems: NavItem[] = [
                         </Button>
 
                         <div class="hidden space-x-1 lg:flex">
-                            <TooltipProvider v-if="!isStandalone" :delay-duration="0">
+                            <TooltipProvider
+                                v-if="!isStandalone"
+                                :delay-duration="0"
+                            >
                                 <Tooltip>
                                     <TooltipTrigger>
                                         <Button
@@ -215,8 +220,12 @@ const rightNavItems: NavItem[] = [
                                             size="icon"
                                             class="group h-9 w-9 cursor-pointer text-orange-500 hover:text-orange-600 dark:text-orange-400"
                                         >
-                                            <span class="sr-only">Install App</span>
-                                            <Download class="size-5 animate-bounce" />
+                                            <span class="sr-only"
+                                                >Install App</span
+                                            >
+                                            <Download
+                                                class="size-5 animate-bounce"
+                                            />
                                         </Button>
                                     </TooltipTrigger>
                                     <TooltipContent>

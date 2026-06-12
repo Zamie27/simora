@@ -427,7 +427,9 @@ const getTypeColor = (id: number | null) => {
                                         })
                                     }}</span>
                                     <span class="text-lg">{{
-                                        new Date(session.instance_date).getDate()
+                                        new Date(
+                                            session.instance_date,
+                                        ).getDate()
                                     }}</span>
                                 </div>
                                 <div class="flex-1 overflow-hidden">
@@ -440,12 +442,25 @@ const getTypeColor = (id: number | null) => {
                                         class="mt-1 flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase opacity-70"
                                     >
                                         <Clock class="h-3 w-3" />
-                                        <span>{{ session.start_time.substring(0, 5) }} - {{ session.end_time.substring(0, 5) }}</span>
+                                        <span
+                                            >{{
+                                                session.start_time.substring(
+                                                    0,
+                                                    5,
+                                                )
+                                            }}
+                                            -
+                                            {{
+                                                session.end_time.substring(0, 5)
+                                            }}</span
+                                        >
                                     </div>
                                     <div
                                         class="mt-0.5 flex items-center gap-2 text-[9px] font-black text-accent uppercase"
                                     >
-                                        <span>{{ session.exercise_type?.name }}</span>
+                                        <span>{{
+                                            session.exercise_type?.name
+                                        }}</span>
                                     </div>
                                 </div>
                             </Link>

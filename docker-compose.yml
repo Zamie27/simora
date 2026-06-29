@@ -1,6 +1,7 @@
+version: '3.8'
+
 services:
   # 1. Container Aplikasi (Backend Laravel 12 & PHP 8.4)
-  # Sesuai kebutuhan backend di dokumen [cite: 1586]
   app:
     build:
       context: .
@@ -14,10 +15,10 @@ services:
     volumes:
       - ./:/var/www/html:Z
     networks:
-      - simora-network
+      apps-network:
+        ipv4_address: 10.20.1.20
 
   # 2. Web Server (Nginx) - Terpisah dari PHP
-  # Melayani request HTTP dan file statis [cite: 1576]
   nginx:
     image: nginx:alpine
     container_name: simora-nginx
@@ -30,10 +31,10 @@ services:
     depends_on:
       - app
     networks:
-      - simora-network
+      apps-network:
+        ipv4_address: 10.20.1.10
 
   # 3. Database Server (MySQL)
-  # Tempat penyimpanan terpusat data latihan dan profil atlet [cite: 1541, 1588]
   mysql:
     image: mysql:8.4
     container_name: simora-db
@@ -44,30 +45,16 @@ services:
       MYSQL_PASSWORD: simora_password
       MYSQL_ROOT_PASSWORD: root_password_simora
     ports:
-      - "3308:3306"
+      - "3307:3306"
     volumes:
       - simora-db-data:/var/lib/mysql:Z
     networks:
-      - simora-network
-
-  # 4. Database Management (PHPMyAdmin)
-  # Memudahkan tim SI dalam mengelola integritas data [cite: 1660]
-  phpmyadmin:
-    image: phpmyadmin:latest
-    container_name: simora-pma
-    restart: always
-    ports:
-      - "8083:80"
-    environment:
-      - PMA_ARBITRARY=1
-    depends_on:
-      - mysql
-    networks:
-      - simora-network
+      apps-network:
+        ipv4_address: 10.20.1.30
 
 networks:
-  simora-network:
-    driver: bridge
+  apps-network:
+    external: true
 
 volumes:
   simora-db-data:

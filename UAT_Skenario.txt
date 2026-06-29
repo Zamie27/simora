@@ -1,0 +1,262 @@
+================================================================================
+          DOKUMEN USER ACCEPTANCE TESTING (UAT) - SIMORA (ATLET SEPEDA)
+================================================================================
+
+Skenario 1: Autentikasi Pengguna & Pendaftaran (UC-01, SRS-F-08, SRS-NF-4)
+Tujuan: Memastikan proses pendaftaran, verifikasi, login, dan lupa password berjalan dengan aman sesuai hak akses.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Akses halaman dashboard utama tanpa    | Sistem mendeteksi belum login dan       |
+   autentikasi (akses langsung /dashboard)| mengarahkan kembali ke halaman login.   |
+                                          |                                         |
+2. Buka halaman register, kosongkan form, | Muncul pesan error validasi pada        |
+   lalu klik tombol "Daftar".             | kolom yang kosong (Nama, Email, dll).   |
+                                          |                                         |
+3. Isi data register atlet baru secara    | Registrasi berhasil, sistem mengarahkan |
+   lengkap dan submit form.               | ke halaman menunggu verifikasi manajemen|
+                                          | (atlet belum bisa masuk dashboard).     |
+                                          |                                         |
+4. Masukkan email salah atau password     | Muncul alert kesalahan kredensial       |
+   salah pada form login, klik "Masuk".   | "The provided credentials do not match  |
+                                          | our records."                           |
+                                          |                                         |
+5. Masukkan email & password yang valid   | Login berhasil, sistem mengarahkan ke   |
+   (akun terverifikasi) dan klik "Masuk". | dashboard utama sesuai role masing-masing|
+                                          |                                         |
+6. Klik menu "Lupa Password", masukkan    | Link reset password berhasil dikirim ke |
+   email terdaftar dan kirim instruksi.   | email yang bersangkutan.                |
+--------------------------------------------------------------------------------
+
+Skenario 2: Navigasi Dashboard & Panel Ringkasan (UC-02, SRS-F-05, SRS-NF-9)
+Tujuan: Memastikan dashboard visual menampilkan data yang akurat dan dinamis sesuai dengan role masing-masing.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Atlet, amati halaman     | Menampilkan widget ringkasan latihan    |
+   dashboard pertama kali.                | terakhir, grafik performa personal,     |
+                                          | BMI terbaru, dan pintasan menu atlet.   |
+                                          |                                         |
+2. Di dashboard Atlet, isi form "Update   | Status latihan cepat terkirim ke server |
+   Cepat" (misal: jarak & durasi hari ini)| dan grafik ringkasan langsung terupdate.|
+                                          |                                         |
+3. Login sebagai Pelatih, amati halaman   | Menampilkan statistik jumlah atlet      |
+   dashboard.                             | bimbingan, notifikasi aktivitas latihan |
+                                          | terbaru, dan daftar sesi latihan aktif. |
+                                          |                                         |
+4. Login sebagai Manajemen, amati halaman | Menampilkan total atlet aktif, total    |
+   dashboard.                             | pelatih, data registrasi baru pending,  |
+                                          | dan ringkasan performa global.          |
+--------------------------------------------------------------------------------
+
+Skenario 3: Kelola Profil Pengguna (UC-03, SRS-F-07)
+Tujuan: Memastikan pengguna dapat melihat, mengubah data profil, atau menghapus akun mereka.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Masuk ke menu "Profil" / "Pengaturan".  | Tampil data profil saat ini (Nama,    |
+                                          | Email, Foto, No Telp) secara detail.    |
+                                          |                                         |
+2. Lakukan perubahan pada nama dan nomor  | Profil berhasil disimpan, muncul alert  |
+   telepon, lalu klik "Simpan".           | sukses, dan nama di header berubah.     |
+                                          |                                         |
+3. Klik tombol "Hapus Akun" dan masukkan  | Akun berhasil dinonaktifkan/dihapus,    |
+   konfirmasi password.                   | sesi logout otomatis dijalankan.        |
+--------------------------------------------------------------------------------
+
+Skenario 4: Verifikasi Pendaftaran & Menetapkan Pelatih (UC-04, SRS-F-13, SRS-F-14)
+Tujuan: Memastikan Manajemen dapat memverifikasi pendaftaran akun atlet baru dan menugaskan pelatih.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Manajemen, buka menu     | Menampilkan daftar nama atlet baru yang |
+   "Pendaftaran Tertunda" (Pending).      | statusnya belum aktif/terverifikasi.     |
+                                          |                                         |
+2. Pilih salah satu atlet tertunda, klik  | Tampil pilihan dropdown daftar pelatih  |
+   "Verifikasi", pilih pelatih pendamping | yang tersedia di sistem.                |
+                                          |                                         |
+3. Klik "Konfirmasi Verifikasi".          | Status atlet menjadi aktif/terverifikasi|
+                                          | dan pelatih terpilih resmi ditugaskan.  |
+--------------------------------------------------------------------------------
+
+Skenario 5: Ringkasan Daftar Atlet (UC-05, SRS-F-17)
+Tujuan: Memastikan Manajemen dan Pelatih dapat memantau ringkasan daftar atlet serta mengubah kategorinya.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Manajemen / Pelatih,     | Menampilkan tabel seluruh atlet         |
+   masuk ke menu "Daftar Atlet".          | terdaftar beserta kategori & pelatihnya.|
+                                          |                                         |
+2. Klik salah satu atlet untuk "Lihat     | Sistem menampilkan halaman detail atlet,|
+   Detail Data Atlet".                    | termasuk histori latihan & dokumen UCI. |
+                                          |                                         |
+3. Di halaman detail atlet (Manajemen),   | Penugasan pelatih pembimbing berhasil   |
+   ubah pelatih pendamping lalu simpan.   | diperbarui secara real-time.            |
+                                          |                                         |
+4. Sebagai Pelatih, ubah kategori kelas   | Kategori atlet (misal: Junior ke Elite) |
+   atlet bimbingan pada panel edit.       | berhasil diubah dan disimpan.           |
+--------------------------------------------------------------------------------
+
+Skenario 6: Kelola Data Metrik Fisik - BMI (UC-06, SRS-F-11)
+Tujuan: Memastikan pencatatan tinggi, berat badan atlet secara berkala, perhitungan BMI, serta tanggal lahir berjalan benar.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Atlet, masuk ke menu     | Tampil form pengisian metrik fisik      |
+   "Metrik Fisik", lalu input tinggi badan| (Tinggi, Berat Badan) dan tanggal lahir.|
+   dan berat badan terbaru. Klik "Simpan".|                                         |
+                                          |                                         |
+2. Periksa hasil kalkulasi BMI pada tabel | Nilai BMI dan status kategori (misal:   |
+   atau dashboard personal.                | Normal, Overweight) terhitung otomatis. |
+                                          |                                         |
+3. Login sebagai Pelatih, buka sub-menu   | Tampil grafik perkembangan berat badan  |
+   "Metrik Fisik Atlet" pada detail atlet.| dan riwayat BMI atlet bimbingannya.     |
+--------------------------------------------------------------------------------
+
+Skenario 7: Kelola Jadwal Sesi Latihan (UC-07, SRS-F-01)
+Tujuan: Memastikan Pelatih dapat menyusun sesi latihan dan Atlet dapat melihat sesi tersebut.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Pelatih, buka menu       | Masuk ke form pembuatan jadwal sesi     |
+   "Jadwal Latihan", lalu klik "Buat Sesi"| latihan (Judul, Tanggal, Jenis Latihan).|
+                                          |                                         |
+2. Tentukan atlet target, isi detail      | Sesi latihan berhasil disimpan dan      |
+   instruksi latihan, lalu klik "Kirim".  | ditambahkan ke kalender/list latihan.   |
+                                          |                                         |
+3. Login sebagai Atlet target, periksa    | Sesi latihan baru dari pelatih muncul   |
+   dashboard / menu "Jadwal Latihan".     | di dashboard dengan detail instruksinya.|
+                                          |                                         |
+4. Login sebagai Pelatih, pilih sesi      | Sesi latihan terhapus dari sistem, dan  |
+   latihan tertentu dan klik "Hapus".     | tidak lagi tampil di kalender atlet.    |
+--------------------------------------------------------------------------------
+
+Skenario 8: Analisis Grafik & Statistik Latihan (UC-08, SRS-F-06)
+Tujuan: Memastikan visualisasi progres latihan berupa grafik ApexCharts (kecepatan, detak jantung, dll) berfungsi dengan baik.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Atlet, masuk ke menu     | Tampil grafik interaktif ApexCharts     |
+   "Analisis Latihan".                    | (Kecepatan, Detak Jantung, Cadence,    |
+                                          | Jarak, Kalori) berbasis tanggal.        |
+                                          |                                         |
+2. Arahkan kursor (hover) ke titik grafik.| Tooltip menampilkan detail angka metrik  |
+                                          | latihan dengan presisi.                 |
+                                          |                                         |
+3. Login sebagai Pelatih/Manajer, masuk   | Grafik performa atlet bimbingan dapat   |
+   ke panel grafik atlet bimbingan.       | dimuat dengan data kumulatif yang sama. |
+--------------------------------------------------------------------------------
+
+Skenario 9: Bandingkan Performa & Memfilter Riwayat (UC-09, SRS-F-15, SRS-F-16)
+Tujuan: Memastikan fitur perbandingan grafik performa antar atlet dan filter rentang tanggal bekerja akurat.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Pelatih, buka menu       | Tampil halaman komparasi performa       |
+   "Komparasi Performa".                  | dengan opsi pemilihan multi-atlet.      |
+                                          |                                         |
+2. Pilih Atlet A dan Atlet B dari list,   | Grafik memuat dua garis (line charts)   |
+   lalu klik "Bandingkan".                | yang membandingkan parameter kecepatan/  |
+                                          | detak jantung secara berdampingan.      |
+                                          |                                         |
+3. Terapkan filter rentang tanggal pada   | Data tabel histori latihan menyusut     |
+   tabel riwayat latihan (mulai-selesai). | hanya menampilkan data sesuai filter.   |
+--------------------------------------------------------------------------------
+
+Skenario 10: Lihat Laporan Riwayat Performa (UC-10, SRS-F-18)
+Tujuan: Memastikan laporan riwayat performa dapat dilihat dan diekspor ke file CSV/Excel dengan benar.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Pelatih/Manajer, buka    | Tampil ringkasan tabel data latihan     |
+   menu "Laporan Performa".               | atlet secara keseluruhan (rekapitulasi).|
+                                          |                                         |
+2. Klik tombol "Export CSV Semua Atlet".  | Mengunduh file CSV yang berisi seluruh  |
+                                          | rekaman performa semua atlet.           |
+                                          |                                         |
+3. Klik tombol "Export CSV" pada salah    | Mengunduh file CSV spesifik berisi      |
+   satu baris atlet tertentu.             | log latihan lengkap atlet tersebut.     |
+--------------------------------------------------------------------------------
+
+Skenario 11: Kelola Evaluasi & Umpan Balik Latihan (UC-11, SRS-F-04)
+Tujuan: Memastikan Pelatih dapat memberikan ulasan umpan balik dan Atlet dapat menerimanya.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Pelatih, buka log        | Tampil kolom/field "Evaluasi Pelatih"   |
+   latihan atlet, isi ulasan evaluasi.    | yang siap diisi.                        |
+                                          |                                         |
+2. Klik "Kirim Evaluasi" / "Update".       | Evaluasi tersimpan di database, status  |
+                                          | berubah menjadi "Sudah Dievaluasi".     |
+                                          |                                         |
+3. Login sebagai Atlet, periksa catatan   | Umpan balik dari pelatih tampil di      |
+   latihan yang telah dikirim.            | halaman detail log latihan atlet.       |
+--------------------------------------------------------------------------------
+
+Skenario 12: Kelola Pesan (UC-12, SRS-F-03)
+Tujuan: Memastikan sistem pengiriman pesan, notifikasi, dan penandaan pesan dibaca berfungsi.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Pelatih, buka menu       | Tampil daftar percakapan aktif dengan   |
+   "Pesan", pilih atlet, ketik isi pesan, | atlet bimbingan. Pesan terkirim ke      |
+   dan klik "Kirim".                      | database dan muncul di riwayat chat.    |
+                                          |                                         |
+2. Login sebagai Atlet, periksa ikon      | Terlihat badge notifikasi pesan masuk.  |
+   pesan/notifikasi di dashboard.         |                                         |
+                                          |                                         |
+3. Buka pesan tersebut sebagai Atlet.     | Pesan terbaca, tanda belum dibaca hilang|
+                                          | (status pesan diubah menjadi read).     |
+                                          |                                         |
+4. Klik tombol "Hapus Pesan" (jika ada).  | Pesan terhapus dari riwayat percakapan. |
+--------------------------------------------------------------------------------
+
+Skenario 13: Kelola Event & Partisipasi (UC-13, SRS-F-09, SRS-F-12)
+Tujuan: Memastikan pendataan event baru oleh manajer, penetapan partisipasi atlet, dan histori event berjalan baik.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Manajemen, buka menu     | Masuk ke form tambah event baru         |
+   "Kelola Event", klik "Tambah Event".   | (Nama Event, Tanggal, Lokasi, Kategori).|
+                                          |                                         |
+2. Masukkan detail event, pilih daftar    | Event berhasil dibuat, dan atlet yang   |
+   atlet yang berpartisipasi, simpan.     | dipilih otomatis ditetapkan ikut serta. |
+                                          |                                         |
+3. Login sebagai Atlet/Pelatih, buka      | Tampil jadwal event yang akan datang    |
+   menu "Event/Acara".                    | dan riwayat event yang pernah diikuti.  |
+                                          |                                         |
+4. Sebagai Manajemen, klik tombol "Hapus" | Event terhapus dan partisipasi atlet    |
+   pada baris event tertentu.             | dalam event tersebut dibatalkan.        |
+--------------------------------------------------------------------------------
+
+Skenario 14: Kelola Dokumen Lisensi UCI (UC-14, SRS-F-10)
+Tujuan: Memastikan proses upload dokumen, verifikasi lisensi UCI, dan unduhan file berjalan lancar.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Atlet, buka menu         | Tampil panel upload file dokumen        |
+   "Dokumen & Lisensi UCI". Upload file.   | (PDF/Gambar) untuk KTP/Lisensi.         |
+                                          |                                         |
+2. Klik "Kirim Dokumen".                  | File berhasil diunggah ke storage aman, |
+                                          | status berubah menjadi "Menunggu Review"|
+                                          |                                         |
+3. Login sebagai Pelatih/Manajemen, buka  | Manajemen/Pelatih dapat melihat file    |
+   halaman lisensi atlet. Klik "Lihat".   | dokumen yang diunggah oleh atlet.       |
+                                          |                                         |
+4. Klik "Unduh Semua Dokumen" (Manajemen).| Mengunduh seluruh dokumen atlet dalam   |
+                                          | bentuk arsip ZIP atau unduhan berkas.   |
+--------------------------------------------------------------------------------
+
+Skenario 15: Gunakan Kalkulator Gear Sepeda (UC-15, SRS-F-02)
+Tujuan: Memastikan kalkulator perhitungan gear sepeda memberikan output kalkulasi teknis yang presisi.
+--------------------------------------------------------------------------------
+Langkah Uji                               | Hasil yang Diharapkan                   | Status (Lulus/Gagal)
+--------------------------------------------------------------------------------
+1. Login sebagai Atlet/Pelatih, masuk ke  | Tampil halaman Kalkulator Gear dengan   |
+   menu "Kalkulator Gear".                | input Chainring, Cog, dan Ukuran Ban.   |
+                                          |                                         |
+2. Masukkan angka (misal: Chainring=53,   | Hasil rasio gear (Gear Ratio) dan       |
+   Cog=11) dan klik "Hitung".             | perkiraan jarak per kayuhan (Rollout)   |
+                                          | terhitung dan tampil secara akurat.     |
+--------------------------------------------------------------------------------
+================================================================================

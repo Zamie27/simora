@@ -194,15 +194,18 @@ const deleteLicense = async () => {
             preserveScroll: true,
             onSuccess: () => {
                 snackbar.success('Lisensi UCI berhasil dihapus.');
-                
+
                 // Find updated athlete in props.athletes to refresh detailedAthlete view
                 if (props.athletes) {
-                    const updated = props.athletes.find((a) => a.id === detailedAthlete.value?.id);
+                    const updated = props.athletes.find(
+                        (a) => a.id === detailedAthlete.value?.id,
+                    );
+
                     if (updated) {
                         detailedAthlete.value = updated;
                     }
                 }
-                
+
                 licenseForm.reset();
             },
             onError: () => {
@@ -1406,7 +1409,8 @@ const getThumbnailUrl = (athleteId: number, type: string) => {
                                             @click="deleteLicense"
                                             class="flex w-full items-center justify-center gap-2 rounded-xl border border-red-500/20 bg-red-600/10 py-4 text-[10px] font-black text-red-500 uppercase transition-all hover:bg-red-600/20"
                                         >
-                                            <Trash2 class="h-4 w-4" /> Hapus Lisensi
+                                            <Trash2 class="h-4 w-4" /> Hapus
+                                            Lisensi
                                         </button>
                                     </div>
                                 </div>

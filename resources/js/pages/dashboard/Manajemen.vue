@@ -147,7 +147,7 @@ const getTypeColor = (id: number | null) => {
                     <h1
                         class="text-2xl font-black tracking-tight text-foreground uppercase md:text-3xl"
                     >
-                        Ikhtisar <span class="text-accent">Sistem</span>
+                        Dashboard <span class="text-accent">Sistem</span>
                     </h1>
                     <p
                         class="text-sm font-bold text-muted-foreground opacity-70"

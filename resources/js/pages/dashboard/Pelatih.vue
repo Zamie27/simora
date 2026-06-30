@@ -204,7 +204,7 @@ const formatTime = (minutes: number) => {
                     <p
                         class="text-sm font-bold text-muted-foreground opacity-70"
                     >
-                        Ikhtisar performa tim dan aktivitas atlet hari ini.
+                        Dashboard performa tim dan aktivitas atlet hari ini.
                     </p>
                 </div>
 

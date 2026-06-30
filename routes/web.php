@@ -46,6 +46,7 @@ Route::middleware(['auth', 'verified', 'verified-user'])->group(function () {
     Route::post('lisensi-uci/upload', [KelolaDokumenLisensiUciController::class, 'simpanDokumenPribadi'])->name('lisensi-uci.upload');
     Route::post('lisensi-uci/update/{atlet}', [KelolaDokumenLisensiUciController::class, 'perbaruiLisensiUci'])->name('lisensi-uci.update');
     Route::get('lisensi-uci/download-all/{atlet}', [KelolaDokumenLisensiUciController::class, 'unduhSemuaDokumen'])->name('lisensi-uci.download-all');
+    Route::delete('lisensi-uci/{atlet}', [KelolaDokumenLisensiUciController::class, 'hapusLisensiUci'])->name('lisensi-uci.destroy');
 
     // Management Routes
     Route::middleware(['role:Manajemen'])->prefix('manajemen')->name('manajemen.')->group(function () {

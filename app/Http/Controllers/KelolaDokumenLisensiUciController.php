@@ -175,4 +175,32 @@ class KelolaDokumenLisensiUciController extends Controller
 
         return response()->download($tempPath, $zipFileName)->deleteFileAfterSend(true);
     }
+
+    /**
+     * Delete/Reset UCI License data (Manajemen only).
+     */
+    public function hapusLisensiUci(Request $permintaan, User $atlet): RedirectResponse
+    {
+        if ($permintaan->user()->role->name !== 'Manajemen') {
+            abort(403);
+        }
+
+        $profil = $atlet->athleteProfile;
+
+        if ($profil) {
+            // Delete license file from storage if exists
+            if ($profil->license_path) {
+                Storage::disk('local')->delete($profil->license_path);
+            }
+
+            // Set columns to null
+            $profil->update([
+                'uci_id' => null,
+                'license_path' => null,
+                'license_valid_until' => null,
+            ]);
+        }
+
+        return back()->with('success', 'Lisensi UCI atlet berhasil dihapus.');
+    }
 }

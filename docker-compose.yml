@@ -52,6 +52,19 @@ services:
       apps-network:
         ipv4_address: 10.20.1.30
 
+  # 4. phpMyAdmin (Universal Database Manager)
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    container_name: global-pma
+    restart: unless-stopped
+    environment:
+      PMA_ARBITRARY: 1
+    ports:
+      - "8083:80"
+    networks:
+      apps-network:
+        ipv4_address: 10.20.1.40
+
 networks:
   apps-network:
     external: true

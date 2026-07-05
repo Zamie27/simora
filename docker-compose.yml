@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   # 1. Container Aplikasi (Backend Laravel 12 & PHP 8.4)
   app:
@@ -39,3 +41,4 @@ networks:
     external: true
   database:
     external: true
+

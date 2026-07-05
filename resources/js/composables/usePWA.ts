@@ -18,23 +18,31 @@ export function usePWA() {
 
     const installApp = async () => {
         const promptEvent = (window as any)._deferredPrompt;
+
         if (!promptEvent) {
-            alert('Fitur Install App saat ini belum tersedia. Pastikan:\n1. Menggunakan browser Chrome / Safari terbaru\n2. Mengakses lewat jalur aman (HTTPS)\n3. Aplikasi SIMORA belum pernah diinstal sebelumnya.');
+            alert(
+                'Fitur Install App saat ini belum tersedia. Pastikan:\n1. Menggunakan browser Chrome / Safari terbaru\n2. Mengakses lewat jalur aman (HTTPS)\n3. Aplikasi SIMORA belum pernah diinstal sebelumnya.',
+            );
+
             return;
         }
-        
+
         promptEvent.prompt();
-        
+
         const { outcome } = await promptEvent.userChoice;
+
         if (outcome === 'accepted') {
             isInstallable.value = false;
         }
-        
+
         (window as any)._deferredPrompt = null;
     };
 
     onMounted(() => {
-        if (window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone) {
+        if (
+            window.matchMedia('(display-mode: standalone)').matches ||
+            (navigator as any).standalone
+        ) {
             isStandalone.value = true;
         }
 
@@ -54,6 +62,6 @@ export function usePWA() {
     return {
         isInstallable,
         isStandalone,
-        installApp
+        installApp,
     };
 }

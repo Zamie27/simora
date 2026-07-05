@@ -178,7 +178,7 @@ class TrainingLogRepository
             })
             ->orderByDesc('performance_score');
 
-        if ($athleteIds) {
+        if (is_array($athleteIds)) {
             $query->whereIn('id', $athleteIds);
         }
 
@@ -186,6 +186,9 @@ class TrainingLogRepository
             'id' => $user->id,
             'name' => $user->name,
             'avatar' => $user->avatar,
+            'athlete_profile' => $user->athleteProfile ? [
+                'profile_photo_path' => $user->athleteProfile->profile_photo_path,
+            ] : null,
             'category_name' => $user->category?->name ?? 'Personal',
             'performance_score' => (float) $user->performance_score,
             'total_distance' => (float) $user->total_distance,

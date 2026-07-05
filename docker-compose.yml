@@ -1,6 +1,5 @@
 services:
   # 1. Container Aplikasi (Backend Laravel 12 & PHP 8.4)
-  # Sesuai kebutuhan backend di dokumen [cite: 1586]
   app:
     build:
       context: .
@@ -18,7 +17,6 @@ services:
       - database
 
   # 2. Web Server (Nginx) - Terpisah dari PHP
-  # Melayani request HTTP dan file statis [cite: 1576]
   nginx:
     image: nginx:alpine
     container_name: simora
@@ -41,4 +39,3 @@ networks:
     external: true
   database:
     external: true
-

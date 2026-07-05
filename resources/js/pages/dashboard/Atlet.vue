@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, useForm, router } from '@inertiajs/vue3';
+import { Head, useForm, router, Link } from '@inertiajs/vue3';
 import type { ApexOptions } from 'apexcharts';
 import {
     Clock,
@@ -35,6 +35,7 @@ interface Props {
         count: number;
     };
     upcomingEvents: any[];
+    upcomingSessions: any[];
     performanceTrend: any[];
     exerciseTypes: any[];
     recentMessages: any[];
@@ -384,6 +385,88 @@ const getTypeColor = (id: number | null) => {
 
                 <!-- Right Column: Missions & Messages -->
                 <div class="flex flex-col gap-6 lg:col-span-4">
+                    <!-- Upcoming Sessions (Misi Latihan) -->
+                    <div
+                        class="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-xl"
+                    >
+                        <div class="mb-6 flex items-center gap-2">
+                            <Calendar class="h-5 w-5 text-accent" />
+                            <h2
+                                class="text-lg font-black tracking-tight text-foreground uppercase"
+                            >
+                                Misi Latihan (Sesi)
+                            </h2>
+                        </div>
+                        <div class="flex flex-col gap-4">
+                            <div
+                                v-if="upcomingSessions.length === 0"
+                                class="flex flex-col items-center justify-center py-10 opacity-50"
+                            >
+                                <Info class="mb-2 h-8 w-8" />
+                                <p
+                                    class="text-xs font-bold tracking-widest uppercase"
+                                >
+                                    Belum ada misi latihan
+                                </p>
+                            </div>
+                            <Link
+                                v-else
+                                v-for="session in upcomingSessions"
+                                :key="session.id"
+                                :href="`/atlet/latihan`"
+                                class="group flex items-center gap-4 rounded-xl border border-border bg-muted/30 p-4 transition-all hover:border-accent/40 hover:bg-muted/50"
+                            >
+                                <div
+                                    class="flex h-12 w-12 flex-col items-center justify-center rounded-lg bg-accent text-[10px] leading-tight font-black text-accent-foreground uppercase"
+                                >
+                                    <span>{{
+                                        new Date(
+                                            session.instance_date,
+                                        ).toLocaleDateString('id-ID', {
+                                            month: 'short',
+                                        })
+                                    }}</span>
+                                    <span class="text-lg">{{
+                                        new Date(
+                                            session.instance_date,
+                                        ).getDate()
+                                    }}</span>
+                                </div>
+                                <div class="flex-1 overflow-hidden">
+                                    <h4
+                                        class="truncate text-xs font-black text-foreground uppercase transition-colors group-hover:text-accent"
+                                    >
+                                        {{ session.title }}
+                                    </h4>
+                                    <div
+                                        class="mt-1 flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase opacity-70"
+                                    >
+                                        <Clock class="h-3 w-3" />
+                                        <span
+                                            >{{
+                                                session.start_time.substring(
+                                                    0,
+                                                    5,
+                                                )
+                                            }}
+                                            -
+                                            {{
+                                                session.end_time.substring(0, 5)
+                                            }}</span
+                                        >
+                                    </div>
+                                    <div
+                                        class="mt-0.5 flex items-center gap-2 text-[9px] font-black text-accent uppercase"
+                                    >
+                                        <span>{{
+                                            session.exercise_type?.name
+                                        }}</span>
+                                    </div>
+                                </div>
+                            </Link>
+                        </div>
+                    </div>
+
                     <!-- Upcoming Missions -->
                     <div
                         class="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-xl"

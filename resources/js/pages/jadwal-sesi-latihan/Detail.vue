@@ -443,12 +443,17 @@ const completionColor = (s: string) =>
                             <!-- Display mode -->
                             <div class="flex items-start justify-between">
                                 <div v-if="log.coach_rating">
-                                    <div class="flex items-center gap-2">
-                                        <Star class="h-4 w-4 text-accent" />
-                                        <span
-                                            class="text-lg font-black text-accent"
-                                            >{{ log.coach_rating }}/10</span
-                                        >
+                                    <div class="flex items-center gap-1">
+                                        <Star
+                                            v-for="i in 5"
+                                            :key="i"
+                                            class="h-4 w-4"
+                                            :class="
+                                                i <= log.coach_rating
+                                                    ? 'fill-accent text-accent'
+                                                    : 'text-accent/20'
+                                            "
+                                        />
                                     </div>
                                     <p
                                         v-if="log.coach_evaluation"
@@ -537,15 +542,15 @@ const completionColor = (s: string) =>
                                 <div class="space-y-1">
                                     <label
                                         class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
-                                        >Rating (1-10)</label
+                                        >Rating (1-5)</label
                                     >
                                     <input
                                         v-model.number="evalForm.coach_rating"
                                         type="number"
                                         min="1"
-                                        max="10"
+                                        max="5"
                                         class="w-full rounded-xl border-none bg-muted/30 px-4 py-3 text-sm font-bold text-foreground focus:ring-2 focus:ring-accent focus:outline-none"
-                                        placeholder="8"
+                                        placeholder="5"
                                     />
                                 </div>
                                 <div class="space-y-1">

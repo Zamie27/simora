@@ -418,7 +418,7 @@ const chartSeries = computed(() => [
                         </div>
                         <div class="mt-6 flex items-baseline gap-2">
                             <span
-                                class="text-4xl font-black tracking-tighter text-foreground text-white italic"
+                                class="text-4xl font-black tracking-tighter text-foreground italic"
                                 >{{ statistics.avg_speed }}</span
                             >
                             <span
@@ -443,7 +443,7 @@ const chartSeries = computed(() => [
                         </div>
                         <div class="mt-6 flex items-baseline gap-2">
                             <span
-                                class="text-4xl font-black tracking-tighter text-foreground text-white italic"
+                                class="text-4xl font-black tracking-tighter text-foreground italic"
                                 >{{ statistics.avg_rpm }}</span
                             >
                             <span

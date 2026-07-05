@@ -256,6 +256,7 @@ class LihatDashboardController extends Controller
             'user' => $pengguna,
             'weeklyStats' => $weeklyStats,
             'upcomingEvents' => $upcomingEvents,
+            'upcomingSessions' => $this->logRepository->getUpcomingSessions($pengguna->id)->take(3)->values(),
             'performanceTrend' => $trenPerforma,
             'exerciseTypes' => JenisLatihan::all(),
             'recentMessages' => Pesan::where('receiver_id', $pengguna->id)

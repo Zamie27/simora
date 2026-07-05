@@ -55,6 +55,18 @@ class DatabaseSeeder extends Seeder
         );
         $report->forceFill(['email_verified_at' => now()])->save();
 
+        // Specific Coach User
+        $specificCoach = User::firstOrCreate(
+            ['email' => 'pelatih@example.com'],
+            [
+                'name' => 'Pelatih Utama',
+                'password' => Hash::make('password'),
+                'role_id' => $pelatihRole->id,
+                'is_verified' => true,
+            ]
+        );
+        $specificCoach->forceFill(['email_verified_at' => now()])->save();
+
         // Coach Users
         for ($i = 0; $i < 2; $i++) {
             $coach = User::firstOrCreate(
@@ -69,6 +81,18 @@ class DatabaseSeeder extends Seeder
             $coach->forceFill(['email_verified_at' => now()])->save();
         }
 
+        // Specific Athlete User
+        $specificAthlete = User::firstOrCreate(
+            ['email' => 'atlet@example.com'],
+            [
+                'name' => 'Atlet Utama',
+                'password' => Hash::make('password'),
+                'role_id' => $atletRole->id,
+                'is_verified' => true,
+            ]
+        );
+        $specificAthlete->forceFill(['email_verified_at' => now()])->save();
+
         // Athlete Users
         for ($i = 0; $i < 10; $i++) {
             User::firstOrCreate(
@@ -81,6 +105,6 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        // $this->call(DummyDataSeeder::class);
+        $this->call(DummyDataSeeder::class);
     }
 }

@@ -498,8 +498,8 @@ watch(
                             >
                                 {{
                                     editingEvent
-                                        ? 'Edit Agenda Event'
-                                        : 'Buat Agenda Baru'
+                                        ? 'Edit Event Event'
+                                        : 'Buat Event Baru'
                                 }}
                             </h2>
                             <p

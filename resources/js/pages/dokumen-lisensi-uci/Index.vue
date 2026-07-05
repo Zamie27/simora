@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, router } from '@inertiajs/vue3';
 import {
     Shield,
     FileText,
@@ -15,10 +15,12 @@ import {
     Upload,
     Search,
     Download,
+    Trash2,
 } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useConfirm } from '@/composables/useConfirm';
 import { useSnackbar } from '@/composables/useSnackbar';
 import AppLayout from '@/layouts/AppLayout.vue';
 
@@ -54,6 +56,7 @@ const breadcrumbs = [
 ];
 
 const snackbar = useSnackbar();
+const confirmDialog = useConfirm();
 
 // --- ATLET LOGIC ---
 const profilePhotoInput = ref<HTMLInputElement | null>(null);
@@ -174,6 +177,42 @@ const submitLicense = () => {
             snackbar.error('Gagal memperbarui lisensi UCI.');
         },
     });
+};
+
+const deleteLicense = async () => {
+    if (!detailedAthlete.value) {
+        return;
+    }
+
+    if (
+        await confirmDialog.ask(
+            'Hapus Lisensi UCI',
+            `Apakah Anda yakin ingin menghapus lisensi UCI milik "${detailedAthlete.value.name}"? Ini akan menghapus UCI ID, masa berlaku, dan file lisensi yang terunggah.`,
+        )
+    ) {
+        router.delete(`/lisensi-uci/${detailedAthlete.value.id}`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                snackbar.success('Lisensi UCI berhasil dihapus.');
+
+                // Find updated athlete in props.athletes to refresh detailedAthlete view
+                if (props.athletes) {
+                    const updated = props.athletes.find(
+                        (a) => a.id === detailedAthlete.value?.id,
+                    );
+
+                    if (updated) {
+                        detailedAthlete.value = updated;
+                    }
+                }
+
+                licenseForm.reset();
+            },
+            onError: () => {
+                snackbar.error('Gagal menghapus lisensi UCI.');
+            },
+        });
+    }
 };
 
 // --- PREVIEW LOGIC ---
@@ -1348,17 +1387,32 @@ const getThumbnailUrl = (athleteId: number, type: string) => {
                                             />
                                         </div>
                                     </div>
-                                    <button
-                                        @click="submitLicense"
-                                        :disabled="licenseForm.processing"
-                                        class="w-full rounded-xl bg-accent py-4 text-[10px] font-black text-white uppercase shadow-lg shadow-accent/20 transition-all hover:bg-accent/90 disabled:opacity-50"
-                                    >
-                                        {{
-                                            licenseForm.processing
-                                                ? 'Menyimpan...'
-                                                : 'Simpan Perubahan'
-                                        }}
-                                    </button>
+                                    <div class="space-y-2">
+                                        <button
+                                            @click="submitLicense"
+                                            :disabled="licenseForm.processing"
+                                            class="w-full rounded-xl bg-accent py-4 text-[10px] font-black text-white uppercase shadow-lg shadow-accent/20 transition-all hover:bg-accent/90 disabled:opacity-50"
+                                        >
+                                            {{
+                                                licenseForm.processing
+                                                    ? 'Menyimpan...'
+                                                    : 'Simpan Perubahan'
+                                            }}
+                                        </button>
+                                        <button
+                                            v-if="
+                                                detailedAthlete.athlete_profile
+                                                    ?.uci_id ||
+                                                detailedAthlete.athlete_profile
+                                                    ?.license_path
+                                            "
+                                            @click="deleteLicense"
+                                            class="flex w-full items-center justify-center gap-2 rounded-xl border border-red-500/20 bg-red-600/10 py-4 text-[10px] font-black text-red-500 uppercase transition-all hover:bg-red-600/20"
+                                        >
+                                            <Trash2 class="h-4 w-4" /> Hapus
+                                            Lisensi
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <!-- VIEW FOR COACH -->

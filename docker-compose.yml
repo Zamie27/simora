@@ -15,15 +15,16 @@ services:
       - ./:/var/www/html:Z
     networks:
       - simora-network
+      - database
 
   # 2. Web Server (Nginx) - Terpisah dari PHP
   # Melayani request HTTP dan file statis [cite: 1576]
   nginx:
     image: nginx:alpine
-    container_name: simora-nginx
+    container_name: simora
     restart: unless-stopped
     ports:
-      - "8081:80"
+      - "8082:80"
     volumes:
       - ./:/var/www/html:Z
       - ./docker/nginx/conf.d:/etc/nginx/conf.d:Z
@@ -31,43 +32,13 @@ services:
       - app
     networks:
       - simora-network
-
-  # 3. Database Server (MySQL)
-  # Tempat penyimpanan terpusat data latihan dan profil atlet [cite: 1541, 1588]
-  mysql:
-    image: mysql:8.4
-    container_name: simora-db
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: db_simora
-      MYSQL_USER: simora_user
-      MYSQL_PASSWORD: simora_password
-      MYSQL_ROOT_PASSWORD: root_password_simora
-    ports:
-      - "3308:3306"
-    volumes:
-      - simora-db-data:/var/lib/mysql:Z
-    networks:
-      - simora-network
-
-  # 4. Database Management (PHPMyAdmin)
-  # Memudahkan tim SI dalam mengelola integritas data [cite: 1660]
-  phpmyadmin:
-    image: phpmyadmin:latest
-    container_name: simora-pma
-    restart: always
-    ports:
-      - "8083:80"
-    environment:
-      - PMA_ARBITRARY=1
-    depends_on:
-      - mysql
-    networks:
-      - simora-network
+      - proxy
 
 networks:
   simora-network:
     driver: bridge
+  proxy:
+    external: true
+  database:
+    external: true
 
-volumes:
-  simora-db-data:

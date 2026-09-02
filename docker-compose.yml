@@ -12,6 +12,8 @@ services:
       - "5174:5174"
     volumes:
       - ./:/var/www/html:Z
+    depends_on:
+      - mariadb
     networks:
       - simora-network
       - database
@@ -32,6 +34,27 @@ services:
       - simora-network
       - proxy
 
+  # 3. Database Server (MySQL 8.0)
+  mariadb:
+    image: mysql:8.0
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: mariapassword
+      MYSQL_DATABASE: db_simora
+      MYSQL_USER: simora_user
+      MYSQL_PASSWORD: simora_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - simora-network
+      - database
+
+volumes:
+  mariadb_data:
+
 networks:
   simora-network:
     driver: bridge
@@ -39,3 +62,4 @@ networks:
     external: true
   database:
     external: true
+
